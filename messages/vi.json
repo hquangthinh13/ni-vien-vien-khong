@@ -1,0 +1,42 @@
+{
+  "Navbar": {
+    "news": {
+      "trigger": "Tin tức",
+      "items": [
+        {
+          "title": "Phật sự",
+          "href": "/phat-su",
+          "desc": "Các hoạt động phật sự"
+        },
+        { "title": "Lớp học Phật pháp", "href": "/lop-hoc", "desc": "" },
+        { "title": "Tin tức khác", "href": "/tin-tuc-khac", "desc": "" }
+      ]
+    },
+    "about": {
+      "trigger": "Giới thiệu",
+      "items": [
+        { "title": "Thời khóa tu tập", "href": "/thoi-khoa", "desc": "" },
+        { "title": "Các tu viện khác", "href": "/cac-tu-vien", "desc": "" }
+      ]
+    },
+    "library": {
+      "trigger": "Thư viện",
+      "items": [
+        { "title": "Nghi thức nghi lễ", "href": "/nghi-thuc", "desc": "" },
+        { "title": "Hình ảnh Ni Viện", "href": "/hinh-anh", "desc": "" },
+        { "title": "Thư pháp thư họa", "href": "/thu-phap", "desc": "" },
+        { "title": "Thơ thiên", "href": "/tho-thien", "desc": "" },
+        { "title": "Vấn đáp Phật pháp", "href": "/video", "desc": "" }
+      ]
+    },
+    "visit": {
+      "trigger": "Thăm viếng",
+      "items": [
+        { "title": "Nội quy lưu trú", "href": "/noi-quy", "desc": "" },
+        { "title": "Đường đến Ni Viện", "href": "/duong-den", "desc": "" }
+      ]
+    },
+    "contact": "Liên hệ",
+    "menu": "Mục lục"
+  }
+}
