@@ -38,12 +38,11 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${ebGaramond.variable} ${oswald.variable} ${firaCode.variable}`}
+      className={`${ebGaramond.variable} ${oswald.variable} ${firaCode.variable} antialiased`}
     >
-      <body className={`antialiased min-h-screen flex flex-col`}>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      <body className={`min-h-screen flex flex-col`}>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider> <Footer />
       </body>
-      <Footer />
     </html>
   );
 }

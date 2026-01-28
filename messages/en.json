@@ -4,25 +4,33 @@
       "trigger": "News",
       "items": [
         {
-          "title": "Buddhist Activities",
-          "href": "/en/buddhist-activities",
-          "desc": "Updates on monastic activities and events"
+          "title": "Sangha Activities",
+          "href": "/phat-su",
+          "desc": "Buddhist community activities and events"
         },
-        { "title": "Dharma Classes", "href": "/en/dharma-classes", "desc": "" },
-        { "title": "General News", "href": "/en/general-news", "desc": "" }
+        { "title": "Dharma Classes", "href": "/lop-hoc", "desc": "" },
+        { "title": "Other News", "href": "/tin-tuc-khac", "desc": "" }
       ]
     },
     "about": {
-      "trigger": "About Us",
+      "trigger": "About",
       "items": [
+        { "title": "Practice Schedule", "href": "/thoi-khoa", "desc": "" },
+        { "title": "Other Monasteries", "href": "/cac-tu-vien", "desc": "" }
+      ]
+    },
+    "retreat": {
+      "trigger": "Retreats",
+      "items": [
+        { "title": "Summer Retreat", "href": "khoa-tu-mua-he", "desc": "" },
         {
-          "title": "Practice Schedule",
-          "href": "/en/practice-schedule",
+          "title": "Short-term Ordination Retreat",
+          "href": "khoa-tu-xuat-gia-gieo-duyen",
           "desc": ""
         },
         {
-          "title": "Other Monasteries",
-          "href": "/en/other-monasteries",
+          "title": "2-Day Meditation Retreat",
+          "href": "khoa-thien",
           "desc": ""
         }
       ]
@@ -30,25 +38,41 @@
     "library": {
       "trigger": "Library",
       "items": [
-        { "title": "Rituals & Ceremonies", "href": "/en/rituals", "desc": "" },
-        { "title": "Gallery", "href": "/en/gallery", "desc": "" },
-        { "title": "Calligraphy & Art", "href": "/en/calligraphy", "desc": "" },
-        { "title": "Zen Poetry", "href": "/en/zen-poetry", "desc": "" },
-        { "title": "Dharma Q&A", "href": "/en/q-and-a", "desc": "" }
+        { "title": "Rituals & Ceremonies", "href": "/nghi-thuc", "desc": "" },
+        { "title": "Nunnery Gallery", "href": "/hinh-anh", "desc": "" },
+        { "title": "Calligraphy & Art", "href": "/thu-phap", "desc": "" },
+        { "title": "Zen Poetry", "href": "/tho-thien", "desc": "" },
+        { "title": "Dharma Q&A", "href": "/video", "desc": "" }
       ]
     },
     "visit": {
-      "trigger": "Visit Us",
+      "trigger": "Visit",
       "items": [
         {
-          "title": "Stay Regulations",
-          "href": "/en/stay-regulations",
+          "title": "Guest Rules & Regulations",
+          "href": "/noi-quy",
           "desc": ""
         },
-        { "title": "Directions", "href": "/en/directions", "desc": "" }
+        {
+          "title": "Directions to the Nunnery",
+          "href": "/duong-den",
+          "desc": ""
+        }
       ]
     },
     "contact": "Contact",
-    "menu": "Menu"
+    "menu": "Menu",
+    "home": "Home"
+  },
+  "Footer": {
+    "contact": "Contact",
+    "highlight": "Featured Categories",
+    "highlight-01": "Retreats",
+    "highlight-02": "Dharma Talks",
+    "highlight-03": "Tripitaka (Buddhist Canon)",
+    "highlight-04": "News",
+    "follow": "Follow Us",
+    "address": "Address",
+    "address-01": "Group 2, Hamlet 4, Chau Pha Commune, Ho Chi Minh City, Vietnam"
   }
 }

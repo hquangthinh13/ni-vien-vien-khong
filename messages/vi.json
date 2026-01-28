@@ -19,6 +19,18 @@
         { "title": "Các tu viện khác", "href": "/cac-tu-vien", "desc": "" }
       ]
     },
+    "retreat": {
+      "trigger": "Khóa tu",
+      "items": [
+        { "title": "Khóa tu mùa hè", "href": "khoa-tu-mua-he", "desc": "" },
+        {
+          "title": "Khóa tu Xuất Gia Gieo Duyên",
+          "href": "khoa-tu-xuat-gia-gieo-duyen",
+          "desc": ""
+        },
+        { "title": "Khóa thiền 2 ngày", "href": "khoa-thien", "desc": "" }
+      ]
+    },
     "library": {
       "trigger": "Thư viện",
       "items": [
@@ -37,6 +49,18 @@
       ]
     },
     "contact": "Liên hệ",
-    "menu": "Mục lục"
+    "menu": "Mục lục",
+    "home": "Trang chủ"
+  },
+  "Footer": {
+    "contact": "Liên hệ",
+    "highlight": "Danh mục nổi bật",
+    "highlight-01": "Khóa tu",
+    "highlight-02": "Pháp thoại",
+    "highlight-03": "Tam tạng kinh điển",
+    "highlight-04": "Tin tức",
+    "follow": "Theo dõi ngay",
+    "address": "Địa chỉ",
+    "address-01": "Tổ 2, Ấp 4, Xã Châu Pha, Thành phố Hồ Chí Minh, Việt Nam"
   }
 }

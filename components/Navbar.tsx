@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import logo from "@/public/globe.svg";
+import logo from "@/public/lotus.svg";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -45,15 +45,10 @@ const Navbar = () => {
       {/* --- DESKTOP NAVBAR --- */}
       <div className="hidden md:flex mx-auto max-w-4xl p-4 items-center justify-between">
         <div className="flex flex-1">
-          <Image src={logo} alt="Logo" className="h-8 w-auto cursor-pointer" />
+          <Image src={logo} alt="Logo" className="h-10 w-auto cursor-pointer" />
         </div>
 
         <div className="flex items-center space-x-1 shrink-0">
-          <RenderMenu data={t.raw("news")} />
-          <RenderMenu data={t.raw("about")} />
-          <RenderMenu data={t.raw("library")} />
-          <RenderMenu data={t.raw("visit")} />
-
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -61,7 +56,24 @@ const Navbar = () => {
                   asChild
                   className={`${navigationMenuTriggerStyle()} font-bold`}
                 >
-                  <Link href="/docs">{t("contact")}</Link>
+                  <Link href="/">{t("home")}</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>{" "}
+          <RenderMenu data={t.raw("about")} />
+          <RenderMenu data={t.raw("news")} />
+          <RenderMenu data={t.raw("retreat")} />
+          <RenderMenu data={t.raw("library")} />
+          <RenderMenu data={t.raw("visit")} />
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={`${navigationMenuTriggerStyle()} font-bold`}
+                >
+                  <Link href="/contact">{t("contact")}</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -91,8 +103,12 @@ const Navbar = () => {
                 <SheetTitle> {t("menu")}</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-2 mt-0">
-                <MobileNavItem data={t.raw("news")} />
+                <Link href="/contact" className="px-2 py-3 font-bold text-sm">
+                  {t("home")}
+                </Link>
                 <MobileNavItem data={t.raw("about")} />
+                <MobileNavItem data={t.raw("news")} />
+                <MobileNavItem data={t.raw("retreat")} />
                 <MobileNavItem data={t.raw("library")} />
                 <MobileNavItem data={t.raw("visit")} />
                 <Link href="/contact" className="px-2 py-3 font-bold text-sm">
@@ -114,7 +130,7 @@ const RenderMenu = ({ data }: { data: MenuData }) => (
           {data.trigger}
         </NavigationMenuTrigger>
         <NavigationMenuContent>
-          <ul className="w-48">
+          <ul className="w-60">
             {data.items.map((item, index) => (
               <ListItem key={index} title={item.title} href={item.href}>
                 {item.desc}

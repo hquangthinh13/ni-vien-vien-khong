@@ -24,13 +24,10 @@ export function LanguageSwitcher() {
   const toggleLanguage = () => {
     const newLocale = currentLocale === "vi" ? "en" : "vi";
 
-    // 1. Lưu ngôn ngữ mới vào Cookie
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
 
-    // 2. Cập nhật state để giao diện đổi ngay lập tức
     setCurrentLocale(newLocale);
 
-    // 3. Refresh để Server nhận locale mới
     router.refresh();
   };
 
