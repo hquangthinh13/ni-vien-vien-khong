@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import logo from "@/public/lotus.svg";
+import logo from "@/public/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -43,7 +43,7 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-50 border-b border-border bg-white">
       {/* --- DESKTOP NAVBAR --- */}
-      <div className="hidden md:flex mx-auto max-w-4xl p-4 items-center justify-between">
+      <div className="hidden md:flex mx-auto max-w-6xl p-4 items-center justify-between">
         <div className="flex flex-1">
           <Image src={logo} alt="Logo" className="h-10 w-auto cursor-pointer" />
         </div>
@@ -63,10 +63,22 @@ const Navbar = () => {
           </NavigationMenu>{" "}
           <RenderMenu data={t.raw("about")} />
           <RenderMenu data={t.raw("news")} />
-          <RenderMenu data={t.raw("retreat")} />
+          {/* <RenderMenu data={t.raw("retreat")} /> */}
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={`${navigationMenuTriggerStyle()} font-bold`}
+                >
+                  <Link href="/retreat">{t("retreat.trigger")}</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
           <RenderMenu data={t.raw("library")} />
           <RenderMenu data={t.raw("visit")} />
-          <NavigationMenu>
+          {/* <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuLink
@@ -77,7 +89,7 @@ const Navbar = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
-          </NavigationMenu>
+          </NavigationMenu> */}
         </div>
         <div className="flex flex-1 justify-end">
           <LanguageSwitcher />

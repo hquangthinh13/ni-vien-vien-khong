@@ -28,12 +28,12 @@ const ScrollToTopButton = () => {
   if (!visible) return null;
 
   return (
-    <div className=" fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 w-full max-w-4xl pointer-events-none">
+    <div className=" fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-100 w-full max-w-6xl pointer-events-none">
       {" "}
       <div className="mx-auto px-4 justify-end flex">
         <Button
           size="icon-lg"
-          className="rounded-full shadow-md cursor-pointer pointer-events-auto"
+          className="rounded-full shadow-md cursor-pointer pointer-events-auto opacity-50 hover:opacity-100"
           variant="outline"
           onClick={scrollToTop}
         >

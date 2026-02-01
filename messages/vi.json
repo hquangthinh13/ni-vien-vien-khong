@@ -45,7 +45,7 @@
       "trigger": "Thăm viếng",
       "items": [
         { "title": "Nội quy lưu trú", "href": "/noi-quy", "desc": "" },
-        { "title": "Đường đến Ni Viện", "href": "/duong-den", "desc": "" }
+        { "title": "Liên hệ", "href": "/duong-den", "desc": "" }
       ]
     },
     "contact": "Liên hệ",
@@ -65,5 +65,11 @@
   },
   "Homepage": {
     "foreword": "Lời ngỏ"
+  },
+  "Contact": {
+    "title": "Thông tin liên hệ"
+  },
+  "Retreat": {
+    "title": "Khóa tu"
   }
 }

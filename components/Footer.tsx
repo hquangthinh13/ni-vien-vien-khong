@@ -2,6 +2,11 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import Link from "next/link";
 import {
   SiFacebook,
@@ -9,18 +14,27 @@ import {
   SiZalo,
   SiMessenger,
 } from "@icons-pack/react-simple-icons";
+import EmbeddedMap from "./EmbeddedMap";
 const SOCIAL_LINKS = [
-  { icon: SiFacebook, href: "https://facebook.com/...", size: 20 },
-  { icon: SiYoutube, href: "https://youtube.com/...", size: 22 },
-  { icon: SiMessenger, href: "https://m.me/...", size: 20 },
-  { icon: SiZalo, href: "https://zalo.me/...", size: 24 },
+  {
+    icon: SiFacebook,
+    href: "https://www.facebook.com/Nivienvienkhong",
+    size: 24,
+  },
+  {
+    icon: SiYoutube,
+    href: "https://www.youtube.com/c/NiVi%E1%BB%87nVi%C3%AAnKh%C3%B4ng",
+    size: 26,
+  },
+  { icon: SiMessenger, href: "https://m.me/Nivienvienkhong", size: 24 },
+  { icon: SiZalo, href: "https://zalo.me/0974469963", size: 28 },
 ];
 const Footer = () => {
   const t = useTranslations("Footer");
 
   return (
     <footer className="relative w-full border-t border-border bg-card pt-8 pb-4 mt-auto">
-      <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 text-sm px-4">
           {/* Lien he */}
           <div className="space-y-4 md:col-span-6 ">
@@ -31,14 +45,21 @@ const Footer = () => {
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
             <div className="space-y-2 flex-col flex items-center md:items-start">
-              <div className="flex space-x-2 items-center">
-                <MapPin
-                  size={15}
-                  strokeWidth={1.5}
-                  color="var(--muted-foreground)"
-                />
-                <p className="text-muted-foreground">{t("address-01")} </p>
-              </div>
+              <HoverCard>
+                <HoverCardTrigger>
+                  <div className="flex space-x-2 items-center">
+                    <MapPin
+                      size={15}
+                      strokeWidth={1.5}
+                      color="var(--muted-foreground)"
+                    />
+                    <p className="text-muted-foreground ">{t("address-01")} </p>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="flex justify-center items-center w-fit h-auto aspect-video p-0 overflow-hidden border-none shadow-2xl">
+                  <EmbeddedMap />
+                </HoverCardContent>
+              </HoverCard>
 
               <div className="flex space-x-2 items-center">
                 <Phone

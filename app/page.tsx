@@ -1,11 +1,17 @@
 import Image from "next/image";
+import Link from "next/link";
 import coverImage from "../public/homepage-cover.jpg";
 import ornament from "../public/ornament-01.svg";
 import lineOrnament from "../public/ornament-00.svg";
-import NewsCard from "@/components/NewsCard";
-import EventCalendar from "@/components/EventCalendar";
 import { useTranslations } from "next-intl";
-import { Field, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import {
   Pagination,
   PaginationContent,
@@ -21,10 +27,197 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MoreHorizontalIcon,
+} from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import SimplifiedNewsCard from "@/components/SimplifiedNewsCard";
+import NewsSection from "@/components/NewsSection";
+import QuestionSection from "@/components/QuestionSection";
+import CalendarSection from "@/components/CalendarSection";
+export default function Home() {
+  const t = useTranslations("Homepage");
 
+  return (
+    <div className="mx-auto max-w-6xl px-4 mb-6">
+      <Image
+        className="rounded-lg shadow-lg my-6"
+        src={coverImage}
+        alt="Cover image"
+        placeholder="blur"
+      />
+
+      <div className="flex flex-col md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
+        {/* Left */}
+        <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
+          {/* Section */}
+          <div className="flex flex-col">
+            <div className="flex justify-between items-start">
+              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                Tin tức
+              </h2>{" "}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="cursor-pointer"
+                >
+                  <ChevronLeftIcon />
+                </Button>{" "}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="cursor-pointer"
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </div>
+            </div>
+            <NewsSection />
+          </div>
+          {/* Section */}
+          <div className="flex flex-1 flex-col pt-4 border-t">
+            <div className="flex justify-between items-start">
+              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                Diễn đàn
+              </h2>{" "}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="cursor-pointer"
+                >
+                  <ChevronLeftIcon />
+                </Button>{" "}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="cursor-pointer"
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </div>
+            </div>
+            <QuestionSection />
+          </div>
+        </div>
+        {/* Right */}
+        <div className="flex flex-col md:w-[30%] md:border-l p-4 gap-4">
+          {/* Section */}
+          <div className="flex flex-col">
+            <div className="flex w-fit">
+              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                {t("foreword")}
+              </h2>
+            </div>
+
+            <p className="flex mt-4 max-w-lg leading-snug text-justify italic text-muted-foreground">
+              Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến
+              toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín
+              ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên
+              Không và Ni Sư Liễu Pháp.
+            </p>
+          </div>
+          {/* Section */}
+          <div className="flex flex-col pt-4 border-t">
+            <div className="flex w-fit">
+              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                Khóa tu
+              </h2>
+            </div>
+
+            <div className="mt-4 flex flex-col gap-2">
+              <Card className="flex flex-1 p-0 transition-all ease-in-out duration-200 hover:scale-105">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-center gap-4">
+                    <span className="flex flex-1 font-bold tracking-wide text-sm">
+                      Khóa tu mùa hè
+                    </span>
+                    <Link
+                      href=""
+                      className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:tracking-wide hover:underline text-primary italic"
+                    >
+                      Đăng ký
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="flex flex-1 p-0 transition-all ease-in-out duration-200 hover:scale-105">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-center gap-4">
+                    <span className="flex flex-1 font-bold tracking-wide text-sm">
+                      Khóa tu Xuất Gia Gieo Duyên
+                    </span>
+                    <Link
+                      href=""
+                      className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:tracking-wide hover:underline text-primary italic"
+                    >
+                      Đăng ký
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Section */}
+          <div className="flex flex-col pt-4 border-t">
+            <div className="flex w-fit mb-4">
+              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                Đặt câu hỏi
+              </h2>
+            </div>
+            <Card className="flex flex-1 p-0 transition-all ease-in-out duration-200">
+              <CardContent className="p-4">
+                <FieldGroup>
+                  <Field>
+                    <FieldLabel htmlFor="fieldgroup-name">Tên</FieldLabel>
+                    <Input id="fieldgroup-name" placeholder="Nguyễn Văn A" />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="fieldgroup-email">Email</FieldLabel>
+                    <Input
+                      id="fieldgroup-email"
+                      type="email"
+                      placeholder="nivienvienkhong@example.com"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="fieldgroup-name">Câu hỏi</FieldLabel>
+                    <Textarea
+                      id="textarea-message"
+                      placeholder="Nhập câu hỏi của bạn tại đây."
+                    />
+                    <FieldDescription>
+                      Chúng tôi sẽ trả lời câu hỏi của bạn trong vòng ... ngày.
+                    </FieldDescription>
+                  </Field>
+                  <Field orientation="horizontal">
+                    <div className="flex flex-1 justify-end">
+                      <Button className="cursor-pointer" type="submit">
+                        Gửi
+                      </Button>
+                    </div>
+                  </Field>
+                </FieldGroup>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+      {/* Section */}
+
+      <CalendarSection />
+    </div>
+  );
+}
 export function PaginationIconsOnly() {
   return (
-    <div className="flex items-center justify-end gap-4 mt-4">
+    <div className="flex items-start justify-end gap-4 mt-4">
       {/* <Field orientation="horizontal" className="w-fit">
         <FieldLabel htmlFor="select-rows-per-page">
           Số bài trên trang
@@ -52,123 +245,6 @@ export function PaginationIconsOnly() {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </div>
-  );
-}
-export const MOCK_POSTS = [
-  {
-    id: 1,
-    slug: "dai-le-vu-lan-2026",
-    title:
-      "DANH SÁCH PHÁP THOẠI | KHÓA TU XUẤT GIA GIEO DUYÊN | LẦN 4 | DL2025 | PL.2569 – NI VIỆN VIÊN KHÔNG",
-    imageUrl:
-      "https://vienkhongni.com/wp-content/uploads/2025/10/LE-XUAT-GIA-GIEO-DUYEN-1.jpg",
-    text: "Hòa chung không khí mùa báo hiếu, Ni Viện tổ chức đại lễ Vu Lan nhằm tri ân công đức sinh thành dưỡng dục của cha mẹ đại lễ Vu Lan nhằm tri ân công đức sinh thành dưỡng dục của cha mẹ...",
-  },
-  {
-    id: 2,
-    slug: "khoa-tu-mua-he",
-    title: "Thông báo Khóa Tu Mùa Hè cho Thanh Thiếu Niên",
-    imageUrl:
-      "https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=800",
-    text: "Khóa tu giúp các em rèn luyện kỹ năng sống, lòng hiếu thảo và tìm lại sự bình yên trong tâm hồn sau những ngày học tập căng thẳng.",
-  },
-  {
-    id: 3,
-    slug: "phap-thoai-thay-tru-tri",
-    title: "LỄ DÂNG Y TẮM MƯA TẠI NI VIỆN VIÊN KHÔNG PL.2569",
-    imageUrl:
-      "https://vienkhongni.com/wp-content/uploads/2025/08/1-2048x1365.jpg", // Test how your UI handles a missing image
-    text: "Kính mời quý Phật tử gần xa về tham dự buổi chia sẻ giáo lý định kỳ vào tối Chủ Nhật tuần này tại Chánh điện.",
-  },
-  {
-    id: 4,
-    slug: "tu-thien-mien-trung",
-    title: "Chương Trình Thiện Nguyện 'Áo Ấm Cho Em'",
-    imageUrl:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800",
-    text: "Ni Viện đang kêu gọi sự đóng góp của các mạnh thường quân để chuẩn bị quà tết cho trẻ em vùng cao trong tháng tới.",
-  },
-  {
-    id: 5,
-    slug: "tu-thien-mien-trung",
-    title: "Chương Trình Thiện Nguyện 'Áo Ấm Cho Em'",
-    imageUrl:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800",
-    text: "Ni Viện đang kêu gọi sự ",
-  },
-  {
-    id: 6,
-    slug: "dai-le-vu-lan-2026",
-    title:
-      "DANH SÁCH PHÁP THOẠI | KHÓA TU XUẤT GIA GIEO DUYÊN | LẦN 4 | DL2025 | PL.2569 – NI VIỆN VIÊN KHÔNG",
-    imageUrl:
-      "https://vienkhongni.com/wp-content/uploads/2025/10/LE-XUAT-GIA-GIEO-DUYEN-1.jpg",
-    text: "Hòa chung không khí mùa báo hiếu, Ni Viện tổ chức đại lễ Vu Lan nhằm tri ân công đức sinh thành dưỡng dục của cha mẹ đại lễ Vu Lan nhằm tri ân công đức sinh thành dưỡng dục của cha mẹ...",
-  },
-];
-export default function Home() {
-  const t = useTranslations("Homepage");
-
-  return (
-    <div className="mx-auto max-w-4xl px-4 ">
-      <Image
-        className="rounded-lg shadow-lg my-6"
-        src={coverImage}
-        alt="Cover image"
-        placeholder="blur" // blurred preview while loading
-      />
-      <div className="flex flex-1 justify-center">
-        <Image
-          src={lineOrnament}
-          alt="Ornament"
-          className="w-auto h-6 mt-24 mb-12 opacity-60"
-        />
-      </div>
-      <div className="flex flex-1 flex-col gap-6 justify-between items-center">
-        <h2 className="font-bold text-md tracking-widest uppercase whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
-          {t("foreword")}
-        </h2>
-
-        <p className="flex max-w-lg text-center italic text-muted-foreground">
-          {" "}
-          Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến
-          toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng,
-          tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư
-          Liễu Pháp.
-        </p>
-      </div>
-
-      <div className="flex flex-1 justify-center scale-y-[-1] opacity-60">
-        <Image
-          src={lineOrnament}
-          alt="Ornament"
-          className="w-auto h-6 mb-12 mt-24"
-        />
-      </div>
-
-      <div className="flex flex-1 flex-col gap-6 justify-between items-center mb-24">
-        <h2 className="font-bold text-md tracking-widest uppercase whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
-          Sự kiện
-        </h2>
-
-        <div className=" mx-auto px-0 pb-8">
-          {" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {MOCK_POSTS.map((post) => (
-              <NewsCard
-                key={post.id}
-                slug={post.slug}
-                title={post.title}
-                imageUrl={post.imageUrl || null}
-                text={post.text}
-              />
-            ))}
-          </div>{" "}
-          <PaginationIconsOnly />
-        </div>
-      </div>
-      <EventCalendar />
     </div>
   );
 }
