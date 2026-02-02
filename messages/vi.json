@@ -15,6 +15,17 @@
     "about": {
       "trigger": "Giới thiệu",
       "items": [
+        {
+          "title": "Ni Viện Viên Không Xưa Và Nay",
+          "href": "/introduction/past-and-present",
+          "desc": ""
+        },
+        {
+          "title": "Tịnh Cảnh Viên Không",
+          "href": "/introduction/scenery-of-vien-khong",
+          "desc": ""
+        },
+
         { "title": "Thời khóa tu tập", "href": "/thoi-khoa", "desc": "" },
         { "title": "Các tu viện khác", "href": "/cac-tu-vien", "desc": "" }
       ]
@@ -44,8 +55,8 @@
     "visit": {
       "trigger": "Thăm viếng",
       "items": [
-        { "title": "Nội quy lưu trú", "href": "/noi-quy", "desc": "" },
-        { "title": "Liên hệ", "href": "/duong-den", "desc": "" }
+        { "title": "Nội quy lưu trú", "href": "/rule", "desc": "" },
+        { "title": "Liên hệ", "href": "/contact", "desc": "" }
       ]
     },
     "contact": "Liên hệ",
@@ -67,7 +78,8 @@
     "foreword": "Lời ngỏ"
   },
   "Contact": {
-    "title": "Thông tin liên hệ"
+    "title": "Liên hệ",
+    "map-caption": "Nhấp vào bản đồ để nhận chỉ đường"
   },
   "Retreat": {
     "title": "Khóa tu"

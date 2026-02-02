@@ -142,7 +142,7 @@ const RenderMenu = ({ data }: { data: MenuData }) => (
           {data.trigger}
         </NavigationMenuTrigger>
         <NavigationMenuContent>
-          <ul className="w-60">
+          <ul className="min-w-65 ">
             {data.items.map((item, index) => (
               <ListItem key={index} title={item.title} href={item.href}>
                 {item.desc}

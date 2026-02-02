@@ -29,7 +29,7 @@ const MOCK_RETREATS: RetreatCardProps[] = [
     id: "e2e2e",
   },
 ];
-const Retreat = () => {
+const CoursePage = () => {
   const t = useTranslations("Retreat");
   return (
     <div className="mx-auto max-w-6xl px-4 w-full">
@@ -95,4 +95,4 @@ const Retreat = () => {
   );
 };
 
-export default Retreat;
+export default CoursePage;
