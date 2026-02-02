@@ -14,7 +14,7 @@ import {
   SiZalo,
   SiMessenger,
 } from "@icons-pack/react-simple-icons";
-import EmbeddedMap from "./EmbeddedMap";
+import EmbeddedMap from "@/components/Contact/EmbeddedMap";
 const SOCIAL_LINKS = [
   {
     icon: SiFacebook,

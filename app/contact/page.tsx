@@ -1,5 +1,5 @@
 import React from "react";
-import EmbeddedMap from "@/components/EmbeddedMap";
+import EmbeddedMap from "@/components/Contact/EmbeddedMap";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-02.svg";

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { EB_Garamond, Oswald, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import ScrollToTopButton from "@/components/ScrollToTopButton";
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
+import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
 
 // type Props = {
 //   children: React.ReactNode;

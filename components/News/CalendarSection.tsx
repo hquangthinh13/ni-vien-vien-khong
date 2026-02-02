@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import EventCalendar from "./EventCalendar";
+import EventCalendar from "@/components/News/EventCalendar";
 import calendarBackground from "@/public/calendar-background.svg";
 
 import calendarShape from "@/public/calendar-shape.png";
