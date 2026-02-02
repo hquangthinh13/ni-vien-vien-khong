@@ -1,15 +1,26 @@
 {
   "Navbar": {
-    "news": {
+    "activity": {
       "trigger": "Tin tức",
+      "href": "/activity",
       "items": [
         {
-          "title": "Phật sự",
-          "href": "/phat-su",
-          "desc": "Các hoạt động phật sự"
+          "title": "Phật sự trong nước",
+          "href": "/activity/domestic-buddhist-activities",
+          "desc": ""
         },
-        { "title": "Lớp học Phật pháp", "href": "/lop-hoc", "desc": "" },
-        { "title": "Tin tức khác", "href": "/tin-tuc-khac", "desc": "" }
+        {
+          "title": "Phật sự ngoài nước",
+          "href": "/activity/international-buddhist-activities",
+          "desc": ""
+        },
+
+        {
+          "title": "Lớp học Phật pháp",
+          "href": "/activity/dharma-class",
+          "desc": ""
+        },
+        { "title": "Tin tức khác", "href": "/activity/others", "desc": "" }
       ]
     },
     "about": {
@@ -56,10 +67,10 @@
       "trigger": "Thăm viếng",
       "items": [
         { "title": "Nội quy lưu trú", "href": "/rule", "desc": "" },
-        { "title": "Liên hệ", "href": "/contact", "desc": "" }
+        { "title": "Đường đến Ni Viện", "href": "/contact", "desc": "" }
       ]
     },
-    "contact": "Liên hệ",
+    "contact": "Đường đến Ni Viện",
     "menu": "Mục lục",
     "home": "Trang chủ"
   },
@@ -78,7 +89,7 @@
     "foreword": "Lời ngỏ"
   },
   "Contact": {
-    "title": "Liên hệ",
+    "title": "Đường đến Ni Viện",
     "map-caption": "Nhấp vào bản đồ để nhận chỉ đường"
   },
   "Retreat": {

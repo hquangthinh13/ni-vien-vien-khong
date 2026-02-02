@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import EmbeddedMap from "@/components/EmbeddedMap";
+import EmbeddedMap from "@/components/ContactPage/EmbeddedMap";
 import lineOrnament from "@/public/ornament-01.svg";
 
 const Contact = () => {
