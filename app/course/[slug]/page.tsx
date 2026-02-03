@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import HighlightSection from "@/components/CoursePage/HighlightSection";
+import HighlightSection from "@/components/Course/HighlightSection";
 import {
   CalendarDays,
   PlayCircle,
