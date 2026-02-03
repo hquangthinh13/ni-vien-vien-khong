@@ -15,6 +15,7 @@ import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
+
 import {
   Accordion,
   AccordionContent,
@@ -25,7 +26,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import lineOrnament from "@/public/ornament-01.svg";
 import { getVideoId } from "@/lib/utils";
 // --- MOCK DATA ---
-const MOCK_KHOA_TU = {
+const MOCK_KHOA_TU: Course = {
   title: "KHÓA TU XUẤT GIA GIEO DUYÊN | LẦN 4 | DL2025 | PL.2569",
   category: "Khóa tu xuất gia gieo duyên",
   startDate: "28/05/2025",
@@ -87,10 +88,31 @@ const MOCK_KHOA_TU = {
     },
   ],
 };
+type BlockImage = {
+  url: string;
+  alternativeText?: string | null;
+  caption?: string | null;
+};
+type Video = {
+  id: string;
+  title: string;
+  videoLink: string;
+  day: number;
+};
 
-const KhoaTuDetailPage = () => {
+type Course = {
+  title: string;
+  category: string;
+  startDate: string;
+  endDate: string;
+  coverImage: string;
+  content: BlocksContent;
+  highlightImages: string[];
+  videos: Video[];
+};
+const CoursePage = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Course | null>(null);
 
   useEffect(() => {
     // Giả lập thời gian fetch dữ liệu
@@ -105,8 +127,8 @@ const KhoaTuDetailPage = () => {
     ? [...data.videos].sort((a, b) => a.day - b.day)
     : [];
 
-  if (loading) return <KhoaTuSkeleton />;
-
+  if (loading) return <LoadingSkeleton />;
+  if (!data) return null;
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-12">
@@ -141,7 +163,7 @@ const KhoaTuDetailPage = () => {
           <BlocksRenderer
             content={data.content}
             blocks={{
-              image: ({ image }: any) => (
+              image: ({ image }: { image: BlockImage }) => (
                 <figure className="mb-6 space-y-3">
                   <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-md">
                     <Image
@@ -244,7 +266,7 @@ const KhoaTuDetailPage = () => {
   );
 };
 
-const KhoaTuSkeleton = () => {
+const LoadingSkeleton = () => {
   return (
     <div className="flex w-full px-4 py-10 mx-auto max-w-6xl">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-12">
@@ -301,4 +323,4 @@ const KhoaTuSkeleton = () => {
   );
 };
 
-export default KhoaTuDetailPage;
+export default CoursePage;
