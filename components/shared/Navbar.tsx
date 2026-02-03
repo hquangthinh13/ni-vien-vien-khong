@@ -62,7 +62,7 @@ const Navbar = () => {
             </NavigationMenuList>
           </NavigationMenu>{" "}
           <RenderMenu data={t.raw("about")} />
-          <RenderMenu data={t.raw("news")} />
+          <RenderMenu data={t.raw("activity")} />
           {/* <RenderMenu data={t.raw("retreat")} /> */}
           <NavigationMenu>
             <NavigationMenuList>
@@ -71,7 +71,7 @@ const Navbar = () => {
                   asChild
                   className={`${navigationMenuTriggerStyle()} font-bold`}
                 >
-                  <Link href="/retreat">{t("retreat.trigger")}</Link>
+                  <Link href="/course">{t("course.trigger")}</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -119,8 +119,8 @@ const Navbar = () => {
                   {t("home")}
                 </Link>
                 <MobileNavItem data={t.raw("about")} />
-                <MobileNavItem data={t.raw("news")} />
-                <MobileNavItem data={t.raw("retreat")} />
+                <MobileNavItem data={t.raw("activity")} />
+                <MobileNavItem data={t.raw("course")} />
                 <MobileNavItem data={t.raw("library")} />
                 <MobileNavItem data={t.raw("visit")} />
                 <Link href="/contact" className="px-2 py-3 font-bold text-sm">
@@ -134,26 +134,39 @@ const Navbar = () => {
     </div>
   );
 };
-const RenderMenu = ({ data }: { data: MenuData }) => (
-  <NavigationMenu>
-    <NavigationMenuList>
-      <NavigationMenuItem>
-        <NavigationMenuTrigger className="font-bold">
-          {data.trigger}
-        </NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <ul className="w-60">
-            {data.items.map((item, index) => (
-              <ListItem key={index} title={item.title} href={item.href}>
-                {item.desc}
-              </ListItem>
-            ))}
-          </ul>
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    </NavigationMenuList>
-  </NavigationMenu>
-);
+const RenderMenu = ({ data }: { data: MenuData }) => {
+  const linkTriggers = ["Tin tức", "News", "Activities", "Activity"];
+
+  const shouldLink = linkTriggers.includes(data.trigger);
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          {shouldLink ? (
+            <Link href="/activity">
+              <NavigationMenuTrigger className="font-bold cursor-pointer">
+                {data.trigger}
+              </NavigationMenuTrigger>
+            </Link>
+          ) : (
+            <NavigationMenuTrigger className="font-bold">
+              {data.trigger}
+            </NavigationMenuTrigger>
+          )}
+          <NavigationMenuContent>
+            <ul className="min-w-65 ">
+              {data.items.map((item, index) => (
+                <ListItem key={index} title={item.title} href={item.href}>
+                  {item.desc}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+};
 function ListItem({
   title,
   children,
