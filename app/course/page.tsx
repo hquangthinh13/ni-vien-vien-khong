@@ -40,6 +40,8 @@ const CoursePage = () => {
         "KHÓA TU XUẤT GIA GIEO DUYÊN | LẦN 4 | DL2025 | PL.2569 – NI VIỆN VIÊN KHÔNG",
       date: "28/01/2025",
       desc: "Chương trình dành cho thiếu niên...",
+      imageUrl:
+        "https://vienkhongni.com/wp-content/uploads/2025/10/543127801_1216970293799702_1075303545561369108_n.jpg",
     },
     {
       id: 2,
@@ -47,6 +49,8 @@ const CoursePage = () => {
       title: "Khóa Tu Mùa Hè 2025 | NI VIỆN VIÊN KHÔNG",
       date: "15/02/2025",
       desc: "Nuôi dưỡng tâm từ bi...",
+      imageUrl:
+        "https://vienkhongni.com/wp-content/uploads/2025/10/543127801_1216970293799702_1075303545561369108_n.jpg",
     },
   ];
 
