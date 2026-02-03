@@ -1,7 +1,7 @@
 {
   "Navbar": {
-    "news": {
-      "trigger": "News",
+    "activity": {
+      "trigger": "Activity",
       "items": [
         {
           "title": "Sangha Activities",
@@ -19,7 +19,7 @@
         { "title": "Other Monasteries", "href": "/cac-tu-vien", "desc": "" }
       ]
     },
-    "retreat": {
+    "course": {
       "trigger": "Retreats",
       "items": [
         { "title": "Summer Retreat", "href": "khoa-tu-mua-he", "desc": "" },
@@ -74,5 +74,15 @@
     "follow": "Follow Us",
     "address": "Address",
     "address-01": "Group 2, Hamlet 4, Chau Pha Commune, Ho Chi Minh City, Vietnam"
+  },
+  "HomePage": {
+    "foreword": "Opening Words"
+  },
+  "ContactPage": {
+    "title": "Ways to the Nunnery",
+    "map-caption": "Click on the map for directions"
+  },
+  "CoursePage": {
+    "title": "Retreat Courses"
   }
 }

@@ -35,10 +35,10 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import SimplifiedNewsCard from "@/components/News/SimplifiedNewsCard";
-import NewsSection from "@/components/News/NewsSection";
+import SimplifiedNewsCard from "@/components/Activity/SimplifiedNewsCard";
+import NewsSection from "@/components/Activity/NewsSection";
 import QuestionSection from "@/components/Question/QuestionSection";
-import CalendarSection from "@/components/News/CalendarSection";
+import CalendarSection from "@/components/Activity/CalendarSection";
 export default function Home() {
   const t = useTranslations("HomePage");
 

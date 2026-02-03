@@ -5,7 +5,7 @@ async function getNewsData() {
   return MOCK_POSTS;
 }
 import { MOCK_POSTS } from "@/types/mock-posts";
-import SimplifiedNewsCard from "@/components/News/SimplifiedNewsCard";
+import SimplifiedNewsCard from "@/components/Activity/SimplifiedNewsCard";
 
 export default async function NewsSection() {
   const posts = await getNewsData();

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import ornament from "../public/ornament-01.svg";
 import lineOrnament from "@/public/ornament-00.svg";
-import NewsCard from "@/components/News/NewsCard";
-import EventCalendar from "@/components/News/EventCalendar";
+import NewsCard from "@/components/Activity/NewsCard";
+import EventCalendar from "@/components/Activity/EventCalendar";
 import { useTranslations } from "next-intl";
 import { Field, FieldLabel } from "@/components/ui/field";
 import {
