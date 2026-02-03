@@ -15,7 +15,7 @@ import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
-
+import RichTextRenderer from "@/components/shared/RichTextRenderer";
 import {
   Accordion,
   AccordionContent,
@@ -131,7 +131,7 @@ const CoursePage = () => {
   if (!data) return null;
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
         <div className="lg:col-span-7 prose prose-orange max-w-none text-justify leading-relaxed">
           <header className="flex flex-col items-start mb-6 space-y-2">
             <div className="flex items-start gap-2 text-primary font-medium text-sm uppercase tracking-widest">
@@ -160,33 +160,7 @@ const CoursePage = () => {
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
           </div>
-          <BlocksRenderer
-            content={data.content}
-            blocks={{
-              image: ({ image }: { image: BlockImage }) => (
-                <figure className="mb-6 space-y-3">
-                  <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-md">
-                    <Image
-                      src={image.url}
-                      alt={image.alternativeText || ""}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <figcaption className="text-center">
-                    <span className="text-xs md:text-sm text-muted-foreground italic flex items-center justify-center gap-2">
-                      <div className="h-px w-8 bg-border" /> {/* */}
-                      {image.caption}
-                      <div className="h-px w-8 bg-border" />
-                    </span>
-                  </figcaption>
-                </figure>
-              ),
-              paragraph: ({ children }) => (
-                <p className="mb-6 text-foreground/90">{children}</p>
-              ),
-            }}
-          />
+          <RichTextRenderer content={data.content} />
 
           <section className="space-y-4">
             <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
@@ -250,8 +224,7 @@ const CoursePage = () => {
 
         <aside className="lg:col-span-3 space-y-6">
           <HighlightSection images={data.highlightImages} />
-
-          <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10 space-y-4">
+          {/* <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10 space-y-4">
             <h4 className="font-bold text-primary uppercase text-xs tracking-widest">
               Đăng ký khóa tu
             </h4>
@@ -259,6 +232,17 @@ const CoursePage = () => {
               Đăng ký khóa tu Đăng ký khóa tu Đăng ký khóa tu
             </p>
             <ChevronRight className="text-primary ml-auto" />
+          </div> */}{" "}
+          <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10">
+            <h4 className="font-bold text-primary uppercase text-xs tracking-widest mb-2">
+              Đăng ký tham gia
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic mb-4">
+              Theo dõi các hoạt động Phật sự mới nhất của Ni Viện.
+            </p>
+            <button className="w-full bg-primary text-white py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-colors">
+              Liên hệ ngay
+            </button>
           </div>
         </aside>
       </div>

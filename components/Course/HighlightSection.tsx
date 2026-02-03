@@ -81,14 +81,14 @@ const HighlightSection = ({ images = [] }: { images: string[] }) => {
             </button>
 
             <button
-              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-[110]"
+              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110"
               onClick={prevImage}
             >
               <ChevronLeft size={30} />
             </button>
 
             <button
-              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-[110]"
+              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110"
               onClick={nextImage}
             >
               <ChevronRight size={30} />
