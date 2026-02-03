@@ -40,7 +40,7 @@ import NewsSection from "@/components/News/NewsSection";
 import QuestionSection from "@/components/Question/QuestionSection";
 import CalendarSection from "@/components/News/CalendarSection";
 export default function Home() {
-  const t = useTranslations("Homepage");
+  const t = useTranslations("HomePage");
 
   return (
     <div className="mx-auto max-w-6xl px-4 mb-6">
@@ -57,7 +57,7 @@ export default function Home() {
           {/* Section */}
           <div className="flex flex-col">
             <div className="flex justify-between items-start">
-              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Tin tức
               </h2>{" "}
               <div className="flex gap-2">
@@ -82,7 +82,7 @@ export default function Home() {
           {/* Section */}
           <div className="flex flex-1 flex-col pt-4 border-t">
             <div className="flex justify-between items-start">
-              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Diễn đàn
               </h2>{" "}
               <div className="flex gap-2">
@@ -110,7 +110,7 @@ export default function Home() {
           {/* Section */}
           <div className="flex flex-col">
             <div className="flex w-fit">
-              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 {t("foreword")}
               </h2>
             </div>
@@ -125,7 +125,7 @@ export default function Home() {
           {/* Section */}
           <div className="flex flex-col pt-4 border-t">
             <div className="flex w-fit">
-              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Khóa tu
               </h2>
             </div>
@@ -167,7 +167,7 @@ export default function Home() {
           {/* Section */}
           <div className="flex flex-col pt-4 border-t">
             <div className="flex w-fit mb-4">
-              <h2 className="font-bold text-lg whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Đặt câu hỏi
               </h2>
             </div>
