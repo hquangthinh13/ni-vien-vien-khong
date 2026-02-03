@@ -71,7 +71,7 @@ const Navbar = () => {
                   asChild
                   className={`${navigationMenuTriggerStyle()} font-bold`}
                 >
-                  <Link href="/retreat">{t("retreat.trigger")}</Link>
+                  <Link href="/course">{t("course.trigger")}</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -120,7 +120,7 @@ const Navbar = () => {
                 </Link>
                 <MobileNavItem data={t.raw("about")} />
                 <MobileNavItem data={t.raw("activity")} />
-                <MobileNavItem data={t.raw("retreat")} />
+                <MobileNavItem data={t.raw("course")} />
                 <MobileNavItem data={t.raw("library")} />
                 <MobileNavItem data={t.raw("visit")} />
                 <Link href="/contact" className="px-2 py-3 font-bold text-sm">

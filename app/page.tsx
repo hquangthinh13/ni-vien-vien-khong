@@ -40,7 +40,7 @@ import NewsSection from "@/components/HomePage/NewsSection";
 import QuestionSection from "@/components/HomePage/QuestionSection";
 import CalendarSection from "@/components/HomePage/CalendarSection";
 export default function Home() {
-  const t = useTranslations("Homepage");
+  const t = useTranslations("HomePage");
 
   return (
     <div className="mx-auto max-w-6xl px-4 mb-6">

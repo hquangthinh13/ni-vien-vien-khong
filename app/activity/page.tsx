@@ -24,23 +24,6 @@ import {
 export function PaginationIconsOnly() {
   return (
     <div className="flex items-center justify-end gap-4 mt-4">
-      {/* <Field orientation="horizontal" className="w-fit">
-        <FieldLabel htmlFor="select-rows-per-page">
-          Số bài trên trang
-        </FieldLabel>
-        <Select defaultValue="25">
-          <SelectTrigger className="w-20" id="select-rows-per-page">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent align="start">
-            <SelectGroup>
-              <SelectItem value="10">3</SelectItem>
-              <SelectItem value="25">5</SelectItem>
-              <SelectItem value="50">10</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </Field> */}
       <Pagination className="mx-0 w-auto">
         <PaginationContent>
           <PaginationItem>
@@ -107,7 +90,7 @@ export const MOCK_POSTS = [
   },
 ];
 export default function Home() {
-  const t = useTranslations("Homepage");
+  const t = useTranslations("HomePage");
 
   return (
     <div className="mx-auto max-w-6xl px-4 ">

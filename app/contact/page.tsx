@@ -7,7 +7,7 @@ import EmbeddedMap from "@/components/ContactPage/EmbeddedMap";
 import lineOrnament from "@/public/ornament-01.svg";
 
 const Contact = () => {
-  const t = useTranslations("Contact");
+  const t = useTranslations("ContactPage");
   const tFooter = useTranslations("Footer");
 
   const contactDetails = [

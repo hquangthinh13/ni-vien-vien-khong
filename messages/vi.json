@@ -41,7 +41,7 @@
         { "title": "Các tu viện khác", "href": "/cac-tu-vien", "desc": "" }
       ]
     },
-    "retreat": {
+    "course": {
       "trigger": "Khóa tu",
       "items": [
         { "title": "Khóa tu mùa hè", "href": "khoa-tu-mua-he", "desc": "" },
@@ -85,14 +85,14 @@
     "address": "Địa chỉ",
     "address-01": "Tổ 2, Ấp 4, Xã Châu Pha, Thành phố Hồ Chí Minh, Việt Nam"
   },
-  "Homepage": {
+  "HomePage": {
     "foreword": "Lời ngỏ"
   },
-  "Contact": {
+  "ContactPage": {
     "title": "Đường đến Ni Viện",
     "map-caption": "Nhấp vào bản đồ để nhận chỉ đường"
   },
-  "Retreat": {
+  "CoursePage": {
     "title": "Khóa tu"
   }
 }
