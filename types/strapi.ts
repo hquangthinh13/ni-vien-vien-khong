@@ -14,14 +14,13 @@ export type BaseFetchOptionsWithFields<T> = SimpleFetchOptions & {
   };
 };
 
-export type StrapiEntity<T> = {
+export interface StrapiEntity {
   id: number;
   documentId?: string;
-  attributes: T;
-};
+}
 
-export type StrapiSingleResponse<T> = {
-  data: StrapiEntity<T> | null;
+export type StrapiSingleResponse<T extends StrapiEntity> = {
+  data: T | null;
   meta?: Record<string, unknown>;
 };
 
@@ -38,6 +37,13 @@ export type StrapiImageFormat = {
   sizeInBytes: number;
 };
 
+export type ImageFormat =
+  | "thumbnail"
+  | "small"
+  | "medium"
+  | "large"
+  | "original";
+
 export type StrapiImageFormats = {
   thumbnail?: StrapiImageFormat;
   small?: StrapiImageFormat;
@@ -45,7 +51,7 @@ export type StrapiImageFormats = {
   large?: StrapiImageFormat;
 };
 
-export type StrapiImageAttributes = {
+export interface StrapiImageEntity extends StrapiEntity {
   name: string;
   alternativeText: string | null;
   caption: string | null;
@@ -63,4 +69,4 @@ export type StrapiImageAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-};
+}

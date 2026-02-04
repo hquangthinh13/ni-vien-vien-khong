@@ -13,21 +13,17 @@ export type QuestionFormData = {
 
 export type QuestionStatus = "pending" | "answered" | "rejected";
 
-export type VideoResponseAttributes = {
+export interface VideoResponse extends StrapiEntity {
   title?: string;
   responseContent: string;
-};
+}
 
-export type BlogResponseAttributes = {
+export interface BlogResponse extends StrapiEntity {
   title?: string;
   videoLink: string;
-};
+}
 
-export type VideoResponse = StrapiEntity<VideoResponseAttributes>;
-
-export type BlogResponse = StrapiEntity<BlogResponseAttributes>;
-
-export type QuestionAttributes = {
+export interface Question extends StrapiEntity {
   fullName: string;
   email: string;
   address?: string;
@@ -41,9 +37,7 @@ export type QuestionAttributes = {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-};
-
-export type Question = StrapiEntity<QuestionAttributes>;
+}
 
 export type QuestionResponse = {
   data: Question[] | Question | null;
@@ -58,4 +52,4 @@ export type QuestionResponse = {
 };
 
 export type FetchAnsweredQuestionsOptions =
-  BaseFetchOptionsWithFields<QuestionAttributes>;
+  BaseFetchOptionsWithFields<Question>;

@@ -1,7 +1,7 @@
 import {
   StrapiEntity,
   BaseFetchOptionsWithFields,
-  StrapiImageAttributes,
+  StrapiImageEntity,
 } from "@/types/strapi";
 import type { Locale } from "@/types/locale";
 import type { CourseCategory } from "@/types/categories";
@@ -25,8 +25,7 @@ export type PodcastSection = {
 };
 
 export type CourseStatus = "upcoming" | "ongoing" | "completed" | "unknown";
-
-export type CourseAttributes = {
+export interface Course extends StrapiEntity {
   courseName: string;
   courseContent?: BlocksContent;
   category?: CourseCategory;
@@ -36,15 +35,13 @@ export type CourseAttributes = {
   createdAt?: string;
   updatedAt?: string;
   locale?: Locale;
-  coverImage?: StrapiImageAttributes;
-  highlightedImages?: StrapiImageAttributes[];
+  coverImage?: StrapiImageEntity;
+  highlightedImages?: StrapiImageEntity[];
   videoSection?: VideoSection[];
   podcastSection?: PodcastSection[];
   courseRegistration?: CourseRegistration[];
   localizations?: unknown[];
-};
-
-export type Course = StrapiEntity<CourseAttributes>;
+}
 
 export type CourseResponse = {
   data: Course[] | Course | null;
@@ -60,10 +57,10 @@ export type CourseResponse = {
 
 // Fetch Options Types
 
-export type FetchCoursesOptions = BaseFetchOptionsWithFields<CourseAttributes>;
+export type FetchCoursesOptions = BaseFetchOptionsWithFields<Course>;
 
 export type FetchCourseByDocumentIdOptions =
-  BaseFetchOptionsWithFields<CourseAttributes> & {
+  BaseFetchOptionsWithFields<Course> & {
     documentId: string;
   };
 

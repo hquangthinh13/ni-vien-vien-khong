@@ -1,14 +1,18 @@
-import { StrapiSingleResponse, StrapiImageAttributes } from "@/types/strapi";
+import {
+  StrapiSingleResponse,
+  StrapiImageEntity,
+  StrapiEntity,
+} from "@/types/strapi";
 import type { Locale } from "@/types/locale";
 
-export type HomePageAttributes = {
+export interface HomePageAttributes extends StrapiEntity {
   openingMessage: string;
-  coverImage?: StrapiImageAttributes;
+  coverImage?: StrapiImageEntity;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
   locale?: Locale;
   localizations?: unknown[];
-};
+}
 
 export type HomePageResponse = StrapiSingleResponse<HomePageAttributes>;

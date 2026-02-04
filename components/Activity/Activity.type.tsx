@@ -1,9 +1,13 @@
-import { StrapiEntity, BaseFetchOptionsWithFields } from "@/types/strapi";
+import {
+  StrapiEntity,
+  BaseFetchOptionsWithFields,
+  StrapiImageEntity,
+} from "@/types/strapi";
 import type { Locale } from "@/types/locale";
 import type { ActivityCategory } from "@/types/categories";
 import type { BlocksContent } from "@strapi/blocks-react-renderer";
 
-export type ActivityAttributes = {
+export interface Activity extends StrapiEntity {
   title: string;
   slug: string;
   description?: string;
@@ -15,9 +19,11 @@ export type ActivityAttributes = {
   createdAt?: string;
   updatedAt?: string;
   locale?: Locale;
-};
-
-export type Activity = StrapiEntity<ActivityAttributes>;
+  coverImage?: StrapiImageEntity;
+  relatedActivities?: {
+    data: Activity[];
+  };
+}
 
 export type ActivityResponse = {
   data: Activity[] | Activity | null;
@@ -33,11 +39,10 @@ export type ActivityResponse = {
 
 // Fetch Options Types
 
-export type FetchActivitiesOptions =
-  BaseFetchOptionsWithFields<ActivityAttributes>;
+export type FetchActivitiesOptions = BaseFetchOptionsWithFields<Activity>;
 
 export type FetchActivityByDocumentIdOptions =
-  BaseFetchOptionsWithFields<ActivityAttributes> & {
+  BaseFetchOptionsWithFields<Activity> & {
     documentId: string;
   };
 
