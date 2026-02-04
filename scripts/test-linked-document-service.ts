@@ -111,10 +111,10 @@ const main = async () => {
     // Test 5: Fetch all categories
     console.log("5. Fetching documents grouped by category:");
     const categories: LinkedDocumentCategory[] = [
-      "Tài Liệu Phật Pháp",
-      "Kinh Sách",
-      "Bài Giảng",
-      "Tài Liệu Khác",
+      "Tạng Kinh",
+      "Tạng Luật",
+      "Tạng Vi Diệu Pháp",
+      "Sách Sơ Tổ Hộ Tông",
     ];
 
     for (const category of categories) {

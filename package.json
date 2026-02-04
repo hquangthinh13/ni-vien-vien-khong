@@ -13,6 +13,7 @@
     "test:course-register": "tsx scripts/test-course-registration.ts",
     "test:question": "tsx scripts/test-question-service.ts",
     "test:linked-document": "tsx scripts/test-linked-document-service.ts",
+    "test:calligraphy": "tsx scripts/test-calligraphy-service.ts",
     "test:home": "tsx scripts/test-home-page-service.ts"
   },
   "dependencies": {

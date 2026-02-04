@@ -10,10 +10,14 @@ export type CourseCategory =
   | "Khóa Thiền";
 
 export type LinkedDocumentCategory =
-  | "Tài Liệu Phật Pháp"
-  | "Kinh Sách"
-  | "Bài Giảng"
-  | "Tài Liệu Khác";
+  | "Tạng Kinh"
+  | "Tạng Luật"
+  | "Tạng Vi Diệu Pháp"
+  | "Sách Sơ Tổ Hộ Tông"
+  | "Sách Sư Ông Viên Minh"
+  | "Tài Liệu Học Pali"
+  | "Danh Mục Sách Khác";
+export type CalligraphyCategory = "Kinh Pháp Cú" | "Kinh Tụng" | "Chủ Đề Khác";
 
 export const ACTIVITY_CATEGORIES: ActivityCategory[] = [
   "Phật Sự Trong Nước",
@@ -29,10 +33,19 @@ export const COURSE_CATEGORIES: CourseCategory[] = [
 ];
 
 export const LINKED_DOCUMENT_CATEGORIES: LinkedDocumentCategory[] = [
-  "Tài Liệu Phật Pháp",
-  "Kinh Sách",
-  "Bài Giảng",
-  "Tài Liệu Khác",
+  "Tạng Kinh",
+  "Tạng Luật",
+  "Tạng Vi Diệu Pháp",
+  "Sách Sơ Tổ Hộ Tông",
+  "Sách Sư Ông Viên Minh",
+  "Tài Liệu Học Pali",
+  "Danh Mục Sách Khác",
+];
+
+export const CALLIGRAPHY_CATEGORIES: CalligraphyCategory[] = [
+  "Kinh Pháp Cú",
+  "Kinh Tụng",
+  "Chủ Đề Khác",
 ];
 
 export const isValidActivityCategory = (
@@ -59,5 +72,14 @@ export const isValidLinkedDocumentCategory = (
   return (
     typeof category === "string" &&
     LINKED_DOCUMENT_CATEGORIES.includes(category as LinkedDocumentCategory)
+  );
+};
+
+export const isValidCalligraphyCategory = (
+  category: unknown,
+): category is CalligraphyCategory => {
+  return (
+    typeof category === "string" &&
+    CALLIGRAPHY_CATEGORIES.includes(category as CalligraphyCategory)
   );
 };
