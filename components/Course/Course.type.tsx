@@ -42,10 +42,14 @@ export type CourseRegistrationAttributes = {
 
 export type CourseRegistration = StrapiEntity<CourseRegistrationAttributes>;
 
+export type CourseStatus = "upcoming" | "ongoing" | "completed" | "unknown";
+
 export type CourseAttributes = {
   courseName: string;
   courseContent?: BlocksContent;
   category?: CourseCategory;
+  courseStartDate?: string; // ISO date string
+  courseEndDate?: string; // ISO date string
   publishedAt?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -83,4 +87,13 @@ export type FetchCourseByDocumentIdOptions =
 
 export type FetchCoursesByCategoryOptions = FetchCoursesOptions & {
   category: CourseCategory;
+};
+
+export type FetchActiveCoursesOptions = FetchCoursesOptions & {
+  referenceDate?: string; // ISO date string, defaults to today
+};
+
+export type FetchCoursesByMonthOptions = FetchCoursesOptions & {
+  year: number;
+  month: number; // 1-12
 };
