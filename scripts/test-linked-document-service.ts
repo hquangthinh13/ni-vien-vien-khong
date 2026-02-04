@@ -17,7 +17,7 @@ const categoryArg = isValidLinkedDocumentCategory(
   process.argv[4] as LinkedDocumentCategory,
 )
   ? (process.argv[4] as LinkedDocumentCategory)
-  : "Tài Liệu Phật Pháp";
+  : "Tạng Kinh";
 
 const main = async () => {
   try {

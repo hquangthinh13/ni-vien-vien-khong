@@ -55,7 +55,7 @@ const main = async () => {
       phoneNumber: "0912345678",
       email: "nguyenvana@example.com",
       address: "123 Đường Lê Lợi, Hà Nội, Việt Nam",
-      registedCourseId: courseId,
+      registedCourseId: courseId || "",
     };
 
     try {

@@ -2,7 +2,7 @@ import { StrapiEntity } from "@/types/strapi";
 import type { Locale } from "@/types/locale";
 import type { Course } from "@/components/Course/Course.type";
 
-export type CourseRegistrationAttributes = {
+export interface CourseRegistration extends StrapiEntity {
   fullName: string;
   phoneNumber: string;
   email: string;
@@ -17,9 +17,7 @@ export type CourseRegistrationAttributes = {
   createdBy?: unknown;
   updatedBy?: unknown;
   localizations?: unknown[];
-};
-
-export type CourseRegistration = StrapiEntity<CourseRegistrationAttributes>;
+}
 
 export type CourseRegistrationResponse = {
   data: CourseRegistration[] | CourseRegistration | null;
