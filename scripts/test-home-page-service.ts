@@ -3,8 +3,6 @@ import { isValidLocale } from "@/types/locale";
 import {
   fetchHomePage,
   fetchHomePageFields,
-  getCoverImageUrl,
-  getOpeningMessage,
 } from "@/components/HomePage/HomePage.service";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
@@ -25,10 +23,6 @@ const main = async () => {
 
     console.log("\nHome Page (fields response):");
     console.dir(fieldsResponse, { depth: null });
-
-    console.log("\nDerived data:");
-    console.log("Cover image URL:", getCoverImageUrl(fullResponse));
-    console.log("Opening message:", getOpeningMessage(fullResponse));
   } catch (error) {
     console.error("Failed to test Home Page fetch:", error);
     process.exitCode = 1;

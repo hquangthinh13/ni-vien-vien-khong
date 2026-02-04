@@ -87,10 +87,8 @@ const main = async () => {
         if (answeredQuestions.data.length > 0) {
           console.log("\n  Sample questions:");
           answeredQuestions.data.slice(0, 3).forEach((question, index) => {
-            console.log(`    ${index + 1}. "${question.attributes.title}"`);
-            console.log(
-              `       Status: ${question.attributes.questionStatus || "N/A"}`,
-            );
+            console.log(`    ${index + 1}. "${question.title}"`);
+            console.log(`       Status: ${question.questionStatus || "N/A"}`);
             console.log(
               `       Video Response: ${hasVideoResponse(question) ? "Yes" : "No"}`,
             );
@@ -102,7 +100,7 @@ const main = async () => {
       } else if (answeredQuestions.data) {
         console.log("✓ Answered question found:");
         const question = answeredQuestions.data as Question;
-        console.log(`  Title: "${question.attributes.title}"`);
+        console.log(`  Title: "${question.title}"`);
         console.log(
           `  Video Response: ${hasVideoResponse(question) ? "Yes" : "No"}`,
         );

@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { isValidLocale } from "@/types/locale";
+import { getImageUrl } from "@/lib/api";
 import {
   fetchActivities,
   fetchActivityByDocumentId,
@@ -7,10 +8,12 @@ import {
   fetchActivitiesByMonth,
   fetchActivitiesByCategory,
 } from "@/components/Activity/Activity.service";
+import type { Activity } from "@/components/Activity/Activity.type";
 import {
   isValidActivityCategory,
   type ActivityCategory,
 } from "@/types/categories";
+import { format } from "path";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 const documentId = process.argv[3]
@@ -33,12 +36,15 @@ const main = async () => {
         populate: "*",
       }),
     ]);
+    const nearestActivityData = (nearestActivity.data as Activity[])[0];
+    const coverImageUrl = getImageUrl(nearestActivityData.coverImage);
 
     // console.log("Activities (first page):");
     // console.dir(allActivities, { depth: null });
 
     console.log("\nNearest activity:");
-    console.dir(nearestActivity, { depth: null });
+    // console.dir(nearestActivity, { depth: null });
+    console.log("Cover image URL:", coverImageUrl);
 
     // const now = new Date();
     // console.log(`\\nCurrent date: ${now.toISOString()}`);

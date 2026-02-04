@@ -60,29 +60,3 @@ export async function fetchHomePageFields(
 }
 
 // ============ 3. Image URL Utility ============
-
-/**
- * Get the cover image URL from home page data
- * @param homePageResponse HomePageResponse from API
- * @returns Cover image URL or null
- */
-export function getCoverImageUrl(
-  homePageResponse: HomePageResponse,
-): string | null {
-  const HomePageData = homePageResponse.data as HomePageAttributes | null;
-  const imageProvider = HomePageData?.coverImage?.provider;
-  if (imageProvider === "local") {
-    return getStrapiURL(HomePageData?.coverImage?.url || "");
-  }
-  return HomePageData?.coverImage?.url ?? null;
-}
-
-/**
- * Get the opening message from home page data
- * @param homePageResponse HomePageResponse from API
- * @returns Opening message or empty string
- */
-export function getOpeningMessage(homePageResponse: HomePageResponse): string {
-  const HomePageData = homePageResponse.data as HomePageAttributes | null;
-  return HomePageData?.openingMessage ?? "";
-}
