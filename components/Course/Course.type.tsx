@@ -6,6 +6,7 @@ import {
 import type { Locale } from "@/types/locale";
 import type { CourseCategory } from "@/types/categories";
 import type { BlocksContent } from "@strapi/blocks-react-renderer";
+import type { CourseRegistration } from "../CourseRegistration/CourseRegistration.type";
 
 export type VideoSection = {
   id: number;
@@ -22,25 +23,6 @@ export type PodcastSection = {
   podcastAsset: unknown;
   haveOrdinalDate: boolean | null;
 };
-
-export type CourseRegistrationAttributes = {
-  fullName: string;
-  phoneNumber: string;
-  email: string;
-  address?: string;
-  confirmed?: boolean;
-  confirmationToken?: string;
-  registedCourse?: Course;
-  locale?: Locale;
-  createdAt?: string;
-  updatedAt?: string;
-  publishedAt?: string;
-  createdBy?: unknown;
-  updatedBy?: unknown;
-  localizations?: unknown[];
-};
-
-export type CourseRegistration = StrapiEntity<CourseRegistrationAttributes>;
 
 export type CourseStatus = "upcoming" | "ongoing" | "completed" | "unknown";
 

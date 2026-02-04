@@ -16,8 +16,6 @@ const AUTHORIZED_TOKEN =
   process.env.NEXT_PUBLIC_STRAPI_API_TOKEN ||
   "";
 
-// ============ 1. Fetch All Courses (with optional fields, pagination, sort) ============
-
 export async function fetchCourses(
   options: FetchCoursesOptions = {},
 ): Promise<CourseResponse> {
@@ -40,8 +38,6 @@ export async function fetchCourses(
 
   return (await res.json()) as CourseResponse;
 }
-
-// ============ 2. Fetch Course by DocumentId ============
 
 export async function fetchCourseByDocumentId(
   options: FetchCourseByDocumentIdOptions,
@@ -66,8 +62,6 @@ export async function fetchCourseByDocumentId(
 
   return (await res.json()) as CourseResponse;
 }
-
-// ============ 3. Get Courses by Category ============
 
 export async function fetchCoursesByCategory(
   options: FetchCoursesByCategoryOptions,
@@ -96,8 +90,6 @@ export async function fetchCoursesByCategory(
 
   return (await res.json()) as CourseResponse;
 }
-
-// ============ 4. Fetch Active/Upcoming Courses ============
 
 export async function fetchActiveCourses(
   options: FetchActiveCoursesOptions = {},
@@ -137,8 +129,6 @@ export async function fetchActiveCourses(
   return (await res.json()) as CourseResponse;
 }
 
-// ============ 5. Fetch Courses by Month ============
-
 export async function fetchCoursesByMonth(
   options: FetchCoursesByMonthOptions,
 ): Promise<CourseResponse> {
@@ -177,14 +167,6 @@ export async function fetchCoursesByMonth(
   return (await res.json()) as CourseResponse;
 }
 
-// ============ 6. Course Status Utilities ============
-
-/**
- * Determine the status of a course based on its start and end dates
- * @param course The course object
- * @param referenceDate ISO date string to compare against (defaults to today)
- * @returns Course status: "upcoming" | "ongoing" | "completed" | "unknown"
- */
 export function getCourseStatus(
   course: Course,
   referenceDate?: string,
@@ -222,12 +204,6 @@ export function getCourseStatus(
   return "unknown";
 }
 
-/**
- * Check if a course is active (ongoing or upcoming)
- * @param course The course object
- * @param referenceDate ISO date string to compare against (defaults to today)
- * @returns true if course is active, false otherwise
- */
 export function isCourseActive(
   course: Course,
   referenceDate?: string,
@@ -236,13 +212,6 @@ export function isCourseActive(
   return status === "upcoming" || status === "ongoing";
 }
 
-/**
- * Filter courses by status
- * @param courses Array of courses
- * @param status Desired status
- * @param referenceDate ISO date string to compare against (defaults to today)
- * @returns Filtered array of courses
- */
 export function filterCoursesByStatus(
   courses: Course[],
   status: CourseStatus,
@@ -251,4 +220,8 @@ export function filterCoursesByStatus(
   return courses.filter(
     (course) => getCourseStatus(course, referenceDate) === status,
   );
+}
+
+export function getCourseID(course: Course): string | undefined {
+  return course.documentId;
 }
