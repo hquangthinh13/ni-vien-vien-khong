@@ -11,6 +11,7 @@
     "test:activity": "tsx scripts/test-activity-service.ts",
     "test:course": "tsx scripts/test-course-service.ts",
     "test:course-register": "tsx scripts/test-course-registration.ts",
+    "test:question": "tsx scripts/test-question-service.ts",
     "test:home": "tsx scripts/test-home-page-service.ts"
   },
   "dependencies": {

@@ -52,7 +52,7 @@ const main = async () => {
     );
     const formDataFull: CourseRegistrationFormData = {
       fullName: "Nguyễn Văn A",
-      phoneNumber: "+84912345678",
+      phoneNumber: "0912345678",
       email: "nguyenvana@example.com",
       address: "123 Đường Lê Lợi, Hà Nội, Việt Nam",
       registedCourseId: courseId,
