@@ -40,15 +40,10 @@ export async function fetchContactPage(
 export async function fetchContactPageFields(
   options: FetchContactPageFieldsOptions,
 ): Promise<ContactPageResponse> {
-  const params = new URLSearchParams();
-
-  if (options.locale) params.set("locale", options.locale);
-  if (options.fields.length > 0) {
-    options.fields.forEach((field) => params.append("fields", String(field)));
-  }
+  const query = buildQuery(options);
 
   const url = getStrapiURL(
-    `${CONTACT_PAGE_ENDPOINT}${params.toString() ? `?${params}` : ""}`,
+    `${CONTACT_PAGE_ENDPOINT}${query ? `?${query}` : ""}`,
   );
 
   const res = await fetch(url, {
