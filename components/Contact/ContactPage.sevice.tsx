@@ -1,11 +1,7 @@
 import { getStrapiURL, buildQuery } from "@/lib/api";
 import { SimpleFetchOptions } from "@/types/strapi";
 
-import type {
-  ContactPageAttributes,
-  ContactPageResponse,
-  FetchContactPageFieldsOptions,
-} from "./ContactPage.type";
+import type { ContactPageResponse } from "./ContactPage.type";
 
 const CONTACT_PAGE_ENDPOINT = "/api/contact-page";
 const AUTHORIZED_TOKEN =
@@ -38,7 +34,7 @@ export async function fetchContactPage(
 }
 
 export async function fetchContactPageFields(
-  options: FetchContactPageFieldsOptions,
+  options: SimpleFetchOptions,
 ): Promise<ContactPageResponse> {
   const query = buildQuery(options);
 

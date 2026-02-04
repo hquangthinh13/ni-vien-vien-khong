@@ -17,10 +17,4 @@ export type ContactPageAttributes = {
   zaloLink?: string;
 };
 
-export type FetchContactPageFieldsOptions = {
-  locale?: Locale;
-  fields: Array<keyof ContactPageAttributes>;
-  signal?: AbortSignal;
-};
-
 export type ContactPageResponse = StrapiSingleResponse<ContactPageAttributes>;
