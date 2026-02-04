@@ -32,3 +32,11 @@ export type CourseRegistrationResponse = {
     };
   };
 };
+
+export type CourseRegistrationFormData = {
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  address?: string;
+  registedCourseId: string;
+};
