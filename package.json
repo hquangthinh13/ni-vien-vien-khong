@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test:contact": "tsx scripts/test-contact-page.ts",
     "test:activity": "tsx scripts/test-activity-service.ts",
-    "test:course": "tsx scripts/test-course-service.ts"
+    "test:course": "tsx scripts/test-course-service.ts",
+    "test:home": "tsx scripts/test-home-page-service.ts"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
