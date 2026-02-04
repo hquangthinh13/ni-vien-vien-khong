@@ -1,4 +1,9 @@
-import { SimpleFetchOptions, BaseFetchOptionsWithFields } from "@/types/strapi";
+import {
+  SimpleFetchOptions,
+  BaseFetchOptionsWithFields,
+  StrapiImageEntity,
+  ImageFormat,
+} from "@/types/strapi";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL || "http://127.0.0.1:1337";
@@ -47,4 +52,26 @@ export const buildQuery = (
   return params.toString();
 };
 
+export function getImageUrl(
+  imageComponent: StrapiImageEntity | undefined,
+  format: ImageFormat = "original",
+): string | null {
+  const imageProvider = imageComponent?.provider;
+  console.log(imageComponent);
+  if (format !== "original") {
+    const formats = imageComponent?.formats;
+    const formatData = formats ? formats[format] : null;
+    if (formatData) {
+      if (imageProvider === "local") {
+        return getStrapiURL(formatData.url);
+      }
+      return formatData.url;
+    }
+  }
+
+  if (imageProvider === "local") {
+    return getStrapiURL(imageComponent?.url || "");
+  }
+  return imageComponent?.url || null;
+}
 // fetch(getStrapiURL('/api/posts'))
