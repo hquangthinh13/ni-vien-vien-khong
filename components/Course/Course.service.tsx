@@ -222,6 +222,9 @@ export function filterCoursesByStatus(
   );
 }
 
-export function getCourseID(course: Course): string | undefined {
-  return course.documentId;
+// Returns the documentId if the course is active, otherwise undefined
+export function getActiveCourseID(course: Course): string | undefined {
+  if (isCourseActive(course)) {
+    return course.documentId;
+  } else return undefined;
 }
