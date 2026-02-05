@@ -2,6 +2,7 @@ export type SimpleFetchOptions = {
   locale?: string;
   populate?: string;
   signal?: AbortSignal;
+  filters?: Record<string, unknown>;
 };
 
 export type BaseFetchOptionsWithFields<T> = SimpleFetchOptions & {

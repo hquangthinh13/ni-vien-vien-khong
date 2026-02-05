@@ -1,9 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import { LayoutGrid, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const HighlightSection = ({ images = [] }: { images: string[] }) => {
+import { StrapiImageEntity } from "@/types/strapi";
+import { getImageUrl } from "@/lib/api";
+const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
   const [index, setIndex] = useState<number | null>(null);
 
   const displayImages = images.slice(0, 4);
@@ -43,7 +45,7 @@ const HighlightSection = ({ images = [] }: { images: string[] }) => {
               onClick={() => setIndex(idx)}
             >
               <Image
-                src={img}
+                src={getImageUrl(img) || "/placeholder.jpg"}
                 alt={`Highlight ${idx}`}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -103,7 +105,7 @@ const HighlightSection = ({ images = [] }: { images: string[] }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={images[index]}
+                src={getImageUrl(images[index]) || "/placeholder.jpg"}
                 alt="Fullscreen view"
                 fill
                 className="object-contain"

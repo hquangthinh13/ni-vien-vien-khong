@@ -13,28 +13,75 @@ export const getVideoId = (url: string | null | undefined): string | null => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-export const formatFriendlyDate = (dateString: string, locale: string) => {
+export const formatFriendlyDate = (
+  dateString: string,
+  locale: string,
+  includeTime: boolean = true, // Mặc định là true
+) => {
   if (!dateString) return "";
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return dateString;
 
-  const timePart = new Intl.DateTimeFormat(locale, {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: locale === "en",
-  }).format(date);
-
+  // 1. Định dạng phần ngày (Luôn có)
   const datePart = new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",
   }).format(date);
 
+  // 2. Nếu không cần hiển thị giờ, trả về phần ngày luôn
+  if (!includeTime) {
+    return datePart;
+  }
+
+  // 3. Định dạng phần giờ
+  const timePart = new Intl.DateTimeFormat(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: locale === "en",
+  }).format(date);
+
+  // 4. Kết hợp lại dựa trên ngôn ngữ
   return locale === "vi"
     ? `${timePart} ngày ${datePart}`
     : `${datePart}, ${timePart}`;
 };
+export const formatShortDate = (
+  dateString: string,
+  locale: string = "vi",
+): string => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
 
+  // Kiểm tra tính hợp lệ của ngày
+  if (isNaN(date.getTime())) return dateString;
+
+  const day = date.getDate();
+  const month = date.getMonth(); // 0-indexed
+  const year = date.getFullYear();
+
+  if (locale === "vi") {
+    // Định dạng: Ngày 8 tháng 2, 2024
+    return `Ngày ${day} tháng ${month + 1}, ${year}`;
+  } else {
+    // Định dạng tiếng Anh: February 8, 2024
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return `${monthNames[month]} ${day}, ${year}`;
+  }
+};
 export const extractFirstParagraph = (content?: BlocksContent): string => {
   if (!content || content.length === 0) return "";
 
