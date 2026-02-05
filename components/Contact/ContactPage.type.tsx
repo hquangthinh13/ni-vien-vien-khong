@@ -1,7 +1,7 @@
-import { StrapiSingleResponse } from "@/types/strapi";
+import { StrapiSingleResponse, StrapiEntity } from "@/types/strapi";
 import type { Locale } from "@/types/locale";
 
-export type ContactPageAttributes = {
+export interface ContactPageAttributes extends StrapiEntity {
   address: string;
   phoneNumber: string;
   emailPrimary: string;
@@ -15,6 +15,6 @@ export type ContactPageAttributes = {
   youtubeLink?: string;
   messengerLink?: string;
   zaloLink?: string;
-};
+}
 
 export type ContactPageResponse = StrapiSingleResponse<ContactPageAttributes>;
