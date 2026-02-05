@@ -28,6 +28,7 @@ const main = async () => {
     const [allActivities, nearestActivity] = await Promise.all([
       fetchActivities({
         locale,
+        populate: "coverImage",
         pagination: { page: 1, pageSize: 5 },
         sort: "activityDate:desc",
       }),
@@ -36,7 +37,7 @@ const main = async () => {
         populate: "*",
       }),
     ]);
-    const nearestActivityData = (nearestActivity.data as Activity[])[0];
+    const nearestActivityData = (allActivities.data as Activity[])[0];
     const coverImageUrl = getImageUrl(nearestActivityData.coverImage);
 
     // console.log("Activities (first page):");

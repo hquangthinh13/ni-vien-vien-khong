@@ -91,6 +91,7 @@ export async function fetchCoursesByCategory(
   return (await res.json()) as CourseResponse;
 }
 
+// To fetch nearest active courses (not yet ended) -> fetch active courses and get first one(s)
 export async function fetchActiveCourses(
   options: FetchActiveCoursesOptions = {},
 ): Promise<CourseResponse> {
