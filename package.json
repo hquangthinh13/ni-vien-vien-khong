@@ -17,7 +17,8 @@
     "test:home": "tsx scripts/test-home-page-service.ts",
     "test:poem": "tsx scripts/test-poem-service.ts",
     "test:ritual": "tsx scripts/test-ritual-service.ts",
-    "test:introduction": "tsx scripts/test-introduction-page-service.ts"
+    "test:introduction": "tsx scripts/test-introduction-page-service.ts",
+    "test:history": "tsx scripts/test-history-page-service.ts"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
