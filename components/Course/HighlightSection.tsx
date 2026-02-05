@@ -1,9 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import { LayoutGrid, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const HighlightSection = ({ images = [] }: { images: string[] }) => {
+import { StrapiImageEntity } from "@/types/strapi";
+import { getImageUrl } from "@/lib/api";
+const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
   const [index, setIndex] = useState<number | null>(null);
 
   const displayImages = images.slice(0, 4);
@@ -43,7 +45,7 @@ const HighlightSection = ({ images = [] }: { images: string[] }) => {
               onClick={() => setIndex(idx)}
             >
               <Image
-                src={img}
+                src={getImageUrl(img) || "/placeholder.jpg"}
                 alt={`Highlight ${idx}`}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -81,14 +83,14 @@ const HighlightSection = ({ images = [] }: { images: string[] }) => {
             </button>
 
             <button
-              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-[110]"
+              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110"
               onClick={prevImage}
             >
               <ChevronLeft size={30} />
             </button>
 
             <button
-              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-[110]"
+              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110"
               onClick={nextImage}
             >
               <ChevronRight size={30} />
@@ -103,7 +105,7 @@ const HighlightSection = ({ images = [] }: { images: string[] }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={images[index]}
+                src={getImageUrl(images[index]) || "/placeholder.jpg"}
                 alt="Fullscreen view"
                 fill
                 className="object-contain"

@@ -6,21 +6,25 @@
       "items": [
         {
           "title": "Phật sự trong nước",
-          "href": "/activity/domestic-buddhist-activities",
+          "href": "/activity?category=domestic",
           "desc": ""
         },
         {
           "title": "Phật sự ngoài nước",
-          "href": "/activity/international-buddhist-activities",
+          "href": "/activity?category=international",
           "desc": ""
         },
 
         {
           "title": "Lớp học Phật pháp",
-          "href": "/activity/dharma-class",
+          "href": "/activity?category=dharma-class",
           "desc": ""
         },
-        { "title": "Tin tức khác", "href": "/activity/others", "desc": "" }
+        {
+          "title": "Tin tức khác",
+          "href": "/activity?category=others",
+          "desc": ""
+        }
       ]
     },
     "about": {
