@@ -22,7 +22,7 @@ const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
       <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
         <ScrollText size={20} className="text-primary" /> Tin liên quan
       </h3>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {activities.map((item) => (
           <Link
             key={item.documentId}
@@ -46,7 +46,7 @@ const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
                     ? formatFriendlyDate(item.publishedAt, locale)
                     : ""}
                 </span>
-                <h5 className="flex text-sm md:text-md font-bold line-clamp-3 group-hover:text-primary transition-colors leading-tight">
+                <h5 className="flex text-sm md:text-md font-bold group-hover:text-primary transition-colors leading-tight">
                   {item.title}
                 </h5>
               </div>

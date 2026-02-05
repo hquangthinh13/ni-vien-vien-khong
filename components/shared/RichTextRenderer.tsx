@@ -2,11 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   BlocksRenderer,
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
-
+import { Link as LinkIcon } from "lucide-react";
 interface RichTextRendererProps {
   content: BlocksContent;
 }
@@ -23,7 +24,7 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
                 src={image.url}
                 alt={image.alternativeText || ""}
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
+                className="object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
             {image.caption && (
@@ -42,6 +43,20 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
             {children}
           </p>
         ),
+        link: ({ children, url }) => {
+          const isExternal = url.startsWith("http");
+
+          return (
+            <Link
+              href={url}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+              className="flex items-center gap-1 text-primary font-normal tracking-wide italic hover:text-primary/80 transition-all hover:underline ease-in-out duration-150"
+            >
+              <LinkIcon className="flex w-4 h-4" /> {children}
+            </Link>
+          );
+        },
       }}
     />
   );
