@@ -80,8 +80,8 @@ const main = async () => {
         documentId: documentId,
       });
 
-      //   console.log(`\nActivity by documentId (${documentId}):`);
-      //   console.dir(byDocumentId, { depth: null });
+      console.log(`\nActivity by documentId (${documentId}):`);
+      console.dir(byDocumentId, { depth: null });
     }
   } catch (error) {
     console.error("Failed to test Activity service:", error);

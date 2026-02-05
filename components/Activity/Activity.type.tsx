@@ -20,9 +20,10 @@ export interface Activity extends StrapiEntity {
   updatedAt?: string;
   locale?: Locale;
   coverImage?: StrapiImageEntity;
-  relatedActivities?: {
-    data: Activity[];
-  };
+  // relatedActivities?: {
+  //   data: Activity[];
+  // };
+  relatedActivities?: Activity[];
 }
 
 export type ActivityResponse = {

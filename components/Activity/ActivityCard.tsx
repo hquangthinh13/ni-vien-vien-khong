@@ -9,14 +9,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { Activity } from "./Activity.type";
 import { getImageUrl } from "@/lib/api";
+import { formatFriendlyDate, extractFirstParagraph } from "@/lib/utils";
+import type { Locale } from "@/types/locale";
+
 interface ActivityCardProps {
   activity: Activity;
+  locale: Locale;
 }
-const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const { slug, title, coverImage, description, publishedAt } = activity;
+const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
+  const { slug, documentId, title, coverImage, content, publishedAt } =
+    activity;
   const imageUrl = getImageUrl(coverImage);
+  const description = content ? extractFirstParagraph(content) : "";
   return (
-    <Link href={`/blog/${slug}`}>
+    <Link href={`/activity/${documentId}`}>
       <Card className="mx-auto w-full h-full flex flex-col py-0 gap-0 hover:shadow-lg transition overflow-hidden delay-150 duration-300 ease-in-out">
         <Image
           src={imageUrl || "/placeholder.jpg"}
@@ -44,7 +50,9 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-xs tracking-wider">{publishedAt}</span>
+            <span className="text-xs tracking-wider">
+              {publishedAt ? formatFriendlyDate(publishedAt, locale) : ""}
+            </span>
           </div>
         </CardContent>
       </Card>

@@ -74,4 +74,3 @@ export function getImageUrl(
   }
   return imageComponent?.url || null;
 }
-// fetch(getStrapiURL('/api/posts'))
