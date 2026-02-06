@@ -105,3 +105,17 @@ export const extractFirstParagraph = (content?: BlocksContent): string => {
     .join("")
     .trim();
 };
+
+export const formatTimeShort = (timeStr: string) => {
+  if (!timeStr) return "";
+  const parts = timeStr.split(":");
+  return `${parts[0]}:${parts[1]}`;
+};
+
+export const parseTimeToDecimal = (timeStr: string) => {
+  if (!timeStr) return 0;
+  const parts = timeStr.split(":");
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
+  return hours + minutes / 60;
+};
