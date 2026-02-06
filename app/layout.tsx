@@ -30,10 +30,7 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   title: "Ni Viện Viên Không",
