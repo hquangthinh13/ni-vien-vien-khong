@@ -35,8 +35,8 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import SimplifiedNewsCard from "@/components/Activity/SimplifiedNewsCard";
-import NewsSection from "@/components/Activity/NewsSection";
+import SimplifiedNewsCard from "@/components/Activity/SimplifiedActivitiesCard";
+import NewsSection from "@/components/Activity/ActivitiesSection";
 import QuestionSection from "@/components/Question/QuestionSection";
 import CalendarSection from "@/components/Activity/CalendarSection";
 export default function Home() {
@@ -56,12 +56,12 @@ export default function Home() {
         <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
           {/* Section */}
           <div className="flex flex-col">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-center">
               <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Tin tức
               </h2>{" "}
               <div className="flex gap-2">
-                <Button
+                {/* <Button
                   variant="outline"
                   size="icon"
                   className="cursor-pointer"
@@ -74,7 +74,13 @@ export default function Home() {
                   className="cursor-pointer"
                 >
                   <ChevronRightIcon />
-                </Button>
+                </Button> */}
+                <Link
+                  href="/activity"
+                  className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
+                >
+                  Xem thêm
+                </Link>
               </div>
             </div>
             <NewsSection />

@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "committed-growth-070b6aa043.strapiapp.com",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "1337",

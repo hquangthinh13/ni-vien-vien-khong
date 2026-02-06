@@ -41,8 +41,16 @@
           "desc": ""
         },
 
-        { "title": "Thời khóa tu tập", "href": "/thoi-khoa", "desc": "" },
-        { "title": "Các tu viện khác", "href": "/cac-tu-vien", "desc": "" }
+        {
+          "title": "Thời khóa tu tập",
+          "href": "/introduction/schedule",
+          "desc": ""
+        },
+        {
+          "title": "Các tu viện khác",
+          "href": "/introduction/others",
+          "desc": ""
+        }
       ]
     },
     "course": {
