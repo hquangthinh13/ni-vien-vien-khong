@@ -46,8 +46,8 @@ export async function fetchActivityByDocumentId(
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}/${options.documentId}${query ? `?${query}` : ""}`,
   );
-  console.log("Fetching Activity by documentId with URL:", url);
-  console.log("Using options:", options);
+  // console.log("Fetching Activity by documentId with URL:", url);
+  // console.log("Using options:", options);
   const res = await fetch(url, {
     method: "GET",
     headers: {

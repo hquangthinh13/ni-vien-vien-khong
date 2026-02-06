@@ -18,7 +18,7 @@ const SimplifiedNewsCard = async ({
 }: NewsCardProps) => {
   const locale = (await getLocale()) as Locale;
   const { documentId, title, coverImage, content, publishedAt } = activity;
-  console.log("Rendering SimplifiedNewsCard for activity:", activity);
+  // console.log("Rendering SimplifiedNewsCard for activity:", activity);
   if (isFirst === false && variant === "bottom") {
     return (
       <Link href={`/activity/${documentId}`} className="flex flex-col">

@@ -7,7 +7,7 @@ async function getActivitiesData() {
     pagination: { limit: 5 },
     populate: "coverImage",
   });
-  console.log("Fetched activities data:", res);
+  // console.log("Fetched activities data:", res);
   return res;
 }
 import SimplifiedNewsCard from "@/components/Activity/SimplifiedActivitiesCard";

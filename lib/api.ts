@@ -57,7 +57,7 @@ export function getImageUrl(
   format: ImageFormat = "original",
 ): string | null {
   const imageProvider = imageComponent?.provider;
-  console.log(imageComponent);
+  // console.log(imageComponent);
   if (format !== "original") {
     const formats = imageComponent?.formats;
     const formatData = formats ? formats[format] : null;
