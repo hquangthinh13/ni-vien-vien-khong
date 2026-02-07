@@ -33,15 +33,15 @@ import { Course } from "@/components/Course/Course.type";
 import { getImageUrl } from "@/lib/api";
 import { formatFriendlyDate } from "@/lib/utils";
 import { getLocale } from "next-intl/server";
-const CoursePage = async ({
+export default async function CoursePage({
   searchParams,
 }: {
-  searchParams: { page?: string };
-}) => {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const locale = (await getLocale()) as Locale;
-
+  const resolvedSearchParams = await searchParams;
   //  const t = useTranslations("CoursePage");
-  const currentPage = Number(searchParams.page) || 1;
+  const currentPage = Number(resolvedSearchParams.page) || 1;
   const yearsPerPage = 3;
   const currentYear = new Date().getFullYear();
 
@@ -190,6 +190,4 @@ const CoursePage = async ({
       </Pagination>
     </div>
   );
-};
-
-export default CoursePage;
+}

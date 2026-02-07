@@ -40,3 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 app/page0.tsx
+components/shared/Navbar.test.tsx

@@ -2,16 +2,27 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, Calendar, User, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import coverImage from "@/public/homepage-cover.jpg";
 import lineOrnament from "@/public/ornament-00.svg";
 import ornament from "@/public/ornament-01.svg";
+import RichTextRenderer from "@/components/shared/RichTextRenderer";
+import { fetchHistoryPage } from "@/components/HistoryPage/HistoryPage.service";
+import type { HistoryPageAttributes } from "@/components/HistoryPage/HistoryPage.type";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@/types/locale";
 
 import image01 from "@/public/past-and-present/01.jpg";
 import image02 from "@/public/past-and-present/02.jpg";
 
-export default function PastAndPresentPage() {
+export default async function PastAndPresentPage() {
+  const locale = (await getLocale()) as Locale;
+
+  const fullResponse = await fetchHistoryPage({
+    locale,
+    populate: "*",
+  });
+  const data = fullResponse.data as HistoryPageAttributes | null;
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-12">
@@ -22,17 +33,14 @@ export default function PastAndPresentPage() {
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">
-              Ni Viện Viên Không Xưa và Nay
+              {data?.title}
             </h1>
           </header>
           <div className="opacity-80 flex w-full justify-center my-8 scale-y-[-1]">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
           </div>
-          <div className="prose prose-orange max-w-none text-justify leading-relaxed space-y-6">
-            {/* <p className="text-lg text-muted-foreground italic border-l-4 border-primary pl-4 py-1">
-              "Hạnh phúc không phải là có thật nhiều, mà là buông xả thật
-              nhiều." — Một thông điệp ý nghĩa trong buổi đại lễ năm nay.
-            </p> */}
+          {/* <div className="prose prose-orange max-w-none text-justify leading-relaxed space-y-6">
+          
 
             <p>
               Thiền viện Viên Không được Hòa thượng Viên Minh thành lập vào năm
@@ -93,7 +101,8 @@ export default function PastAndPresentPage() {
                 </span>
               </figcaption>
             </figure>
-          </div>
+          </div> */}
+          <RichTextRenderer content={data?.content || []} />
           <div className="opacity-80 flex w-full justify-center my-8">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
           </div>
