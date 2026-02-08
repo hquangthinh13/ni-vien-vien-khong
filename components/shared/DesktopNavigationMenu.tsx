@@ -21,7 +21,9 @@ const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
     return (
       <DropdownMenuSub>
         <DropdownMenuSubTrigger className="cursor-pointer">
-          {item.title}
+          <Link href={item.href || "#"} className="w-full cursor-pointer">
+            {item.title}
+          </Link>
         </DropdownMenuSubTrigger>
         <DropdownMenuPortal>
           <DropdownMenuSubContent>
@@ -43,7 +45,6 @@ const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   );
 };
 
-// Component xử lý Hover cho Menu cấp gốc
 const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
   const [open, setOpen] = useState(false);
 
@@ -52,7 +53,6 @@ const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="font-bold cursor-pointer">
-            {/* Nếu menu gốc có href, bọc Link bên trong để click được vào trang cha */}
             {menu.href ? (
               <Link href={menu.href}>{menu.title}</Link>
             ) : (
@@ -78,7 +78,6 @@ export default function DesktopNavigationMenu({
   return (
     <div className="hidden md:flex items-center gap-2">
       {menuData.map((menu, idx) => {
-        // Nếu không có items con -> Link đơn giản
         if (!menu.items) {
           return (
             <Button key={idx} variant="ghost" asChild className="font-bold">
@@ -87,7 +86,6 @@ export default function DesktopNavigationMenu({
           );
         }
 
-        // Nếu có items con -> Dropdown với tính năng Hover
         return <NavDropdownItem key={idx} menu={menu} />;
       })}
     </div>

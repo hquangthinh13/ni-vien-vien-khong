@@ -45,10 +45,7 @@ export default async function CoursePage({
   if (!response || !response.data) return null;
 
   const data = response.data as Course;
-  // console.log(data);
-  // const sortedVideos = data?.videos?.length
-  //   ? [...data.videos].sort((a, b) => a.day - b.day)
-  //   : [];
+
   const sortedVideos = data.videoSection?.length
     ? [...data.videoSection].sort((a, b) => (a.day || 0) - (b.day || 0))
     : [];

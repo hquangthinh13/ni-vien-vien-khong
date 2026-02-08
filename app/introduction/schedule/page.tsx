@@ -1,8 +1,8 @@
 import { fetchIntroductionPage } from "@/components/IntroductionPage/IntroductionPage.service";
 import IntroTimelineView from "@/components/IntroductionPage/IntroTimelineView";
-
+import lineOrnament from "@/public/ornament-01.svg";
+import Image from "next/image";
 export default async function IntroductionPage() {
-  // Fetch dữ liệu với population cần thiết (ví dụ: coverImage, activities)
   const response = await fetchIntroductionPage({
     populate: "*",
   });
@@ -12,8 +12,16 @@ export default async function IntroductionPage() {
   if (!data) return <div>Không tìm thấy dữ liệu.</div>;
 
   return (
-    <main className="max-w-6xl mx-auto">
+    <div className="mx-auto max-w-6xl px-4 my-10">
+      <div className="flex flex-col gap-6 items-center mb-6">
+        <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
+          {data.title}
+        </h2>
+        <div className="opacity-80">
+          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
+        </div>
+      </div>{" "}
       <IntroTimelineView data={data} />
-    </main>
+    </div>
   );
 }

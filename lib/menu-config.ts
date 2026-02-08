@@ -26,7 +26,7 @@ export default function useMenuConfig(): MenuItem[] {
     {
       title: t("activity.trigger"),
       href: "/activity",
-      items: t.raw("activity.items"),
+      // items: t.raw("activity.items"),
     },
 
     // 4. Khóa tu
@@ -45,10 +45,13 @@ export default function useMenuConfig(): MenuItem[] {
         // Mục: Tam tạng kinh điển (Submenu level 2)
         {
           title: t("library.sections.scriptures.title"),
+          href: "/library/scriptures",
           items: [
             // Nhánh Tiếng Việt (Submenu level 3)
             {
               title: t("library.sections.scriptures.vietnamese.title"),
+              // href: "/library/scriptures/vi",
+
               items: [
                 {
                   title: t("library.sections.scriptures.vietnamese.sutta"),
