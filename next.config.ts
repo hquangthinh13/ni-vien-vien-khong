@@ -6,8 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "committed-growth-070b6aa043.strapiapp.com",
+        hostname: "committed-growth-070b6aa043.media.strapiapp.com",
+        port: "",
+        pathname: "/**",
       },
+
       {
         protocol: "http",
         hostname: "localhost",
