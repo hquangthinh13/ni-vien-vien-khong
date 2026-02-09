@@ -32,26 +32,28 @@ const CalendarSection = async () => {
       pagination: { limit: 20 },
     });
     const courseEvents = ((activeCourse?.data || []) as Course[]).map(
-      (course) => ({
-        title: course.courseName,
-        documentId: course.documentId,
-        start: new Date(course.courseStartDate),
-        end: new Date(course.courseEndDate),
-        type: "course",
-      }),
+      (course) =>
+        ({
+          title: course.courseName,
+          documentId: course.documentId,
+          start: new Date(course.courseStartDate),
+          end: new Date(course.courseEndDate),
+          type: "course",
+        }) as MyEvent,
     );
     const nearestActivity = await fetchNearestActivity({
       fields: ["title", "documentId", "activityDate"],
       pagination: { limit: 100 },
     });
     const activityEvents = ((nearestActivity?.data || []) as Activity[]).map(
-      (activity: Activity) => ({
-        title: activity.title,
-        documentId: activity.documentId,
-        start: new Date(activity.activityDate),
-        end: undefined,
-        type: "activity",
-      }),
+      (activity: Activity) =>
+        ({
+          title: activity.title,
+          documentId: activity.documentId,
+          start: new Date(activity.activityDate),
+          end: undefined,
+          type: "activity",
+        }) as MyEvent,
     );
     const events: MyEvent[] = [...courseEvents, ...activityEvents];
 
