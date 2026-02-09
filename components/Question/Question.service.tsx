@@ -30,7 +30,7 @@ export async function createQuestion(
       ...(formData.phoneNumber && { phoneNumber: formData.phoneNumber }),
     },
   };
-
+  console.log("Request Body:", requestBody);
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -39,7 +39,7 @@ export async function createQuestion(
     },
     body: JSON.stringify(requestBody),
   });
-
+  console.log("Response Status:", res.status);
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
     throw new Error(
