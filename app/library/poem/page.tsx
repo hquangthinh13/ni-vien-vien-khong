@@ -22,7 +22,7 @@ export default async function PoemListPage({
       pageSize: pageSize,
     },
     sort: "createdAt:desc",
-    populate: "coverImage",
+    populate: "*",
   });
   console.log("Poem fetch response:", response);
   const poems = Array.isArray(response.data) ? response.data : [];
