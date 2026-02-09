@@ -101,18 +101,30 @@ const Footer = () => {
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
             <div className="space-y-2 text-muted-foreground flex flex-col items-center md:items-start">
-              <a href="#" className="hover:text-primary transition-colors">
+              <Link
+                href="/course"
+                className="hover:text-primary transition-colors"
+              >
                 {t("highlight-01")}{" "}
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              </Link>
+              <Link
+                href="/about"
+                className="hover:text-primary transition-colors"
+              >
                 {t("highlight-02")}{" "}
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              </Link>
+              <Link
+                href="/contact"
+                className="hover:text-primary transition-colors"
+              >
                 {t("highlight-03")}{" "}
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              </Link>
+              <Link
+                href="/activity"
+                className="hover:text-primary transition-colors"
+              >
                 {t("highlight-04")}{" "}
-              </a>
+              </Link>
             </div>
           </div>
 

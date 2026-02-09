@@ -35,7 +35,7 @@ export default function useMenuConfig(): MenuItem[] {
       href: "/course",
     },
 
-    // 5. Thư viện (Phần mapping phức tạp nhất)
+    // 5. Thư viện
     {
       title: t("library.trigger"),
       items: [

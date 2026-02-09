@@ -27,7 +27,10 @@ interface Activity {
 
 const CalendarSection = async () => {
   try {
-    const activeCourse = await fetchActiveCourses({});
+    const activeCourse = await fetchActiveCourses({
+      fields: ["courseName", "documentId", "courseStartDate", "courseEndDate"],
+      pagination: { limit: 20 },
+    });
     const courseEvents = ((activeCourse?.data || []) as Course[]).map(
       (course) => ({
         title: course.courseName,
@@ -38,7 +41,8 @@ const CalendarSection = async () => {
       }),
     );
     const nearestActivity = await fetchNearestActivity({
-      pagination: { pageSize: 1 },
+      fields: ["title", "documentId", "activityDate"],
+      pagination: { limit: 100 },
     });
     const activityEvents = ((nearestActivity?.data || []) as Activity[]).map(
       (activity: Activity) => ({
@@ -50,9 +54,7 @@ const CalendarSection = async () => {
       }),
     );
     const events: MyEvent[] = [...courseEvents, ...activityEvents];
-    // console.log("Events:", events);
-    // console.log("Active Courses:", activeCourse);
-    // console.log("Nearest Activity:", nearestActivity);
+
     return (
       <div className="max-w-6xl lg:aspect-video aspect-square min-h-128 mx-auto relative flex w-full border justify-center lg:justify-center items-start rounded-lg p-0 overflow-hidden">
         <div className="absolute -left-10 top-0 -z-20 h-[54%] aspect-video shadow-lg rounded-sm overflow-hidden">

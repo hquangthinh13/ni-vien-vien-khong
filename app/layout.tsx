@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
-
+import { Toaster } from "sonner";
 // type Props = {
 //   children: React.ReactNode;
 // };
@@ -48,7 +48,9 @@ export default function RootLayout({
     >
       <body className={`min-h-screen flex flex-col bg-white`}>
         <Navbar /> <ScrollToTopButton />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children} <Toaster position="top-right" richColors />
+        </NextIntlClientProvider>
         <Footer />
       </body>
     </html>
