@@ -35,7 +35,7 @@ export async function createQuestion(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
+      // Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     body: JSON.stringify(requestBody),
   });
