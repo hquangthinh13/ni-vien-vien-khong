@@ -30,12 +30,13 @@ export async function createQuestion(
       ...(formData.phoneNumber && { phoneNumber: formData.phoneNumber }),
     },
   };
+  console.log("Creating question with data:", requestBody);
 
   const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
+      // Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     body: JSON.stringify(requestBody),
   });
