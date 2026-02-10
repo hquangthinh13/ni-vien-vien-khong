@@ -105,7 +105,32 @@ export const extractFirstParagraph = (content?: BlocksContent): string => {
     .join("")
     .trim();
 };
+export const extractFirstFourLines = (content?: BlocksContent): string => {
+  if (!content || content.length === 0) return "";
 
+  let fullText = "";
+
+  // 1. Duyệt qua tất cả các blocks để lấy text thô
+  for (const block of content) {
+    if (block.type === "paragraph" && block.children) {
+      const blockText = block.children
+        .map((child) => ("text" in child ? child.text : ""))
+        .join("");
+
+      // Thêm dấu xuống dòng sau mỗi block paragraph để phân tách dòng thực tế
+      fullText += blockText + "\n";
+    }
+  }
+
+  // 2. Tách chuỗi thành mảng các dòng dựa trên ký tự xuống dòng
+  const lines = fullText
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0); // Loại bỏ dòng trống nếu cần
+
+  // 3. Lấy 4 dòng đầu tiên và nối lại
+  return lines.slice(0, 4).join("\n");
+};
 export const formatTimeShort = (timeStr: string) => {
   if (!timeStr) return "";
   const parts = timeStr.split(":");

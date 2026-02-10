@@ -4,32 +4,24 @@ import { IntroductionPageAttributes } from "./IntroductionPage.type";
 import { BlocksContent } from "@strapi/blocks-react-renderer";
 import RichTextRenderer from "@/components/shared/RichTextRenderer";
 import { formatTimeShort, parseTimeToDecimal } from "@/lib/utils";
+import { getImageUrl } from "@/lib/api";
+import Image from "next/image";
 const HOUR_WIDTH = 64;
 
 const IntroTimelineView = ({ data }: { data: IntroductionPageAttributes }) => {
-  const { title, content, useTemplate, activities } = data;
+  const { title, content, useTemplate, activities, coverImage } = data;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* <h1 className="mb-6 text-2xl font-bold">{title}</h1>
-
-      <div className="mb-10">
-        {content && (
-          <RichTextRenderer content={content as unknown as BlocksContent} />
-        )}
-      </div> */}
-
+    <div className="mx-auto max-w-6xl px-4 py-0">
+      {/* <h1 className="mb-6 text-2xl font-bold">{title}</h1> */}
       {useTemplate && activities && activities.length > 0 && (
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            {/* <CalendarDays className="h-5 w-5 text-primary" />
-            <h2 className="font-bold uppercase tracking-tight text-sm">
-              Lịch trình chi tiết
-            </h2> */}
+          {/* <div className="flex items-center gap-2">
+         
             <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
               <CalendarDays size={20} className="text-primary" /> {title}
             </h3>
-          </div>
+          </div> */}
 
           <div className="relative overflow-hidden rounded-xl border bg-white shadow-sm">
             <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20">
@@ -115,6 +107,22 @@ const IntroTimelineView = ({ data }: { data: IntroductionPageAttributes }) => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}{" "}
+      {content && (
+        <div className="flex justify-between gap-6 mt-6">
+          {" "}
+          <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-xl shadow-md">
+            <Image
+              src={getImageUrl(coverImage) || "/placeholder-image.png"}
+              alt={title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div className="flex flex-col w-full ">
+            <RichTextRenderer content={content as unknown as BlocksContent} />
           </div>
         </div>
       )}

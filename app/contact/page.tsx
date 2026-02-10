@@ -34,9 +34,9 @@ const Contact = () => {
   ];
 
   return (
-    <div className="mx-auto max-w-6xl px-4 my-6">
+    <div className="mx-auto max-w-6xl px-4 my-10">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h2 className="font-bold text-xl uppercase tracking-wider whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+        <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
           {t("title")}
         </h2>{" "}
         <div className="opacity-80">

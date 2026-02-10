@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
-
+import { Toaster } from "sonner";
 // type Props = {
 //   children: React.ReactNode;
 // };
@@ -30,10 +30,7 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   title: "Ni Viện Viên Không",
@@ -51,7 +48,9 @@ export default function RootLayout({
     >
       <body className={`min-h-screen flex flex-col bg-white`}>
         <Navbar /> <ScrollToTopButton />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children} <Toaster position="top-right" richColors />
+        </NextIntlClientProvider>
         <Footer />
       </body>
     </html>

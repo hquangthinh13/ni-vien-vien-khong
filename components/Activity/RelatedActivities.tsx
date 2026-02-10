@@ -15,7 +15,7 @@ interface RelatedActivitiesProps {
 
 const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
   const locale = useLocale();
-  console.log("RelatedActivities - activities prop:", activities);
+  // console.log("RelatedActivities - activities prop:", activities);
   if (!activities || activities.length === 0) return null;
   return (
     <div className="space-y-4">

@@ -5,61 +5,71 @@ async function getActivitiesData() {
   const res = await fetchActivities({
     sort: ["publishedAt:desc"],
     pagination: { limit: 5 },
-    populate: "coverImage",
+    populate: "*",
   });
-  console.log("Fetched activities data:", res);
+  // console.log("Fetched activities data:", res);
   return res;
 }
 import SimplifiedNewsCard from "@/components/Activity/SimplifiedActivitiesCard";
 
 export default async function ActivitiesSection() {
-  const posts = await getActivitiesData();
+  try {
+    const posts = await getActivitiesData();
 
-  const data = Array.isArray(posts.data)
-    ? posts.data
-    : posts.data
-      ? [posts.data]
-      : [];
-  const rowOne = data.slice(0, 2);
-  const rowTwo = data.slice(2, 5);
+    // Ensure we have an array to work with
+    const data = Array.isArray(posts?.data)
+      ? posts.data
+      : posts?.data
+        ? [posts.data]
+        : [];
 
-  return (
-    <div className="mx-auto mt-4">
-      {/* Row 1: 12-Column Grid for 70/30 split */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 border-b pb-4">
-        {rowOne.map(
-          (post, index) =>
-            post && (
-              <div
-                key={post.id}
-                className={
-                  index === 0 ? "col-span-8 lg:border-r pr-4" : "col-span-4"
-                }
-              >
+    if (data.length === 0) {
+      return <div className="p-4 text-gray-500">No activities found.</div>;
+    }
+
+    const rowOne = data.slice(0, 2);
+    const rowTwo = data.slice(2, 5);
+    return (
+      <div className="mx-auto mt-4">
+        {/* Row 1: 12-Column Grid for 70/30 split */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 border-b pb-4">
+          {rowOne.map(
+            (post, index) =>
+              post && (
+                <div
+                  key={post.id}
+                  className={
+                    index === 0 ? "col-span-8 lg:border-r pr-4" : "col-span-4"
+                  }
+                >
+                  <SimplifiedNewsCard
+                    key={post.id}
+                    activity={post}
+                    variant="top"
+                    isFirst={index === 0}
+                  />
+                </div>
+              ),
+          )}
+        </div>
+
+        {/* Row 2: 3-Column Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">
+          {rowTwo.map(
+            (post) =>
+              post && (
                 <SimplifiedNewsCard
                   key={post.id}
                   activity={post}
-                  variant="top"
-                  isFirst={index === 0}
+                  variant="bottom"
                 />
-              </div>
-            ),
-        )}
+              ),
+          )}
+        </div>
       </div>
-
-      {/* Row 2: 3-Column Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">
-        {rowTwo.map(
-          (post) =>
-            post && (
-              <SimplifiedNewsCard
-                key={post.id}
-                activity={post}
-                variant="bottom"
-              />
-            ),
-        )}
-      </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    return <div className="p-4 text-red-500">Failed to load activities.</div>;
+  }
 }

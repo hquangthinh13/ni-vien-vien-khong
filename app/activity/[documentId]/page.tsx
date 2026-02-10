@@ -46,6 +46,8 @@ export default async function ActivityPage({
   const data = response.data as Activity;
 
   const imageUrl = getImageUrl(data.coverImage);
+
+  // console.log("imageUrl", imageUrl);
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
