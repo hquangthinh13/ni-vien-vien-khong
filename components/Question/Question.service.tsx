@@ -30,17 +30,18 @@ export async function createQuestion(
       ...(formData.phoneNumber && { phoneNumber: formData.phoneNumber }),
     },
   };
-  console.log("Creating question with data:", requestBody);
-
+  console.log("Request Body:", requestBody);
   const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       // Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
+
+      ///
     },
     body: JSON.stringify(requestBody),
   });
-
+  console.log("Response Status:", res.status);
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
     throw new Error(

@@ -7,7 +7,7 @@ import {
 import type { Poem } from "@/components/Poem/Poem.type";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
-const documentId = process.argv[3];
+const documentId = "k0f64y9tdxubxmcicqmp30nw"; // Replace with a valid documentId for testing
 
 const main = async () => {
   try {

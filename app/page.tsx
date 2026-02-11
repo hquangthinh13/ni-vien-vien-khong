@@ -1,47 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import coverImage from "../public/homepage-cover.jpg";
-import ornament from "../public/ornament-01.svg";
-import lineOrnament from "../public/ornament-00.svg";
 import { useTranslations } from "next-intl";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import SimplifiedNewsCard from "@/components/Activity/SimplifiedNewsCard";
-import NewsSection from "@/components/Activity/NewsSection";
+import NewsSection from "@/components/Activity/ActivitiesSection";
 import QuestionSection from "@/components/Question/QuestionSection";
 import CalendarSection from "@/components/Activity/CalendarSection";
-export default function Home() {
-  const t = useTranslations("HomePage");
-
+import QuestionForm from "@/components/Question/QuestionForm";
+import type { Locale } from "@/types/locale";
+import { getTranslations, getLocale } from "next-intl/server";
+export default async function Home() {
+  const t = await getTranslations("HomePage");
+  const locale = (await getLocale()) as Locale;
   return (
     <div className="mx-auto max-w-6xl px-4 mb-6">
       <Image
@@ -51,30 +23,22 @@ export default function Home() {
         placeholder="blur"
       />
 
-      <div className="flex flex-col md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
+      <div className="flex flex-col-reverse md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
         {/* Left */}
         <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
           {/* Section */}
           <div className="flex flex-col">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-center">
               <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Tin tức
               </h2>{" "}
               <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="cursor-pointer"
+                <Link
+                  href="/activity"
+                  className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                 >
-                  <ChevronLeftIcon />
-                </Button>{" "}
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="cursor-pointer"
-                >
-                  <ChevronRightIcon />
-                </Button>
+                  Xem thêm
+                </Link>
               </div>
             </div>
             <NewsSection />
@@ -171,80 +135,13 @@ export default function Home() {
                 Đặt câu hỏi
               </h2>
             </div>
-            <Card className="flex flex-1 p-0 transition-all ease-in-out duration-200">
-              <CardContent className="p-4">
-                <FieldGroup>
-                  <Field>
-                    <FieldLabel htmlFor="fieldgroup-name">Tên</FieldLabel>
-                    <Input id="fieldgroup-name" placeholder="Nguyễn Văn A" />
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="fieldgroup-email">Email</FieldLabel>
-                    <Input
-                      id="fieldgroup-email"
-                      type="email"
-                      placeholder="nivienvienkhong@example.com"
-                    />
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="fieldgroup-name">Câu hỏi</FieldLabel>
-                    <Textarea
-                      id="textarea-message"
-                      placeholder="Nhập câu hỏi của bạn tại đây."
-                    />
-                    <FieldDescription>
-                      Chúng tôi sẽ trả lời câu hỏi của bạn trong vòng ... ngày.
-                    </FieldDescription>
-                  </Field>
-                  <Field orientation="horizontal">
-                    <div className="flex flex-1 justify-end">
-                      <Button className="cursor-pointer" type="submit">
-                        Gửi
-                      </Button>
-                    </div>
-                  </Field>
-                </FieldGroup>
-              </CardContent>
-            </Card>
+            <QuestionForm locale={locale} />
           </div>
         </div>
       </div>
       {/* Section */}
 
       <CalendarSection />
-    </div>
-  );
-}
-export function PaginationIconsOnly() {
-  return (
-    <div className="flex items-start justify-end gap-4 mt-4">
-      {/* <Field orientation="horizontal" className="w-fit">
-        <FieldLabel htmlFor="select-rows-per-page">
-          Số bài trên trang
-        </FieldLabel>
-        <Select defaultValue="25">
-          <SelectTrigger className="w-20" id="select-rows-per-page">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent align="start">
-            <SelectGroup>
-              <SelectItem value="10">3</SelectItem>
-              <SelectItem value="25">5</SelectItem>
-              <SelectItem value="50">10</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </Field> */}
-      <Pagination className="mx-0 w-auto">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </div>
   );
 }

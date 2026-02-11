@@ -6,21 +6,25 @@
       "items": [
         {
           "title": "Phật sự trong nước",
-          "href": "/activity/domestic-buddhist-activities",
+          "href": "/activity?category=domestic",
           "desc": ""
         },
         {
           "title": "Phật sự ngoài nước",
-          "href": "/activity/international-buddhist-activities",
+          "href": "/activity?category=international",
           "desc": ""
         },
 
         {
           "title": "Lớp học Phật pháp",
-          "href": "/activity/dharma-class",
+          "href": "/activity?category=dharma-class",
           "desc": ""
         },
-        { "title": "Tin tức khác", "href": "/activity/others", "desc": "" }
+        {
+          "title": "Tin tức khác",
+          "href": "/activity?category=others",
+          "desc": ""
+        }
       ]
     },
     "about": {
@@ -37,31 +41,48 @@
           "desc": ""
         },
 
-        { "title": "Thời khóa tu tập", "href": "/thoi-khoa", "desc": "" },
-        { "title": "Các tu viện khác", "href": "/cac-tu-vien", "desc": "" }
-      ]
-    },
-    "course": {
-      "trigger": "Khóa tu",
-      "items": [
-        { "title": "Khóa tu mùa hè", "href": "khoa-tu-mua-he", "desc": "" },
         {
-          "title": "Khóa tu Xuất Gia Gieo Duyên",
-          "href": "khoa-tu-xuat-gia-gieo-duyen",
+          "title": "Thời khóa tu tập",
+          "href": "/introduction/schedule",
           "desc": ""
         },
-        { "title": "Khóa thiền 2 ngày", "href": "khoa-thien", "desc": "" }
+        {
+          "title": "Các tu viện khác",
+          "href": "/introduction/others",
+          "desc": ""
+        }
       ]
     },
+
     "library": {
       "trigger": "Thư viện",
       "items": [
-        { "title": "Nghi thức nghi lễ", "href": "/nghi-thuc", "desc": "" },
-        { "title": "Hình ảnh Ni Viện", "href": "/hinh-anh", "desc": "" },
-        { "title": "Thư pháp thư họa", "href": "/thu-phap", "desc": "" },
-        { "title": "Thơ thiên", "href": "/tho-thien", "desc": "" },
-        { "title": "Vấn đáp Phật pháp", "href": "/video", "desc": "" }
-      ]
+        { "title": "Nghi thức nghi lễ", "href": "/library/ritual" },
+        { "title": "Hình ảnh Ni Viện", "href": "/library/photos" },
+        { "title": "Thư pháp thư họa", "href": "/library/caligraphy" },
+        { "title": "Thơ thiền", "href": "/library/poem" },
+        { "title": "Vấn đáp Phật pháp", "href": "/video" },
+        { "title": "Pháp thoại", "href": "/phap-thoai" }
+      ],
+      "sections": {
+        "scriptures": {
+          "title": "Tam tạng kinh điển",
+          "english": "Tiếng Anh",
+          "vietnamese": {
+            "title": "Tiếng Việt",
+            "sutta": "Tạng Kinh",
+            "vinaya": "Tạng Luật",
+            "abhidhamma": "Tạng Luận"
+          }
+        },
+        "books": {
+          "title": "Danh mục sách",
+          "author1": "Sách Sơ Tổ Hộ Tông",
+          "author2": "Sách Hòa Thượng Viên Minh",
+          "pali": "Tài liệu học Pali",
+          "others": "Danh mục sách khác"
+        }
+      }
     },
     "visit": {
       "trigger": "Thăm viếng",
@@ -70,9 +91,15 @@
         { "title": "Đường đến Ni Viện", "href": "/contact", "desc": "" }
       ]
     },
-    "contact": "Đường đến Ni Viện",
-    "menu": "Mục lục",
-    "home": "Trang chủ"
+    "course": {
+      "trigger": "Khóa tu",
+      "href": "/course"
+    },
+    "home": {
+      "trigger": "Trang chủ",
+      "href": "/"
+    },
+    "menu": "Mục lục"
   },
   "Footer": {
     "contact": "Liên hệ",

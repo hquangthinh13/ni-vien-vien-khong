@@ -46,7 +46,8 @@ export async function fetchActivityByDocumentId(
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}/${options.documentId}${query ? `?${query}` : ""}`,
   );
-
+  // console.log("Fetching Activity by documentId with URL:", url);
+  // console.log("Using options:", options);
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -70,7 +71,11 @@ export async function fetchNearestActivity(
 ): Promise<ActivityResponse> {
   // Set sort, limit, and filter for nearest future activity
   options.sort = "activityDate:asc";
-  options.pagination = { limit: 1 };
+  // options.pagination = { limit: 1 };
+  options.sort = "activityDate:asc";
+  if (!options.pagination) {
+    options.pagination = { limit: 1 };
+  }
   const query = buildQuery(options, false) as URLSearchParams;
 
   // Filter: activityDate >= today

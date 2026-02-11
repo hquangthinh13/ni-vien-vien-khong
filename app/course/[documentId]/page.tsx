@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import HighlightSection from "@/components/Course/HighlightSection";
 import {
@@ -24,162 +22,91 @@ import {
 } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import lineOrnament from "@/public/ornament-01.svg";
-import { getVideoId } from "@/lib/utils";
-// --- MOCK DATA ---
-const MOCK_KHOA_TU: Course = {
-  title: "KHÓA TU XUẤT GIA GIEO DUYÊN | LẦN 4 | DL2025 | PL.2569",
-  category: "Khóa tu xuất gia gieo duyên",
-  startDate: "28/05/2025",
-  endDate: "05/06/2025",
-  coverImage: "https://vienkhongni.com/wp-content/uploads/2025/08/ktmh-k1.jpg",
-  content: [
-    {
-      type: "paragraph",
-      children: [
-        {
-          type: "text",
-          text: "Khóa tu là cơ hội để các hành giả tạm gác lại những lo toan của đời thường, tìm về sự thanh tịnh trong tâm hồn. Dưới sự hướng dẫn của chư Ni tại Ni Viện Viên Không, các khóa sinh sẽ được thực hành thiền, nghe pháp và sống trong tinh thần lục hòa.",
-        },
-      ],
-    },
-    {
-      type: "image",
-      image: {
-        url: "https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=2070",
-        alternativeText: "Hành giả tọa thiền",
-        caption: "Giờ tọa thiền chung tại chánh điện Ni viện",
-      },
-    },
-    {
-      type: "paragraph",
-      children: [
-        {
-          type: "text",
-          text: "Trong suốt 7 ngày đêm, các học viên sẽ tuân thủ thời khóa nghiêm ngặt từ lúc thức dậy lúc 4 giờ sáng đến khi chỉ tịnh lúc 9 giờ tối. Đây là trải nghiệm quý báu để mỗi người tự soi rọi lại bản thân.",
-        },
-      ],
-    },
-  ] as BlocksContent,
-  highlightImages: [
-    "https://vienkhongni.com/wp-content/uploads/2025/10/LE-XUAT-GIA-GIEO-DUYEN-1.jpg",
-    "https://vienkhongni.com/wp-content/uploads/2025/08/1-2048x1365.jpg",
-    "https://vienkhongni.com/wp-content/uploads/2025/08/DSC4807-2048x1365.jpg",
-    "https://vienkhongni.com/wp-content/uploads/2025/08/Anh-Tap-the-khoa-tu-mua-he-k23-1-2048x1448.jpg",
-    "https://vienkhongni.com/wp-content/uploads/2025/08/ktmh-k1.jpg",
-  ],
-  videos: [
-    {
-      id: "v1",
-      title: "Ngày 1 | Khóa I | Khóa Tu Mùa Hè 2025 | NI VIỆN VIÊN KHÔNG",
-      videoLink: "https://www.youtube.com/watch?v=K-a8s8OLBSE",
-      day: 1,
-    },
-    {
-      id: "v2",
-      title: "Ngày 2 | Khóa I | Khóa Tu Mùa Hè 2025 | NI VIỆN VIÊN KHÔNG",
-      videoLink: "https://www.youtube.com/watch?v=K-a8s8OLBSE",
-      day: 2,
-    },
-    {
-      id: "v3",
-      title: "Ngày 3 | Khóa I | Khóa Tu Mùa Hè 2025 | NI VIỆN VIÊN KHÔNG",
-      videoLink: "https://www.youtube.com/watch?v=K-a8s8OLBSE",
-      day: 3,
-    },
-  ],
-};
-type BlockImage = {
-  url: string;
-  alternativeText?: string | null;
-  caption?: string | null;
-};
-type Video = {
-  id: string;
-  title: string;
-  videoLink: string;
-  day: number;
-};
+import { getVideoId, formatShortDate } from "@/lib/utils";
+import { Course } from "@/components/Course/Course.type";
+import { getLocale } from "next-intl/server";
+import { Locale } from "@/types/locale";
+import { fetchCourseByDocumentId } from "@/components/Course/Course.service";
+import { getImageUrl } from "@/lib/api";
 
-type Course = {
-  title: string;
-  category: string;
-  startDate: string;
-  endDate: string;
-  coverImage: string;
-  content: BlocksContent;
-  highlightImages: string[];
-  videos: Video[];
-};
-const CoursePage = () => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<Course | null>(null);
+export default async function CoursePage({
+  params,
+}: {
+  params: Promise<{ documentId: string }>;
+}) {
+  const locale = (await getLocale()) as Locale;
+  const { documentId } = await params;
+  const response = await fetchCourseByDocumentId({
+    locale,
+    documentId: documentId,
+    populate: "*",
+  });
 
-  useEffect(() => {
-    // Giả lập thời gian fetch dữ liệu
-    const timer = setTimeout(() => {
-      setData(MOCK_KHOA_TU);
-      setLoading(false);
-    }, 1200);
-    return () => clearTimeout(timer);
-  }, []);
+  if (!response || !response.data) return null;
 
-  const sortedVideos = data?.videos?.length
-    ? [...data.videos].sort((a, b) => a.day - b.day)
+  const data = response.data as Course;
+
+  const sortedVideos = data.videoSection?.length
+    ? [...data.videoSection].sort((a, b) => (a.day || 0) - (b.day || 0))
     : [];
-
-  if (loading) return <LoadingSkeleton />;
-  if (!data) return null;
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
-        <div className="lg:col-span-7 prose prose-orange max-w-none text-justify leading-relaxed">
+      <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+        <div className="lg:col-span-7 max-w-none text-justify leading-relaxed">
           <header className="flex flex-col items-start mb-6 space-y-2">
             <div className="flex items-start gap-2 text-primary font-medium text-sm uppercase tracking-widest">
               <span>{data.category}</span>
             </div>
             <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
-              {data.title}
+              {data.courseName}
             </h1>
-            <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
-              <CalendarDays size={18} className="text-primary" />
-              <span>
-                {data.startDate} — {data.endDate}
-              </span>
-            </div>
+            {data.courseStartDate && data.courseEndDate && (
+              <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
+                <CalendarDays size={18} className="text-primary" />
+                <span>
+                  {formatShortDate(data.courseStartDate, locale)} —{" "}
+                  {formatShortDate(data.courseEndDate, locale)}
+                </span>
+              </div>
+            )}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               <Image
-                src={data.coverImage}
-                alt={data.title}
+                src={getImageUrl(data.coverImage) || "/placeholder.jpg"}
+                alt={data.courseName}
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
               />
             </div>
           </header>
-
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
           </div>
-          <RichTextRenderer content={data.content} />
-
+          {data.courseContent && (
+            <RichTextRenderer content={data.courseContent || []} />
+          )}{" "}
           <section className="space-y-4">
             <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
               <PlayCircle size={20} className="text-primary" /> Video
             </h3>
             <Accordion type="single" collapsible className="w-full space-y-3">
-              {sortedVideos.map((video) => {
+              {sortedVideos.map((video, index) => {
                 const videoId = getVideoId(video.videoLink);
-
+                const displayDay = video.haveOrdinalDate
+                  ? (video.day ?? index + 1)
+                  : index + 1;
+                const formattedDay =
+                  displayDay < 10 ? `0${displayDay}` : displayDay;
                 return (
                   <AccordionItem
                     key={video.id}
-                    value={video.id}
+                    value={video.title || `video-${video.id}`}
                     className="border rounded-xl px-2 bg-card overflow-hidden shadow-sm transition-all duration-300"
                   >
                     <AccordionTrigger className="hover:no-underline py-5 group border-none items-center">
                       <div className="flex items-center gap-4 w-full">
                         <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                          {video.day < 10 ? `0${video.day}` : video.day}
+                          {formattedDay}
                         </div>
 
                         <div className="flex flex-col items-start gap-0.5">
@@ -223,7 +150,7 @@ const CoursePage = () => {
         </div>
 
         <aside className="lg:col-span-3 space-y-6">
-          <HighlightSection images={data.highlightImages} />
+          <HighlightSection images={data.highlightedImages || []} />
           {/* <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10 space-y-4">
             <h4 className="font-bold text-primary uppercase text-xs tracking-widest">
               Đăng ký khóa tu
@@ -248,7 +175,7 @@ const CoursePage = () => {
       </div>
     </div>
   );
-};
+}
 
 const LoadingSkeleton = () => {
   return (
@@ -306,5 +233,3 @@ const LoadingSkeleton = () => {
     </div>
   );
 };
-
-export default CoursePage;
