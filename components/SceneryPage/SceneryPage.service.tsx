@@ -10,7 +10,7 @@ const AUTHORIZED_TOKEN =
 
 // ============ 1. Fetch Scenery Page - Tinh Canh Vien Khong (with optional population) ============
 
-export async function fetchHistoryPage(
+export async function fetchSceneryPage(
   options: SimpleFetchOptions = {},
 ): Promise<SceneryPageResponse> {
   const query = buildQuery(options);
