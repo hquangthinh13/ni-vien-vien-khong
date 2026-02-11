@@ -9,7 +9,7 @@ const AUTHORIZED_TOKEN =
 
 // ============ 1. Fetch Monastery Page - Tu Vien Khac (with optional population) ============
 
-export async function fetchIntroductionPage(
+export async function fetchMonasteryPage(
   options: SimpleFetchOptions = {},
 ): Promise<MonasteryPageResponse> {
   const query = buildQuery(options);
