@@ -4,8 +4,8 @@ import {
   fetchLinkedDocuments,
   fetchLinkedDocumentByDocumentId,
   fetchLinkedDocumentsByCategory,
-} from "@/components/LinkedDocument/LinkedDocument.service";
-import type { LinkedDocument } from "@/components/LinkedDocument/LinkedDocument.type";
+} from "@/features/linkedDocument/api/linkedDocument.api";
+import type { LinkedDocument } from "@/features/linkedDocument/model/linkedDocument.types";
 import {
   isValidLinkedDocumentCategory,
   type LinkedDocumentCategory,

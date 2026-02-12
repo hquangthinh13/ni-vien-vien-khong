@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { isValidLocale } from "@/types/locale";
-import { fetchHistoryPage } from "@/components/HistoryPage/HistoryPage.service";
-import type { HistoryPageAttributes } from "@/components/HistoryPage/HistoryPage.type";
+import { fetchHistoryPage } from "@/features/historyPage/api/historyPage.api";
+import type { HistoryPageAttributes } from "@/features/historyPage/model/historyPage.types";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 

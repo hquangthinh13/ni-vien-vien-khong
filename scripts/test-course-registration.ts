@@ -5,10 +5,10 @@ import {
   isCourseActive,
   getActiveCourseID,
   fetchCourses,
-} from "@/components/Course/Course.service";
-import { createCourseRegistration } from "@/components/CourseRegistration/CourseRegistration.service";
-import type { CourseRegistrationFormData } from "@/components/CourseRegistration/CourseRegistration.type";
-import type { Course } from "@/components/Course/Course.type";
+} from "@/features/course/api/course.api";
+import { createCourseRegistration } from "@/features/courseRegistration/api/courseRegistration.api";
+import type { CourseRegistrationFormData } from "@/features/courseRegistration/model/courseRegistration.types";
+import type { Course } from "@/features/course/model/course.types";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 

@@ -7,11 +7,11 @@ import {
   hasBlogResponse,
   filterQuestionsWithVideoResponse,
   filterQuestionsWithBlogResponse,
-} from "@/components/Question/Question.service";
+} from "@/features/question/api/question.api";
 import type {
   QuestionFormData,
   Question,
-} from "@/components/Question/Question.type";
+} from "@/features/question/model/question.types";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 

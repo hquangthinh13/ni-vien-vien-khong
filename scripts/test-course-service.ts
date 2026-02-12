@@ -9,8 +9,8 @@ import {
   getCourseStatus,
   isCourseActive,
   filterCoursesByStatus,
-} from "@/components/Course/Course.service";
-import type { Course } from "@/components/Course/Course.type";
+} from "@/features/course/api/course.api";
+import type { Course } from "@/features/course/model/course.types";
 import { isValidCourseCategory, type CourseCategory } from "@/types/categories";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
