@@ -3,7 +3,7 @@ import { isValidLocale } from "@/types/locale";
 import {
   fetchContactPage,
   fetchContactPageFields,
-} from "@/components/Contact/ContactPage.sevice";
+} from "@/features/contact/api/contactPage.api";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 

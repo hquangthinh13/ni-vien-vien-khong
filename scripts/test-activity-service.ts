@@ -7,8 +7,8 @@ import {
   fetchNearestActivity,
   fetchActivitiesByMonth,
   fetchActivitiesByCategory,
-} from "@/components/Activity/Activity.service";
-import type { Activity } from "@/components/Activity/Activity.type";
+} from "@/features/activity/api/activity.api";
+import type { Activity } from "@/features/activity/model/activity.types";
 import {
   isValidActivityCategory,
   type ActivityCategory,
