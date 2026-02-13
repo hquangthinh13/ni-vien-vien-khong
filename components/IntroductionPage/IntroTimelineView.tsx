@@ -110,7 +110,7 @@ const IntroTimelineView = ({ data }: { data: IntroductionPageAttributes }) => {
           </div>
         </div>
       )}{" "}
-      {content && (
+      {/* {content && (
         <div className="flex justify-between gap-6 mt-6">
           {" "}
           <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-xl shadow-md">
@@ -125,7 +125,7 @@ const IntroTimelineView = ({ data }: { data: IntroductionPageAttributes }) => {
             <RichTextRenderer content={content as unknown as BlocksContent} />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

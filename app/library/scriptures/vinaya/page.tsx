@@ -1,6 +1,9 @@
 import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import LinkedDocumentCard from "@/components/LinkedDocument/LinkedDocumentCard";
 import type { Locale } from "@/types/locale";
 import { fetchLinkedDocumentsByCategory } from "@/components/LinkedDocument/LinkedDocument.service";
@@ -12,7 +15,7 @@ export default async function SuttaListPage({
   const locale = (await getLocale()) as Locale;
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
-  const pageSize = 9;
+  const pageSize = 8;
 
   const response = await fetchLinkedDocumentsByCategory({
     category: "Tạng Luật",
@@ -38,32 +41,37 @@ export default async function SuttaListPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {docs.map((doc) => (
           <LinkedDocumentCard key={doc.documentId} doc={doc} />
         ))}
       </div>
-
       {meta && meta.pageCount > 1 && (
-        <div className="flex justify-center gap-4 mt-12">
-          {currentPage > 1 && (
-            <a
-              href={`?page=${currentPage - 1}`}
-              className="px-4 py-2 border rounded hover:bg-accent"
-            >
-              Trước
-            </a>
+        <div className="flex justify-center gap-4 mt-6">
+          {currentPage > 1 ? (
+            <Link href={`?page=${currentPage - 1}`}>
+              <Button size="icon" variant="outline" className="cursor-pointer">
+                <ChevronLeft />
+              </Button>
+            </Link>
+          ) : (
+            <Button size="icon" variant="outline" disabled>
+              <ChevronLeft />
+            </Button>
           )}
-          <span className="flex items-center">
+          <span className="flex items-center text-muted-foreground text-sm">
             Trang {meta.page} trên {meta.pageCount}
           </span>
-          {currentPage < meta.pageCount && (
-            <a
-              href={`?page=${currentPage + 1}`}
-              className="px-4 py-2 border rounded hover:bg-accent"
-            >
-              Sau
-            </a>
+          {currentPage < meta.pageCount ? (
+            <Link href={`?page=${currentPage + 1}`}>
+              <Button className="cursor-pointer" size="icon" variant="outline">
+                <ChevronRight />
+              </Button>
+            </Link>
+          ) : (
+            <Button size="icon" variant="outline" disabled>
+              <ChevronRight />
+            </Button>
           )}
         </div>
       )}

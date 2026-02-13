@@ -14,7 +14,6 @@ export default async function PastAndPresentPage() {
     populate: "*",
   });
   const data = fullResponse.data as SceneryPageAttributes | null;
-
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-12">

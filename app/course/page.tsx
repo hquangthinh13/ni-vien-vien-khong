@@ -1,30 +1,20 @@
 import React from "react";
 import Image from "next/image";
 import { Locale, useTranslations } from "next-intl";
-import { CalendarDays, ChevronRight, Clock, LayoutGrid } from "lucide-react";
+import {
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  LayoutGrid,
+} from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Field, FieldLabel } from "@/components/ui/field";
-import CourseRegistrationSection from "@/components/CourseRegistration/CourseRegistrationSection";
+
 import lineOrnament from "@/public/ornament-01.svg";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -36,14 +26,15 @@ import { getLocale } from "next-intl/server";
 export default async function CoursePage({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const locale = (await getLocale()) as Locale;
-  const resolvedSearchParams = await searchParams;
-  //  const t = useTranslations("CoursePage");
-  const currentPage = Number(resolvedSearchParams.page) || 1;
   const yearsPerPage = 3;
   const currentYear = new Date().getFullYear();
+  const { page } = await searchParams;
+
+  const currentPage = Number(page) || 1;
+  const pageSize = 20;
 
   const endYear = currentYear - (currentPage - 1) * yearsPerPage;
   const startYear = endYear - (yearsPerPage - 1);
@@ -57,10 +48,14 @@ export default async function CoursePage({
     },
     sort: ["courseStartDate:desc"],
     populate: "coverImage",
-    pagination: { pageSize: 20 },
+    pagination: {
+      page: currentPage,
+      pageSize: pageSize,
+    },
   });
 
   const courses = Array.isArray(response.data) ? response.data : [];
+  const meta = response.meta?.pagination;
 
   const groupedByYear = courses.reduce(
     (acc, course) => {
@@ -174,16 +169,43 @@ export default async function CoursePage({
                 </div>
               </AccordionItem>
             ))}{" "}
-            <Pagination className="mt-4 mx-0 w-auto">
-              <PaginationContent className="gap-2">
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            {meta && meta.pageCount > 1 && (
+              <div className="flex justify-center gap-4 mt-6">
+                {currentPage > 1 ? (
+                  <Link href={`?page=${currentPage - 1}`}>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="cursor-pointer"
+                    >
+                      <ChevronLeft />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button size="icon" variant="outline" disabled>
+                    <ChevronLeft />
+                  </Button>
+                )}
+                <span className="flex items-center text-muted-foreground text-sm">
+                  Trang {meta.page} trên {meta.pageCount}
+                </span>
+                {currentPage < meta.pageCount ? (
+                  <Link href={`?page=${currentPage + 1}`}>
+                    <Button
+                      className="cursor-pointer"
+                      size="icon"
+                      variant="outline"
+                    >
+                      <ChevronRight />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button size="icon" variant="outline" disabled>
+                    <ChevronRight />
+                  </Button>
+                )}
+              </div>
+            )}
           </Accordion>
         </div>
         {/* <div className="lg:col-span-3 flex flex-col gap-4">

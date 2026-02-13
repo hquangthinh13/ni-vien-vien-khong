@@ -75,7 +75,7 @@ export default async function Home() {
             <QuestionSection />{" "}
             <div className="flex w-full justify-end">
               <Link
-                href="/activity"
+                href="/library/question"
                 className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
               >
                 Xem thêm
