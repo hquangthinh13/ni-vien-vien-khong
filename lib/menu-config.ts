@@ -45,7 +45,7 @@ export default function useMenuConfig(): MenuItem[] {
         // Mục: Tam tạng kinh điển (Submenu level 2)
         {
           title: t("library.sections.scriptures.title"),
-          href: "/library/scriptures",
+          // href: "/library/scriptures",
           items: [
             // Nhánh Tiếng Việt (Submenu level 3)
             {
@@ -55,22 +55,22 @@ export default function useMenuConfig(): MenuItem[] {
               items: [
                 {
                   title: t("library.sections.scriptures.vietnamese.sutta"),
-                  href: "/library/scriptures/vn/sutta",
+                  href: "/library/scriptures/sutta",
                 },
                 {
                   title: t("library.sections.scriptures.vietnamese.vinaya"),
-                  href: "/library/scriptures/vn/vinaya",
+                  href: "/library/scriptures/vinaya",
                 },
                 {
                   title: t("library.sections.scriptures.vietnamese.abhidhamma"),
-                  href: "/library/scriptures/vn/abhidhamma",
+                  href: "/library/scriptures/abhidhamma",
                 },
               ],
             },
             // Nhánh Tiếng Anh
             {
               title: t("library.sections.scriptures.english"),
-              href: "/library/scriptures/en",
+              href: "https://sutamphap.com/category/english-articles/articles/",
             },
           ],
         },
@@ -81,19 +81,19 @@ export default function useMenuConfig(): MenuItem[] {
           items: [
             {
               title: t("library.sections.books.author1"),
-              href: "/library/books/ho-tong",
+              href: "/library/book/first-patriarch",
             },
             {
               title: t("library.sections.books.author2"),
-              href: "/library/books/vien-minh",
+              href: "/library/book/vien-minh",
             },
             {
               title: t("library.sections.books.pali"),
-              href: "/library/books/pali-docs",
+              href: "/library/book/pali-docs",
             },
             {
               title: t("library.sections.books.others"),
-              href: "/library/books/others",
+              href: "/library/book/others",
             },
           ],
         },

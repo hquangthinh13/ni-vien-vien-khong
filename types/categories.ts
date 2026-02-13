@@ -12,6 +12,7 @@ export type CourseCategory =
 export type LinkedDocumentCategory =
   | "Tạng Kinh"
   | "Tạng Luật"
+  | "Tạng Luận"
   | "Tạng Vi Diệu Pháp"
   | "Sách Sơ Tổ Hộ Tông"
   | "Sách Sư Ông Viên Minh"

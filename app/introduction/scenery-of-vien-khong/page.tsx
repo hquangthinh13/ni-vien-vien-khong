@@ -1,17 +1,19 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ChevronLeft, Calendar, User, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import coverImage from "@/public/homepage-cover.jpg";
 import lineOrnament from "@/public/ornament-00.svg";
-import ornament from "@/public/ornament-01.svg";
+import RichTextRenderer from "@/components/shared/RichTextRenderer";
+import type { SceneryPageAttributes } from "@/components/SceneryPage/SceneryPage.type";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@/types/locale";
+import { fetchSceneryPage } from "@/components/SceneryPage/SceneryPage.service";
+export default async function PastAndPresentPage() {
+  const locale = (await getLocale()) as Locale;
 
-import image01 from "@/public/past-and-present/01.jpg";
-import image02 from "@/public/past-and-present/02.jpg";
-
-export default function SceneryPage() {
+  const fullResponse = await fetchSceneryPage({
+    locale,
+    populate: "*",
+  });
+  const data = fullResponse.data as SceneryPageAttributes | null;
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-12">
@@ -22,13 +24,14 @@ export default function SceneryPage() {
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">
-              Tịnh Cảnh Viên Không
+              {data?.title}
             </h1>
           </header>
           <div className="opacity-80 flex w-full justify-center my-8 scale-y-[-1]">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
           </div>
 
+          <RichTextRenderer content={data?.content || []} />
           <div className="opacity-80 flex w-full justify-center my-8">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
           </div>
