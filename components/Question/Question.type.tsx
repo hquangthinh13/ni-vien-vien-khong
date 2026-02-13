@@ -15,12 +15,12 @@ export type QuestionStatus = "pending" | "answered" | "rejected";
 
 export interface VideoResponse extends StrapiEntity {
   title?: string;
-  responseContent: string;
+  videoLink: string;
 }
 
 export interface BlogResponse extends StrapiEntity {
   title?: string;
-  videoLink: string;
+  responseContent: string;
 }
 
 export interface Question extends StrapiEntity {

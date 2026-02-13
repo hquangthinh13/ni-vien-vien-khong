@@ -22,13 +22,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { CourseRegistrationFormData } from "./CourseRegistration.type";
 import { createCourseRegistration } from "./CourseRegistration.service";
 import { fetchActiveCourses } from "@/components/Course/Course.service";
 import { Course } from "@/components/Course/Course.type";
-
-const CourseRegistrationSection = () => {
+interface RegistrationProps {
+  onlyButton?: boolean;
+}
+export default function CourseRegistrationSection({
+  onlyButton = false,
+}: RegistrationProps) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<
@@ -144,12 +153,32 @@ const CourseRegistrationSection = () => {
   };
 
   return (
-    <div className="flex w-full">
-      <Card className="flex w-full p-0 shadow-sm">
+    <Dialog>
+      {!onlyButton ? (
+        <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10">
+          <h4 className="font-bold text-primary uppercase text-xs tracking-widest mb-2">
+            Đăng ký khóa tu
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic mb-4">
+            Tham gia các khóa tu sắp tới của Ni Viện Viên Không.
+          </p>
+          <DialogTrigger asChild>
+            <Button className="w-full cursor-pointer">Đăng ký ngay</Button>
+          </DialogTrigger>
+        </div>
+      ) : (
+        <DialogTrigger asChild>
+          <Button className="w-full cursor-pointer">Đăng ký ngay</Button>
+        </DialogTrigger>
+      )}
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <DialogTitle>Đăng ký khóa tu</DialogTitle>
+        <div className="flex w-full flex-col mt-4">
+          {/* <Card className="flex w-full p-0 shadow-sm">
         <CardContent className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-primary">
             Đăng ký khóa tu
-          </h3>
+          </h3> */}
           <form onSubmit={handleSubmit} noValidate>
             <FieldGroup>
               <Field>
@@ -201,54 +230,57 @@ const CourseRegistrationSection = () => {
                   </p>
                 )}
               </Field>
-
-              <Field>
-                <FieldLabel htmlFor="phoneNumber">
-                  Số điện thoại <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Input
-                  id="phoneNumber"
-                  type="tel"
-                  className={errors.phoneNumber ? "border-destructive" : ""}
-                  value={formData.phoneNumber}
-                  onChange={(e) => {
-                    setFormData({ ...formData, phoneNumber: e.target.value });
-                    setErrors({ ...errors, phoneNumber: "" });
-                  }}
-                  placeholder="0123456789"
-                />
-                {errors.phoneNumber && (
-                  <p className="text-sm font-medium text-destructive mt-1">
-                    {errors.phoneNumber}
-                  </p>
-                )}
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="email">
-                  Email <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  className={errors.email ? "border-destructive" : ""}
-                  value={formData.email}
-                  onChange={(e) => {
-                    setFormData({ ...formData, email: e.target.value });
-                    setErrors({ ...errors, email: "" });
-                  }}
-                  placeholder="example@email.com"
-                />
-                {errors.email ? (
-                  <p className="text-sm font-medium text-destructive mt-1">
-                    {errors.email}
-                  </p>
-                ) : (
-                  <FieldDescription>
-                    Thông tin xác nhận sẽ được gửi qua email này.
-                  </FieldDescription>
-                )}
-              </Field>
+              <div className="flex gap-4 justify-between">
+                <Field>
+                  <FieldLabel htmlFor="email">
+                    Email <span className="text-destructive">*</span>
+                  </FieldLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    className={errors.email ? "border-destructive" : ""}
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      setErrors({ ...errors, email: "" });
+                    }}
+                    placeholder="example@nivienvienkhong.com"
+                  />
+                  {errors.email ? (
+                    <p className="text-sm font-medium text-destructive mt-1">
+                      {errors.email}
+                    </p>
+                  ) : (
+                    <FieldDescription>
+                      Thông tin xác nhận sẽ được gửi qua email này.
+                    </FieldDescription>
+                  )}
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="phoneNumber">
+                    Số điện thoại <span className="text-destructive">*</span>
+                  </FieldLabel>
+                  <Input
+                    id="phoneNumber"
+                    type="tel"
+                    className={errors.phoneNumber ? "border-destructive" : ""}
+                    value={formData.phoneNumber}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        phoneNumber: e.target.value,
+                      });
+                      setErrors({ ...errors, phoneNumber: "" });
+                    }}
+                    placeholder="0123456789"
+                  />
+                  {errors.phoneNumber && (
+                    <p className="text-sm font-medium text-destructive mt-1">
+                      {errors.phoneNumber}
+                    </p>
+                  )}
+                </Field>
+              </div>
 
               <Field>
                 <FieldLabel htmlFor="address">Địa chỉ</FieldLabel>
@@ -273,10 +305,10 @@ const CourseRegistrationSection = () => {
               </div>
             </FieldGroup>
           </form>
-        </CardContent>
-      </Card>
-    </div>
+          {/* </CardContent>
+      </Card> */}
+        </div>{" "}
+      </DialogContent>
+    </Dialog>
   );
-};
-
-export default CourseRegistrationSection;
+}

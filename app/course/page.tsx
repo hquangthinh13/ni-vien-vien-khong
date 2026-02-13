@@ -91,7 +91,7 @@ export default async function CoursePage({
 
       {/* Sec */}
       <div className="grid grid-cols-1 lg:grid-cols-10 justify-end mb-6 gap-6">
-        <div className="lg:col-span-7 flex flex-col gap-4">
+        <div className="lg:col-span-10 flex flex-col gap-4">
           <Accordion
             type="single"
             collapsible
@@ -186,9 +186,9 @@ export default async function CoursePage({
             </Pagination>
           </Accordion>
         </div>
-        <div className="lg:col-span-3 flex flex-col gap-4">
+        {/* <div className="lg:col-span-3 flex flex-col gap-4">
           <CourseRegistrationSection />
-        </div>
+        </div> */}
       </div>
     </div>
   );

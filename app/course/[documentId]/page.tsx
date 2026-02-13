@@ -14,6 +14,7 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import RichTextRenderer from "@/components/shared/RichTextRenderer";
+
 import {
   Accordion,
   AccordionContent,
@@ -28,7 +29,8 @@ import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
 import { fetchCourseByDocumentId } from "@/components/Course/Course.service";
 import { getImageUrl } from "@/lib/api";
-
+import CourseRegistrationSection from "@/components/CourseRegistration/CourseRegistrationSection";
+import { Button } from "@/components/ui/button";
 export default async function CoursePage({
   params,
 }: {
@@ -151,26 +153,7 @@ export default async function CoursePage({
 
         <aside className="lg:col-span-3 space-y-6">
           <HighlightSection images={data.highlightedImages || []} />
-          {/* <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10 space-y-4">
-            <h4 className="font-bold text-primary uppercase text-xs tracking-widest">
-              Đăng ký khóa tu
-            </h4>
-            <p className="text-xs text-muted-foreground leading-relaxed italic">
-              Đăng ký khóa tu Đăng ký khóa tu Đăng ký khóa tu
-            </p>
-            <ChevronRight className="text-primary ml-auto" />
-          </div> */}{" "}
-          <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10">
-            <h4 className="font-bold text-primary uppercase text-xs tracking-widest mb-2">
-              Đăng ký tham gia
-            </h4>
-            <p className="text-xs text-muted-foreground leading-relaxed italic mb-4">
-              Theo dõi các hoạt động Phật sự mới nhất của Ni Viện.
-            </p>
-            <button className="w-full bg-primary text-white py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-colors">
-              Liên hệ ngay
-            </button>
-          </div>
+          <CourseRegistrationSection />
         </aside>
       </div>
     </div>
