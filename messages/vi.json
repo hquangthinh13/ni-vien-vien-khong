@@ -59,9 +59,9 @@
       "items": [
         { "title": "Nghi thức nghi lễ", "href": "/library/ritual" },
         { "title": "Hình ảnh Ni Viện", "href": "/library/photos" },
-        { "title": "Thư pháp thư họa", "href": "/library/caligraphy" },
+        { "title": "Thư pháp thư họa", "href": "/library/calligraphy" },
         { "title": "Thơ thiền", "href": "/library/poem" },
-        { "title": "Vấn đáp Phật pháp", "href": "/video" },
+        { "title": "Vấn đáp Phật pháp", "href": "/library/question" },
         { "title": "Pháp thoại", "href": "/phap-thoai" }
       ],
       "sections": {
