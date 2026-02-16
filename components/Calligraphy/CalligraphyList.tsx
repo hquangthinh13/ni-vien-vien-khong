@@ -126,7 +126,7 @@ export default function CalligraphyList({
         </Tabs>
       </div>
 
-      <div className="w-full max-w-6xl">
+      <div className="w-full max-w-10xl">
         {" "}
         {items && items.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -134,7 +134,7 @@ export default function CalligraphyList({
               <motion.div
                 layoutId={item.documentId}
                 key={item.documentId}
-                className="relative aspect-[3/4] min-w-64 overflow-hidden rounded-xl border group cursor-pointer bg-muted shadow-sm hover:shadow-md transition-shadow"
+                className="relative aspect-3/4 min-w-64 overflow-hidden rounded-xl border group cursor-pointer bg-muted shadow-sm hover:shadow-md transition-shadow"
                 onClick={() => setSelectedItem(item)}
               >
                 <Image
@@ -205,7 +205,7 @@ export default function CalligraphyList({
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-card border shadow-2xl rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
+              className="bg-card border shadow-2xl rounded-2xl w-full max-w-10xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex-1 aspect-square relative bg-black/5 flex items-center justify-center min-h-[300px] md:min-h-0 overflow-hidden">

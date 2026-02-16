@@ -1,6 +1,5 @@
-// components/shared/DesktopNavigationMenu.tsx
-
 "use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,13 +14,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { MenuItem } from "@/lib/menu-config";
-
+import { ChevronDown } from "lucide-react";
 const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   if (item.items && item.items.length > 0) {
     return (
       <DropdownMenuSub>
-        <DropdownMenuSubTrigger className="cursor-pointer">
-          <Link href={item.href || "#"} className="w-full cursor-pointer">
+        <DropdownMenuSubTrigger className="text-md cursor-pointer">
+          <Link href={item.href || "#"} className="w-full ">
             {item.title}
           </Link>
         </DropdownMenuSubTrigger>
@@ -37,7 +36,7 @@ const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   }
 
   return (
-    <DropdownMenuItem asChild>
+    <DropdownMenuItem asChild className="text-md">
       <Link href={item.href || "#"} className="w-full cursor-pointer">
         {item.title}
       </Link>
@@ -46,18 +45,22 @@ const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
 };
 
 const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <DropdownMenu open={open} onOpenChange={setOpen}>
+    <div>
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="font-bold cursor-pointer">
+          <Button
+            variant="ghost"
+            className="text-md font-bold cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-none focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none"
+          >
             {menu.href ? (
-              <Link href={menu.href}>{menu.title}</Link>
+              <Link className="" href={menu.href}>
+                {menu.title}
+              </Link>
             ) : (
               menu.title
-            )}
+            )}{" "}
+            <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="min-w-[200px]">
@@ -80,7 +83,12 @@ export default function DesktopNavigationMenu({
       {menuData.map((menu, idx) => {
         if (!menu.items) {
           return (
-            <Button key={idx} variant="ghost" asChild className="font-bold">
+            <Button
+              key={idx}
+              variant="ghost"
+              asChild
+              className="text-md font-bold"
+            >
               <Link href={menu.href || "#"}>{menu.title}</Link>
             </Button>
           );

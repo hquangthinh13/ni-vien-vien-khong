@@ -43,9 +43,9 @@ const main = async () => {
     // console.log("Activities (first page):");
     // console.dir(allActivities, { depth: null });
 
-    console.log("\nNearest activity:");
+    // console.log("\nNearest activity:");
     // console.dir(nearestActivity, { depth: null });
-    console.log("Cover image URL:", coverImageUrl);
+    // console.log("Cover image URL:", coverImageUrl);
 
     // const now = new Date();
     // console.log(`\\nCurrent date: ${now.toISOString()}`);

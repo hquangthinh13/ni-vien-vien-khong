@@ -49,7 +49,7 @@ export default async function ActivityPage({
 
   // console.log("imageUrl", imageUrl);
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-10xl px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
         {/* MAIN CONTENT */}
         <div className="lg:col-span-7 prose prose-orange max-w-none text-justify leading-relaxed">
