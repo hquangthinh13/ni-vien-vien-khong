@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import logo from "@/public/logo.svg";
+import logo from "@/public/logo_slogan.svg";
 import Image from "next/image";
-
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 
@@ -25,13 +25,22 @@ export default function Navbar() {
   const menuConfig = useMenuConfig();
 
   return (
-    <div className="sticky top-0 z-50 border-b bg-white">
-      <div className="mx-auto max-w-6xl p-4 flex items-center justify-between">
-        <Image src={logo} alt="Logo" className="h-10 w-auto" />
-
-        <DesktopNavigationMenu menuData={menuConfig} />
-
-        <div className="flex items-center gap-2">
+    <div className="sticky top-0 z-50 border-b bg-card">
+      <div className="mx-auto max-w-10xl p-4 grid grid-cols-3 items-center">
+        {" "}
+        <Link className="flex  mr-auto" href="/">
+          <Image
+            src={logo}
+            alt="Logo"
+            className="h-16 w-auto"
+            loading="eager"
+          />
+        </Link>
+        <div className="flex justify-center z-60">
+          <DesktopNavigationMenu menuData={menuConfig} />
+        </div>
+        <div className="flex items-center gap-2 justify-end">
+          {" "}
           <LanguageSwitcher />
           <Sheet>
             <SheetTrigger asChild>

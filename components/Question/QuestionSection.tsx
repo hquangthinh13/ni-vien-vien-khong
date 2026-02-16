@@ -17,7 +17,7 @@ export default async function QuestionSection() {
       pagination: { page: 1, pageSize: 4 },
       populate: "*",
     });
-    console.log(response);
+    // console.log(response);
     if (Array.isArray(response.data)) {
       questions = response.data;
     } else if (response.data) {
@@ -41,7 +41,7 @@ export default async function QuestionSection() {
   }
 
   return (
-    <div className="grid grid-cols-2 w-full gap-4">
+    <div className="grid grid-cols-2 w-full gap-4 my-4">
       {questions.map((item) => (
         <QuestionCard key={item.id} question={item} />
       ))}

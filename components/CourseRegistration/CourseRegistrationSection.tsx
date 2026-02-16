@@ -171,14 +171,12 @@ export default function CourseRegistrationSection({
           <Button className="w-full cursor-pointer">Đăng ký ngay</Button>
         </DialogTrigger>
       )}
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        aria-describedby="Course registration form"
+        className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto"
+      >
         <DialogTitle>Đăng ký khóa tu</DialogTitle>
         <div className="flex w-full flex-col mt-4">
-          {/* <Card className="flex w-full p-0 shadow-sm">
-        <CardContent className="p-4">
-          <h3 className="text-lg font-semibold mb-4 text-primary">
-            Đăng ký khóa tu
-          </h3> */}
           <form onSubmit={handleSubmit} noValidate>
             <FieldGroup>
               <Field>
@@ -305,8 +303,6 @@ export default function CourseRegistrationSection({
               </div>
             </FieldGroup>
           </form>
-          {/* </CardContent>
-      </Card> */}
         </div>{" "}
       </DialogContent>
     </Dialog>

@@ -6,7 +6,7 @@ async function getCourses() {
     pagination: { limit: 5 },
     populate: "*",
   });
-  console.log("Fetched data:", res);
+  // console.log("Fetched data:", res);
   return res;
 }
 import CourseSidebarCard from "@/components/Course/CourseSidebarCard";

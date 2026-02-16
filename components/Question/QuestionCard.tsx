@@ -34,11 +34,10 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
   const embedUrl = getEmbedUrl(question.videoResponseContent?.videoLink);
 
   return (
-    <div className="w-full my-4 overflow-hidden bg-white border border-border rounded-xl shadow-sm transition-all hover:shadow-md">
+    <div className="w-full overflow-hidden bg-white border border-border rounded-xl shadow-sm transition-all hover:shadow-md">
       <Dialog>
-        {/* Trigger: Phần hiển thị câu hỏi ngoài danh sách */}
         <DialogTrigger asChild>
-          <div className="w-full text-left outline-none group border-l-6 border-primary/50 cursor-pointer flex flex-col p-4 gap-0 bg-orange-50/30 group-hover:bg-orange-100/40 transition-colors">
+          <div className="w-full text-left outline-none group border-l-6 border-primary cursor-pointer flex flex-col p-4 gap-0 bg-orange-50/30 group-hover:bg-orange-100/40 transition-colors">
             <p className="text-lg font-bold text-foreground leading-tight">
               {question.title}
             </p>{" "}
@@ -48,15 +47,6 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
                 ? formatFriendlyDate(question.createdAt, locale, true)
                 : ""}
             </span>
-            {/* <p className="mt-4 text-md italic text-foreground/80 line-clamp-2">
-              {`"${question.questionContent}"`}
-            </p>
-            <div className="flex justify-end">
-              <span className="text-sm text-secondary-foreground">
-                Gửi bởi{" "}
-                <span className="font-semibold">{question.fullName}</span>
-              </span>
-            </div> */}{" "}
             <div className="pt-2 border-orange-100">
               <p className="italic text-foreground/90 bg-muted/30 p-3 rounded-lg border-primary/20">
                 {question.questionContent}
@@ -71,8 +61,10 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
           </div>
         </DialogTrigger>
 
-        {/* Content: Phần hiển thị phản hồi chi tiết */}
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent
+          aria-describedby="Answered question content"
+          className="max-w-2xl max-h-[90vh] overflow-y-auto"
+        >
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-foreground pr-6">
               {question.title}

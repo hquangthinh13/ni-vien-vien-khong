@@ -52,7 +52,7 @@ export default async function CoursePage({
     ? [...data.videoSection].sort((a, b) => (a.day || 0) - (b.day || 0))
     : [];
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-10xl px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
         <div className="lg:col-span-7 max-w-none text-justify leading-relaxed">
           <header className="flex flex-col items-start mb-6 space-y-2">
@@ -166,7 +166,7 @@ export default async function CoursePage({
 
 const LoadingSkeleton = () => {
   return (
-    <div className="flex w-full px-4 py-10 mx-auto max-w-6xl">
+    <div className="flex w-full px-4 py-10 mx-auto max-w-10xl">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-12">
         {/* LEFT COLUMN — 7/10 */}
         <div className="lg:col-span-7 flex flex-col gap-8">

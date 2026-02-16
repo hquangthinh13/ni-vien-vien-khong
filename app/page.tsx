@@ -1,9 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import coverImage from "../public/homepage-cover.jpg";
-import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,16 +15,29 @@ import type { Locale } from "@/types/locale";
 import { getTranslations, getLocale } from "next-intl/server";
 import CourseSection from "@/components/Course/CourseSection";
 import CourseRegistrationSection from "@/components/CourseRegistration/CourseRegistrationSection";
+import { fetchHomePage } from "@/components/HomePage/HomePage.service";
+import { HomePageAttributes } from "@/components/HomePage/HomePage.type";
+import { getImageUrl } from "@/lib/api";
 export default async function Home() {
   const t = await getTranslations("HomePage");
   const locale = (await getLocale()) as Locale;
+
+  const response = await fetchHomePage({
+    populate: "*",
+    locale,
+  });
+  const data = response.data as HomePageAttributes | null;
+  const coverImage = getImageUrl(data?.coverImage);
   return (
-    <div className="mx-auto max-w-6xl px-4 mb-6">
+    <div className="mx-auto max-w-10xl px-4 mb-6">
       <Image
         className="rounded-lg shadow-lg my-6"
-        src={coverImage}
+        src={coverImage || "placeholder.jpg"}
         alt="Cover image"
         placeholder="blur"
+        width={1920}
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        height={1080}
       />
 
       <div className="flex flex-col-reverse md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
@@ -37,7 +46,7 @@ export default async function Home() {
           {/* Section */}
           <div className="flex flex-col">
             <div className="flex justify-between items-center">
-              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Tin tức
               </h2>{" "}
               <div className="flex gap-2">
@@ -54,9 +63,9 @@ export default async function Home() {
           {/* Section */}
           <div className="flex flex-1 flex-col pt-4 border-t">
             <div className="flex justify-between items-center">
-              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Vấn đáp Phật pháp
-              </h2>{" "}
+              </h2>
               <Dialog>
                 <DialogTrigger asChild>
                   <div className="flex w-full justify-end">
@@ -65,14 +74,16 @@ export default async function Home() {
                     </Button>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-h-[90vh] overflow-y-auto">
-                  {" "}
+                <DialogContent
+                  aria-describedby="Question form"
+                  className="max-h-[90vh] overflow-y-auto"
+                >
                   <DialogTitle>Đặt câu hỏi</DialogTitle>
                   <QuestionForm locale={locale} />
                 </DialogContent>
               </Dialog>
             </div>
-            <QuestionSection />{" "}
+            <QuestionSection />
             <div className="flex w-full justify-end">
               <Link
                 href="/library/question"
@@ -88,22 +99,19 @@ export default async function Home() {
           {/* Section */}
           <div className="flex flex-col">
             <div className="flex w-fit">
-              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 {t("foreword")}
               </h2>
             </div>
 
             <p className="flex mt-4 max-w-lg leading-snug text-justify italic text-muted-foreground">
-              Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến
-              toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín
-              ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên
-              Không và Ni Sư Liễu Pháp.
+              {data?.openingMessage}
             </p>
           </div>
           {/* Section */}
           <div className="flex flex-col pt-4 border-t">
             <div className="flex justify-between items-center">
-              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Khóa tu
               </h2>{" "}
               <div className="flex gap-2">
@@ -120,19 +128,8 @@ export default async function Home() {
               <CourseRegistrationSection onlyButton={true} />
             </div>
           </div>
-
-          {/* Section */}
-          {/* <div className="flex flex-col pt-4 border-t">
-            <div className="flex w-fit mb-4">
-              <h2 className="font-bold text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                Đặt câu hỏi
-              </h2>
-            </div>
-            <QuestionForm locale={locale} />
-          </div> */}
         </div>
       </div>
-      {/* Section */}
 
       <CalendarSection />
     </div>

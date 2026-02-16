@@ -29,7 +29,7 @@ export default async function PoemPage({
         ? fullResponse.data[0]
         : fullResponse.data
     ) as Poem | null;
-    console.log("Fetched poem data:", data);
+    // console.log("Fetched poem data:", data);
   } catch (error) {
     console.error("Error fetching poem by documentId:", error);
   }
@@ -40,7 +40,7 @@ export default async function PoemPage({
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <div className="mx-auto max-w-10xl px-4 py-8">
       <div className="flex flex-col gap-0 justify-center">
         <article className="w-full">
           <header className="space-y-2">

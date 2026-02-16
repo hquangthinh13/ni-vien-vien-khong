@@ -109,7 +109,7 @@ export default function ActivityList({
         </Tabs>
       </div>
 
-      <div className="w-full max-w-6xl">
+      <div className="w-full max-w-10xl">
         {activities.length > 0 ? (
           <div className="flex flex-wrap gap-4 w-full">
             {activities.map((activity) => (

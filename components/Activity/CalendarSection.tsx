@@ -58,7 +58,7 @@ const CalendarSection = async () => {
     const events: MyEvent[] = [...courseEvents, ...activityEvents];
 
     return (
-      <div className="max-w-6xl lg:aspect-video aspect-square min-h-128 mx-auto relative flex w-full border justify-center lg:justify-center items-start rounded-lg p-0 overflow-hidden">
+      <div className="max-w-10xl lg:aspect-video aspect-square min-h-128 mx-auto relative flex w-full border justify-center lg:justify-center items-start rounded-lg p-0 overflow-hidden">
         <div className="absolute -left-10 top-0 -z-20 h-[54%] aspect-video shadow-lg rounded-sm overflow-hidden">
           <Image
             src={mainImage}
@@ -73,6 +73,7 @@ const CalendarSection = async () => {
           alt="Desktop Background"
           fill
           className="hidden lg:block object-cover -z-10"
+          loading="eager"
         />
         <Image
           src={calendarBackgroundMobile}
