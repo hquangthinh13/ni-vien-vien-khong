@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-
 import lineOrnament from "@/public/ornament-00.svg";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import type { SceneryPageAttributes } from "@/features/sceneryPage/model/sceneryPage.types";

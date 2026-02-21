@@ -71,6 +71,7 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
   };
 
   return (
+
     // <Card className="flex flex-1 p-0 shadow-md">
     //   <CardContent className="p-6">
     <form className="" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -182,5 +183,6 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
     </form>
     //   </CardContent>
     // </Card>
+
   );
 }

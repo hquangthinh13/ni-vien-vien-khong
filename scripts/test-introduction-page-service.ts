@@ -1,10 +1,12 @@
 import "dotenv/config";
 import { isValidLocale } from "@/types/locale";
 
+
 import { fetchIntroductionPage } from "@/features/introductionPage/api/introductionPage.api";
 import type { IntroductionPageAttributes } from "@/features/introductionPage/model/introductionPage.types";
 // import type { MonasteryPageAttributes } from "@/components/MonasteryPage/MonasteryPage.type";
 // import { fetchMonasteryPage } from "@/components/MonasteryPage/MonasteryPage.service";
+
 
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";

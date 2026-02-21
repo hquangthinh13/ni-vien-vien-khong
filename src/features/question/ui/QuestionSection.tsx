@@ -1,4 +1,5 @@
 import React from "react";
+
 import QuestionCard from "./QuestionCard";
 import { fetchAnsweredQuestions } from "../api/question.api";
 import type { Locale } from "@/types/locale";
@@ -44,6 +45,7 @@ export default async function QuestionSection() {
     <div className="grid grid-cols-2 w-full gap-4 my-4">
       {questions.map((item) => (
         <QuestionCard key={item.id} question={item} />
+
       ))}
     </div>
   );

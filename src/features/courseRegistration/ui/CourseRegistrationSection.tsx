@@ -23,22 +23,26 @@ import {
 } from "@/shared/ui/select";
 import { toast } from "sonner";
 
+
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogTrigger,
 } from "@/shared/ui/dialog";
+
 import { CourseRegistrationFormData } from "../model/courseRegistration.types";
 import { createCourseRegistration } from "../api/courseRegistration.api";
 import { fetchActiveCourses } from "@/features/course/api/course.api";
 import { Course } from "@/features/course/model/course.types";
+
 interface RegistrationProps {
   onlyButton?: boolean;
 }
 export default function CourseRegistrationSection({
   onlyButton = false,
 }: RegistrationProps) {
+
 
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(false);

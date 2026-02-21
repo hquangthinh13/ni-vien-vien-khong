@@ -17,6 +17,7 @@ import Link from "next/link";
 import { MenuItem } from "@/shared/lib/menu-config";
 import { ChevronDown } from "lucide-react";
 
+
 const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   if (item.items && item.items.length > 0) {
     return (

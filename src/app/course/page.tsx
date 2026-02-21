@@ -14,8 +14,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shared/ui/accordion";
-
-
 import lineOrnament from "@/public/ornament-01.svg";
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
