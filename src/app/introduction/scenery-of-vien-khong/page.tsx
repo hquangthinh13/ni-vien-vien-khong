@@ -3,10 +3,10 @@ import Image from "next/image";
 
 import lineOrnament from "@/public/ornament-00.svg";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
-import type { SceneryPageAttributes } from "@/features/sceneryPage/model/sceneryPage.types.ts";
+import type { SceneryPageAttributes } from "@/features/sceneryPage/model/sceneryPage.types";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
-import { fetchSceneryPage } from "@/features/sceneryPage/api/SceneryPage.api.ts";
+import { fetchSceneryPage } from "@/features/sceneryPage/api/sceneryPage.api";
 export default async function PastAndPresentPage() {
   const locale = (await getLocale()) as Locale;
 

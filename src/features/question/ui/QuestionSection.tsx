@@ -1,9 +1,9 @@
 import React from "react";
 import QuestionCard from "./QuestionCard";
-import { fetchAnsweredQuestions } from "./Question.service";
+import { fetchAnsweredQuestions } from "../api/question.api";
 import type { Locale } from "@/types/locale";
 import { getLocale } from "next-intl/server";
-import { Question } from "./Question.type";
+import { Question } from "../model/question.types";
 
 export default async function QuestionSection() {
   const locale = (await getLocale()) as Locale;
