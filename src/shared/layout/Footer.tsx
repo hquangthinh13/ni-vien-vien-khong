@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslations } from "next-intl";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Separator } from "@/shared/ui/separator";
 import {
@@ -15,22 +14,43 @@ import {
   SiMessenger,
 } from "@icons-pack/react-simple-icons";
 import EmbeddedMap from "@/features/contact/ui/EmbeddedMap";
-const SOCIAL_LINKS = [
-  {
-    icon: SiFacebook,
-    href: "https://www.facebook.com/Nivienvienkhong",
-    size: 24,
-  },
-  {
-    icon: SiYoutube,
-    href: "https://www.youtube.com/c/NiVi%E1%BB%87nVi%C3%AAnKh%C3%B4ng",
-    size: 26,
-  },
-  { icon: SiMessenger, href: "https://m.me/Nivienvienkhong", size: 24 },
-  { icon: SiZalo, href: "https://zalo.me/0974469963", size: 28 },
-];
-const Footer = () => {
-  const t = useTranslations("Footer");
+import { fetchContactPage } from "@/features/contact/api/contactPage.api";
+import { Locale } from "@/types/locale";
+import { getLocale, getTranslations } from "next-intl/server";
+
+const Footer = async () => {
+  const locale = (await getLocale()) as Locale;
+  const response = await fetchContactPage({
+    locale,
+  });
+
+  const SOCIAL_LINKS = [
+    {
+      icon: SiFacebook,
+      href:
+        response.data?.facebookLink ||
+        "https://www.facebook.com/NiVienVienKhong",
+      size: 24,
+    },
+    {
+      icon: SiYoutube,
+      href:
+        response.data?.youtubeLink ||
+        "https://www.youtube.com/c/NiVi%E1%BB%87nVi%C3%AAnKh%C3%B4ng",
+      size: 26,
+    },
+    {
+      icon: SiMessenger,
+      href: response.data?.messengerLink || "https://m.me/Nivienvienkhong",
+      size: 24,
+    },
+    {
+      icon: SiZalo,
+      href: response.data?.zaloLink || "https://zalo.me/0974469963",
+      size: 28,
+    },
+  ];
+  const t = await getTranslations("Footer");
 
   return (
     <footer className="relative w-full border-t border-border bg-card pt-8 pb-4 mt-auto">
@@ -53,7 +73,9 @@ const Footer = () => {
                       strokeWidth={1.5}
                       color="var(--muted-foreground)"
                     />
-                    <p className="text-muted-foreground ">{t("address-01")} </p>
+                    <p className="text-muted-foreground ">
+                      {response.data?.address}
+                    </p>
                   </div>
                 </HoverCardTrigger>
                 <HoverCardContent className="flex justify-center items-center w-fit h-auto aspect-video p-0 overflow-hidden border-none shadow-2xl">
@@ -67,16 +89,9 @@ const Footer = () => {
                   strokeWidth={1.5}
                   color="var(--muted-foreground)"
                 />
-                <p className="text-muted-foreground">+84 97 446 99 63</p>
-              </div>
-
-              <div className="flex space-x-2 items-center">
-                <Mail
-                  size={15}
-                  strokeWidth={1.5}
-                  color="var(--muted-foreground)"
-                />
-                <p className="text-muted-foreground">lieuphap@gmail.com</p>
+                <p className="text-muted-foreground">
+                  {response.data?.phoneNumber}
+                </p>
               </div>
 
               <div className="flex space-x-2 items-center">
@@ -86,7 +101,18 @@ const Footer = () => {
                   color="var(--muted-foreground)"
                 />
                 <p className="text-muted-foreground">
-                  nivienvienkhong2019@gmail.com
+                  {response.data?.emailPrimary}
+                </p>
+              </div>
+
+              <div className="flex space-x-2 items-center">
+                <Mail
+                  size={15}
+                  strokeWidth={1.5}
+                  color="var(--muted-foreground)"
+                />
+                <p className="text-muted-foreground">
+                  {response.data?.emailSecondary}
                 </p>
               </div>
             </div>

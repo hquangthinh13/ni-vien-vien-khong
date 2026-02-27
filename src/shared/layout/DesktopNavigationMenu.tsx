@@ -17,7 +17,6 @@ import Link from "next/link";
 import { MenuItem } from "@/shared/lib/menu-config";
 import { ChevronDown } from "lucide-react";
 
-
 const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   if (item.items && item.items.length > 0) {
     return (
@@ -82,7 +81,7 @@ export default function DesktopNavigationMenu({
   menuData: MenuItem[];
 }) {
   return (
-    <div className="hidden md:flex items-center gap-2">
+    <div className="hidden lg:flex items-center gap-2">
       {menuData.map((menu, idx) => {
         if (!menu.items) {
           return (

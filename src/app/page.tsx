@@ -41,11 +41,9 @@ export default async function Home() {
       <div className="flex flex-col-reverse md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
         {/* Left */}
         <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
-          {/* Section */}
-          <div className="flex flex-col">
+          <section className="flex flex-col pt-4 border-t md:border-0">
             <div className="flex justify-between items-center">
               <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-
                 Tin tức
               </h2>{" "}
               <div className="flex gap-2">
@@ -58,10 +56,15 @@ export default async function Home() {
               </div>
             </div>
             <NewsSection />
-          </div>
-          {/* Section */}
-          <div className="flex flex-1 flex-col pt-4 border-t">
-
+          </section>
+          <section className="flex flex-col pt-4 border-t">
+            <div className="flex justify-between items-center">
+              <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                Sự kiện sắp tới
+              </h2>{" "}
+            </div>
+          </section>
+          <section className="flex flex-1 flex-col pt-4 border-t">
             <div className="flex justify-between items-center">
               <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Vấn đáp Phật pháp
@@ -92,12 +95,11 @@ export default async function Home() {
                 Xem thêm
               </Link>
             </div>
-          </div>
+          </section>
         </div>
         {/* Right */}
         <div className="flex flex-col md:w-[30%] md:border-l p-4 gap-4">
-          {/* Section */}
-          <div className="flex flex-col">
+          <section className="flex flex-col">
             <div className="flex w-fit">
               <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 {t("foreword")}
@@ -106,10 +108,8 @@ export default async function Home() {
             <p className="flex mt-4 max-w-lg leading-snug text-justify italic text-muted-foreground">
               {data?.openingMessage}
             </p>
-          </div>
-          {/* Section */}
-          <div className="flex flex-col pt-4 border-t">
-
+          </section>
+          <section className="flex flex-col pt-4 border-t">
             <div className="flex justify-between items-center">
               <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                 Khóa tu
@@ -127,10 +127,10 @@ export default async function Home() {
             <div className="mt-4">
               <CourseRegistrationSection onlyButton={true} />
             </div>
-          </div>
+          </section>
         </div>
       </div>
-      
+
       <CalendarSection />
     </div>
   );

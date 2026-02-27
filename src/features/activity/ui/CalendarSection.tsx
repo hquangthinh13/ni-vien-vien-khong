@@ -58,7 +58,7 @@ const CalendarSection = async () => {
     const events: MyEvent[] = [...courseEvents, ...activityEvents];
 
     return (
-      <div className="max-w-10xl lg:aspect-video aspect-square min-h-128 mx-auto relative flex w-full border justify-center lg:justify-center items-start rounded-lg p-0 overflow-hidden">
+      <div className=" max-w-10xl lg:aspect-video aspect-square min-h-128 mx-auto relative flex w-full border justify-center lg:justify-center items-start rounded-lg p-0 overflow-hidden">
         <div className="absolute -left-10 top-0 -z-20 h-[54%] aspect-video shadow-lg rounded-sm overflow-hidden">
           <Image
             src={mainImage}
@@ -82,8 +82,8 @@ const CalendarSection = async () => {
           className="block lg:hidden object-cover -z-10 opacity-100"
         />
         <div
-          className="hidden lg:block absolute lg:left-[33%] -translate-x-1/2 bottom-[15%] z-10 
-                lg:scale-120 "
+          className="hidden lg:block absolute lg:left-[33%] -translate-x-1/2 bottom-[25%] z-10 
+                lg:scale-150 "
         >
           <Image
             src={calendarCharacter}
@@ -102,7 +102,7 @@ const CalendarSection = async () => {
             className="drop-shadow-xl"
           />
         </div>
-        <div className="hidden lg:scale-80 origin-right lg:block absolute -right-9 top-[90%] -translate-y-1/2 z-20 pointer-events-none">
+        {/* <div className="hidden lg:scale-110 origin-right lg:block absolute -right-9 top-[90%] -translate-y-1/2 z-20 pointer-events-none">
           <Image
             src={calendarDecoration02}
             alt="Character"
@@ -110,9 +110,9 @@ const CalendarSection = async () => {
             height={260}
             className="drop-shadow-xl scale-x-[-1]"
           />
-        </div>
-        <div className="absolute inset-0 flex px-4 lg:py-24 h-full items-center lg:items-start justify-center lg:justify-end md:pr-16">
-          <div className="mt-[5vh] lg:mt-[3vh]">
+        </div> */}
+        <div className="absolute inset-0 flex px-4 lg:py-24 h-full items-center lg:items-start justify-center lg:justify-end md:pr-8">
+          <div className="flex mt-[5vh] lg:mt-[2vh]">
             <div className="flex gap-4 flex-col min-h-[426.2px]">
               <div className="flex flex-col gap-2">
                 <span className="font-serif text-2xl text-center font-bold uppercase text-primary">

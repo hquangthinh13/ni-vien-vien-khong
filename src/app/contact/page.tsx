@@ -1,35 +1,42 @@
 import React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import { Separator } from "@/shared/ui/separator";
+import { getTranslations } from "next-intl/server";
+import { MapPin, Phone, Mail } from "lucide-react";
 import EmbeddedMap from "@/features/contact/ui/EmbeddedMap";
 import lineOrnament from "@/public/ornament-01.svg";
+import { fetchContactPageFields } from "@/features/contact/api/contactPage.api";
+import { Locale } from "@/types/locale";
+import { getLocale } from "next-intl/server";
+const Contact = async () => {
+  const locale = (await getLocale()) as Locale;
 
-const Contact = () => {
-  const t = useTranslations("ContactPage");
-  const tFooter = useTranslations("Footer");
+  const fieldsResponse = await fetchContactPageFields({
+    locale,
+    fields: ["address", "phoneNumber", "emailPrimary", "emailSecondary"],
+  });
+  const t = await getTranslations("ContactPage");
+  const tFooter = await getTranslations("Footer");
 
   const contactDetails = [
     {
       icon: MapPin,
-      label: tFooter("contact"),
-      value: tFooter("address-01"),
+      label: tFooter("address"),
+      value: fieldsResponse.data?.address,
     },
     {
       icon: Phone,
-      label: "Phone",
-      value: "+84 97 446 99 63",
+      label: tFooter("phone"),
+      value: fieldsResponse.data?.phoneNumber,
     },
     {
       icon: Mail,
-      label: "Email",
-      value: "lieuphap@gmail.com",
+      label: tFooter("email"),
+      value: fieldsResponse.data?.emailPrimary,
     },
     {
       icon: Mail,
-      label: "Email 2",
-      value: "nivienvienkhong2019@gmail.com",
+      label: tFooter("email") + " 2",
+      value: fieldsResponse.data?.emailSecondary,
     },
   ];
 

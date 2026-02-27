@@ -12,6 +12,7 @@ import { BlocksContent } from "@strapi/blocks-react-renderer";
 import { Locale } from "next-intl";
 import { formatFriendlyDate } from "@/shared/lib/utils";
 import { getLocale } from "next-intl/server";
+import { Info } from "lucide-react";
 
 interface QuestionCardProps {
   question: Question;
@@ -37,8 +38,10 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
     <div className="w-full overflow-hidden bg-white border border-border rounded-xl shadow-sm transition-all hover:shadow-md">
       <Dialog>
         <DialogTrigger asChild>
-          <div className="w-full text-left outline-none group border-l-6 border-primary cursor-pointer flex flex-col p-4 gap-0 bg-orange-50/30 group-hover:bg-orange-100/40 transition-colors">
-            <p className="text-lg font-bold text-foreground leading-tight">
+          <div className="w-full flex-1 h-full text-left outline-none group border-l-6 border-primary cursor-pointer flex flex-col p-4 gap-1 bg-orange-50/30 hover:bg-orange-100/40 transition-colors">
+            {" "}
+            <p className="text-lg font-bold text-foreground leading-tight line-clamp-2">
+              {" "}
               {question.title}
             </p>{" "}
             <span className="text-xs text-muted-foreground">
@@ -47,17 +50,23 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
                 ? formatFriendlyDate(question.createdAt, locale, true)
                 : ""}
             </span>
-            <div className="pt-2 border-orange-100">
-              <p className="italic text-foreground/90 bg-muted/30 p-3 rounded-lg border-primary/20">
-                {question.questionContent}
-              </p>{" "}
-              <div className="flex justify-end mt-2">
-                <span className="text-xs text-secondary-foreground">
-                  - Gửi bởi{" "}
-                  <span className="font-semibold">{question.fullName}</span>
-                </span>
+            <div className="pt-2">
+              <div className="italic text-foreground/90 bg-muted/30 p-3 rounded-lg border-primary/20">
+                <p className="line-clamp-3 text-sm leading-relaxed">
+                  {question.questionContent}
+                </p>
               </div>
-            </div>
+            </div>{" "}
+            <div className="flex justify-end mt-auto">
+              <span className="text-xs text-secondary-foreground">
+                - Gửi bởi{" "}
+                <span className="font-semibold">{question.fullName}</span>
+              </span>
+            </div>{" "}
+            <span className="flex items-center text-secondary-foreground/70 text-xs">
+              <Info className="inline-block mr-1" size={12} />
+              Nhấn vào để xem câu trả lời
+            </span>
           </div>
         </DialogTrigger>
 

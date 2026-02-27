@@ -1,4 +1,3 @@
-import { id } from "date-fns/locale";
 import React from "react";
 import {
   Collapsible,
@@ -41,9 +40,9 @@ const Question = ({
               <p className="text-sm text-gray-500">
                 — Gửi bởi <span className="font-medium">{name}</span>
               </p>
-              {/* <span className="text-secondary text-xs">
+              <span className="text-secondary text-xs">
                 Nhấn vào để xem câu trả lời
-              </span> */}
+              </span>
             </div>
           </div>
         </CollapsibleTrigger>

@@ -1,13 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Locale, useTranslations } from "next-intl";
-import {
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  LayoutGrid,
-} from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,

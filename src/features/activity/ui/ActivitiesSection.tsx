@@ -11,12 +11,11 @@ async function getActivitiesData() {
   return res;
 }
 import SimplifiedNewsCard from "@/features/activity/ui/SimplifiedActivitiesCard";
-
+import MobileActivitiesCard from "@/features/activity/ui/MobileActivitiesCard";
 export default async function ActivitiesSection() {
   try {
     const posts = await getActivitiesData();
 
-    // Ensure we have an array to work with
     const data = Array.isArray(posts?.data)
       ? posts.data
       : posts?.data
@@ -31,41 +30,48 @@ export default async function ActivitiesSection() {
     const rowTwo = data.slice(2, 5);
     return (
       <div className="mx-auto mt-4">
-        {/* Row 1: 12-Column Grid for 70/30 split */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 border-b pb-4">
-          {rowOne.map(
-            (post, index) =>
-              post && (
-                <div
-                  key={post.id}
-                  className={
-                    index === 0 ? "col-span-8 lg:border-r pr-4" : "col-span-4"
-                  }
-                >
+        <section className="flex flex-col lg:hidden gap-0">
+          {data.map((post) => (
+            <MobileActivitiesCard key={post.id} activity={post} />
+          ))}
+        </section>
+        <section className="hidden lg:flex flex-col">
+          {/* Row 1: 12-Column Grid for 70/30 split */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 border-b pb-4">
+            {rowOne.map(
+              (post, index) =>
+                post && (
+                  <div
+                    key={post.id}
+                    className={
+                      index === 0 ? "col-span-8 lg:border-r pr-4" : "col-span-4"
+                    }
+                  >
+                    <SimplifiedNewsCard
+                      key={post.id}
+                      activity={post}
+                      variant="top"
+                      isFirst={index === 0}
+                    />
+                  </div>
+                ),
+            )}
+          </div>
+
+          {/* Row 2: 3-Column Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">
+            {rowTwo.map(
+              (post) =>
+                post && (
                   <SimplifiedNewsCard
                     key={post.id}
                     activity={post}
-                    variant="top"
-                    isFirst={index === 0}
+                    variant="bottom"
                   />
-                </div>
-              ),
-          )}
-        </div>
-
-        {/* Row 2: 3-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">
-          {rowTwo.map(
-            (post) =>
-              post && (
-                <SimplifiedNewsCard
-                  key={post.id}
-                  activity={post}
-                  variant="bottom"
-                />
-              ),
-          )}
-        </div>
+                ),
+            )}
+          </div>
+        </section>
       </div>
     );
   } catch (error) {

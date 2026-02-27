@@ -1,4 +1,3 @@
-// components/Navbar/DesktopMenu.tsx
 import { Button } from "@/shared/ui/button";
 import {
   DropdownMenu,

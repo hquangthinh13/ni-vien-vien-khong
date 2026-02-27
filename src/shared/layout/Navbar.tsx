@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import logo from "@/public/logo_slogan.svg";
 import Image from "next/image";
 
-
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { Menu } from "lucide-react";
@@ -46,7 +45,7 @@ export default function Navbar() {
           <LanguageSwitcher />
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="lg:hidden">
                 <Menu />
               </Button>
             </SheetTrigger>
