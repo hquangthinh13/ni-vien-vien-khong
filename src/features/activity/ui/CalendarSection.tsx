@@ -93,7 +93,7 @@ const CalendarSection = async () => {
             className="object-cover"
           />
         </div>
-        <div className="hidden origin-top scale-75 lg:scale-100 lg:block absolute left-[55%] -translate-x-1/2 top-0 z-20 pointer-events-none">
+        <div className="hidden origin-top scale-75 lg:scale-120 lg:block absolute left-[8%] -translate-x-1/2 top-0 z-20 pointer-events-none">
           <Image
             src={calendarDecoration01}
             alt="Character"
@@ -113,7 +113,15 @@ const CalendarSection = async () => {
         </div>
         <div className="absolute inset-0 flex px-4 lg:py-24 h-full items-center lg:items-start justify-center lg:justify-end md:pr-16">
           <div className="mt-[5vh] lg:mt-[3vh]">
-            <div className="min-h-[426.2px]">
+            <div className="flex gap-4 flex-col min-h-[426.2px]">
+              <div className="flex flex-col gap-2">
+                <span className="font-serif text-2xl text-center font-bold uppercase text-primary">
+                  Lịch hoạt động trong tháng
+                </span>
+                <p className="text-center text-md text-secondary-foreground italic">
+                  (Chọn ngày có khoanh tròn để xem lịch)
+                </p>
+              </div>
               <EventCalendar events={events} />{" "}
             </div>
           </div>

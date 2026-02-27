@@ -4,11 +4,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Calendar } from "@/shared/ui/calendar";
 import { Card, CardContent } from "@/shared/ui/card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shared/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { format, isSameDay, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
@@ -29,7 +25,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
-
+  const [month, setMonth] = useState<Date>(new Date());
   // Detect screen size
   React.useEffect(() => {
     const checkScreenSize = () => {
@@ -42,10 +38,22 @@ export default function EventCalendar({ events }: EventCalendarProps) {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
+  const handleMonthChange = (newMonth: Date) => {
+    setMonth(newMonth);
+
+    const firstDayOfMonth = new Date(
+      newMonth.getFullYear(),
+      newMonth.getMonth(),
+      1,
+    );
+    setDate(firstDayOfMonth);
+
+    setPopoverOpen(false);
+  };
+
   const selectedDayMeetings = events.filter((event) =>
     date ? isSameDay(event.start, date) : false,
   );
-
   const handleDayClick = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
     if (selectedDate) {
@@ -64,6 +72,8 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               selected={date}
               onSelect={handleDayClick}
               locale={vi}
+              month={month}
+              onMonthChange={handleMonthChange}
               showOutsideDays={true}
               className="rounded-none bg-none"
               classNames={{
@@ -80,7 +90,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               }}
               modifiersClassNames={{
                 hasEvent:
-                  "[&_button]:border [&_button]:border-primary [&_button]:rounded-full",
+                  "[&_button]:border [&_button]:border-3 [&_button]:border-primary [&_button]:rounded-full",
               }}
             />
           </div>
