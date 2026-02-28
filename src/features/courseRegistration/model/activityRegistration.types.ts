@@ -10,22 +10,22 @@ export enum RegistrationStatusEnum {
   canceled = "canceled",
 }
 export interface IdentityDetail {
-  [key: string]: string | number | boolean;
+  [key: string]: unknown;
 }
 export interface MonasticDetail {
-  [key: string]: string | number | boolean;
+  [key: string]: unknown;
 }
 export interface RelationDetail {
-  [key: string]: string | number | boolean;
+  [key: string]: unknown;
 }
 export interface RoutineDetail {
-  [key: string]: string | number | boolean;
+  [key: string]: unknown;
 }
 export interface OtherDetail {
-  [key: string]: string | number | boolean;
+  [key: string]: unknown;
 }
 
-export interface RegistationPayLoad {
+export interface RegistrationPayload {
   identityDetail?: IdentityDetail;
   monasticDetail?: MonasticDetail;
   relationDetail?: RelationDetail;
@@ -34,7 +34,7 @@ export interface RegistationPayLoad {
 }
 export interface ActivityRegistration extends StrapiEntity {
   registreeData: BasicInfoComponent;
-  registrationPayLoad?: RegistationPayLoad;
+  registrationPayLoad?: RegistrationPayload;
   firstTimeRegistered: boolean;
   registrationStatus: RegistrationStatus;
   confirmed?: boolean;
@@ -63,7 +63,7 @@ export type ActivityRegistrationResponse = {
 
 export type ActivityRegistrationFormData = {
   registreeData: BasicInfoComponent;
-  registrationPayLoad?: RegistationPayLoad;
+  registrationPayload?: RegistrationPayload;
   firstTimeRegistered: boolean;
   registeredActivity: string;
 };

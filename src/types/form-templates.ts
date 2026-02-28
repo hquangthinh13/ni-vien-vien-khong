@@ -1,13 +1,15 @@
-export type BasicInfoComponent = {
+export type gender = "Male" | "Female";
+
+export interface BasicInfoComponent {
   fullName: string;
   dob: string; // ISO date string
-  gender: string;
+  gender: gender;
   email: string;
   phoneNumber: string;
   address: string;
   haveZalo: boolean;
   zaloName: string;
-};
+}
 
 // Identity Detail Component //
 export type idIssueOrganisation =
@@ -22,12 +24,13 @@ export enum IdIssueOrganisationEnum {
   CSDangKy = "Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu Quốc gia về dân cư",
   Other = "Khác",
 }
-export type IdentityComponent = {
+export interface IdentityComponent {
   IDNumber: string;
   issueDate: string; // ISO date string
   issueAt: idIssueOrganisation;
   otherIssueOrganisation?: string;
-};
+  [key: string]: unknown;
+}
 
 //Monastic Detail Component //
 export type MonasticRank =
@@ -52,21 +55,23 @@ export enum MonasticTraditionEnum {
   Other = "Khác",
 }
 
-export type MonasticComponent = {
+export interface MonasticComponent {
   dharmaName: string;
   monasticRank: string;
   monasticTradition: string;
   otherMonasticTradition?: string;
   currentMonastery: string;
   yearsOfPractice: number;
-};
+  [key: string]: unknown;
+}
 
 // Relation Detail Component //
-export type RelationComponent = {
+export interface RelationComponent {
   fullName: string;
   phoneNumber: string;
   relationship: string;
-};
+  [key: string]: unknown;
+}
 
 // Routine Detail Component //
 export type DietaryRequirement = "Ăn Chay" | "Ăn thường";
@@ -74,8 +79,9 @@ export enum DietaryRequirementEnum {
   Vegetarian = "Ăn Chay",
   NonVegetarian = "Ăn thường",
 }
-export type RoutineComponent = {
+export interface RoutineComponent {
   dietaryRequirements: DietaryRequirement;
   medicalConditions: boolean;
   foodAllergies?: string;
-};
+  [key: string]: unknown;
+}

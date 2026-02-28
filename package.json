@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:build-registration-form": "tsx scripts/test-build-registration-form.tsx",
     "test:contact": "tsx scripts/test-contact-page.ts",
     "test:activity": "tsx scripts/test-activity-service.ts",
     "test:activity-register": "tsx scripts/test-activity-registration.ts",

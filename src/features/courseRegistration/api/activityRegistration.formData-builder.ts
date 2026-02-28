@@ -3,7 +3,7 @@ import type {
   IdentityDetail,
   MonasticDetail,
   OtherDetail,
-  RegistationPayLoad,
+  RegistrationPayload,
   RelationDetail,
   RoutineDetail,
 } from "../model/activityRegistration.types";
@@ -21,18 +21,18 @@ export class ActivityRegistrationFormDataBuilder {
     this.data.registeredActivity = formData.registeredActivity;
 
     if (
-      formData.registrationPayLoad &&
-      Object.keys(formData.registrationPayLoad).length > 0
+      formData.registrationPayload &&
+      Object.keys(formData.registrationPayload).length > 0
     ) {
-      this.data.registrationPayLoad = formData.registrationPayLoad;
+      this.data.registrationPayload = formData.registrationPayload;
     }
 
     return this;
   }
 
-  withRegistrationPayLoad(registrationPayLoad?: RegistationPayLoad): this {
-    if (registrationPayLoad && Object.keys(registrationPayLoad).length > 0) {
-      this.data.registrationPayLoad = registrationPayLoad;
+  withRegistrationPayload(registrationPayload?: RegistrationPayload): this {
+    if (registrationPayload && Object.keys(registrationPayload).length > 0) {
+      this.data.registrationPayload = registrationPayload;
     }
     return this;
   }
@@ -41,8 +41,8 @@ export class ActivityRegistrationFormDataBuilder {
     if (!identityDetail || Object.keys(identityDetail).length === 0) {
       return this;
     }
-    this.data.registrationPayLoad = {
-      ...this.data.registrationPayLoad,
+    this.data.registrationPayload = {
+      ...this.data.registrationPayload,
       identityDetail,
     };
     return this;
@@ -52,8 +52,8 @@ export class ActivityRegistrationFormDataBuilder {
     if (!monasticDetail || Object.keys(monasticDetail).length === 0) {
       return this;
     }
-    this.data.registrationPayLoad = {
-      ...this.data.registrationPayLoad,
+    this.data.registrationPayload = {
+      ...this.data.registrationPayload,
       monasticDetail,
     };
     return this;
@@ -63,8 +63,8 @@ export class ActivityRegistrationFormDataBuilder {
     if (!relationDetail || Object.keys(relationDetail).length === 0) {
       return this;
     }
-    this.data.registrationPayLoad = {
-      ...this.data.registrationPayLoad,
+    this.data.registrationPayload = {
+      ...this.data.registrationPayload,
       relationDetail,
     };
     return this;
@@ -74,8 +74,8 @@ export class ActivityRegistrationFormDataBuilder {
     if (!routineDetail || Object.keys(routineDetail).length === 0) {
       return this;
     }
-    this.data.registrationPayLoad = {
-      ...this.data.registrationPayLoad,
+    this.data.registrationPayload = {
+      ...this.data.registrationPayload,
       routineDetail,
     };
     return this;
@@ -85,8 +85,8 @@ export class ActivityRegistrationFormDataBuilder {
     if (!otherDetail || Object.keys(otherDetail).length === 0) {
       return this;
     }
-    this.data.registrationPayLoad = {
-      ...this.data.registrationPayLoad,
+    this.data.registrationPayload = {
+      ...this.data.registrationPayload,
       otherDetail,
     };
     return this;

@@ -11,9 +11,9 @@ const AUTHORIZED_TOKEN =
   process.env.NEXT_PUBLIC_STRAPI_API_TOKEN ||
   "";
 
-// ============ Create Course Registration (POST) ============
+// ============ Create Activity Registration (POST) ============
 
-export async function createCourseRegistration(
+export async function createActivityRegistration(
   formData: ActivityRegistrationFormData,
 ): Promise<ActivityRegistrationResponse> {
   const url = getStrapiURL(COURSE_REGISTRATIONS_ENDPOINT);
