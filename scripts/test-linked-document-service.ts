@@ -6,18 +6,11 @@ import {
   fetchLinkedDocumentsByCategory,
 } from "@/features/linkedDocument/api/linkedDocument.api";
 import type { LinkedDocument } from "@/features/linkedDocument/model/linkedDocument.types";
-import {
-  isValidLinkedDocumentCategory,
-  type LinkedDocumentCategory,
-} from "@/types/categories";
+import { type LinkedDocumentCategory } from "@/types/categories";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 const documentId = process.argv[3];
-const categoryArg = isValidLinkedDocumentCategory(
-  process.argv[4] as LinkedDocumentCategory,
-)
-  ? (process.argv[4] as LinkedDocumentCategory)
-  : "Tạng Kinh";
+const categoryArg = process.argv[4] as LinkedDocumentCategory;
 
 const main = async () => {
   try {

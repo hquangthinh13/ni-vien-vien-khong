@@ -1,92 +1,148 @@
-import "dotenv/config";
-import { isValidLocale } from "@/types/locale";
-import { getImageUrl } from "@/lib/api";
-import {
-  fetchActivities,
-  fetchActivityByDocumentId,
-  fetchNearestActivity,
-  fetchActivitiesByMonth,
-  fetchActivitiesByCategory,
-} from "@/features/activity/api/activity.api";
-import type { Activity } from "@/features/activity/model/activity.types";
-import {
-  isValidActivityCategory,
-  type ActivityCategory,
-} from "@/types/categories";
-import { format } from "path";
+// Write example code to test activity services
 
-const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
-const documentId = process.argv[3]
-  ? process.argv[3]
-  : "n0j654v40yeeh650peevhza2";
-const categoryArg = isValidActivityCategory(process.argv[4] as ActivityCategory)
-  ? process.argv[4]
-  : "Phật Sự Trong Nước";
-
-const main = async () => {
+// Usecase 1: Get all active activities (for Calendar Page - Activity DropDown Filter)
+import { fetchActiveActivities } from "@/features/activity/api/activity.api";
+async function testFetchActiveActivities() {
   try {
-    const [allActivities, nearestActivity] = await Promise.all([
-      fetchActivities({
-        locale,
-        populate: "coverImage",
-        pagination: { page: 1, pageSize: 5 },
-        sort: "activityDate:desc",
-      }),
-      fetchNearestActivity({
-        locale,
-        populate: "*",
-      }),
-    ]);
-    const nearestActivityData = (allActivities.data as Activity[])[0];
-    const coverImageUrl = getImageUrl(nearestActivityData.coverImage);
+    //referenceDate can be set to a specific date for testing, or left undefined to use today's date
+    const activities = await fetchActiveActivities({
+      locale: "vi",
+      pagination: {
+        page: 1,
+        pageSize: 3,
+      },
 
-    // console.log("Activities (first page):");
-    // console.dir(allActivities, { depth: null });
+      referenceDate: "2026-03-05", // Example reference date for testing
+    });
+    console.log("Active Activities:", activities);
+  } catch (error) {
+    console.error("Error fetching active activities:", error);
+  }
+}
+// testFetchActiveActivities();
 
-    // console.log("\nNearest activity:");
-    // console.dir(nearestActivity, { depth: null });
-    // console.log("Cover image URL:", coverImageUrl);
+// Usecase 2: Get Activity by activityCategory (for Activity List Page)
+import { fetchActivitiesByCategory } from "@/features/activity/api/activity.api";
+async function testFetchActivitiesByCategory() {
+  try {
+    const activities = await fetchActivitiesByCategory({
+      category: "Phật Sự Trong Nước", // Example category for testing
+      locale: "vi",
+      pagination: {
+        page: 1,
+        pageSize: 5,
+      },
+      populate: ["coverImage"], // Example populate fields for testing
+    });
+    console.log("Activities by Category:", activities);
+  } catch (error) {
+    console.error("Error fetching activities by category:", error);
+  }
+}
+//testFetchActivitiesByCategory();
 
-    // const now = new Date();
-    // console.log(`\\nCurrent date: ${now.toISOString()}`);
-    // console.log(`Current month: ${now.getMonth() + 1}`);
-    // console.log(`Current year: ${now.getFullYear()}`);
-    // const byMonth = await fetchActivitiesByMonth({
-    //   locale,
-    //   year: now.getFullYear(),
-    //   month: now.getMonth() + 1,
-    //   pagination: { page: 1, pageSize: 10 },
-    //   sort: "activityDate:asc",
-    // });
+// Usecase 3: Get Activity by documentId (for Activity Detail Page)
+import { fetchActivityByDocumentId } from "@/features/activity/api/activity.api";
+const documentId = "lgv3gu7ccx3u7dpwwn5zhqh4";
+async function testFetchActivityByDocumentId() {
+  try {
+    const activity = await fetchActivityByDocumentId({
+      documentId,
+      locale: "vi",
+      populate: ["coverImage", "relatedActivities.coverImage"],
+    });
+    console.log("Activity by Document ID:", activity);
+    console.log(
+      "Related Activities:",
+      Array.isArray(activity.data)
+        ? undefined
+        : activity.data?.relatedActivities,
+    );
+  } catch (error) {
+    console.error("Error fetching activity by document ID:", error);
+  }
+}
+// testFetchActivityByDocumentId();
 
-    // console.log("\nActivities by current month:");
-    // console.dir(byMonth, { depth: null });
+// Usecase 4: Get Registration Form by documentId (for Activity Registration Page)
+import { fetchActivityByDocumentIdWithRegistrationForm } from "@/features/activity/api/activity.api";
+async function testFetchActivityByDocumentIdWithRegistrationForm() {
+  try {
+    const activity = await fetchActivityByDocumentIdWithRegistrationForm({
+      documentId,
+      locale: "vi",
+      populate: ["coverImage", "relatedActivities.coverImage"],
+    });
+    console.log("Activity by Document ID:", activity);
+  } catch (error) {
+    console.error("Error fetching activity by document ID:", error);
+  }
+}
+// testFetchActivityByDocumentIdWithRegistrationForm();
 
-    if (categoryArg) {
-      const byCategory = await fetchActivitiesByCategory({
-        locale,
-        category: categoryArg as ActivityCategory,
-        pagination: { page: 1, pageSize: 10 },
-        sort: "activityDate:asc",
-      });
+// Usecase 5: Get Course by documentId with detailed courseContent (for Course Detail Page)
+// Note: only course activities have courseContent, so this function will return courseContent only if the activity is a course. For non-course activities, courseContent will be null.
+import { fetchActivityByDocumentIdWithCourseContent } from "@/features/activity/api/activity.api";
+async function testFetchActivityByDocumentIdWithCourseContent() {
+  try {
+    const activity = await fetchActivityByDocumentIdWithCourseContent({
+      documentId,
+      locale: "vi",
+      populate: ["coverImage", "relatedActivities.coverImage"],
+    });
+    console.log("Activity by Document ID:", activity);
+  } catch (error) {
+    console.error("Error fetching activity by document ID:", error);
+  }
+}
+//testFetchActivityByDocumentIdWithCourseContent();
 
-      //   console.log(`\nActivities by category (${categoryArg}):`);
-      //   console.dir(byCategory, { depth: null });
-    }
+// Usecase 6: Get Course by courseCategory (for Course List Page)
+import { fetchCoursesByCategory } from "@/features/activity/api/activity.api";
+async function testFetchCoursesByCategory() {
+  try {
+    const activities = await fetchCoursesByCategory({
+      category: "Khóa Tu Mùa Hè", // Example course category for testing
+      locale: "vi",
+      pagination: {
+        page: 1,
+        pageSize: 5,
+      },
+      populate: ["coverImage"], // Example populate fields for testing
+    });
+    console.log("Courses by Category:", activities);
+  } catch (error) {
+    console.error("Error fetching courses by category:", error);
+  }
+}
+// testFetchCoursesByCategory();
 
-    if (documentId) {
-      const byDocumentId = await fetchActivityByDocumentId({
-        locale,
-        documentId: documentId,
-      });
+// Usecase 7: Get nearest upcoming activity (for Home Page - Nearest Activity Section) --> fetchActive activities with pagination pageSize = 1 will return the nearest upcoming activity, since the API sorts active activities by start date in ascending order by default.
 
-      console.log(`\nActivity by documentId (${documentId}):`);
-      console.dir(byDocumentId, { depth: null });
+// Usecase 8: Check if activity is open for registration (for Activity Detail Page)
+import { isActive } from "@/features/activity/api/activity.api";
+async function testIsActive() {
+  try {
+    const activityResponse = await fetchActivityByDocumentId({
+      documentId,
+      locale: "vi",
+    });
+    const activity = Array.isArray(activityResponse.data)
+      ? null
+      : activityResponse.data;
+    if (activity) {
+      const activeStatus = isActive(activity);
+      console.log(
+        `Is activity "${activity.activityName}" active?`,
+        activeStatus,
+      );
+    } else {
+      console.log("Activity not found");
     }
   } catch (error) {
-    console.error("Failed to test Activity service:", error);
-    process.exitCode = 1;
+    console.error("Error fetching activity or checking active status:", error);
   }
-};
+}
+testIsActive();
 
-void main();
+// Usecase 9: Get activities by month (for Calendar Page - Monthly View)

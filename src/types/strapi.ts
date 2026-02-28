@@ -1,6 +1,6 @@
 export type SimpleFetchOptions = {
   locale?: string;
-  populate?: string;
+  populate?: Array<string> | string;
   signal?: AbortSignal;
   filters?: Record<string, unknown>;
 };

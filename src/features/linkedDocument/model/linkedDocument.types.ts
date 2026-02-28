@@ -10,7 +10,7 @@ export interface LinkedDocument extends StrapiEntity {
   title: string;
   link: string;
   category: LinkedDocumentCategory;
-  coverImage?: StrapiImageEntity;
+  mindMap?: StrapiImageEntity;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;

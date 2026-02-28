@@ -1,12 +1,21 @@
 import { getStrapiURL, buildQuery } from "@/lib/api";
 import type {
   ActivityResponse,
+  Activity,
+  CourseStatus,
   FetchActivitiesOptions,
   FetchActivityByDocumentIdOptions,
-  FetchNearestActivityOptions,
+  FetchActiveActivityOptions,
   FetchActivitiesByMonthOptions,
   FetchActivitiesByCategoryOptions,
+  FetchCourseByCategoryOptions,
 } from "@/features/activity/model/activity.types";
+import {
+  ACTIVITY_POPULATE_COURSE_CONTENT,
+  ACTIVITY_POPULATE_REGISTRATION_FORM,
+  ACTIVITY_POPULATE_REGISTRATION_FORM_AND_COURSE_CONTENT,
+  mergePopulateOptions,
+} from "@/features/activity/api/activity.populate";
 
 const ACTIVITIES_ENDPOINT = "/api/activities";
 const AUTHORIZED_TOKEN =
@@ -14,6 +23,7 @@ const AUTHORIZED_TOKEN =
   process.env.NEXT_PUBLIC_STRAPI_API_TOKEN ||
   "";
 
+const SORT_DEFAULT = "activityStartDate:asc";
 export async function fetchActivities(
   options: FetchActivitiesOptions = {},
 ): Promise<ActivityResponse> {
@@ -29,9 +39,6 @@ export async function fetchActivities(
     },
     signal: options.signal,
   });
-
-  
-  
 
   if (!res.ok) {
     throw new Error(`Failed to fetch activities: ${res.status}`);
@@ -67,17 +74,41 @@ export async function fetchActivityByDocumentId(
   return (await res.json()) as ActivityResponse;
 }
 
+export async function fetchActivityByDocumentIdWithCourseContent(
+  options: FetchActivityByDocumentIdOptions,
+): Promise<ActivityResponse> {
+  return await fetchActivityByDocumentId(
+    mergePopulateOptions(options, ACTIVITY_POPULATE_COURSE_CONTENT),
+  );
+}
+
+export async function fetchActivityByDocumentIdWithRegistrationForm(
+  options: FetchActivityByDocumentIdOptions,
+): Promise<ActivityResponse> {
+  return await fetchActivityByDocumentId(
+    mergePopulateOptions(options, ACTIVITY_POPULATE_REGISTRATION_FORM),
+  );
+}
+
+export async function fetchActivityByDocumentIdWithRegistrationFormAndCourseContent(
+  options: FetchActivityByDocumentIdOptions,
+): Promise<ActivityResponse> {
+  return await fetchActivityByDocumentId(
+    mergePopulateOptions(
+      options,
+      ACTIVITY_POPULATE_REGISTRATION_FORM_AND_COURSE_CONTENT,
+    ),
+  );
+}
+
 // ============ 3. Get Nearest Activity (by activityDate) ============
 
-export async function fetchNearestActivity(
-  options: FetchNearestActivityOptions,
+export async function fetchActiveActivities(
+  options: FetchActiveActivityOptions,
 ): Promise<ActivityResponse> {
   // Set sort, limit, and filter for nearest future activity
-  options.sort = "activityDate:asc";
-  // options.pagination = { limit: 1 };
-  options.sort = "activityDate:asc";
-  if (!options.pagination) {
-    options.pagination = { limit: 1 };
+  if (!options.sort) {
+    options.sort = SORT_DEFAULT;
   }
   const query = buildQuery(options, false) as URLSearchParams;
 
@@ -89,7 +120,7 @@ export async function fetchNearestActivity(
     // Ensure referenceDate is in YYYY-MM-DD format
     options.referenceDate = options.referenceDate.split("T")[0];
   }
-  query.set("filters[activityDate][$gte]", options.referenceDate);
+  query.set("filters[activityStartDate][$gte]", options.referenceDate);
 
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
@@ -105,7 +136,7 @@ export async function fetchNearestActivity(
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch nearest activity: ${res.status}`);
+    throw new Error(`Failed to fetch active activities: ${res.status}`);
   }
 
   return (await res.json()) as ActivityResponse;
@@ -116,7 +147,9 @@ export async function fetchNearestActivity(
 export async function fetchActivitiesByMonth(
   options: FetchActivitiesByMonthOptions,
 ): Promise<ActivityResponse> {
-  options.sort = "activityDate:asc";
+  if (!options.sort) {
+    options.sort = SORT_DEFAULT;
+  }
   const query = buildQuery(options, false) as URLSearchParams;
   // Date range filter: first day to last day of month
   const startDate = new Date(options.year, options.month - 1, 0)
@@ -156,11 +189,13 @@ export async function fetchActivitiesByMonth(
 export async function fetchActivitiesByCategory(
   options: FetchActivitiesByCategoryOptions,
 ): Promise<ActivityResponse> {
-  options.sort = "activityDate:asc";
+  if (!options.sort) {
+    options.sort = SORT_DEFAULT;
+  }
   const query = buildQuery(options, false) as URLSearchParams;
 
   // Filter by category
-  query.set("filters[category][$eq]", options.category);
+  query.set("filters[activityCategory][$eq]", options.category);
 
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
@@ -176,8 +211,70 @@ export async function fetchActivitiesByCategory(
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch activities by category: ${res.status}`);
+    throw new Error(
+      `Failed to fetch activities by category: ${res.statusText} (${res.status})`,
+    );
   }
 
   return (await res.json()) as ActivityResponse;
+}
+
+export async function fetchCoursesByCategory(
+  options: FetchCourseByCategoryOptions,
+): Promise<ActivityResponse> {
+  if (!options.sort) {
+    options.sort = SORT_DEFAULT;
+  }
+  const query = buildQuery(options, false) as URLSearchParams;
+  // All course  have activity category = "course"
+  query.set("filters[activityCategory][$eq]", "Khóa Tu");
+  // Filter by course category
+  query.set("filters[courseContent][courseCategory][$eq]", options.category);
+
+  const url = getStrapiURL(
+    `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
+  );
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
+    },
+    signal: options.signal,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch courses by category: ${res.status}`);
+  }
+  return (await res.json()) as ActivityResponse;
+}
+export function getActivityStatus(
+  activity: Activity,
+  referenceDate?: string,
+): CourseStatus {
+  const startDate = new Date(activity.activityStartDate);
+  const endDate = new Date(activity.activityEndDate);
+  if (!startDate || !endDate) {
+    return "unknown";
+  }
+
+  const refDate = referenceDate ? new Date(referenceDate) : new Date();
+
+  if (refDate < startDate) {
+    return "upcoming";
+  }
+
+  if (refDate >= startDate && refDate <= endDate) {
+    return "ongoing";
+  }
+
+  if (refDate > endDate) {
+    return "completed";
+  }
+  return "unknown";
+}
+
+export function isActive(activity: Activity, referenceDate?: string): boolean {
+  const status = getActivityStatus(activity, referenceDate);
+  return status === "upcoming" || status === "ongoing";
 }

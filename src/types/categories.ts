@@ -2,7 +2,8 @@ export type ActivityCategory =
   | "Phật Sự Trong Nước"
   | "Phật Sự Nước Ngoài"
   | "Lớp Học Phật Pháp"
-  | "Tin Tức Khác";
+  | "Tin Tức Khác"
+  | "Khoá Tu";
 
 export type CourseCategory =
   | "Khóa Tu Mùa Hè"

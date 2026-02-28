@@ -20,8 +20,19 @@ export const buildQuery = (
 
   if (options.locale) params.set("locale", options.locale);
 
-  if ("populate" in options && options.populate) {
+  if (
+    "populate" in options &&
+    options.populate &&
+    typeof options.populate === "string"
+  ) {
     params.set("populate", options.populate);
+  }
+  if (
+    "populate" in options &&
+    options.populate &&
+    Array.isArray(options.populate)
+  ) {
+    options.populate.forEach((field) => params.append("populate", field));
   }
 
   if ("fields" in options && options.fields && options.fields.length > 0) {
