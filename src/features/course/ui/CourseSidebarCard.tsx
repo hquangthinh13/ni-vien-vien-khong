@@ -1,30 +1,29 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Course } from "../model/course.types";
-import { getImageUrl } from "@/lib/api";
+import { Activity } from "@/features/activity/model/activity.types";
+import { getImageUrl } from "@/shared/lib/api";
 import { formatFriendlyDate } from "@/shared/lib/utils";
-import { Locale } from "@/types/locale";
-import { useLocale } from "next-intl";
+import type { Locale } from "@/types/locale";
+
 interface CourseSidebarCardProps {
-  course: Course;
+  course: Activity;
 }
 
-const CourseSidebarCard = ({ course }: CourseSidebarCardProps) => {
-  const locale = useLocale();
-
+const CourseSidebarCard = async ({
+  course,
+  locale,
+}: CourseSidebarCardProps & { locale: Locale }) => {
   const coverImageUrl = course.coverImage
     ? getImageUrl(course.coverImage)
     : null;
 
-  const startDate = course.courseStartDate
-    ? formatFriendlyDate(course.courseStartDate, locale, false)
+  const startDate = course.activityStartDate
+    ? formatFriendlyDate(course.activityStartDate, locale, false)
     : "Chưa cập nhật";
 
-  const endDate = course.courseEndDate
-    ? formatFriendlyDate(course.courseEndDate, locale, false)
+  const endDate = course.activityEndDate
+    ? formatFriendlyDate(course.activityEndDate, locale, false)
     : "Chưa cập nhật";
 
   return (
@@ -37,7 +36,7 @@ const CourseSidebarCard = ({ course }: CourseSidebarCardProps) => {
           {coverImageUrl && (
             <Image
               src={coverImageUrl}
-              alt={course.courseName}
+              alt={course.activityName || "Course cover image"}
               fill
               sizes="(max-width: 768px) 160px, 128px"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -52,7 +51,7 @@ const CourseSidebarCard = ({ course }: CourseSidebarCardProps) => {
           )} */}
 
           <h4 className="text-sm font-semibold text-foreground line-clamp-4 leading-snug group-hover:text-primary transition-colors">
-            {course.courseName}
+            {course.activityName || "Untitled Course"}
           </h4>
 
           <div className="flex items-center">

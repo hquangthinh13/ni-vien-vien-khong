@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <div className="flex flex-col w-full px-4 gap-4 py-6 mx-auto max-w-10xl">
+    <div className="flex flex-col w-full px-4 gap-4 py-6 mx-auto max-w-7xl">
       {/* Skeleton cho Cover Image */}
       <Skeleton className="w-full h-[200px] md:h-[400px] rounded-lg shadow-lg " />
 

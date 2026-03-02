@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatFriendlyDate } from "@/shared/lib/utils";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 
 import {
   CalendarDays,
@@ -18,7 +18,6 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 
-import { Skeleton } from "@/shared/ui/skeleton";
 import lineOrnament from "@/public/ornament-01.svg";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import RelatedActivities from "@/features/activity/ui/RelatedActivities";
@@ -26,7 +25,7 @@ import { Activity } from "@/features/activity/model/activity.types";
 import type { Locale } from "@/types/locale";
 import { getLocale } from "next-intl/server";
 import { fetchActivityByDocumentId } from "@/features/activity/api/activity.api";
-import { getStrapiURL } from "@/lib/api";
+import { getStrapiURL } from "@/shared/lib/api";
 
 export default async function ActivityPage({
   params,
@@ -49,18 +48,18 @@ export default async function ActivityPage({
 
   // console.log("imageUrl", imageUrl);
   return (
-    <div className="mx-auto max-w-10xl px-4 py-10">
+    <div className="mx-auto max-w-7xl px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
         {/* MAIN CONTENT */}
         <div className="lg:col-span-7 prose prose-orange max-w-none text-justify leading-relaxed">
           <header className="flex flex-col items-start mb-6 space-y-2">
             {/* <div className="flex flex-1 w-full items-center justify-between mb-2"> */}
             <div className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest">
-              <span>{data.category}</span>
+              <span>{data.activityCategory}</span>
             </div>
             {/* </div> */}
             <h1 className="text-2xl md:text-4xl text-left font-bold leading-tight">
-              {data.title}
+              {data.activityName}
             </h1>
             {data.publishedAt && (
               <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
@@ -74,7 +73,7 @@ export default async function ActivityPage({
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               <Image
                 src={imageUrl || "/placeholder.jpg"}
-                alt={data.title}
+                alt={data.activityName || "Activity cover image"}
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority

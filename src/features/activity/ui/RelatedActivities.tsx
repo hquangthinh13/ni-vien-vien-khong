@@ -6,15 +6,16 @@ import Link from "next/link";
 import { Clock, ScrollText } from "lucide-react";
 import { useLocale } from "next-intl";
 import { formatFriendlyDate } from "@/shared/lib/utils";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 import { Activity } from "../model/activity.types";
+import { Locale } from "@/types/locale";
 
 interface RelatedActivitiesProps {
   activities: Activity[];
 }
 
 const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   // console.log("RelatedActivities - activities prop:", activities);
   if (!activities || activities.length === 0) return null;
   return (

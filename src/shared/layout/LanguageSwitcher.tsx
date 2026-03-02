@@ -4,30 +4,29 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+
+function getLocaleFromCookie() {
+  if (typeof document === "undefined") return "vi";
+  const locale = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("locale="))
+    ?.split("=")[1];
+
+  return locale === "en" ? "en" : "vi";
+}
 
 export function LanguageSwitcher() {
   const router = useRouter();
-  const [currentLocale, setCurrentLocale] = useState("vi");
-
-  // Lấy locale từ cookie khi component mount
-  useEffect(() => {
-    const locale = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("locale="))
-      ?.split("=")[1];
-    if (locale) {
-      setCurrentLocale(locale);
-    }
-  }, []);
+  const [currentLocale, setCurrentLocale] = React.useState<"vi" | "en">(() =>
+    getLocaleFromCookie(),
+  );
 
   const toggleLanguage = () => {
     const newLocale = currentLocale === "vi" ? "en" : "vi";
 
-    document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
+    document.cookie = `locale=${newLocale}; path=/; max-age=31536000; samesite=lax`;
 
     setCurrentLocale(newLocale);
-
     router.refresh();
   };
 

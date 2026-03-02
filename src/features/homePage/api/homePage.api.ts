@@ -1,7 +1,10 @@
-import { getStrapiURL, buildQuery } from "@/lib/api";
+import { getStrapiURL, buildQuery } from "@/shared/lib/api";
 import { SimpleFetchOptions, BaseFetchOptionsWithFields } from "@/types/strapi";
 
-import type { HomePageAttributes, HomePageResponse } from "../model/homePage.types";
+import type {
+  HomePageAttributes,
+  HomePageResponse,
+} from "../model/homePage.types";
 import Home from "@/app/page";
 
 const HOME_PAGE_ENDPOINT = "/api/home-page";

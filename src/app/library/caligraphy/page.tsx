@@ -20,7 +20,7 @@ const CaligraphyPage = async () => {
   const initialData = Array.isArray(res.data) ? res.data : [];
 
   return (
-    <div className="w-full max-w-10xl mx-auto my-10">
+    <div className="w-full max-w-7xl mx-auto my-10">
       <div className="flex flex-col w-full gap-6 items-center mb-10 px-4">
         <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
           Thư Pháp

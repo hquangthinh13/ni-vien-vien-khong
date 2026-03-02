@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent } from "@/shared/ui/card";
 import { Poem } from "../model/poem.types";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
 interface PoemCardProps {

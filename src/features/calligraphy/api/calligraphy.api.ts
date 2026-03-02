@@ -1,4 +1,4 @@
-import { getStrapiURL, buildQuery, getImageUrl } from "@/lib/api";
+import { getStrapiURL, buildQuery, getImageUrl } from "@/shared/lib/api";
 import type {
   CalligraphyResponse,
   Calligraphy,

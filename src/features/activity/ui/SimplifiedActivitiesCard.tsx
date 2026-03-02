@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import { Locale } from "next-intl";
 import { extractFirstParagraph, formatFriendlyDate } from "@/shared/lib/utils";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -17,7 +17,8 @@ const SimplifiedNewsCard = async ({
   variant = "bottom",
 }: NewsCardProps) => {
   const locale = (await getLocale()) as Locale;
-  const { documentId, title, coverImage, content, publishedAt } = activity;
+  const { documentId, activityName, coverImage, content, publishedAt } =
+    activity;
   // console.log("Rendering SimplifiedNewsCard for activity:", activity);
   if (isFirst === false && variant === "bottom") {
     return (
@@ -28,7 +29,7 @@ const SimplifiedNewsCard = async ({
           </p>
 
           <h3 className="text-md line-clamp-4 font-bold leading-snug group-hover:text-primary cursor-pointer">
-            {title}
+            {activityName || "Untitled Activity"}
           </h3>
         </div>
         <div className="flex gap-4 items-baseline group">
@@ -54,7 +55,7 @@ const SimplifiedNewsCard = async ({
               return imageUrl ? (
                 <Image
                   src={imageUrl}
-                  alt={title}
+                  alt={activityName || "Activity image"}
                   fill
                   className="object-cover"
                 />
@@ -70,7 +71,7 @@ const SimplifiedNewsCard = async ({
           <h3
             className={`text-md font-bold leading-snug hover:text-primary cursor-pointer mb-2`}
           >
-            {title}
+            {activityName}
           </h3>
           <p
             className={` ${!isFirst ? "line-clamp-2" : " line-clamp-2"} text-sm text-secondary-foreground`}

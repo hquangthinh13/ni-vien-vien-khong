@@ -1,4 +1,4 @@
-import { getStrapiURL, buildQuery } from "@/lib/api";
+import { getStrapiURL, buildQuery } from "@/shared/lib/api";
 import { SimpleFetchOptions, BaseFetchOptionsWithFields } from "@/types/strapi";
 
 import type {

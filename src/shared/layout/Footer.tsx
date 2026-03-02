@@ -54,7 +54,7 @@ const Footer = async () => {
 
   return (
     <footer className="relative w-full border-t border-border bg-card pt-8 pb-4 mt-auto">
-      <div className=" mx-auto max-w-10xl">
+      <div className=" mx-auto max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 text-sm px-4">
           {/* Lien he */}
           <div className="space-y-4 md:col-span-6 ">

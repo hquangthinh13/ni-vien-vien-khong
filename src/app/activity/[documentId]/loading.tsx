@@ -2,7 +2,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
 import React from "react";
 export default function Loading() {
   return (
-    <div className="flex w-full px-4 py-10 mx-auto max-w-10xl">
+    <div className="flex w-full px-4 py-10 mx-auto max-w-7xl">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-12">
         {/* LEFT COLUMN — 7/10 */}
         <div className="lg:col-span-7 flex flex-col gap-8">

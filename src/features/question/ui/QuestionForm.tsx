@@ -4,10 +4,15 @@ import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "sonner"; // Hoặc thư viện thông báo bạn dùng
+import { toast } from "sonner";
 
 import { Card, CardContent } from "@/shared/ui/card";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/shared/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/ui/field";
 import { Button } from "@/shared/ui/button";
 import { Textarea } from "@/shared/ui/textarea";
 import { Input } from "@/shared/ui/input";
@@ -71,7 +76,6 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
   };
 
   return (
-
     // <Card className="flex flex-1 p-0 shadow-md">
     //   <CardContent className="p-6">
     <form className="" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -183,6 +187,5 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
     </form>
     //   </CardContent>
     // </Card>
-
   );
 }

@@ -1,4 +1,4 @@
-import { getStrapiURL, buildQuery } from "@/lib/api";
+import { getStrapiURL, buildQuery } from "@/shared/lib/api";
 import { SimpleFetchOptions } from "@/types/strapi";
 import type { MonasteryPageResponse } from "../model/monasteryPage.types";
 const MONASTERY_PAGE_ENDPOINT = "/api/monastery-page";

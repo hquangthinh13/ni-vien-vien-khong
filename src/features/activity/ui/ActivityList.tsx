@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import ActivityCard from "./ActivityCard";
 import { fetchActivitiesByCategory } from "../api/activity.api";
@@ -109,7 +109,7 @@ export default function ActivityList({
         </Tabs>
       </div>
 
-      <div className="w-full max-w-10xl">
+      <div className="w-full max-w-7xl">
         {activities.length > 0 ? (
           <div className="flex flex-wrap gap-4 w-full">
             {activities.map((activity) => (
@@ -131,7 +131,7 @@ export default function ActivityList({
       </div>
 
       {/* Infinite Scroll Trigger Area */}
-      <div ref={ref} className="min-h-[200px] w-full mt-10 max-w-7xl"></div>
+      <div ref={ref} className="min-h-[200px] w-full mt-2 max-w-10xl"></div>
     </div>
   );
 }

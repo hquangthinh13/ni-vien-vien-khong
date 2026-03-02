@@ -6,9 +6,7 @@ import Footer from "@/shared/layout/Footer";
 import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
-// type Props = {
-//   children: React.ReactNode;
-// };
+import MotionWrapper from "@/shared/layout/MotionWrapper";
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin", "vietnamese"],
@@ -51,7 +49,9 @@ export default function RootLayout({
         <NextIntlClientProvider>
           {children} <Toaster position="top-right" richColors />
         </NextIntlClientProvider>
-        <Footer />
+        <MotionWrapper>
+          <Footer />
+        </MotionWrapper>
       </body>
     </html>
   );

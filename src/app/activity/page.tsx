@@ -2,9 +2,9 @@ import { fetchActivitiesByCategory } from "@/features/activity/api/activity.api"
 import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
-import ActivityList from "@/features/activity/ui/ActivityList";
 import type { Locale } from "@/types/locale";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
+import ActivityList from "@/features/activity/ui/ActivityList";
 export default async function ActivityPage({
   searchParams,
 }: {
@@ -23,14 +23,15 @@ export default async function ActivityPage({
   const response = await fetchActivitiesByCategory({
     locale,
     pagination: { page: 1, pageSize: 8 },
-    sort: "activityDate:desc",
+    sort: "publishedAt:desc",
     populate: "coverImage",
     category: initialCategory,
   });
+  console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
 
   return (
-    <div className="mx-auto max-w-10xl px-4 my-10">
+    <div className="mx-auto max-w-7xl px-4 my-10">
       <div className="flex flex-col gap-6 items-center mb-6">
         <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
           Tin tức

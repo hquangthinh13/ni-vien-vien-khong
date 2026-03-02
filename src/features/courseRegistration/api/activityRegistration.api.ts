@@ -1,4 +1,4 @@
-import { getStrapiURL } from "@/lib/api";
+import { getStrapiURL } from "@/shared/lib/api";
 import type {
   ActivityRegistrationFormData,
   ActivityRegistrationResponse,

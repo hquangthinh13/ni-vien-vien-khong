@@ -7,7 +7,7 @@ import { X, LayoutGrid, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { fetchCalligraphiesByCategory } from "@/features/calligraphy/api/calligraphy.api";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 
 import type { Calligraphy } from "../model/calligraphy.types";
@@ -126,7 +126,7 @@ export default function CalligraphyList({
         </Tabs>
       </div>
 
-      <div className="w-full max-w-10xl">
+      <div className="w-full max-w-7xl">
         {" "}
         {items && items.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -205,7 +205,7 @@ export default function CalligraphyList({
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-card border shadow-2xl rounded-2xl w-full max-w-10xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
+              className="bg-card border shadow-2xl rounded-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex-1 aspect-square relative bg-black/5 flex items-center justify-center min-h-[300px] md:min-h-0 overflow-hidden">

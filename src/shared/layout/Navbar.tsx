@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-50 border-b bg-card">
-      <div className="mx-auto max-w-10xl p-4 grid grid-cols-3 items-center">
+      <div className="mx-auto max-w-7xl p-4 grid grid-cols-3 items-center">
         {" "}
         <Link className="flex  mr-auto" href="/">
           <Image

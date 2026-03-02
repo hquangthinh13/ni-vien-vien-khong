@@ -6,7 +6,7 @@ import { fetchPoemByDocumentId } from "@/features/poem/api/poem.api";
 import type { Poem } from "@/features/poem/model/poem.types";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
 export default async function PoemPage({
   params,
@@ -40,7 +40,7 @@ export default async function PoemPage({
   }
 
   return (
-    <div className="mx-auto max-w-10xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="flex flex-col gap-0 justify-center">
         <article className="w-full">
           <header className="space-y-2">

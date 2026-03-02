@@ -1,4 +1,4 @@
-import { getStrapiURL, buildQuery } from "@/lib/api";
+import { getStrapiURL, buildQuery } from "@/shared/lib/api";
 import { SimpleFetchOptions } from "@/types/strapi";
 import type { IntroductionPageResponse } from "../model/introductionPage.types";
 

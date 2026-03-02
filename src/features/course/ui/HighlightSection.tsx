@@ -4,7 +4,7 @@ import Image from "next/image";
 import { LayoutGrid, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { StrapiImageEntity } from "@/types/strapi";
-import { getImageUrl } from "@/lib/api";
+import { getImageUrl } from "@/shared/lib/api";
 const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
   const [index, setIndex] = useState<number | null>(null);
 
@@ -76,21 +76,21 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
             onClick={() => setIndex(null)}
           >
             <button
-              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-110"
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-110 hover:cursor-pointer"
               onClick={() => setIndex(null)}
             >
               <X size={32} />
             </button>
 
             <button
-              className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110"
+              className="absolute left-4 md:left-16 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110 hover:cursor-pointer"
               onClick={prevImage}
             >
               <ChevronLeft size={30} />
             </button>
 
             <button
-              className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110"
+              className="absolute right-4 md:right-16 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-110 hover:cursor-pointer"
               onClick={nextImage}
             >
               <ChevronRight size={30} />
@@ -112,7 +112,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
                 priority
               />
 
-              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm font-medium">
+              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm font-normal">
                 {index + 1} / {images.length}
               </div>
             </motion.div>

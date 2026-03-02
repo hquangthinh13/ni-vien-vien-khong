@@ -1,4 +1,4 @@
-import { getStrapiURL, buildQuery } from "@/lib/api";
+import { getStrapiURL, buildQuery } from "@/shared/lib/api";
 import type {
   RitualResponse,
   FetchRitualsOptions,

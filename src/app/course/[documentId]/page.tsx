@@ -1,18 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import HighlightSection from "@/features/course/ui/HighlightSection";
-import {
-  CalendarDays,
-  PlayCircle,
-  LayoutGrid,
-  Clock,
-  ChevronRight,
-  ExternalLink,
-} from "lucide-react";
-import {
-  BlocksRenderer,
-  type BlocksContent,
-} from "@strapi/blocks-react-renderer";
+import { CalendarDays, PlayCircle } from "lucide-react";
+
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
   Accordion,
@@ -20,17 +10,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shared/ui/accordion";
-import { Skeleton } from "@/shared/ui/skeleton";
 import lineOrnament from "@/public/ornament-01.svg";
 import { getVideoId, formatShortDate } from "@/shared/lib/utils";
-import { Course } from "@/features/course/model/course.types";
+import {
+  Activity,
+  CourseContent,
+} from "@/features/activity/model/activity.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
-import { fetchCourseByDocumentId } from "@/features/course/api/course.api";
-import { getImageUrl } from "@/lib/api";
-
-import CourseRegistrationSection from "@/features/courseRegistration/ui/CourseRegistrationSection";
-import { Button } from "@/shared/ui/button";
+import { fetchActivityByDocumentIdWithRegistrationFormAndCourseContent } from "@/features/activity/api/activity.api";
+import { getImageUrl } from "@/shared/lib/api";
 
 export default async function CoursePage({
   params,
@@ -39,44 +28,46 @@ export default async function CoursePage({
 }) {
   const locale = (await getLocale()) as Locale;
   const { documentId } = await params;
-  const response = await fetchCourseByDocumentId({
-    locale,
-    documentId: documentId,
-    populate: "*",
-  });
-
+  const response =
+    await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
+      locale,
+      documentId: documentId,
+      populate: "coverImage",
+    });
+  console.log("Fetched activity for documentId:", documentId, response);
   if (!response || !response.data) return null;
 
-  const data = response.data as Course;
-
-  const sortedVideos = data.videoSection?.length
-    ? [...data.videoSection].sort((a, b) => (a.day || 0) - (b.day || 0))
+  const data = response.data as Activity;
+  const courseContent = data.courseContent as CourseContent;
+  const sortedVideos = courseContent.videoSection?.length
+    ? [...courseContent.videoSection].sort(
+        (a, b) => (a.day || 0) - (b.day || 0),
+      )
     : [];
   return (
-
-    <div className="mx-auto max-w-10xl px-4 py-10">
+    <div className="mx-auto max-w-7xl px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
         <div className="lg:col-span-7 max-w-none text-justify leading-relaxed">
           <header className="flex flex-col items-start mb-6 space-y-2">
             <div className="flex items-start gap-2 text-primary font-medium text-sm uppercase tracking-widest">
-              <span>{data.category}</span>
+              <span>{courseContent.courseCategory}</span>
             </div>
             <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
-              {data.courseName}
+              {data.activityName}
             </h1>
-            {data.courseStartDate && data.courseEndDate && (
+            {data.activityStartDate && data.activityEndDate && (
               <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
                 <CalendarDays size={18} className="text-primary" />
                 <span>
-                  {formatShortDate(data.courseStartDate, locale)} —{" "}
-                  {formatShortDate(data.courseEndDate, locale)}
+                  {formatShortDate(data.activityStartDate, locale)} —{" "}
+                  {formatShortDate(data.activityEndDate, locale)}
                 </span>
               </div>
             )}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               <Image
                 src={getImageUrl(data.coverImage) || "/placeholder.jpg"}
-                alt={data.courseName}
+                alt={data.activityName || "Course cover image"}
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
@@ -86,12 +77,9 @@ export default async function CoursePage({
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
           </div>
-          {data.courseContent && (
-            <RichTextRenderer content={data.courseContent || []} />
-
-          )}
-          {data.videoSection && (
-            <section className="space-y-4">
+          {data.content && <RichTextRenderer content={data.content || []} />}
+          {courseContent.videoSection?.length && (
+            <section className="mt-6 space-y-4">
               <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
                 <PlayCircle size={20} className="text-primary" /> Video
               </h3>
@@ -157,70 +145,12 @@ export default async function CoursePage({
         </div>
 
         <aside className="lg:col-span-3 space-y-6">
-          {data.highlightedImages && (
-            <HighlightSection images={data.highlightedImages || []} />
+          {courseContent.highlightedImages && (
+            <HighlightSection images={courseContent.highlightedImages || []} />
           )}
-          <CourseRegistrationSection />
+          {/* <CourseRegistrationSection /> */}
         </aside>
       </div>
     </div>
   );
 }
-
-const LoadingSkeleton = () => {
-  return (
-
-    <div className="flex w-full px-4 py-10 mx-auto max-w-10xl">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-12">
-        {/* LEFT COLUMN — 7/10 */}
-        <div className="lg:col-span-7 flex flex-col gap-8">
-          {/* Header block */}
-          <div className="space-y-4">
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-6 w-1/3" />
-
-            {/* Banner */}
-            <div className="aspect-video w-full rounded-2xl overflow-hidden">
-              <Skeleton className="w-full h-full" />
-            </div>
-          </div>
-
-          {/* Content block */}
-          <div className="space-y-6 pt-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-[95%]" />
-            <Skeleton className="h-4 w-[85%]" />
-
-            {/* Mid image */}
-            <div className="aspect-video w-full rounded-xl overflow-hidden">
-              <Skeleton className="w-full h-full" />
-            </div>
-
-            <Skeleton className="h-4 w-[90%]" />
-            <Skeleton className="h-4 w-[80%]" />
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN — 3/10 */}
-        <aside className="lg:col-span-3 flex flex-col gap-8">
-          {/* Gallery block */}
-          <div className="space-y-4">
-            <Skeleton className="h-6 w-40" />
-
-            <div className="grid grid-cols-2 gap-3">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="aspect-square rounded-lg overflow-hidden"
-                >
-                  <Skeleton className="w-full h-full" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
-  );
-};

@@ -56,14 +56,6 @@
 
     "library": {
       "trigger": "Thư viện",
-      "items": [
-        { "title": "Nghi thức nghi lễ", "href": "/library/ritual" },
-        { "title": "Hình ảnh Ni Viện", "href": "/library/photos" },
-        { "title": "Thư pháp thư họa", "href": "/library/calligraphy" },
-        { "title": "Thơ thiền", "href": "/library/poem" },
-        { "title": "Vấn đáp Phật pháp", "href": "/library/question" },
-        { "title": "Pháp thoại", "href": "/phap-thoai" }
-      ],
       "sections": {
         "scriptures": {
           "title": "Tam tạng kinh điển",
@@ -82,7 +74,14 @@
           "pali": "Tài liệu học Pali",
           "others": "Danh mục sách khác"
         }
-      }
+      },
+      "items": [
+        { "title": "Nghi thức nghi lễ", "href": "/library/ritual" },
+        { "title": "Thư pháp thư họa", "href": "/library/calligraphy" },
+        { "title": "Thơ thiền", "href": "/library/poem" },
+        { "title": "Vấn đáp Phật pháp", "href": "/library/question" },
+        { "title": "Pháp thoại", "href": "/phap-thoai" }
+      ]
     },
     "visit": {
       "trigger": "Thăm viếng",

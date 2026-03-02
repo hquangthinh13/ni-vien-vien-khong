@@ -39,9 +39,6 @@ export default function useMenuConfig(): MenuItem[] {
     {
       title: t("library.trigger"),
       items: [
-        // Các mục library.items mặc định (Nghi thức, Hình ảnh, Thư pháp...)
-        ...t.raw("library.items"),
-
         // Mục: Tam tạng kinh điển (Submenu level 2)
         {
           title: t("library.sections.scriptures.title"),
@@ -96,7 +93,8 @@ export default function useMenuConfig(): MenuItem[] {
               href: "/library/book/others",
             },
           ],
-        },
+        }, // Các mục library.items mặc định (Nghi thức, Hình ảnh, Thư pháp...)
+        ...t.raw("library.items"),
       ],
     },
 
