@@ -49,7 +49,7 @@ const main = async () => {
           console.log("Document title:", doc.title);
           console.log("Category:", doc.category);
           console.log("Link:", doc.link);
-          console.log("Has cover image:", !!doc.coverImage);
+          // console.log("Has cover image:", !!doc.coverImage);
           console.log("Created at:", doc.createdAt || "N/A");
         }
       } catch (error) {
