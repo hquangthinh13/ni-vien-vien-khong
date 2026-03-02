@@ -48,7 +48,7 @@ const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
                     : ""}
                 </span>
                 <h5 className="flex text-sm md:text-md font-bold group-hover:text-primary transition-colors leading-tight">
-                  {item.title}
+                  {item.activityName}
                 </h5>
               </div>
             </div>
