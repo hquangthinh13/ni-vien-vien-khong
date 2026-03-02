@@ -46,7 +46,7 @@ export default async function Home() {
           {/* Left */}
           <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
             <MotionWrapper>
-              <section className="flex flex-col pt-4 border-t md:border-0">
+              <section className="flex flex-col pt-4 md:pt-0 border-t md:border-0">
                 <div className="flex justify-between items-center">
                   <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                     Tin tức
