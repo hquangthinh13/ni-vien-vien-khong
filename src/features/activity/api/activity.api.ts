@@ -152,16 +152,26 @@ export async function fetchActivitiesByMonth(
   }
   const query = buildQuery(options, false) as URLSearchParams;
   // Date range filter: first day to last day of month
-  const startDate = new Date(options.year, options.month - 1, 0)
-    .toISOString()
-    .split("T")[0];
-  const endDate = new Date(options.year, options.month, 0)
-    .toISOString()
-    .split("T")[0];
+  // const startDate = new Date(options.year, options.month - 1, 0)
+  //   .toISOString()
+  //   .split("T")[0];
+  // const endDate = new Date(options.year, options.month, 0)
+  //   .toISOString()
+  //   .split("T")[0];
+  function toDateString(year: number, month: number, day: number) {
+    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  }
 
-  query.set("filters[activityDate][$gte]", startDate);
-  query.set("filters[activityDate][$lte]", endDate);
+  const startDate = toDateString(options.year, options.month, 1);
 
+  const lastDay = new Date(options.year, options.month, 0).getDate();
+
+  const endDate = toDateString(options.year, options.month, lastDay);
+
+  // query.set("filters[activityStartDate][$gte]", startDate);
+  // query.set("filters[activityEndDate][$lte]", endDate);
+  query.set("filters[activityStartDate][$gte]", startDate);
+  query.set("filters[activityStartDate][$lte]", endDate);
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
   );

@@ -42,7 +42,7 @@ export default async function QuestionSection() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4 my-4">
+    <div className="grid grid-cols-1 md:grid-cols-1 w-full gap-4 my-4">
       {questions.map((item) => (
         <QuestionCard key={item.id} question={item} />
       ))}
