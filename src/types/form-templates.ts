@@ -74,9 +74,9 @@ export interface RelationComponent {
 }
 
 // Routine Detail Component //
-export type DietaryRequirement = "Ăn Chay" | "Ăn thường";
+export type DietaryRequirement = "Ăn chay" | "Ăn thường";
 export enum DietaryRequirementEnum {
-  Vegetarian = "Ăn Chay",
+  Vegetarian = "Ăn chay",
   NonVegetarian = "Ăn thường",
 }
 export interface RoutineComponent {

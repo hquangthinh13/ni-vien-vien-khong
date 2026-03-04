@@ -39,7 +39,7 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
           </figure>
         ),
         paragraph: ({ children }) => (
-          <p className="mb-6 text-foreground/90 leading-7 text-justify">
+          <p className="not-last:mb-6 text-foreground/90 leading-7 text-justify">
             {children}
           </p>
         ),

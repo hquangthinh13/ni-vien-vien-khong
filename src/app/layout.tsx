@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Oswald, Fira_Code } from "next/font/google";
+import {
+  EB_Garamond,
+  Oswald,
+  Fira_Code,
+  Montserrat,
+  Merriweather,
+  Merriweather_Sans,
+} from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import Footer from "@/shared/layout/Footer";
@@ -14,15 +21,27 @@ const ebGaramond = EB_Garamond({
   display: "swap",
 });
 
-const oswald = Oswald({
+const montserrat = Montserrat({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-oswald",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  variable: "--font-fira-code",
+const merriweather = Merriweather({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-merriweather",
+  display: "swap",
+});
+
+const merriweatherSans = Merriweather_Sans({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-merriweather-sans",
+  display: "swap",
+});
+
+const oswald = Oswald({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -38,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${ebGaramond.variable} ${oswald.variable} ${firaCode.variable} antialiased`}
+      className={`${ebGaramond.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} antialiased`}
     >
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />

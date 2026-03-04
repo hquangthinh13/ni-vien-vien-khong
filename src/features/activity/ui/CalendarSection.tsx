@@ -59,7 +59,7 @@ const CalendarSection = async () => {
           <div className="flex-1 p-3">
             <UpcomingEventCard />
           </div>
-          <div className="flex min-h-[448px] items-center lg:items-start justify-center">
+          <div className="flex min-h-[474px] items-center lg:items-start justify-center">
             <EventCalendar />
           </div>
         </div>

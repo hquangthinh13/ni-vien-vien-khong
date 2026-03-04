@@ -76,7 +76,7 @@ export default async function Home() {
                     {t("foreword")}
                   </h2>
                 </div>
-                <p className="flex mt-4 max-w-lg leading-snug text-justify italic text-muted-foreground">
+                <p className="flex mt-4 max-w-lg leading-snug text-justify text-muted-foreground">
                   {data?.openingMessage}
                 </p>
               </section>{" "}
@@ -97,9 +97,6 @@ export default async function Home() {
                   </div>
                 </div>
                 <CourseSection />
-                {/* <div className="mt-4">
-              <CourseRegistrationSection />
-            </div> */}
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>

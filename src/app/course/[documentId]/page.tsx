@@ -3,6 +3,7 @@ import Image from "next/image";
 import HighlightSection from "@/features/course/ui/HighlightSection";
 import {
   CalendarDays,
+  CirclePlus,
   MessageCircleQuestionMark,
   PlayCircle,
 } from "lucide-react";
@@ -168,15 +169,16 @@ export default async function CoursePage({
               <Button
                 size="lg"
                 variant="default"
-                className="cursor-pointer w-full"
+                className="cursor-pointer w-full uppercase tracking-wider"
               >
+                {" "}
+                <CirclePlus />
                 Đăng ký tham gia
-                <MessageCircleQuestionMark />
               </Button>
             </DialogTrigger>
             <DialogContent
               aria-describedby="Registration form"
-              className="max-h-[90vh] overflow-y-auto"
+              className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
             >
               <DialogTitle>Đăng ký tham gia</DialogTitle>
               <DynamicActivityRegistrationForm

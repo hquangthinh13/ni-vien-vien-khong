@@ -9,14 +9,21 @@ import { Card, CardContent } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
-
+import { CirclePlus } from "lucide-react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogTrigger,
+} from "@/shared/ui/dialog";
+import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 const UpcomingEventCard = async () => {
   const locale = (await getLocale()) as Locale;
 
   const response = await fetchActiveActivities({
     locale,
     populate: "*",
-    sort: "activityStartDate:asc",
+    sort: ["activityStartDate:asc"],
     pagination: { page: 1, pageSize: 1 },
   });
 
@@ -24,6 +31,7 @@ const UpcomingEventCard = async () => {
     ? (response.data[0] ?? null)
     : (response?.data ?? null);
 
+  const documentId = activity?.documentId as string;
   if (!activity)
     return (
       <section className="w-full flex flex-1 max-w-4xl mx-auto">
@@ -86,15 +94,29 @@ const UpcomingEventCard = async () => {
           </Card>{" "}
         </Link>
         {activity.registrationForm && (
-          <Link href="#" target="_blank" rel="noopener noreferrer">
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full hover:cursor-pointer uppercase tracking-wider"
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                size="lg"
+                variant="default"
+                className="cursor-pointer w-full uppercase tracking-wider"
+              >
+                {" "}
+                <CirclePlus />
+                Đăng ký tham gia
+              </Button>
+            </DialogTrigger>
+            <DialogContent
+              aria-describedby="Registration form"
+              className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
             >
-              {locale === "vi" ? "Đăng ký tham gia" : "Register Now"}
-            </Button>
-          </Link>
+              <DialogTitle>Đăng ký tham gia</DialogTitle>
+              <DynamicActivityRegistrationForm
+                locale={locale}
+                documentId={documentId}
+              />
+            </DialogContent>
+          </Dialog>
         )}
       </div>
     </section>
