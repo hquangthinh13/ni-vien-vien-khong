@@ -5,6 +5,7 @@ import lineOrnament from "@/public/ornament-01.svg";
 import type { Locale } from "@/types/locale";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import ActivityList from "@/features/activity/ui/ActivityList";
+import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
 export default async function ActivityPage({
   searchParams,
 }: {
@@ -33,12 +34,16 @@ export default async function ActivityPage({
   return (
     <div className="mx-auto max-w-7xl px-4 my-10">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
-          Tin tức
-        </h2>
-        <div className="opacity-80">
-          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-        </div>
+        <TextMotionWrapper delay={0.2} className="text-center">
+          <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
+            Tin tức
+          </h2>
+        </TextMotionWrapper>
+        <TextMotionWrapper delay={0.2}>
+          <div className="opacity-80">
+            <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
+          </div>{" "}
+        </TextMotionWrapper>
       </div>
       <div className="flex flex-1 w-full flex-col items-stretch">
         {" "}

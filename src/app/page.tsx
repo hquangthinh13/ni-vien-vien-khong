@@ -18,7 +18,7 @@ import { fetchHomePage } from "@/features/homePage/api/homePage.api";
 import { HomePageAttributes } from "@/features/homePage/model/homePage.types";
 import { getImageUrl } from "@/shared/lib/api";
 import { MessageCircleQuestionMark } from "lucide-react";
-import MotionWrapper from "@/shared/layout/MotionWrapper";
+import MotionWrapper from "@/shared/motion/MotionWrapper";
 export default async function Home() {
   const t = await getTranslations("HomePage");
   const locale = (await getLocale()) as Locale;
@@ -66,15 +66,6 @@ export default async function Home() {
             <MotionWrapper>
               <CalendarSection />{" "}
             </MotionWrapper>{" "}
-            {/* <MotionWrapper>
-              <section className="flex flex-col pt-4 border-t">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Sự kiện sắp tới
-                  </h2>{" "}
-                </div>
-              </section>{" "}
-            </MotionWrapper> */}
           </div>
           {/* Right */}
           <div className="flex flex-col md:w-[30%] md:border-l p-4 gap-4">

@@ -3,8 +3,8 @@ import { isValidLocale } from "@/types/locale";
 import {
   fetchRituals,
   fetchRitualByDocumentId,
-} from "@/features/Ritual/api/ritual.api";
-import type { Ritual } from "@/features/Ritual/model/ritual.types";
+} from "@/features/ritual/api/ritual.api";
+import type { Ritual } from "@/features/ritual/model/ritual.types";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 const documentId = process.argv[3]

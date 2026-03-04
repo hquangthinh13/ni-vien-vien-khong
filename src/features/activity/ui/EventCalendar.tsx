@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar } from "@/shared/ui/calendar";
+import { Calendar } from "@/shared/ui/calendar-modified";
 import { Card, CardContent } from "@/shared/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { format, isSameDay, isWithinInterval, parseISO } from "date-fns";

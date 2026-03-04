@@ -1,7 +1,18 @@
 import React from "react";
 import Image from "next/image";
 import HighlightSection from "@/features/course/ui/HighlightSection";
-import { CalendarDays, PlayCircle } from "lucide-react";
+import {
+  CalendarDays,
+  MessageCircleQuestionMark,
+  PlayCircle,
+} from "lucide-react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogTrigger,
+} from "@/shared/ui/dialog";
+import { Button } from "@/shared/ui/button";
 
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
@@ -20,6 +31,7 @@ import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
 import { fetchActivityByDocumentIdWithRegistrationFormAndCourseContent } from "@/features/activity/api/activity.api";
 import { getImageUrl } from "@/shared/lib/api";
+import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 
 export default async function CoursePage({
   params,
@@ -46,9 +58,10 @@ export default async function CoursePage({
     : [];
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-        <div className="lg:col-span-7 max-w-none text-justify leading-relaxed">
-          <header className="flex flex-col items-start mb-6 space-y-2">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
+        {" "}
+        <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
+          <header className="flex flex-col w-full items-start mb-6 space-y-2">
             <div className="flex items-start gap-2 text-primary font-medium text-sm uppercase tracking-widest">
               <span>{courseContent.courseCategory}</span>
             </div>
@@ -77,9 +90,11 @@ export default async function CoursePage({
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
           </div>
-          {data.content && <RichTextRenderer content={data.content || []} />}
+          <div className="w-full">
+            {data.content && <RichTextRenderer content={data.content || []} />}
+          </div>{" "}
           {courseContent.videoSection?.length && (
-            <section className="mt-6 space-y-4">
+            <section className="w-full mt-6 space-y-4">
               <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
                 <PlayCircle size={20} className="text-primary" /> Video
               </h3>
@@ -143,12 +158,33 @@ export default async function CoursePage({
             </section>
           )}
         </div>
-
-        <aside className="lg:col-span-3 space-y-6">
+        <aside className="lg:col-span-3 w-full space-y-6">
           {courseContent.highlightedImages && (
             <HighlightSection images={courseContent.highlightedImages || []} />
           )}
           {/* <CourseRegistrationSection /> */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                size="lg"
+                variant="default"
+                className="cursor-pointer w-full"
+              >
+                Đăng ký tham gia
+                <MessageCircleQuestionMark />
+              </Button>
+            </DialogTrigger>
+            <DialogContent
+              aria-describedby="Registration form"
+              className="max-h-[90vh] overflow-y-auto"
+            >
+              <DialogTitle>Đăng ký tham gia</DialogTitle>
+              <DynamicActivityRegistrationForm
+                locale={locale}
+                documentId={documentId}
+              />
+            </DialogContent>
+          </Dialog>
         </aside>
       </div>
     </div>

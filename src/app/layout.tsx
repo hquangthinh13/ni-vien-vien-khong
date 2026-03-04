@@ -6,7 +6,7 @@ import Footer from "@/shared/layout/Footer";
 import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
-import MotionWrapper from "@/shared/layout/MotionWrapper";
+import MotionWrapper from "@/shared/motion/MotionWrapper";
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin", "vietnamese"],
@@ -27,10 +27,6 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-  },
   title: "Ni Viện Viên Không",
   description: "Ni Viện Viên Không",
 };
@@ -44,7 +40,7 @@ export default function RootLayout({
     <html
       className={`${ebGaramond.variable} ${oswald.variable} ${firaCode.variable} antialiased`}
     >
-      <body className={`min-h-screen flex flex-col bg-white`}>
+      <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
           {children} <Toaster position="top-right" richColors />

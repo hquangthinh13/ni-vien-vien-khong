@@ -1,9 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import EventCalendar from "@/features/activity/ui/EventCalendar";
-import calendarBackground from "@/public/calendar-base.png";
-import calendarBackgroundMobile from "@/public/calendar-bg.jpg";
-import mainImage from "@/public/test_img.jpg";
+import calendarBackground from "@/public/calendar-bg.jpg";
 import UpcomingEventCard from "./UpcomingEventCard";
 import calendarDecoration01 from "@/public/calendar-decoration.png";
 import calendarDecoration02 from "@/public/calendar-decoration-01.png";
@@ -13,7 +11,7 @@ const CalendarSection = async () => {
     <div className="relative w-full overflow-hidden rounded-lg border">
       {/* Background */}
       <Image
-        src={calendarBackgroundMobile}
+        src={calendarBackground}
         alt="Desktop Background"
         fill
         className="object-cover -z-10"
@@ -25,7 +23,7 @@ const CalendarSection = async () => {
           alt="Character"
           width={260}
           height={260}
-          className="drop-shadow-xl object-cover w-64 h-auto"
+          className="drop-shadow-xl object-cover w-72 h-auto"
         />
       </div>
       <div className="hidden lg:block absolute -bottom-5 -right-10 z-20 pointer-events-none">
@@ -51,7 +49,7 @@ const CalendarSection = async () => {
           </div>
           <span className="font-serif text-2xl text-center font-bold uppercase text-primary">
             Lịch hoạt động trong tháng
-          </span>
+          </span>{" "}
           <p className="text-center text-md text-secondary-foreground leading-0 italic">
             (Chọn ngày có khoanh tròn để xem lịch)
           </p>

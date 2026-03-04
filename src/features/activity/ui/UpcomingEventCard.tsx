@@ -24,7 +24,21 @@ const UpcomingEventCard = async () => {
     ? (response.data[0] ?? null)
     : (response?.data ?? null);
 
-  if (!activity) return null;
+  if (!activity)
+    return (
+      <section className="w-full flex flex-1 max-w-4xl mx-auto">
+        <div className="flex w-full flex-col gap-4">
+          <h2 className="text-lg text-center font-bold font-serif uppercase">
+            {locale === "vi" ? "Sự kiện sắp diễn ra" : "Upcoming Event"}
+          </h2>
+          <p className="text-center text-secondary-foreground italic">
+            {locale === "vi"
+              ? "Hiện tại không có sự kiện nào sắp diễn ra."
+              : "There are currently no upcoming events."}
+          </p>
+        </div>
+      </section>
+    );
 
   const imageUrl = getImageUrl(activity.coverImage, "medium");
 
@@ -44,7 +58,7 @@ const UpcomingEventCard = async () => {
         <h2 className="text-lg text-center font-bold font-serif uppercase">
           {locale === "vi" ? "Sự kiện sắp diễn ra" : "Upcoming Event"}
         </h2>
-        <Link href={`/activity/${activity.id}`} className="w-full">
+        <Link href={`/activity/${activity.documentId}`} className="w-full">
           <Card className="flex flex-col w-full overflow-hidden p-0 gap-0 hover:cursor-pointer hover:transition-transform hover:scale-[1.02] ease-in-out duration-200">
             {/* Image */}
             {imageUrl && (
@@ -60,7 +74,9 @@ const UpcomingEventCard = async () => {
 
             {/* Content */}
             <CardContent className="flex flex-col gap-2 p-4">
-              <h3 className="font-semibold text-lg">{activity.activityName}</h3>
+              <h3 className="font-semibold text-card-foreground text-md">
+                {activity.activityName}
+              </h3>
 
               <span className="text-sm text-muted-foreground">
                 {startFormatted}
