@@ -18,7 +18,8 @@
     "test:poem": "tsx scripts/test-poem-service.ts",
     "test:ritual": "tsx scripts/test-ritual-service.ts",
     "test:introduction": "tsx scripts/test-introduction-page-service.ts",
-    "test:history": "tsx scripts/test-history-page-service.ts"
+    "test:history": "tsx scripts/test-history-page-service.ts",
+    "test:rule": "tsx scripts/test-rule-page.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

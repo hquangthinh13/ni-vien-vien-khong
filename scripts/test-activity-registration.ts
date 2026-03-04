@@ -22,8 +22,8 @@ async function testCreateActivityRegistration() {
   try {
     const formBasicInfo: BasicInfoComponent = {
       fullName: "Nguyen Van A",
-      dob: "1990-01-01",
-      gender: "Male",
+      dob: "2005-01-01",
+      gender: "Female",
       phoneNumber: "0917671949",
       email: "abc@gmail.com",
       address: "123 Main St",
@@ -56,7 +56,8 @@ async function testCreateActivityRegistration() {
     const formOtherInfo: OtherDetail = {
       weight: 60,
       height: 165,
-      question: "This is an additional question",
+      question:
+        "This is a very important question that the registree want to ask the organizer before joining the activity, and the organizer should answer this question as soon as possible to help the registree have a better experience in the activity",
     };
 
     const registrationPayload = {
@@ -85,4 +86,6 @@ async function testCreateActivityRegistration() {
   }
 }
 
-testCreateActivityRegistration();
+for (let i = 0; i < 50; i++) {
+  testCreateActivityRegistration();
+}

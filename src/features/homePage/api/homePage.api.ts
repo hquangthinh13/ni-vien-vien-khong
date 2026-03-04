@@ -13,7 +13,7 @@ const AUTHORIZED_TOKEN =
   process.env.NEXT_PUBLIC_STRAPI_API_TOKEN ||
   "";
 
-// ============ 1. Fetch Home Page (with optional population) ============
+// ============ 1. Fetch Home Page (with optional population) ============ //
 
 export async function fetchHomePage(
   options: SimpleFetchOptions = {},
