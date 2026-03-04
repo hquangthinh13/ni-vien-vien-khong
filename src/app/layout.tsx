@@ -14,7 +14,6 @@ import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
-
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
   variable: "--font-lora",
