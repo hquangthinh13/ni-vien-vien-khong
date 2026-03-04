@@ -192,7 +192,7 @@ export default function EventCalendar() {
               }}
               modifiersClassNames={{
                 hasEventCurrentMonth:
-                  "[&_button]:border [&_button]:border-3 [&_button]:border-primary [&_button]:rounded-full",
+                  "[&_button]:border [&_button]:border-2 [&_button]:border-primary [&_button]:rounded-full",
 
                 hasEventOutsideMonth:
                   "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground [&_button]:rounded-full [&_button]:opacity-60",

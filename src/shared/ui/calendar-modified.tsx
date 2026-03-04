@@ -90,7 +90,10 @@ function Calendar({
         ),
         table:
           "w-full border-collapse border-spacing-x-2 border-spacing-y-2 table-fixed ",
-        weekdays: cn("", defaultClassNames.weekdays),
+        weekdays: cn(
+          "border-b border-muted-foreground/90",
+          defaultClassNames.weekdays,
+        ),
         weekday: cn(
           "text-center text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none",
           defaultClassNames.weekday,
@@ -118,7 +121,7 @@ function Calendar({
         range_middle: cn("rounded-none", defaultClassNames.range_middle),
         range_end: cn("rounded-r-md bg-accent", defaultClassNames.range_end),
         today: cn(
-          "[&_button]:border [&_button]:border-3 [&_button]:border-secondary-foreground [&_button]:rounded-full",
+          "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground/60 [&_button]:rounded-full",
           defaultClassNames.today,
         ),
         outside: cn(
@@ -210,7 +213,7 @@ function CalendarDayButton({
         data-range-end={modifiers.range_end}
         data-range-middle={modifiers.range_middle}
         className={cn(
-          "cursor-pointer font-serif data-[selected-single=true]:bg-primary rounded-full data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px]  [&>span]:text-xs [&>span]:opacity-70",
+          "cursor-pointer font-sans font-semibold data-[selected-single=true]:bg-primary rounded-full data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px]  [&>span]:text-xs [&>span]:opacity-70",
           defaultClassNames.day,
           className,
         )}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import {
   EB_Garamond,
   Oswald,
-  Fira_Code,
+  Lora,
   Montserrat,
   Merriweather,
   Merriweather_Sans,
@@ -15,6 +15,11 @@ import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 
+const lora = Lora({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-lora",
+  display: "swap",
+});
 const ebGaramond = EB_Garamond({
   subsets: ["latin", "vietnamese"],
   variable: "--font-eb-garamond",
@@ -57,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${ebGaramond.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} antialiased`}
+      className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} antialiased`}
     >
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />

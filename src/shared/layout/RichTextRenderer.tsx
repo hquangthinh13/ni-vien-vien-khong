@@ -18,7 +18,7 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
       content={content}
       blocks={{
         image: ({ image }) => (
-          <figure className="my-8 space-y-3">
+          <figure className="lg:px-64 my-8 space-y-3">
             <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm">
               <Image
                 src={image.url}
