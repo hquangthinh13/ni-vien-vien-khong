@@ -144,3 +144,22 @@ export const parseTimeToDecimal = (timeStr: string) => {
   const minutes = parseInt(parts[1], 10);
   return hours + minutes / 60;
 };
+
+export const isRichTextEmpty = (
+  content: BlocksContent | null | undefined,
+): boolean => {
+  if (!content || !Array.isArray(content) || content.length === 0) {
+    return true;
+  }
+
+  return content.every((block) => {
+    if (!block.children || block.children.length === 0) return true;
+
+    return block.children.every((child) => {
+      if ("text" in child) {
+        return child.text.trim() === "";
+      }
+      return false;
+    });
+  });
+};

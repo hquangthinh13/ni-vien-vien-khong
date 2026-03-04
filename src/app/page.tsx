@@ -18,7 +18,7 @@ import { fetchHomePage } from "@/features/homePage/api/homePage.api";
 import { HomePageAttributes } from "@/features/homePage/model/homePage.types";
 import { getImageUrl } from "@/shared/lib/api";
 import { MessageCircleQuestionMark } from "lucide-react";
-import MotionWrapper from "@/shared/layout/MotionWrapper";
+import MotionWrapper from "@/shared/motion/MotionWrapper";
 export default async function Home() {
   const t = await getTranslations("HomePage");
   const locale = (await getLocale()) as Locale;
@@ -62,16 +62,43 @@ export default async function Home() {
                 </div>
                 <NewsSection />
               </section>{" "}
+            </MotionWrapper>{" "}
+            <MotionWrapper>
+              <CalendarSection />{" "}
+            </MotionWrapper>{" "}
+          </div>
+          {/* Right */}
+          <div className="flex flex-col md:w-[30%] md:border-l p-4 gap-4">
+            <MotionWrapper>
+              <section className="flex flex-col">
+                <div className="flex w-fit">
+                  <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+                    {t("foreword")}
+                  </h2>
+                </div>
+                <p className="flex mt-4 max-w-lg leading-snug text-justify text-muted-foreground">
+                  {data?.openingMessage}
+                </p>
+              </section>{" "}
             </MotionWrapper>
-            {/* <MotionWrapper>
+            <MotionWrapper>
               <section className="flex flex-col pt-4 border-t">
                 <div className="flex justify-between items-center">
                   <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Sự kiện sắp tới
+                    Khóa tu
                   </h2>{" "}
+                  <div className="flex gap-2">
+                    <Link
+                      href="/course"
+                      className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
+                    >
+                      Xem thêm
+                    </Link>
+                  </div>
                 </div>
+                <CourseSection />
               </section>{" "}
-            </MotionWrapper> */}
+            </MotionWrapper>{" "}
             <MotionWrapper>
               <section className="flex flex-1 flex-col pt-4 border-t">
                 <div className="flex justify-between items-center">
@@ -109,47 +136,9 @@ export default async function Home() {
                   </Link>
                 </div>
               </section>{" "}
-            </MotionWrapper>
-          </div>
-          {/* Right */}
-          <div className="flex flex-col md:w-[30%] md:border-l p-4 gap-4">
-            <MotionWrapper>
-              <section className="flex flex-col">
-                <div className="flex w-fit">
-                  <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    {t("foreword")}
-                  </h2>
-                </div>
-                <p className="flex mt-4 max-w-lg leading-snug text-justify italic text-muted-foreground">
-                  {data?.openingMessage}
-                </p>
-              </section>{" "}
-            </MotionWrapper>
-            <MotionWrapper>
-              <section className="flex flex-col pt-4 border-t">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Khóa tu
-                  </h2>{" "}
-                  <div className="flex gap-2">
-                    <Link
-                      href="/course"
-                      className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
-                    >
-                      Xem thêm
-                    </Link>
-                  </div>
-                </div>
-                <CourseSection />
-                {/* <div className="mt-4">
-              <CourseRegistrationSection />
-            </div> */}
-              </section>{" "}
-            </MotionWrapper>
+            </MotionWrapper>{" "}
           </div>
         </div>
-
-        {/* <CalendarSection /> */}
       </div>{" "}
     </div>
   );

@@ -11,8 +11,8 @@ export default async function CourseSection() {
     const res = await fetchActivitiesByCategory({
       locale,
       category: category,
-      sort: "activityStartDate:desc",
-      pagination: { limit: 5 },
+      sort: ["activityStartDate:desc"],
+      pagination: { limit: 4 },
       populate: "*",
     });
     console.log("Fetched courses:", category, res);

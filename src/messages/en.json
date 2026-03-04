@@ -1,88 +1,122 @@
 {
   "Navbar": {
     "activity": {
-      "trigger": "Activity",
+      "trigger": "News",
+      "href": "/activity",
       "items": [
         {
-          "title": "Sangha Activities",
-          "href": "/phat-su",
-          "desc": "Buddhist community activities and events"
+          "title": "Domestic Buddhist Activities",
+          "href": "/activity?category=domestic",
+          "desc": ""
         },
-        { "title": "Dharma Classes", "href": "/lop-hoc", "desc": "" },
-        { "title": "Other News", "href": "/tin-tuc-khac", "desc": "" }
+        {
+          "title": "International Buddhist Activities",
+          "href": "/activity?category=international",
+          "desc": ""
+        },
+        {
+          "title": "Dharma Classes",
+          "href": "/activity?category=dharma-class",
+          "desc": ""
+        },
+        {
+          "title": "Other News",
+          "href": "/activity?category=others",
+          "desc": ""
+        }
       ]
     },
     "about": {
       "trigger": "About",
       "items": [
-        { "title": "Practice Schedule", "href": "/thoi-khoa", "desc": "" },
-        { "title": "Other Monasteries", "href": "/cac-tu-vien", "desc": "" }
-      ]
-    },
-    "course": {
-      "trigger": "Retreats",
-      "items": [
-        { "title": "Summer Retreat", "href": "khoa-tu-mua-he", "desc": "" },
         {
-          "title": "Short-term Ordination Retreat",
-          "href": "khoa-tu-xuat-gia-gieo-duyen",
+          "title": "Vien Khong Nunnery – Past and Present",
+          "href": "/introduction/past-and-present",
           "desc": ""
         },
         {
-          "title": "2-Day Meditation Retreat",
-          "href": "khoa-thien",
+          "title": "The Serenity of Vien Khong",
+          "href": "/introduction/scenery-of-vien-khong",
+          "desc": ""
+        },
+        {
+          "title": "Daily Practice Schedule",
+          "href": "/introduction/schedule",
+          "desc": ""
+        },
+        {
+          "title": "Other Monasteries",
+          "href": "/introduction/others",
           "desc": ""
         }
       ]
     },
     "library": {
       "trigger": "Library",
+      "sections": {
+        "scriptures": {
+          "title": "The Tipiṭaka",
+          "english": "English",
+          "vietnamese": {
+            "title": "Vietnamese",
+            "sutta": "Sutta Piṭaka",
+            "vinaya": "Vinaya Piṭaka",
+            "abhidhamma": "Abhidhamma Piṭaka"
+          }
+        },
+        "books": {
+          "title": "Book Collection",
+          "author1": "Books by Patriarch Ho Tong",
+          "author2": "Books by Most Venerable Vien Minh",
+          "pali": "Pali Study Materials",
+          "others": "Other Books"
+        }
+      },
       "items": [
-        { "title": "Rituals & Ceremonies", "href": "/nghi-thuc", "desc": "" },
-        { "title": "Nunnery Gallery", "href": "/hinh-anh", "desc": "" },
-        { "title": "Calligraphy & Art", "href": "/thu-phap", "desc": "" },
-        { "title": "Zen Poetry", "href": "/tho-thien", "desc": "" },
-        { "title": "Dharma Q&A", "href": "/video", "desc": "" }
+        { "title": "Ritual Ceremonies", "href": "/library/ritual" },
+        { "title": "Calligraphy & Painting", "href": "/library/calligraphy" },
+        { "title": "Zen Poetry", "href": "/library/poem" },
+        { "title": "Dharma Q&A", "href": "/library/question" },
+        { "title": "Dharma Talks", "href": "/library/dharma-talk" }
       ]
     },
     "visit": {
       "trigger": "Visit",
       "items": [
-        {
-          "title": "Guest Rules & Regulations",
-          "href": "/noi-quy",
-          "desc": ""
-        },
-        {
-          "title": "Directions to the Nunnery",
-          "href": "/duong-den",
-          "desc": ""
-        }
+        { "title": "Visitor Guidelines", "href": "/rule", "desc": "" },
+        { "title": "How to Get to the Nunnery", "href": "/contact", "desc": "" }
       ]
     },
-    "contact": "Contact",
-    "menu": "Menu",
-    "home": "Home"
+    "course": {
+      "trigger": "Retreats",
+      "href": "/course"
+    },
+    "home": {
+      "trigger": "Home",
+      "href": "/"
+    },
+    "menu": "Menu"
   },
   "Footer": {
     "contact": "Contact",
-    "highlight": "Featured Categories",
+    "highlight": "Highlights",
     "highlight-01": "Retreats",
     "highlight-02": "Dharma Talks",
-    "highlight-03": "Tripitaka (Buddhist Canon)",
+    "highlight-03": "The Tipiṭaka",
     "highlight-04": "News",
     "follow": "Follow Us",
     "address": "Address",
-    "address-01": "Group 2, Hamlet 4, Chau Pha Commune, Ho Chi Minh City, Vietnam"
+    "phone": "Phone",
+    "email": "Email"
   },
   "HomePage": {
-    "foreword": "Opening Words"
+    "foreword": "Foreword"
   },
   "ContactPage": {
-    "title": "Ways to the Nunnery",
-    "map-caption": "Click on the map for directions"
+    "title": "Directions to the Nunnery",
+    "map-caption": "Click the map to get directions"
   },
   "CoursePage": {
-    "title": "Retreat Courses"
+    "title": "Retreats"
   }
 }

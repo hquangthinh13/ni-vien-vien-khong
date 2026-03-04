@@ -1,82 +1,66 @@
 import React from "react";
 import Image from "next/image";
 import EventCalendar from "@/features/activity/ui/EventCalendar";
-import calendarBackground from "@/public/calendar-base.png";
-import calendarBackgroundMobile from "@/public/calendar-bg.jpg";
-import mainImage from "@/public/test_img.jpg";
-import calendarCharacter from "@/public/calendar-character.png";
+import calendarBackground from "@/public/calendar-bg.jpg";
+import UpcomingEventCard from "./UpcomingEventCard";
 import calendarDecoration01 from "@/public/calendar-decoration.png";
 import calendarDecoration02 from "@/public/calendar-decoration-01.png";
-
-import { MyEvent } from "@/features/activity/ui/EventCalendar";
-
+import ornament from "@/public/ornament-01.svg";
 const CalendarSection = async () => {
   return (
-    <div className=" max-w-7xl lg:aspect-video aspect-square min-h-128 mx-auto relative flex w-full border justify-center lg:justify-center items-start rounded-lg p-0 overflow-hidden">
-      <div className="absolute -left-10 top-0 -z-20 h-[54%] aspect-video shadow-lg rounded-sm overflow-hidden">
-        <Image
-          src={mainImage}
-          alt="Corner Decoration"
-          fill
-          sizes="28vw"
-          className="object-cover "
-        />
-      </div>{" "}
+    <div className="relative w-full overflow-hidden rounded-lg border">
+      {/* Background */}
       <Image
         src={calendarBackground}
         alt="Desktop Background"
         fill
-        className="hidden lg:block object-cover -z-10"
-        loading="eager"
+        className="object-cover -z-10"
+        priority
       />
-      <Image
-        src={calendarBackgroundMobile}
-        alt="Mobile Background"
-        fill
-        className="block lg:hidden object-cover -z-10 opacity-100"
-      />
-      <div
-        className="hidden lg:block absolute lg:left-[33%] -translate-x-1/2 bottom-[25%] z-10
-                lg:scale-150 "
-      >
-        <Image
-          src={calendarCharacter}
-          alt="Character"
-          width={280}
-          height={280}
-          className="object-cover"
-        />
-      </div>
-      <div className="hidden origin-top scale-75 lg:scale-120 lg:block absolute left-[8%] -translate-x-1/2 top-0 z-20 pointer-events-none">
+      <div className="hidden origin-top scale-75 lg:scale-100 lg:block absolute left-[10%] -translate-x-1/2 top-0 z-20 pointer-events-none">
         <Image
           src={calendarDecoration01}
           alt="Character"
           width={260}
           height={260}
-          className="drop-shadow-xl"
+          className="drop-shadow-xl object-cover w-72 h-auto"
         />
       </div>
-      {/* <div className="hidden lg:scale-110 origin-right lg:block absolute -right-9 top-[90%] -translate-y-1/2 z-20 pointer-events-none">
-          <Image
-            src={calendarDecoration02}
-            alt="Character"
-            width={260}
-            height={260}
-            className="drop-shadow-xl scale-x-[-1]"
-          />
-        </div> */}
-      <div className="absolute inset-0 flex px-4 lg:py-24 h-full items-center lg:items-start justify-center lg:justify-end md:pr-8">
-        <div className="flex mt-[5vh] lg:mt-[2vh]">
-          <div className="flex gap-4 flex-col min-h-[426.2px]">
-            <div className="flex flex-col gap-2">
-              <span className="font-serif text-2xl text-center font-bold uppercase text-primary">
-                Lịch hoạt động trong tháng
-              </span>
-              <p className="text-center text-md text-secondary-foreground italic">
-                (Chọn ngày có khoanh tròn để xem lịch)
-              </p>
-            </div>
-            {/* <EventCalendar events={events} />{" "} */}
+      <div className="hidden lg:block absolute -bottom-5 -right-10 z-20 pointer-events-none">
+        <Image
+          src={calendarDecoration02}
+          alt="Decoration"
+          width={260}
+          height={260}
+          className="w-64 h-auto drop-shadow-xl scale-x-[-1]"
+        />
+      </div>
+      {/* Content */}
+      <div className="relative flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 mt-6 mb-4">
+          <div className="flex items-center justify-center">
+            <Image
+              src={ornament}
+              alt="Ornament"
+              width={32}
+              height={32}
+              className="object-cover w-8 h-auto opacity-70"
+            />
+          </div>
+          <span className="font-serif text-2xl text-center font-bold uppercase text-primary">
+            Lịch hoạt động trong tháng
+          </span>{" "}
+          <p className="text-center text-md text-secondary-foreground leading-0 italic">
+            (Chọn ngày có khoanh tròn để xem lịch)
+          </p>
+        </div>
+
+        <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start gap-0 lg:gap-6">
+          <div className="flex-1 p-3">
+            <UpcomingEventCard />
+          </div>
+          <div className="flex min-h-[500px] items-center lg:items-start justify-center">
+            <EventCalendar />
           </div>
         </div>
       </div>
