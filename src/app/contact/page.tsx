@@ -7,6 +7,10 @@ import lineOrnament from "@/public/ornament-01.svg";
 import { fetchContactPageFields } from "@/features/contact/api/contactPage.api";
 import { Locale } from "@/types/locale";
 import { getLocale } from "next-intl/server";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Đường đến Ni Viện",
+};
 const Contact = async () => {
   const locale = (await getLocale()) as Locale;
 

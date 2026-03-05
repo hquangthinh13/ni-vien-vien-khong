@@ -28,7 +28,7 @@ const CourseSidebarCard = async ({
 
   return (
     <Link
-      href={`/course/${course.documentId}`}
+      href={`/activity/${course.slug}-${course.documentId}`}
       className="group block w-full border-b border-border/50 pb-2 last:border-0 last:pb-0 transition-all"
     >
       <div className="flex gap-3">
@@ -44,15 +44,14 @@ const CourseSidebarCard = async ({
           )}
         </div>
         <div className="flex flex-col justify-start space-y-1 min-w-0">
+          <div className="flex items-center">
+            <span className="text-xs font-medium text-muted-foreground tracking-tight">
+              {startDate} {endDate ? `- ${endDate}` : ""}
+            </span>
+          </div>
           <h4 className="text-sm font-semibold text-foreground line-clamp-4 leading-snug group-hover:text-primary transition-colors">
             {course.activityName || "Untitled Course"}
           </h4>
-
-          <div className="flex items-center">
-            <span className="text-xs font-medium text-muted-foreground tracking-tight">
-              {startDate} - {endDate}
-            </span>
-          </div>
         </div>
       </div>
     </Link>

@@ -6,6 +6,10 @@ import type { Locale } from "@/types/locale";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import ActivityList from "@/features/activity/ui/ActivityList";
 import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Tin tức",
+};
 export default async function ActivityPage({
   searchParams,
 }: {

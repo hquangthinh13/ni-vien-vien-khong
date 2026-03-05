@@ -1,12 +1,8 @@
-"use client";
-
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { Clock, ScrollText } from "lucide-react";
+import { ScrollText } from "lucide-react";
 import { useLocale } from "next-intl";
 import { formatFriendlyDate } from "@/shared/lib/utils";
-import { getImageUrl } from "@/shared/lib/api";
 import { Activity } from "../model/activity.types";
 import { Locale } from "@/types/locale";
 
@@ -14,12 +10,12 @@ interface RelatedActivitiesProps {
   activities: Activity[];
 }
 
-const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
+const RelatedActivitiesSection = ({ activities }: RelatedActivitiesProps) => {
   const locale = useLocale() as Locale;
   // console.log("RelatedActivities - activities prop:", activities);
   if (!activities || activities.length === 0) return null;
   return (
-    <div className="space-y-4">
+    <section className="space-y-4">
       <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
         <ScrollText size={20} className="text-primary" /> Tin liên quan
       </h3>
@@ -27,20 +23,10 @@ const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
         {activities.map((item) => (
           <Link
             key={item.documentId}
-            href={`/activity/${item.documentId}`}
+            href={`/activity/${item.slug}-${item.documentId}`}
             className="group block"
           >
             <div className="flex gap-2 ">
-              {/* <div className="relative h-24 w-32 md:w-24 shrink-0 overflow-hidden rounded-md shadow-sm">
-                <Image
-                  src={getImageUrl(item.coverImage) || "/placeholder-image.png"}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 768px) 128px, 160px"
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div> */}
-
               <div className="flex flex-col justify-start flex-1 gap-1">
                 <span className="flex text-[10px] md:text-xs text-muted-foreground items-center">
                   {item?.publishedAt
@@ -55,8 +41,8 @@ const RelatedActivities = ({ activities }: RelatedActivitiesProps) => {
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
-export default RelatedActivities;
+export default RelatedActivitiesSection;

@@ -5,8 +5,11 @@ import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
 import type { Locale } from "@/types/locale";
 import type { CourseCategory } from "@/types/categories";
-import CourseList from "@/features/course/ui/CourseList";
-
+import CourseList from "@/features/activity/ui/CourseList";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Khóa tu",
+};
 export default async function CoursePage({
   searchParams,
 }: {

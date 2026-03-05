@@ -622,6 +622,7 @@ export default function ActivityRegistrationForm({
         );
     }
   };
+  console.log("Current template state:", template);
 
   if (!template)
     return <div className="text-center p-10">Đang tải biểu mẫu...</div>;
@@ -1158,7 +1159,9 @@ export default function ActivityRegistrationForm({
             </div>
           )}
           {/* Section: Dynamic Components */}
-          {template.customizedComponents.length > 0 && (
+          {template.customizedComponents?.some(
+            (comp) => comp.section === FormSectionEnum.Others,
+          ) && (
             <div className="pt-4 border-t space-y-4">
               <h3 className="font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin bổ sung

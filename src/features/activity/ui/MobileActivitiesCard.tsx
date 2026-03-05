@@ -13,13 +13,13 @@ export default async function MobileActivitiesCard({
 }: MobileCardProps) {
   const locale = (await getLocale()) as Locale;
 
-  const { documentId, activityName, coverImage, content, publishedAt } =
+  const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
   const imageUrl = getImageUrl(coverImage);
 
   return (
     <Link
-      href={`/activity/${documentId}`}
+      href={`/activity/${slug}-${documentId}`}
       className="flex gap-4 not-first:pt-2 not-last:pb-2 border-b last:border-0 items-start"
     >
       <div className="group relative h-24 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted">

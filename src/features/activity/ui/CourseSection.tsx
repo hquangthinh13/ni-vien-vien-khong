@@ -12,8 +12,8 @@ export default async function CourseSection() {
       locale,
       category: category,
       sort: ["activityStartDate:desc"],
-      pagination: { limit: 4 },
-      populate: "*",
+      pagination: { limit: 5 },
+      populate: "coverImage",
     });
     console.log("Fetched courses:", category, res);
     const data = Array.isArray(res?.data)
