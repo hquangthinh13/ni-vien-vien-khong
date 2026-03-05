@@ -35,10 +35,10 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
   const embedUrl = getEmbedUrl(question.videoResponseContent?.videoLink);
 
   return (
-    <div className="w-full overflow-hidden bg-white border border-border rounded-xl shadow-sm transition-all hover:shadow-md">
+    <div className="w-full overflow-hidden bg-white border-t-6 odd:border-primary even:border-accent rounded-xl shadow-sm transition-all hover:shadow-md">
       <Dialog>
         <DialogTrigger asChild>
-          <div className="w-full flex-1 h-full text-left outline-none group border-l-6 border-primary cursor-pointer flex flex-col p-4 gap-1 bg-orange-50/30 hover:bg-orange-100/40 transition-colors">
+          <div className="w-full flex-1 h-full text-left outline-none group b cursor-pointer flex flex-col p-4 gap-1 bg-orange-50/30 hover:bg-orange-100/40 transition-colors">
             {" "}
             <p className="text-lg font-bold text-foreground leading-tight line-clamp-2">
               {" "}

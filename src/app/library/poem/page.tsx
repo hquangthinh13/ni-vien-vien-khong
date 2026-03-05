@@ -1,4 +1,4 @@
-import { fetchPoems } from "@/features/poem/api/poem.api"; // Adjust path
+import { fetchPoems } from "@/features/poem/api/poem.api";
 import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";

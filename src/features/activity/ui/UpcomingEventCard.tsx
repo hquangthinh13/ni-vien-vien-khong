@@ -66,7 +66,10 @@ const UpcomingEventCard = async () => {
         <h2 className="text-lg text-center font-bold font-serif uppercase">
           {locale === "vi" ? "Sự kiện sắp diễn ra" : "Upcoming Event"}
         </h2>
-        <Link href={`/activity/${activity.documentId}`} className="w-full">
+        <Link
+          href={`/activity/${activity.slug}-${documentId}`}
+          className="w-full"
+        >
           <Card className="flex flex-col w-full overflow-hidden p-0 gap-0 hover:cursor-pointer hover:transition-transform hover:scale-[1.02] ease-in-out duration-200">
             {/* Image */}
             {imageUrl && (

@@ -13,12 +13,12 @@ interface ActivityCardProps {
   locale: Locale;
 }
 const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
-  const { documentId, activityName, coverImage, content, publishedAt } =
+  const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
   const imageUrl = getImageUrl(coverImage);
   const description = content ? extractFirstParagraph(content) : "";
   return (
-    <Link href={`/activity/${documentId}`}>
+    <Link href={`/activity/${slug}-${documentId}`}>
       <Card className="mx-auto w-full h-full flex flex-col py-0 gap-0 hover:shadow-lg transition overflow-hidden delay-150 duration-300 ease-in-out">
         <Image
           src={imageUrl || "/placeholder.jpg"}

@@ -5,11 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Activity } from "@/features/activity/model/activity.types";
 import { getImageUrl } from "@/shared/lib/api";
-import {
-  formatFriendlyDate,
-  extractFirstParagraph,
-  formatShortDate,
-} from "@/shared/lib/utils";
+import { formatFriendlyDate, extractFirstParagraph } from "@/shared/lib/utils";
 import type { Locale } from "@/types/locale";
 
 interface CourseCardProps {
@@ -17,12 +13,18 @@ interface CourseCardProps {
   locale: Locale;
 }
 const CourseCard = ({ course, locale }: CourseCardProps) => {
-  const { documentId, activityName, coverImage, content, activityStartDate } =
-    course;
+  const {
+    slug,
+    documentId,
+    activityName,
+    coverImage,
+    content,
+    activityStartDate,
+  } = course;
   const imageUrl = getImageUrl(coverImage);
   const description = content ? extractFirstParagraph(content) : "";
   return (
-    <Link href={`/course/${documentId}`}>
+    <Link href={`/activity/${slug}-${documentId}`}>
       <Card className="mx-auto w-full h-full flex flex-col py-0 gap-0 hover:shadow-lg transition overflow-hidden delay-150 duration-300 ease-in-out">
         <Image
           src={imageUrl || "/placeholder.jpg"}

@@ -14,7 +14,6 @@ import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
-
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
   variable: "--font-lora",
@@ -51,7 +50,10 @@ const oswald = Oswald({
 });
 
 export const metadata: Metadata = {
-  title: "Ni Viện Viên Không",
+  title: {
+    default: "Ni Viện Viên Không",
+    template: "%s | Ni Viện Viên Không", // %s sẽ được thay thế bằng title của page con
+  },
   description: "Ni Viện Viên Không",
 };
 
