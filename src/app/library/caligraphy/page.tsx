@@ -15,6 +15,7 @@ const CaligraphyPage = async () => {
     category: initialCategory,
     pagination: { page: 1, pageSize: 12 },
     populate: "*",
+    sort: ["title:asc"],
   });
 
   const initialData = Array.isArray(res.data) ? res.data : [];

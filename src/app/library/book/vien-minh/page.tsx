@@ -15,7 +15,7 @@ export default async function VienMinhListPage({
   const locale = (await getLocale()) as Locale;
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
-  const pageSize = 9;
+  const pageSize = 12;
 
   const response = await fetchLinkedDocumentsByCategory({
     category: "Sách Sư Ông Viên Minh",
@@ -24,7 +24,7 @@ export default async function VienMinhListPage({
       page: currentPage,
       pageSize: pageSize,
     },
-    sort: "createdAt:desc",
+    sort: ["title:asc"],
     populate: "*",
   });
   const docs = Array.isArray(response.data) ? response.data : [];
@@ -41,7 +41,7 @@ export default async function VienMinhListPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {docs.map((doc) => (
           <LinkedDocumentCard key={doc.documentId} doc={doc} />
         ))}

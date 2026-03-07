@@ -15,7 +15,7 @@ export default async function SuttaListPage({
   const locale = (await getLocale()) as Locale;
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
-  const pageSize = 15;
+  const pageSize = 12;
 
   const response = await fetchLinkedDocumentsByCategory({
     category: "Tạng Luật",
@@ -24,7 +24,7 @@ export default async function SuttaListPage({
       page: currentPage,
       pageSize: pageSize,
     },
-    sort: "createdAt:desc",
+    sort: ["title:asc"],
     populate: "*",
   });
   const docs = Array.isArray(response.data) ? response.data : [];
@@ -41,7 +41,7 @@ export default async function SuttaListPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {docs.map((doc) => (
           <LinkedDocumentCard key={doc.documentId} doc={doc} />
         ))}

@@ -13,7 +13,7 @@ export default async function PoemListPage({
   const locale = (await getLocale()) as Locale;
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
-  const pageSize = 8;
+  const pageSize = 9;
 
   const response = await fetchPoems({
     locale,
@@ -21,7 +21,7 @@ export default async function PoemListPage({
       page: currentPage,
       pageSize: pageSize,
     },
-    sort: "createdAt:desc",
+    sort: ["title:asc"],
     populate: "*",
   });
   // console.log("Poem fetch response:", response);
@@ -39,7 +39,7 @@ export default async function PoemListPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {poems.map((poem) => (
           <PoemCard key={poem.documentId} poem={poem} />
         ))}

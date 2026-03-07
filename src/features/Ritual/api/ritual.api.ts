@@ -12,7 +12,7 @@ const AUTHORIZED_TOKEN =
   "";
 
 // ============ 1. Fetch All Rituals ============
-
+//
 export async function fetchRituals(
   options: FetchRitualsOptions = {},
 ): Promise<RitualResponse> {

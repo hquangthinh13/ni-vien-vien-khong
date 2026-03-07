@@ -45,7 +45,7 @@ export default async function ActivityPage({
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: "coverImage",
+        populate: "*",
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {

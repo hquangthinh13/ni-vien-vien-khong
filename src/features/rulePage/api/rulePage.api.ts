@@ -8,8 +8,6 @@ const AUTHORIZED_TOKEN =
   process.env.NEXT_PUBLIC_STRAPI_API_TOKEN ||
   "";
 
-// ============ 1. Fetch History Page (with optional population) ============
-
 export async function fetchRulePage(
   options: SimpleFetchOptions = {},
 ): Promise<RulePageResponse> {
