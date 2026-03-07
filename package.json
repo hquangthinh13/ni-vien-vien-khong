@@ -7,6 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    
     "test:build-registration-form": "tsx scripts/test-build-registration-form.tsx",
     "test:contact": "tsx scripts/test-contact-page.ts",
     "test:activity": "tsx scripts/test-activity-service.ts",
