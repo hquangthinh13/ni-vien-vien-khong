@@ -19,8 +19,8 @@ export default async function RulePage() {
     notFound();
   }
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-12">
+    <div className="mx-auto max-w-7xl px-4 py-8 min-h-lvh">
+      <div className="flex flex-col gap-12">
         <article className="">
           <header className="space-y-2">
             <div className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest">
@@ -35,7 +35,7 @@ export default async function RulePage() {
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
           </div>
 
-          {/* <RichTextRenderer content={data?.content || []} /> */}
+          <RichTextRenderer content={data?.content || []} />
           <div className="opacity-80 flex w-full justify-center my-8">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
           </div>
