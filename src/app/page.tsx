@@ -122,29 +122,6 @@ export default async function Home() {
                   <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                     Vấn đáp Phật pháp
                   </h2>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <div className="flex w-full justify-end">
-                        <Button
-                          size="lg"
-                          variant="outline"
-                          className="cursor-pointer"
-                        >
-                          Đặt câu hỏi <MessageCircleQuestionMark />
-                        </Button>
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent
-                      aria-describedby="Question form"
-                      className="max-h-[90vh] overflow-y-auto"
-                    >
-                      <DialogTitle>Đặt câu hỏi</DialogTitle>
-                      <QuestionForm locale={locale} />
-                    </DialogContent>
-                  </Dialog>
-                </div>
-                <QuestionSection />
-                <div className="flex w-full justify-end">
                   <Link
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
@@ -152,6 +129,58 @@ export default async function Home() {
                     Xem thêm
                   </Link>
                 </div>
+                <QuestionSection />
+                {/* <div className="flex w-full justify-end">
+                  <Link
+                    href="/library/question"
+                    className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
+                  >
+                    Xem thêm
+                  </Link>
+                </div> */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
+                      {/* Decor: Một vòng tròn mờ ở góc tạo điểm nhấn */}
+                      <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
+
+                      <div className="relative flex items-center justify-between">
+                        <div className="flex flex-col gap-0">
+                          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+                            {locale === "vi"
+                              ? "Bạn có thắc mắc?"
+                              : "Have a Question?"}
+                          </span>
+                          <h4 className="font-serif text-xl font-black uppercase tracking-normal text-secondary-foreground">
+                            {locale === "vi"
+                              ? "Đặt câu hỏi cho chúng tôi"
+                              : "Ask a Question"}
+                          </h4>
+                        </div>
+
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+                          <MessageCircleQuestionMark className="h-6 w-6" />
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="flex w-full justify-end">
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="cursor-pointer"
+                      >
+                        Đặt câu hỏi <MessageCircleQuestionMark />
+                      </Button>
+                    </div> */}
+                  </DialogTrigger>
+                  <DialogContent
+                    aria-describedby="Question form"
+                    className="max-h-[90vh] overflow-y-auto"
+                  >
+                    <DialogTitle>Đặt câu hỏi</DialogTitle>
+                    <QuestionForm locale={locale} />
+                  </DialogContent>
+                </Dialog>
               </section>{" "}
             </MotionWrapper>{" "}
           </div>
