@@ -45,7 +45,7 @@ export default function Navbar() {
           <LanguageSwitcher />
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden">
+              <Button aria-label="Menu" variant="ghost" size="icon" className="lg:hidden">
                 <Menu />
               </Button>
             </SheetTrigger>
