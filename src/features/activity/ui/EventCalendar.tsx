@@ -10,7 +10,6 @@ import { CalendarIcon } from "lucide-react";
 import type { Locale } from "@/types/locale";
 import type { Activity } from "@/features/activity/model/activity.types";
 import { fetchActivitiesByMonth } from "@/features/activity/api/activity.api";
-import { useLocale } from "next-intl";
 
 type MonthKey = `${number}-${string}`;
 
@@ -49,8 +48,7 @@ function activityIntersectsDay(a: Activity, day: Date): boolean {
   return isWithinInterval(day, { start, end });
 }
 
-export default function EventCalendar() {
-  const locale = useLocale() as Locale;
+export default function EventCalendar({ locale }: { locale: Locale }) {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     new Date(),
   );

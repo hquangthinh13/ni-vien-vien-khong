@@ -46,7 +46,7 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-xs tracking-wider">
+            <span className="text-xs tracking-wider font-mono">
               {publishedAt ? formatFriendlyDate(publishedAt, locale) : ""}
             </span>
           </div>

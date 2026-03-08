@@ -38,13 +38,15 @@ export default async function ActivitiesSection() {
         </section>
         <section className="hidden lg:flex flex-col">
           {/* Row 1: 12-Column Grid for 70/30 split */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 border-b pb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border-b pb-4">
             {rowOne.map(
               (post, index) =>
                 post && (
                   <div
                     key={post.id}
-                    className={index === 0 ? "lg:border-r pr-4" : ""}
+                    className={
+                      index === 0 ? "lg:border-r pr-4" : "lg:border-r pl-4"
+                    }
                   >
                     <SimplifiedNewsCard
                       key={post.id}
@@ -58,15 +60,17 @@ export default async function ActivitiesSection() {
           </div>
 
           {/* Row 2: 3-Column Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4 ">
             {rowTwo.map(
               (post) =>
                 post && (
-                  <SimplifiedNewsCard
-                    key={post.id}
-                    activity={post}
-                    variant="bottom"
-                  />
+                  <div key={post.id} className="not-last:border-r pr-4">
+                    <SimplifiedNewsCard
+                      key={post.id}
+                      activity={post}
+                      variant="bottom"
+                    />
+                  </div>
                 ),
             )}
           </div>

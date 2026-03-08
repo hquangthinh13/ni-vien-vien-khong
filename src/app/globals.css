@@ -51,7 +51,7 @@
   --sidebar-ring: oklch(0.5553 0.1455 48.9975);
   --font-sans: Merriweather, ui-serif, serif;
   --font-serif: Oswald, ui-serif, serif;
-  --font-mono: B612 Mono, ui-monospace, monospace;
+  --font-mono: Montserrat, ui-monospace, monospace;
   --radius: 0.35rem;
   --shadow-x: 2px;
   --shadow-y: 2px;
@@ -116,7 +116,7 @@
   --sidebar-ring: oklch(0.7049 0.1867 47.6044);
   --font-sans: Merriweather, ui-serif, serif;
   --font-serif: Oswald, ui-serif, serif;
-  --font-mono: B612 Mono, ui-monospace, monospace;
+  --font-mono: Montserrat, ui-monospace, monospace;
   --radius: 0.35rem;
   --shadow-x: 2px;
   --shadow-y: 2px;

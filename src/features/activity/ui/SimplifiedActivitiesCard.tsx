@@ -21,22 +21,30 @@ const SimplifiedNewsCard = async ({
     activity;
   if (isFirst === false && variant === "bottom") {
     return (
-      <Link href={`/activity/${slug}-${documentId}`} className="flex flex-col">
+      <Link
+        href={`/activity/${slug}-${documentId}`}
+        className="flex flex-col gap-1"
+      >
+        <span className="text-xs text-muted-foreground font-mono">
+          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+        </span>
         <div className="flex gap-4 items-baseline group">
-          <p className="text-muted-foreground select-none" aria-hidden="true">
+          {/* <p className="text-muted-foreground select-none" aria-hidden="true">
             •
-          </p>
+          </p> */}
 
-          <h3 className="text-md line-clamp-4 font-bold leading-snug group-hover:text-primary cursor-pointer">
+          <h3 className="text-md line-clamp-4 font-bold leading-snug group-hover:text-primary cursor-pointer mb-2">
             {activityName || "Untitled Activity"}
           </h3>
         </div>
         <div className="flex gap-4 items-baseline group">
-          <p className="opacity-0 select-none" aria-hidden="true">
+          {/* <p className="opacity-0 select-none" aria-hidden="true">
             •
-          </p>
+          </p> */}
 
-          <p className={`line-clamp-3 text-sm text-secondary-foreground`}>
+          <p
+            className={`line-clamp-3 text-sm text-secondary-foreground/80 font-mono`}
+          >
             {extractFirstParagraph(content)}
           </p>
         </div>
@@ -46,10 +54,10 @@ const SimplifiedNewsCard = async ({
   // TOP ROW:
   return (
     <Link href={`/activity/${slug}-${documentId}`}>
-      <div className="flex flex-col lg:flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {/* {isFirst &&  */}
         {coverImage && variant === "top" && (
-          <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start">
+          <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
             {(() => {
               const imageUrl = getImageUrl(coverImage);
               return imageUrl ? (
@@ -65,7 +73,7 @@ const SimplifiedNewsCard = async ({
         )}
 
         <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground font-mono">
             {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
           </span>
           <h3
@@ -74,7 +82,7 @@ const SimplifiedNewsCard = async ({
             {activityName}
           </h3>
           <p
-            className={` ${!isFirst ? "line-clamp-2" : "line-clamp-2"} text-sm text-secondary-foreground`}
+            className={`line-clamp-2 text-sm text-secondary-foreground/80 font-mono`}
           >
             {extractFirstParagraph(content)}
           </p>

@@ -28,7 +28,7 @@ const RelatedActivitiesSection = ({ activities }: RelatedActivitiesProps) => {
           >
             <div className="flex gap-2 ">
               <div className="flex flex-col justify-start flex-1 gap-1">
-                <span className="flex text-[10px] md:text-xs text-muted-foreground items-center">
+                <span className="flex text-[10px] md:text-xs text-muted-foreground items-center font-mono">
                   {item?.publishedAt
                     ? formatFriendlyDate(item.publishedAt, locale)
                     : ""}

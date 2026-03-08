@@ -81,7 +81,7 @@ export default async function Home() {
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>
-              <CalendarSection />{" "}
+              <CalendarSection locale={locale} />{" "}
             </MotionWrapper>{" "}
           </div>
           {/* Right */}

@@ -16,7 +16,7 @@ export default async function QuestionSection() {
     const response = await fetchAnsweredQuestions({
       locale,
       sort: ["publishedAt:desc"],
-      pagination: { page: 1, pageSize: 2 },
+      pagination: { page: 1, pageSize: 5 },
       populate: "*",
     });
     // console.log(response);

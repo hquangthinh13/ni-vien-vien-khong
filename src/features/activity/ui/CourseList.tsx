@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import CourseCard from "./CourseCard";
+import ActivityVibrantCard from "./ActivityVibrantCard";
 import { fetchCoursesByCategory } from "@/features/activity/api/activity.api";
 import type { Activity } from "@/features/activity/model/activity.types";
 import type { CourseCategory } from "@/types/categories";
@@ -105,13 +105,10 @@ export default function CourseList({
 
       <div className="w-full max-w-7xl">
         {courses.length > 0 ? (
-          <div className="flex flex-wrap gap-4 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
             {courses.map((course) => (
-              <div
-                key={course.documentId}
-                className="w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
-              >
-                <CourseCard course={course} locale={locale} />
+              <div key={course.documentId} className="w-full">
+                <ActivityVibrantCard activity={course} locale={locale} />
               </div>
             ))}
           </div>

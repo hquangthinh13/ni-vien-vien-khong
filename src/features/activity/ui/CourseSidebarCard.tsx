@@ -32,7 +32,7 @@ const CourseSidebarCard = async ({
       className="group block w-full border-b border-border/50 pb-2 last:border-0 last:pb-0 transition-all"
     >
       <div className="flex gap-3">
-        <div className="flex relative aspect-video md:aspect-4/3 w-36 sm:w-32 shrink-0 overflow-hidden rounded-md bg-muted">
+        <div className="flex relative aspect-video w-36 sm:w-32 shrink-0 overflow-hidden rounded-md bg-muted">
           {coverImageUrl && (
             <Image
               src={coverImageUrl}
@@ -45,11 +45,11 @@ const CourseSidebarCard = async ({
         </div>
         <div className="flex flex-col justify-start space-y-1 min-w-0">
           <div className="flex items-center">
-            <span className="text-xs font-medium text-muted-foreground tracking-tight">
+            <span className="text-xs font-mono text-muted-foreground tracking-tight">
               {startDate} {endDate ? `- ${endDate}` : ""}
             </span>
           </div>
-          <h4 className="text-sm font-semibold text-foreground line-clamp-4 leading-snug group-hover:text-primary transition-colors">
+          <h4 className="text-sm font-semibold text-foreground line-clamp-2 leading-snug group-hover:text-primary transition-colors">
             {course.activityName || "Untitled Course"}
           </h4>
         </div>
