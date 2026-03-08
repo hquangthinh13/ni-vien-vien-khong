@@ -59,6 +59,7 @@ export default async function ActivityPage({
   }
 
   const data = response.data as Activity;
+  console.log("Fetched activity data:", data);
   const courseContent = data?.courseContent as CourseContent;
   const videoList = courseContent?.videoSection || [];
   const sortedVideos = [...videoList].sort(
@@ -71,17 +72,21 @@ export default async function ActivityPage({
         {" "}
         <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
           <header className="flex flex-col w-full items-start mb-6 space-y-2">
-            {courseContent?.courseCategory && (
-              <div className="flex items-start gap-2 text-primary font-medium text-sm uppercase tracking-widest">
+            {courseContent?.courseCategory ? (
+              <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
                 <span>{courseContent.courseCategory}</span>
+              </div>
+            ) : (
+              <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
+                <span>{data.activityCategory}</span>
               </div>
             )}
             <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
               {data.activityName}
             </h1>
             {data.activityStartDate && data.activityEndDate && (
-              <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
-                <CalendarDays size={18} className="text-primary" />
+              <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
+                <CalendarDays size={18} className="" />
                 <span>
                   {formatShortDate(data.activityStartDate, locale)} —{" "}
                   {formatShortDate(data.activityEndDate, locale)}
@@ -181,15 +186,30 @@ export default async function ActivityPage({
           )}
           <Dialog>
             <DialogTrigger asChild>
-              <Button
-                size="lg"
-                variant="default"
-                className="cursor-pointer w-full uppercase tracking-wider"
-              >
-                {" "}
-                <CirclePlus />
-                Đăng ký tham gia
-              </Button>
+              <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
+                {/* Decor: Một vòng tròn mờ ở góc tạo điểm nhấn */}
+                <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
+
+                <div className="relative flex items-center justify-between">
+                  <div className="flex flex-col gap-0">
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+                      {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
+                    </span>
+                    <h4 className="font-serif text-xl font-black uppercase tracking-normal text-secondary-foreground">
+                      {locale === "vi" ? "Đăng ký ngay" : "Register Now"}
+                    </h4>
+                    {/* <p className="text-xs text-muted-foreground italic">
+                      {locale === "vi"
+                        ? "* Số lượng đăng ký có hạn"
+                        : "* Limited slots available"}
+                    </p> */}
+                  </div>
+
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+                    <CirclePlus className="h-6 w-6" />
+                  </div>
+                </div>
+              </div>
             </DialogTrigger>
             <DialogContent
               aria-describedby="Registration form"

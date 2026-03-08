@@ -21,8 +21,8 @@ export default async function PastAndPresentPage() {
       <div className="flex flex-col lg:flex-row gap-12">
         <article className="">
           <header className="space-y-2">
-            <div className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest">
-              <span>Giới thiệu</span>
+            <div className="text-center text-primary text-sm uppercase tracking-widest font-mono font-bold">
+              <span className="">Giới thiệu</span>
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">

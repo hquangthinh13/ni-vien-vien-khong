@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import ActivityCard from "./ActivityCard";
 import { fetchActivitiesByCategory } from "../api/activity.api";
 import type { Activity } from "../model/activity.types";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-
+import ActivityVibrantCard from "./ActivityVibrantCard";
 interface ActivityListProps {
   initialActivities: Activity[];
   initialCategory: ActivityCategoryType;
@@ -111,13 +110,10 @@ export default function ActivityList({
 
       <div className="w-full max-w-7xl">
         {activities.length > 0 ? (
-          <div className="flex flex-wrap gap-4 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
             {activities.map((activity) => (
-              <div
-                key={activity.documentId}
-                className="w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
-              >
-                <ActivityCard activity={activity} locale={locale} />
+              <div key={activity.documentId} className="w-full">
+                <ActivityVibrantCard activity={activity} locale={locale} />
               </div>
             ))}
           </div>

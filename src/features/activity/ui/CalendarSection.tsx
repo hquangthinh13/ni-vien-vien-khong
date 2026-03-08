@@ -2,11 +2,12 @@ import React from "react";
 import Image from "next/image";
 import EventCalendar from "@/features/activity/ui/EventCalendar";
 import calendarBackground from "@/public/calendar-bg.jpg";
-import UpcomingEventCard from "./UpcomingEventCard";
+import UpcomingEventSection from "./UpcomingEventSection";
 import calendarDecoration01 from "@/public/calendar-decoration.png";
 import calendarDecoration02 from "@/public/calendar-decoration-01.png";
 import ornament from "@/public/ornament-01.svg";
-const CalendarSection = async () => {
+import type { Locale } from "@/types/locale";
+const CalendarSection = async ({ locale }: { locale: Locale }) => {
   return (
     <div className="relative w-full overflow-hidden rounded-lg border">
       {/* Background */}
@@ -23,7 +24,7 @@ const CalendarSection = async () => {
           alt="Character"
           width={260}
           height={260}
-          className="drop-shadow-xl object-cover w-72 h-auto"
+          className="drop-shadow-xl object-cover w-80 h-auto"
         />
       </div>
       <div className="hidden lg:block absolute -bottom-5 -right-10 z-20 pointer-events-none">
@@ -32,7 +33,7 @@ const CalendarSection = async () => {
           alt="Decoration"
           width={260}
           height={260}
-          className="w-64 h-auto drop-shadow-xl scale-x-[-1]"
+          className="w-80 h-auto drop-shadow-xl scale-x-[-1]"
         />
       </div>
       {/* Content */}
@@ -47,20 +48,28 @@ const CalendarSection = async () => {
               className="object-cover w-8 h-auto opacity-70"
             />
           </div>
-          <span className="font-serif text-2xl text-center font-bold uppercase text-primary">
-            Lịch hoạt động trong tháng
-          </span>{" "}
-          <p className="text-center text-md text-secondary-foreground leading-0 italic">
-            (Chọn ngày có khoanh tròn để xem lịch)
+          <div className="flex items-center justify-center w-fit mx-auto">
+            {" "}
+            <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+              {locale === "vi"
+                ? "Lịch hoạt động trong tháng"
+                : "Monthly Activity Calendar"}
+            </h2>{" "}
+          </div>
+
+          <p className="text-center text-xs uppercase tracking-wide text-secondary-foreground leading-0 font-mono">
+            {locale === "vi"
+              ? "Chọn ngày có khoanh tròn để xem lịch"
+              : "Select a date with a circle to view the schedule"}
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start gap-0 lg:gap-6">
-          <div className="flex-1 p-3">
-            <UpcomingEventCard />
+        <div className="flex flex-col-reverse lg:flex-row justify-center lg:justify-between items-center lg:items-start gap-0 lg:gap-4">
+          <div className="flex-1 w-full p-3">
+            <UpcomingEventSection locale={locale} />
           </div>
-          <div className="flex min-h-[500px] items-center lg:items-start justify-center">
-            <EventCalendar />
+          <div className="flex lg:min-h-[500px] items-center lg:items-start justify-center">
+            <EventCalendar locale={locale} />
           </div>
         </div>
       </div>
