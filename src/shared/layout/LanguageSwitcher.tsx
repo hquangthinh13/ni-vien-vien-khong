@@ -35,6 +35,7 @@ export function LanguageSwitcher() {
       variant="ghost"
       size="lg"
       onClick={toggleLanguage}
+      disabled={true}
       className="flex items-center gap-2 hover:cursor-pointer transition-all"
     >
       {currentLocale === "vi" ? (

@@ -195,8 +195,10 @@ export default async function ActivityPage({
                     <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
                       {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
                     </span>
-                    <h4 className="font-serif text-xl font-black uppercase tracking-normal text-secondary-foreground">
-                      {locale === "vi" ? "Đăng ký ngay" : "Register Now"}
+                    <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
+                      {locale === "vi"
+                        ? "Điền thông tin đăng ký ngay"
+                        : "Register Now"}
                     </h4>
                     {/* <p className="text-xs text-muted-foreground italic">
                       {locale === "vi"
