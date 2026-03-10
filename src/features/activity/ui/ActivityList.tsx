@@ -1,133 +1,146 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import { fetchActivitiesByCategory } from "../api/activity.api";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { Activity } from "../model/activity.types";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import ActivityVibrantCard from "./ActivityVibrantCard";
+import { Button } from "@/shared/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
 interface ActivityListProps {
   initialActivities: Activity[];
   initialCategory: ActivityCategoryType;
   locale: Locale;
+  paginationMeta?: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+  currentPage: number;
 }
 
 export default function ActivityList({
   initialActivities,
   initialCategory,
   locale,
+  paginationMeta,
+  currentPage,
 }: ActivityListProps) {
-  const [activities, setActivities] = useState<Activity[]>(initialActivities);
-  const [category, setCategory] =
-    useState<ActivityCategoryType>(initialCategory);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  const { ref, inView } = useInView();
-
-  const handleTabChange = async (value: string) => {
-    const newCategory = value as ActivityCategoryType;
-    setCategory(newCategory);
-    setLoading(true);
-
-    try {
-      const res = await fetchActivitiesByCategory({
-        locale,
-        category: newCategory,
-        pagination: { page: 1, pageSize: 8 },
-        populate: "coverImage",
-        sort: "activityDate:desc",
-      });
-
-      const newData = Array.isArray(res.data) ? res.data : [];
-      setActivities(newData);
-      setPage(1);
-      setHasMore(newData.length >= 8);
-    } catch (error) {
-      console.error("Failed to change category:", error);
-    } finally {
-      setLoading(false);
-    }
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const reverseMapping: Record<string, string> = {
+    "Phật Sự Trong Nước": "domestic",
+    "Phật Sự Nước Ngoài": "international",
+    "Lớp Học Phật Pháp": "dharma-class",
+    "Tin Tức Khác": "others",
   };
 
-  useEffect(() => {
-    if (inView && hasMore && !loading) {
-      const loadMore = async () => {
-        setLoading(true);
-        const nextPage = page + 1;
-        try {
-          const res = await fetchActivitiesByCategory({
-            locale,
-            category,
-            pagination: { page: nextPage, pageSize: 8 },
-            populate: "coverImage",
-            sort: "activityDate:desc",
-          });
+  const handleUpdateQuery = (newCategory?: string, newPage?: number) => {
+    const params = new URLSearchParams(searchParams.toString());
 
-          const newData = Array.isArray(res.data) ? res.data : [];
-          if (newData.length === 0) {
-            setHasMore(false);
-          } else {
-            setActivities((prev) => [...prev, ...newData]);
-            setPage(nextPage);
-            setHasMore(newData.length === 8);
-          }
-        } catch (error) {
-          console.error("Failed to load more activities:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      loadMore();
+    if (newCategory) {
+      params.set("category", reverseMapping[newCategory] || "domestic");
+      params.set("page", "1");
     }
-  }, [inView, hasMore, loading, category, page, locale]);
+    if (newPage) {
+      params.set("page", newPage.toString());
+    }
+
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex w-full justify-center mb-6">
+    <div className="w-full flex flex-col items-center gap-4">
+      <div className="flex w-full justify-center items-center h-auto mb-6">
         <Tabs
-          defaultValue={initialCategory}
-          onValueChange={handleTabChange}
-          className="w-full flex flex-col items-center"
+          value={initialCategory}
+          onValueChange={(val) => handleUpdateQuery(val)}
+          className="w-full flex flex-col h-auto items-center"
         >
-          <TabsList variant="line">
-            <TabsTrigger value="Phật Sự Trong Nước">
+          <TabsList
+            variant="line"
+            className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 bg-transparent p-1"
+          >
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit "
+              value="Phật Sự Trong Nước"
+            >
               Phật sự trong nước
             </TabsTrigger>
-            <TabsTrigger value="Phật Sự Nước Ngoài">
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Phật Sự Nước Ngoài"
+            >
               Phật sự ngoài nước
             </TabsTrigger>
-            <TabsTrigger value="Lớp Học Phật Pháp">
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Lớp Học Phật Pháp"
+            >
               Lớp học Phật pháp
             </TabsTrigger>
-            <TabsTrigger value="Tin Tức Khác">Tin tức khác</TabsTrigger>
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Tin Tức Khác"
+            >
+              Tin tức khác
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
-      <div className="w-full max-w-7xl">
-        {activities.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-            {activities.map((activity) => (
-              <div key={activity.documentId} className="w-full">
-                <ActivityVibrantCard activity={activity} locale={locale} />
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={initialCategory + currentPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full col-span-full"
+          >
+            {initialActivities.map((activity: Activity) => (
+              <ActivityVibrantCard
+                key={activity.documentId}
+                activity={activity}
+                locale={locale}
+              />
             ))}
-          </div>
-        ) : (
-          !loading && (
-            <div className="w-full text-sm flex justify-center items-start py-20 text-muted-foreground">
-              Không có dữ liệu cho mục này.
-            </div>
-          )
-        )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Infinite Scroll Trigger Area */}
-      <div ref={ref} className="min-h-[200px] w-full mt-2 max-w-10xl"></div>
+      {paginationMeta && paginationMeta.pageCount > 1 && (
+        <div className="flex justify-center gap-4 mt-6">
+          <Button
+            disabled={currentPage <= 1}
+            onClick={() => handleUpdateQuery(undefined, currentPage - 1)}
+            size="icon-lg"
+            variant="outline"
+            className="cursor-pointer"
+          >
+            <ChevronLeft />
+          </Button>
+          <span className="flex items-center text-muted-foreground text-sm">
+            {locale === "vi" ? "Trang" : "Page"} {currentPage}{" "}
+            {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
+          </span>
+
+          <Button
+            disabled={currentPage >= paginationMeta.pageCount}
+            onClick={() => handleUpdateQuery(undefined, currentPage + 1)}
+            className="cursor-pointer"
+            size="icon-lg"
+            variant="outline"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

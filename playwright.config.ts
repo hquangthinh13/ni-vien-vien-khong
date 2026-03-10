@@ -31,7 +31,7 @@ export default defineConfig({
    *   navigation/navigation.spec.ts
    *   activity/activity.spec.ts
    */
-  testDir: './tests',
+  testDir: './tests/playwright',
 
   /* Run tests in files in parallel, Improves test execution speed */
   fullyParallel: true,

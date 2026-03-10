@@ -42,7 +42,7 @@ export default function LoadingMotion() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-xl font-semibold tracking-[0.3em] text-foreground/90 font-serif">
+            <h2 className="text-2xl font-semibold tracking-[0.3em] text-foreground font-serif">
               NI VIỆN VIÊN KHÔNG
             </h2>
 
@@ -69,7 +69,7 @@ export default function LoadingMotion() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0, duration: 0.8 }}
-            className="text-xs text-muted-foreground tracking-[0.4em] uppercase"
+            className="text-sm text-muted-foreground tracking-[0.4em] uppercase font-mono font-semibold"
           >
             Tâm không làm muôn việc
             <br />
@@ -77,7 +77,6 @@ export default function LoadingMotion() {
           </motion.p>
         </div>
 
-        {/* Thanh Progress cực mảnh */}
         <div className="w-64 h-1 bg-primary/10 mt-10 overflow-hidden relative">
           <motion.div
             className="absolute inset-0 bg-primary/40"

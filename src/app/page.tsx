@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/shared/ui/dialog";
-import { Button } from "@/shared/ui/button";
 import ActivitiesSection from "@/features/activity/ui/ActivitiesSection";
 import QuestionSection from "@/features/question/ui/QuestionSection";
 import CalendarSection from "@/features/activity/ui/CalendarSection";
@@ -59,7 +58,7 @@ export default async function Home() {
         />
       </MotionWrapper>
       <div className="mx-auto max-w-7xl px-0 mb-6">
-        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
+        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-0 mb-6">
           {/* Left */}
           <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
             <MotionWrapper>
@@ -85,7 +84,7 @@ export default async function Home() {
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col md:w-[30%] md:border-l p-4 gap-4">
+          <div className="flex flex-col md:w-[30%] md:border-l p-4 pb-0 gap-4">
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
@@ -117,7 +116,7 @@ export default async function Home() {
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>
-              <section className="flex flex-1 flex-col pt-4 border-t">
+              <section className="flex flex-1 flex-col pt-4 pb-0 border-t">
                 <div className="flex justify-between items-center">
                   <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                     Vấn đáp Phật pháp
@@ -129,19 +128,12 @@ export default async function Home() {
                     Xem thêm
                   </Link>
                 </div>
+
                 <QuestionSection />
-                {/* <div className="flex w-full justify-end">
-                  <Link
-                    href="/library/question"
-                    className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
-                  >
-                    Xem thêm
-                  </Link>
-                </div> */}
+
                 <Dialog>
                   <DialogTrigger asChild>
                     <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
-                      {/* Decor: Một vòng tròn mờ ở góc tạo điểm nhấn */}
                       <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
 
                       <div className="relative flex items-center justify-between">
@@ -151,7 +143,7 @@ export default async function Home() {
                               ? "Bạn có thắc mắc?"
                               : "Have a Question?"}
                           </span>
-                          <h4 className="font-serif text-xl font-black uppercase tracking-normal text-secondary-foreground">
+                          <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
                             {locale === "vi"
                               ? "Đặt câu hỏi cho chúng tôi"
                               : "Ask a Question"}
@@ -163,15 +155,6 @@ export default async function Home() {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="flex w-full justify-end">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="cursor-pointer"
-                      >
-                        Đặt câu hỏi <MessageCircleQuestionMark />
-                      </Button>
-                    </div> */}
                   </DialogTrigger>
                   <DialogContent
                     aria-describedby="Question form"

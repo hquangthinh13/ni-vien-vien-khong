@@ -35,6 +35,10 @@ export default function useMenuConfig(): MenuItem[] {
       href: "/course",
     },
 
+    // {
+    //   title: t("blog.trigger"),
+    //   href: "/blog",
+    // },
     // 5. Thư viện
     {
       title: t("library.trigger"),
@@ -93,7 +97,7 @@ export default function useMenuConfig(): MenuItem[] {
               href: "/library/book/others",
             },
           ],
-        }, // Các mục library.items mặc định (Nghi thức, Hình ảnh, Thư pháp...)
+        },
         ...t.raw("library.items"),
       ],
     },

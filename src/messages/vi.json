@@ -2,54 +2,28 @@
   "Navbar": {
     "activity": {
       "trigger": "Tin tức",
-      "href": "/activity",
-      "items": [
-        {
-          "title": "Phật sự trong nước",
-          "href": "/activity?category=domestic",
-          "desc": ""
-        },
-        {
-          "title": "Phật sự ngoài nước",
-          "href": "/activity?category=international",
-          "desc": ""
-        },
-
-        {
-          "title": "Lớp học Phật pháp",
-          "href": "/activity?category=dharma-class",
-          "desc": ""
-        },
-        {
-          "title": "Tin tức khác",
-          "href": "/activity?category=others",
-          "desc": ""
-        }
-      ]
+      "href": "/activity"
     },
+
     "about": {
       "trigger": "Giới thiệu",
       "items": [
         {
           "title": "Ni Viện Viên Không Xưa Và Nay",
-          "href": "/introduction/past-and-present",
-          "desc": ""
+          "href": "/introduction/past-and-present"
         },
         {
           "title": "Tịnh Cảnh Viên Không",
-          "href": "/introduction/scenery-of-vien-khong",
-          "desc": ""
+          "href": "/introduction/scenery-of-vien-khong"
         },
 
         {
           "title": "Thời khóa tu tập",
-          "href": "/introduction/schedule",
-          "desc": ""
+          "href": "/introduction/schedule"
         },
         {
           "title": "Các tu viện khác",
-          "href": "/introduction/others",
-          "desc": ""
+          "href": "/introduction/other-monasteries"
         }
       ]
     },
@@ -77,18 +51,18 @@
         }
       },
       "items": [
+        { "title": "Chia sẻ", "href": "/library/blog" },
         { "title": "Nghi thức nghi lễ", "href": "/library/ritual" },
         { "title": "Thư pháp thư họa", "href": "/library/calligraphy" },
         { "title": "Thơ thiền", "href": "/library/poem" },
-        { "title": "Vấn đáp Phật pháp", "href": "/library/question" },
-        { "title": "Pháp thoại", "href": "/library/dharma-talk" }
+        { "title": "Vấn đáp Phật pháp", "href": "/library/question" }
       ]
     },
     "visit": {
       "trigger": "Thăm viếng",
       "items": [
-        { "title": "Nội quy lưu trú", "href": "/rule", "desc": "" },
-        { "title": "Đường đến Ni Viện", "href": "/contact", "desc": "" }
+        { "title": "Nội quy lưu trú", "href": "/rule" },
+        { "title": "Đường đến Ni Viện", "href": "/contact" }
       ]
     },
     "course": {

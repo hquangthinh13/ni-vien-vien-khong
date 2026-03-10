@@ -19,7 +19,7 @@ export interface MonasteryPageAttributes extends StrapiEntity {
   title: string;
   content?: string;
   useTemplate?: boolean;
-  activities?: MonasteryAttributes[];
+  monasteries?: MonasteryAttributes[];
   coverImage?: StrapiImageEntity;
   createdAt?: string;
   updatedAt?: string;

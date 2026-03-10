@@ -57,7 +57,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
             </h2>{" "}
           </div>
 
-          <p className="text-center text-xs uppercase tracking-wide text-secondary-foreground leading-0 font-mono">
+          <p className="text-center text-xs uppercase tracking-wide text-secondary-foreground font-mono">
             {locale === "vi"
               ? "Chọn ngày có khoanh tròn để xem lịch"
               : "Select a date with a circle to view the schedule"}
