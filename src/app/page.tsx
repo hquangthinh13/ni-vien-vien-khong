@@ -58,7 +58,7 @@ export default async function Home() {
         />
       </MotionWrapper>
       <div className="mx-auto max-w-7xl px-0 mb-6">
-        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-4 md:gap-0 mb-6">
+        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-0 mb-6">
           {/* Left */}
           <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
             <MotionWrapper>
@@ -84,7 +84,7 @@ export default async function Home() {
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col md:w-[30%] md:border-l md:p-4 p-0 gap-4">
+          <div className="flex flex-col md:w-[30%] md:border-l p-4 pb-0 gap-4">
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">

@@ -1,18 +1,12 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useTransition, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-
-import { Card, CardContent } from "@/shared/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/shared/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@/shared/ui/field";
 import { Button } from "@/shared/ui/button";
 import { Textarea } from "@/shared/ui/textarea";
 import { Input } from "@/shared/ui/input";
@@ -38,7 +32,7 @@ interface QuestionFormProps {
 
 export default function QuestionForm({ locale }: QuestionFormProps) {
   const [isPending, startTransition] = useTransition();
-
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const {
     register,
     handleSubmit,
@@ -55,7 +49,19 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
       address: "",
     },
   });
+  const onPreSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
+    // Kiểm tra Ref ở đây hoàn toàn an toàn vì đây là Event Handler
+    const token = recaptchaRef.current?.getValue();
+
+    if (!token) {
+      toast.error("Vui lòng xác nhận bạn không phải là người máy!");
+      return;
+    }
+
+    handleSubmit(onSubmit)(e);
+  };
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
       try {
@@ -76,9 +82,7 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
   };
 
   return (
-    // <Card className="flex flex-1 p-0 shadow-md">
-    //   <CardContent className="p-6">
-    <form className="" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className="" onSubmit={onPreSubmit} noValidate>
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="fullName">
@@ -142,7 +146,6 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
           )}
         </Field>
 
-        {/* Câu hỏi */}
         <Field>
           <FieldLabel htmlFor="questionContent">
             Nội dung câu hỏi <span className="text-destructive">*</span>
@@ -171,7 +174,13 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
             disabled={isPending}
           />
         </Field>
-
+        <div className="flex justify-center py-2 w-full">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+            onChange={() => {}}
+          />
+        </div>
         <Field orientation="horizontal" className="pt-4">
           <div className="flex flex-1 justify-end">
             <Button
@@ -185,7 +194,5 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
         </Field>
       </FieldGroup>
     </form>
-    //   </CardContent>
-    // </Card>
   );
 }

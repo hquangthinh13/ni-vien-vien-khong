@@ -13,10 +13,12 @@ export const metadata: Metadata = {
 export default async function ActivityPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; page?: string }>;
 }) {
   const locale = (await getLocale()) as Locale;
-  const { category: categorySlug } = await searchParams;
+  const { category: categorySlug, page: pageSlug } = await searchParams;
+
+  const currentPage = Number(pageSlug) || 1;
   const categoryMapping: Record<string, ActivityCategoryType> = {
     domestic: "Phật Sự Trong Nước",
     international: "Phật Sự Nước Ngoài",
@@ -27,14 +29,14 @@ export default async function ActivityPage({
     categoryMapping[categorySlug || ""] || "Phật Sự Trong Nước";
   const response = await fetchActivitiesByCategory({
     locale,
-    pagination: { page: 1, pageSize: 8 },
-    sort: "publishedAt:desc",
+    pagination: { page: currentPage, pageSize: 3 },
+    sort: "[publishedAt:desc]",
     populate: "coverImage",
     category: initialCategory,
   });
   console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
-
+  const paginationMeta = response.meta?.pagination;
   return (
     <div className="mx-auto max-w-7xl px-4 my-10">
       <div className="flex flex-col gap-6 items-center mb-6">
@@ -49,15 +51,14 @@ export default async function ActivityPage({
           </div>{" "}
         </TextMotionWrapper>
       </div>
-      <div className="flex flex-1 w-full flex-col items-stretch">
-        {" "}
-        <ActivityList
-          key={initialCategory}
-          initialActivities={initialActivities}
-          initialCategory={initialCategory}
-          locale={locale}
-        />
-      </div>
+      <ActivityList
+        key={`${initialCategory}-${currentPage}`}
+        initialActivities={initialActivities}
+        initialCategory={initialCategory}
+        paginationMeta={paginationMeta}
+        locale={locale}
+        currentPage={currentPage}
+      />
     </div>
   );
 }
