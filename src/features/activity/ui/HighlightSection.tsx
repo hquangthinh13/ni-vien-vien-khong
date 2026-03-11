@@ -45,10 +45,12 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
               onClick={() => setIndex(idx)}
             >
               <Image
-                src={getImageUrl(img) || "/placeholder.jpg"}
+                src={getImageUrl(img, "medium") || "/placeholder.jpg"}
                 alt={`Highlight ${idx}`}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
 
               {isLastVisible && (
@@ -105,11 +107,13 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={getImageUrl(images[index]) || "/placeholder.jpg"}
+                src={getImageUrl(images[index], "large") || "/placeholder.jpg"}
                 alt="Fullscreen view"
                 fill
                 className="object-contain"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
 
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm font-normal">

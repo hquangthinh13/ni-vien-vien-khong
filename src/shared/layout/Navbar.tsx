@@ -35,6 +35,7 @@ export default function Navbar() {
             alt="Logo"
             className="max-h-14 h-auto w-auto"
             loading="eager"
+            priority
           />
         </Link>
         <div className="flex justify-center z-60">

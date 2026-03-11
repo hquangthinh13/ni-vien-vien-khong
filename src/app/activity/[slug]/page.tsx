@@ -55,7 +55,7 @@ export async function generateMetadata(
       return { title: "Không tìm thấy hoạt động" };
     }
 
-    const ogImage = getImageUrl(data.coverImage);
+    const ogImage = getImageUrl(data.coverImage, "medium");
 
     return {
       title: data.activityName,
@@ -87,7 +87,11 @@ export default async function ActivityPage({
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: "*",
+        populate: [
+          "coverImage",
+          "courseContent.highlightedImages",
+          "courseContent.videoSection",
+        ],
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -142,6 +146,8 @@ export default async function ActivityPage({
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             </div>
           </header>

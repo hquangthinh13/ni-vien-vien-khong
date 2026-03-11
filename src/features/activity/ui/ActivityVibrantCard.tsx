@@ -58,6 +58,8 @@ const ActivityVibrantCard = ({
             fill
             className="object-cover transition-transform duration-1000 group-hover:scale-110"
             priority
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
           />
         )}
 

@@ -97,11 +97,15 @@ export default async function RitualPage({
 
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               <Image
-                src={getImageUrl(data.coverImage) || "/placeholder.jpg"}
+                src={
+                  getImageUrl(data.coverImage, "medium") || "/placeholder.jpg"
+                }
                 alt={data.title || "Ritual cover image"}
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             </div>
           </header>

@@ -25,6 +25,8 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
                 alt={image.alternativeText || ""}
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             </div>
             {image.caption && (

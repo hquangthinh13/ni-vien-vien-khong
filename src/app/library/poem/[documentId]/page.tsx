@@ -72,7 +72,7 @@ export default async function PoemPage({
     console.error("Error fetching poem by documentId:", error);
   }
 
-  const imageUrl = getImageUrl(data?.coverImage);
+  const imageUrl = getImageUrl(data?.coverImage, "medium");
   if (!data) {
     return <div className="text-center py-20">Không tìm thấy bài thơ.</div>;
   }
@@ -103,6 +103,8 @@ export default async function PoemPage({
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             </div>
           </div>

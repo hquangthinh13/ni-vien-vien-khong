@@ -14,7 +14,7 @@ export default async function MobileActivitiesCard({
 }: MobileCardProps) {
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
-  const imageUrl = getImageUrl(coverImage);
+  const imageUrl = getImageUrl(coverImage, "medium");
 
   return (
     <Link
@@ -28,6 +28,8 @@ export default async function MobileActivitiesCard({
             alt={activityName || "Activity image"}
             fill
             className="group-hover:scale-105 transition-transform duration-300 object-cover"
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
           />
         )}
       </div>

@@ -49,13 +49,15 @@ const SimplifiedNewsCard = async ({
         {coverImage && variant === "top" && (
           <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
             {(() => {
-              const imageUrl = getImageUrl(coverImage);
+              const imageUrl = getImageUrl(coverImage, "large");
               return imageUrl ? (
                 <Image
                   src={imageUrl}
                   alt={activityName || "Activity image"}
                   fill
                   className="object-cover"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
                 />
               ) : null;
             })()}

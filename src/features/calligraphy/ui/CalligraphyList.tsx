@@ -4,8 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
-import { getImageUrl } from "@/shared/lib/api";
+
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import type { Calligraphy } from "../model/calligraphy.types";
 import type { CalligraphyCategory } from "@/types/categories";

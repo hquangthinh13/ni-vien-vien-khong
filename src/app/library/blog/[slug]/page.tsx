@@ -33,7 +33,7 @@ export async function generateMetadata(
       return { title: "Không tìm thấy bài viết" };
     }
 
-    const ogImage = getImageUrl(data.coverImage);
+    const ogImage = getImageUrl(data.coverImage, "medium");
 
     return {
       title: data.title,
