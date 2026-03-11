@@ -1,0 +1,122 @@
+{
+  "Navbar": {
+    "activity": {
+      "trigger": "News",
+      "href": "/activity",
+      "items": [
+        {
+          "title": "Domestic Buddhist Activities",
+          "href": "/activity?category=domestic",
+          "desc": ""
+        },
+        {
+          "title": "International Buddhist Activities",
+          "href": "/activity?category=international",
+          "desc": ""
+        },
+        {
+          "title": "Dharma Classes",
+          "href": "/activity?category=dharma-class",
+          "desc": ""
+        },
+        {
+          "title": "Other News",
+          "href": "/activity?category=others",
+          "desc": ""
+        }
+      ]
+    },
+    "about": {
+      "trigger": "About",
+      "items": [
+        {
+          "title": "Vien Khong Nunnery – Past and Present",
+          "href": "/introduction/past-and-present",
+          "desc": ""
+        },
+        {
+          "title": "The Serenity of Vien Khong",
+          "href": "/introduction/scenery-of-vien-khong",
+          "desc": ""
+        },
+        {
+          "title": "Daily Practice Schedule",
+          "href": "/introduction/schedule",
+          "desc": ""
+        },
+        {
+          "title": "Other Monasteries",
+          "href": "/introduction/others",
+          "desc": ""
+        }
+      ]
+    },
+    "library": {
+      "trigger": "Library",
+      "sections": {
+        "scriptures": {
+          "title": "The Tipiṭaka",
+          "english": "English",
+          "vietnamese": {
+            "title": "Vietnamese",
+            "sutta": "Sutta Piṭaka",
+            "vinaya": "Vinaya Piṭaka",
+            "abhidhamma": "Abhidhamma Piṭaka"
+          }
+        },
+        "books": {
+          "title": "Book Collection",
+          "author1": "Books by Patriarch Ho Tong",
+          "author2": "Books by Most Venerable Vien Minh",
+          "pali": "Pali Study Materials",
+          "others": "Other Books"
+        }
+      },
+      "items": [
+        { "title": "Ritual Ceremonies", "href": "/library/ritual" },
+        { "title": "Calligraphy & Painting", "href": "/library/calligraphy" },
+        { "title": "Zen Poetry", "href": "/library/poem" },
+        { "title": "Dharma Q&A", "href": "/library/question" },
+        { "title": "Dharma Talks", "href": "/library/dharma-talk" }
+      ]
+    },
+    "visit": {
+      "trigger": "Visit",
+      "items": [
+        { "title": "Visitor Guidelines", "href": "/rule", "desc": "" },
+        { "title": "How to Get to the Nunnery", "href": "/contact", "desc": "" }
+      ]
+    },
+    "course": {
+      "trigger": "Retreats",
+      "href": "/course"
+    },
+    "home": {
+      "trigger": "Home",
+      "href": "/"
+    },
+    "menu": "Menu"
+  },
+  "Footer": {
+    "contact": "Contact",
+    "highlight": "Highlights",
+    "highlight-01": "Retreats",
+    "highlight-02": "Dharma Talks",
+    "highlight-03": "The Tipiṭaka",
+    "highlight-04": "News",
+    "follow": "Follow Us",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "HomePage": {
+    "foreword": "Foreword"
+  },
+  "ContactPage": {
+    "title": "Directions to the Nunnery",
+    "map-caption": "Click the map to get directions"
+  },
+  "CoursePage": {
+    "title": "Retreats"
+  }
+}

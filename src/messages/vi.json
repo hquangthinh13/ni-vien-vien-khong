@@ -1,0 +1,100 @@
+{
+  "Navbar": {
+    "activity": {
+      "trigger": "Tin tức",
+      "href": "/activity"
+    },
+
+    "about": {
+      "trigger": "Giới thiệu",
+      "items": [
+        {
+          "title": "Ni Viện Viên Không Xưa Và Nay",
+          "href": "/introduction/past-and-present"
+        },
+        {
+          "title": "Tịnh Cảnh Viên Không",
+          "href": "/introduction/scenery-of-vien-khong"
+        },
+
+        {
+          "title": "Thời khóa tu tập",
+          "href": "/introduction/schedule"
+        },
+        {
+          "title": "Các tu viện khác",
+          "href": "/introduction/other-monasteries"
+        }
+      ]
+    },
+
+    "library": {
+      "trigger": "Thư viện",
+      "sections": {
+        "scriptures": {
+          "title": "Tam tạng kinh điển",
+          "english": "Tiếng Anh",
+          "vietnamese": {
+            "title": "Tiếng Việt",
+            "sutta": "Tạng Kinh",
+            "vinaya": "Tạng Luật",
+            "abhidhamma": "Tạng Vi Diệu Pháp",
+            "abhidharma": "Tạng Luận"
+          }
+        },
+        "books": {
+          "title": "Danh mục sách",
+          "author1": "Sách Sơ Tổ Hộ Tông",
+          "author2": "Sách Hòa Thượng Viên Minh",
+          "pali": "Tài liệu học Pali",
+          "others": "Danh mục sách khác"
+        }
+      },
+      "items": [
+        { "title": "Chia sẻ", "href": "/library/blog" },
+        { "title": "Nghi thức nghi lễ", "href": "/library/ritual" },
+        { "title": "Thư pháp thư họa", "href": "/library/calligraphy" },
+        { "title": "Thơ thiền", "href": "/library/poem" },
+        { "title": "Vấn đáp Phật pháp", "href": "/library/question" }
+      ]
+    },
+    "visit": {
+      "trigger": "Thăm viếng",
+      "items": [
+        { "title": "Nội quy lưu trú", "href": "/rule" },
+        { "title": "Đường đến Ni Viện", "href": "/contact" }
+      ]
+    },
+    "course": {
+      "trigger": "Khóa tu",
+      "href": "/course"
+    },
+    "home": {
+      "trigger": "Trang chủ",
+      "href": "/"
+    },
+    "menu": "Mục lục"
+  },
+  "Footer": {
+    "contact": "Liên hệ",
+    "highlight": "Danh mục nổi bật",
+    "highlight-01": "Khóa tu",
+    "highlight-02": "Pháp thoại",
+    "highlight-03": "Tam tạng kinh điển",
+    "highlight-04": "Tin tức",
+    "follow": "Theo dõi ngay",
+    "address": "Địa chỉ",
+    "phone": "Điện thoại",
+    "email": "Email"
+  },
+  "HomePage": {
+    "foreword": "Lời ngỏ"
+  },
+  "ContactPage": {
+    "title": "Đường đến Ni Viện",
+    "map-caption": "Nhấp vào bản đồ để nhận chỉ đường"
+  },
+  "CoursePage": {
+    "title": "Khóa tu"
+  }
+}

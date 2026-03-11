@@ -5,8 +5,8 @@ import {
   fetchCalligraphyByDocumentId,
   fetchCalligraphiesByCategory,
   getCalligraphyImages,
-} from "@/components/Calligraphy/Calligraphy.service";
-import type { Calligraphy } from "@/components/Calligraphy/Calligraphy.type";
+} from "@/features/calligraphy/api/calligraphy.api";
+import type { Calligraphy } from "@/features/calligraphy/model/calligraphy.types";
 import {
   isValidCalligraphyCategory,
   type CalligraphyCategory,

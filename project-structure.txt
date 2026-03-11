@@ -1,0 +1,416 @@
+Folder PATH listing for volume Data
+Volume serial number is F244-735C
+E:.
+|   .env
+|   .gitattributes
+|   .gitignore
+|   ARCHITECTURE.md
+|   components.json
+|   eslint.config.mjs
+|   globals.d.ts
+|   next-env.d.ts
+|   next.config.ts
+|   package-lock.json
+|   package.json
+|   playwright.config.ts
+|   postcss.config.mjs
+|   project-structure.txt
+|   README.md
+|   structure.txt
+|   tree.txt
+|   tsconfig.json
+|   
++---.github
+|   \---workflows
+|           playwright.yml
+|           
++---.vscode
+|       settings.json
+|       
++---scripts
+|       test-activity-registration.ts
+|       test-activity-service.ts
+|       test-build-registration-form.tsx
+|       test-calligraphy-service.ts
+|       test-contact-page.ts
+|       test-history-page-service.ts
+|       test-home-page-service.ts
+|       test-introduction-page-service.ts
+|       test-linked-document-service.ts
+|       test-poem-service.ts
+|       test-question-service.ts
+|       test-ritual-service.ts
+|       test-rule-page.ts
+|       
++---src
+|   +---app
+|   |   |   globals.css
+|   |   |   icon.svg
+|   |   |   layout.tsx
+|   |   |   loading.tsx
+|   |   |   not-found.tsx
+|   |   |   page.tsx
+|   |   |   
+|   |   +---activity
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   \---[slug]
+|   |   |           page.tsx
+|   |   |           
+|   |   +---contact
+|   |   |       page.tsx
+|   |   |       
+|   |   +---course
+|   |   |       page.tsx
+|   |   |       
+|   |   +---introduction
+|   |   |   +---past-and-present
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   +---scenery-of-vien-khong
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   \---schedule
+|   |   |           page.tsx
+|   |   |           
+|   |   +---library
+|   |   |   +---book
+|   |   |   |   +---first-patriarch
+|   |   |   |   |       page.tsx
+|   |   |   |   |       
+|   |   |   |   +---others
+|   |   |   |   |       page.tsx
+|   |   |   |   |       
+|   |   |   |   +---pali-docs
+|   |   |   |   |       page.tsx
+|   |   |   |   |       
+|   |   |   |   \---vien-minh
+|   |   |   |           page.tsx
+|   |   |   |           
+|   |   |   +---caligraphy
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   +---calligraphy
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   +---poem
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   \---[documentId]
+|   |   |   |           page.tsx
+|   |   |   |           
+|   |   |   +---question
+|   |   |   |       page.tsx
+|   |   |   |       
+|   |   |   +---ritual
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   \---[documentId]
+|   |   |   |           page.tsx
+|   |   |   |           
+|   |   |   \---scriptures
+|   |   |       +---abhidhamma
+|   |   |       |       page.tsx
+|   |   |       |       
+|   |   |       +---sutta
+|   |   |       |       page.tsx
+|   |   |       |       
+|   |   |       \---vinaya
+|   |   |               page.tsx
+|   |   |               
+|   |   +---loading
+|   |   |       page.tsx
+|   |   |       
+|   |   \---rule
+|   |           page.tsx
+|   |           
+|   +---features
+|   |   +---activity
+|   |   |   |   index.ts
+|   |   |   |   README.md
+|   |   |   |   
+|   |   |   +---api
+|   |   |   |       activity.api.ts
+|   |   |   |       activity.populate.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       activity.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           ActivitiesSection.tsx
+|   |   |           ActivityCard.tsx
+|   |   |           ActivityList.tsx
+|   |   |           ActivityVibrantCard.tsx
+|   |   |           CalendarSection.tsx
+|   |   |           CourseCard.tsx
+|   |   |           CourseList.tsx
+|   |   |           CourseSection.tsx
+|   |   |           CourseSidebarCard.tsx
+|   |   |           EventCalendar.tsx
+|   |   |           HighlightSection.tsx
+|   |   |           MobileActivitiesCard.tsx
+|   |   |           RelatedActivitiesSection.tsx
+|   |   |           SimplifiedActivitiesCard.tsx
+|   |   |           UpcomingEventSection.tsx
+|   |   |           
+|   |   +---calligraphy
+|   |   |   +---api
+|   |   |   |       calligraphy.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       calligraphy.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           CalligraphyList.tsx
+|   |   |           
+|   |   +---contact
+|   |   |   |   README.md
+|   |   |   |   
+|   |   |   +---api
+|   |   |   |       contactPage.api.tsx
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       contactPage.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           EmbeddedMap.tsx
+|   |   |           
+|   |   +---courseRegistration
+|   |   |   +---api
+|   |   |   |       activityRegistration.api.ts
+|   |   |   |       activityRegistration.formData-builder.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       activityRegistration.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           DynamicActivityRegistrationForm.tsx
+|   |   |           
+|   |   +---historyPage
+|   |   |   +---api
+|   |   |   |       historyPage.api.ts
+|   |   |   |       
+|   |   |   \---model
+|   |   |           historyPage.types.ts
+|   |   |           
+|   |   +---homePage
+|   |   |   +---api
+|   |   |   |       homePage.api.ts
+|   |   |   |       
+|   |   |   \---model
+|   |   |           homePage.types.ts
+|   |   |           
+|   |   +---introductionPage
+|   |   |   +---api
+|   |   |   |       introductionPage.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       introductionPage.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           IntroTimelineView.tsx
+|   |   |           
+|   |   +---linkedDocument
+|   |   |   +---api
+|   |   |   |       linkedDocument.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       linkedDocument.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           LinkedDocumentCard.tsx
+|   |   |           
+|   |   +---monasteryPage
+|   |   |   +---api
+|   |   |   |       monasteryPage.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       monasteryPage.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   +---poem
+|   |   |   +---api
+|   |   |   |       poem.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       poem.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           PoemCard.tsx
+|   |   |           PoetryRenderer.tsx
+|   |   |           RelatedPoems.tsx
+|   |   |           
+|   |   +---question
+|   |   |   +---api
+|   |   |   |       question.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       question.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           Question.tsx
+|   |   |           QuestionCard.tsx
+|   |   |           QuestionForm.tsx
+|   |   |           QuestionSection.tsx
+|   |   |           
+|   |   +---Ritual
+|   |   |   +---api
+|   |   |   |       ritual.api.ts
+|   |   |   |       
+|   |   |   +---model
+|   |   |   |       ritual.types.ts
+|   |   |   |       
+|   |   |   \---ui
+|   |   |           RelatedRitualsSection.tsx
+|   |   |           RitualCard.tsx
+|   |   |           
+|   |   +---rulePage
+|   |   |   +---api
+|   |   |   |       rulePage.api.ts
+|   |   |   |       
+|   |   |   \---model
+|   |   |           rulePage.types.ts
+|   |   |           
+|   |   \---sceneryPage
+|   |       +---api
+|   |       |       sceneryPage.api.ts
+|   |       |       
+|   |       +---model
+|   |       |       sceneryPage.types.ts
+|   |       |       
+|   |       \---ui
+|   +---i18n
+|   |       request.ts
+|   |       
+|   +---messages
+|   |       en.json
+|   |       vi.json
+|   |       
+|   +---public
+|   |       calendar-base.png
+|   |       calendar-bg.jpg
+|   |       calendar-character.png
+|   |       calendar-decoration-01.png
+|   |       calendar-decoration.png
+|   |       logo.svg
+|   |       logo_loading.svg
+|   |       logo_slogan.svg
+|   |       logo_vertical_slogan.svg
+|   |       ornament-00.svg
+|   |       ornament-01.svg
+|   |       ornament-02.svg
+|   |       ornament.svg
+|   |       test_img.jpg
+|   |       
+|   +---shared
+|   |   +---layout
+|   |   |       DateCard.tsx
+|   |   |       DesktopNavbar.tsx
+|   |   |       DesktopNavigationMenu.tsx
+|   |   |       Footer.tsx
+|   |   |       LanguageSwitcher.tsx
+|   |   |       MobileNavigationMenu.tsx
+|   |   |       Navbar.tsx
+|   |   |       RichTextRenderer.tsx
+|   |   |       ScrollToTopButton.tsx
+|   |   |       
+|   |   +---lib
+|   |   |       api.ts
+|   |   |       menu-config.ts
+|   |   |       utils.ts
+|   |   |       
+|   |   +---motion
+|   |   |       LoadingMotion.tsx
+|   |   |       MotionWrapper.tsx
+|   |   |       TextMotionWrapper.tsx
+|   |   |       
+|   |   \---ui
+|   |           accordion.tsx
+|   |           badge.tsx
+|   |           button.tsx
+|   |           calendar-modified.tsx
+|   |           calendar.tsx
+|   |           card.tsx
+|   |           checkbox.tsx
+|   |           collapsible.tsx
+|   |           dialog.tsx
+|   |           dropdown-menu.tsx
+|   |           field.tsx
+|   |           hover-card.tsx
+|   |           input-group.tsx
+|   |           input.tsx
+|   |           label.tsx
+|   |           navigation-menu.tsx
+|   |           pagination.tsx
+|   |           popover.tsx
+|   |           select.tsx
+|   |           separator.tsx
+|   |           sheet.tsx
+|   |           skeleton.tsx
+|   |           sonner.tsx
+|   |           switch.tsx
+|   |           tabs.tsx
+|   |           textarea.tsx
+|   |           tooltip.tsx
+|   |           
+|   \---types
+|           categories.ts
+|           form-components.ts
+|           form-templates.ts
+|           locale.ts
+|           strapi.ts
+|           
++---test-results
+|       .last-run.json
+|       
+\---tests
+    |   automation-testing-structure.md
+    |   
+    +---activity
+    |       activity-detail.spec.ts
+    |       activity-list.spec.ts
+    |       
+    +---course
+    |       course-detail.spec.ts
+    |       course-list.spec.ts
+    |       
+    +---fixtures
+    |       baseTest.ts
+    |       
+    +---forms
+    |       activity-registration.spec.ts
+    |       contact-form.spec.ts
+    |       question-form.spec.ts
+    |       
+    +---library
+    |       book.spec.ts
+    |       poem.spec.ts
+    |       question.spec.ts
+    |       ritual.spec.ts
+    |       
+    +---navigation
+    |       mobile-navigation.spec.ts
+    |       navigation.spec.ts
+    |       
+    +---pages
+    |       activity.page.ts
+    |       contact.page.ts
+    |       course.page.ts
+    |       home.page.ts
+    |       library.page.ts
+    |       navigation.component.ts
+    |       
+    +---setup
+    |       global.setup.ts
+    |       
+    +---smoke
+    |       activity.spec.ts
+    |       contact.spec.ts
+    |       course.spec.ts
+    |       homepage.spec.ts
+    |       
+    \---utils
+            constants.ts
+            helpers.ts
+            testData.ts
+            

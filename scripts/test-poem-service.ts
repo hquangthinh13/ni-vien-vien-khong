@@ -3,8 +3,8 @@ import { isValidLocale } from "@/types/locale";
 import {
   fetchPoems,
   fetchPoemByDocumentId,
-} from "@/components/Poem/Poem.service";
-import type { Poem } from "@/components/Poem/Poem.type";
+} from "@/features/poem/api/poem.api";
+import type { Poem } from "@/features/poem/model/poem.types";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 const documentId = "k0f64y9tdxubxmcicqmp30nw"; // Replace with a valid documentId for testing

@@ -4,20 +4,13 @@ import {
   fetchLinkedDocuments,
   fetchLinkedDocumentByDocumentId,
   fetchLinkedDocumentsByCategory,
-} from "@/components/LinkedDocument/LinkedDocument.service";
-import type { LinkedDocument } from "@/components/LinkedDocument/LinkedDocument.type";
-import {
-  isValidLinkedDocumentCategory,
-  type LinkedDocumentCategory,
-} from "@/types/categories";
+} from "@/features/linkedDocument/api/linkedDocument.api";
+import type { LinkedDocument } from "@/features/linkedDocument/model/linkedDocument.types";
+import { type LinkedDocumentCategory } from "@/types/categories";
 
 const locale = isValidLocale(process.argv[2]) ? process.argv[2] : "vi";
 const documentId = process.argv[3];
-const categoryArg = isValidLinkedDocumentCategory(
-  process.argv[4] as LinkedDocumentCategory,
-)
-  ? (process.argv[4] as LinkedDocumentCategory)
-  : "Tạng Kinh";
+const categoryArg = process.argv[4] as LinkedDocumentCategory;
 
 const main = async () => {
   try {
@@ -56,7 +49,7 @@ const main = async () => {
           console.log("Document title:", doc.title);
           console.log("Category:", doc.category);
           console.log("Link:", doc.link);
-          console.log("Has cover image:", !!doc.coverImage);
+          // console.log("Has cover image:", !!doc.coverImage);
           console.log("Created at:", doc.createdAt || "N/A");
         }
       } catch (error) {
