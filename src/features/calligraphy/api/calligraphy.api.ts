@@ -76,8 +76,13 @@ export async function fetchCalligraphiesByCategory(
 ): Promise<CalligraphyResponse> {
   const query = buildQuery(options, false) as URLSearchParams;
 
+  if (options.category === "Tất cả") {
+    // Do not add any filter for "all" category
+  } else {
+    query.set("filters[category][$eq]", options.category);
+  }
   // Filter by category
-  query.set("filters[category][$eq]", options.category);
+  // query.set("filters[category][$eq]", options.category);
 
   const url = getStrapiURL(
     `${CALLIGRAPHIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,

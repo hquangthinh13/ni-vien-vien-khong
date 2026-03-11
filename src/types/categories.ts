@@ -21,19 +21,26 @@ export type LinkedDocumentCategory =
   | "Sách Sư Ông Viên Minh"
   | "Tài Liệu Học Pali"
   | "Danh Mục Sách Khác";
-export type CalligraphyCategory = "Kinh Pháp Cú" | "Kinh Tụng" | "Chủ Đề Khác";
+export type CalligraphyCategory =
+  | "Kinh Pháp Cú"
+  | "Kinh Tụng"
+  | "Chủ Đề Khác"
+  | "Tất cả";
 
 export const ACTIVITY_CATEGORIES: ActivityCategory[] = [
   "Phật Sự Trong Nước",
   "Phật Sự Nước Ngoài",
   "Lớp Học Phật Pháp",
   "Tin Tức Khác",
+  "Khóa Tu",
+  "Tất cả",
 ];
 
 export const COURSE_CATEGORIES: CourseCategory[] = [
   "Khóa Tu Mùa Hè",
   "Khóa Tu Xuất Gia Gieo Duyên",
   "Khóa Thiền",
+  "Tất cả",
 ];
 
 export const LINKED_DOCUMENT_CATEGORIES: LinkedDocumentCategory[] = [
@@ -50,6 +57,7 @@ export const CALLIGRAPHY_CATEGORIES: CalligraphyCategory[] = [
   "Kinh Pháp Cú",
   "Kinh Tụng",
   "Chủ Đề Khác",
+  "Tất cả",
 ];
 
 export const isValidActivityCategory = (

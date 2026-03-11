@@ -19,7 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface ActivityListProps {
   initialCourses: Activity[];
-  initialCategory: CourseCategory | "Tất cả";
+  initialCategory: CourseCategory;
   locale: Locale;
   paginationMeta?: {
     page: number;
