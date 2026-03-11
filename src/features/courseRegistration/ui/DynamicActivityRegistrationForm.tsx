@@ -45,7 +45,7 @@ import type { Locale } from "@/types/locale";
 import { Calendar } from "@/shared/ui/calendar";
 import { Switch } from "@/shared/ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
-import { format, parseISO, isValid } from "date-fns";
+import { format, parseISO, isValid, differenceInYears } from "date-fns";
 import { Calendar as CalendarIcon, Clock2Icon, Send } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { cn, isRichTextEmpty } from "@/shared/lib/utils";
@@ -148,6 +148,7 @@ export default function ActivityRegistrationForm({
           "Loaded registration form template:",
           data?.registrationForm,
         );
+        console.log("Loaded activity data:", data);
       } catch (error) {
         toast.error("Không thể tải thông tin đăng ký");
       }
@@ -156,8 +157,30 @@ export default function ActivityRegistrationForm({
   }, [documentId]);
 
   const onSubmit = (values: RegistrationFormValues) => {
-    // 1. Helper map giá trị "__OTHER__" cho các field ĐỘNG
-    // Sử dụng DynamicFields thay vì any để đảm bảo type-safe
+    if (activity?.ageRestricted) {
+      const dob = parseISO(values.basic.dob);
+
+      if (!isValid(dob)) {
+        toast.error("Vui lòng chọn ngày sinh hợp lệ");
+        return;
+      }
+
+      const age = differenceInYears(new Date(), dob);
+
+      if (activity.minAge !== undefined && age < activity.minAge) {
+        toast.error(
+          `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu tối thiểu ${activity.minAge} tuổi)`,
+        );
+        return;
+      }
+
+      if (activity.maxAge !== undefined && age > activity.maxAge) {
+        toast.error(
+          `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu tối đa ${activity.maxAge} tuổi)`,
+        );
+        return;
+      }
+    }
     const processDynamicSection = <T extends DynamicFields>(
       sectionData: T,
     ): T => {
@@ -168,7 +191,6 @@ export default function ActivityRegistrationForm({
         const originalVal = processed[label];
 
         if (originalVal === "__OTHER__") {
-          // Ép kiểu về DynamicFieldValue để gán giá trị an toàn
           (processed as DynamicFields)[label] = otherText;
         } else if (Array.isArray(originalVal)) {
           (processed as DynamicFields)[label] = originalVal.map((v) =>
@@ -179,7 +201,6 @@ export default function ActivityRegistrationForm({
       return processed;
     };
 
-    // 2. GIỮ NGUYÊN: Ánh xạ commitments an toàn (Type-safe)
     const mappedCommitments: Record<string, boolean> = {};
     if (template?.commitmentMessages) {
       template.commitmentMessages.forEach((msg) => {
@@ -188,7 +209,6 @@ export default function ActivityRegistrationForm({
       });
     }
 
-    // 3. FIX PHẦN OTHER: Xử lý TẤT CẢ các section trước khi gửi
     const finalIdentityDetail = processDynamicSection(
       values.identityDetail as DynamicFields,
     );
@@ -214,12 +234,10 @@ export default function ActivityRegistrationForm({
         });
 
         builder.withRegistrationPayload({
-          // Truyền các bản "final" đã qua xử lý map giá trị Khác
           identityDetail: finalIdentityDetail as IdentityComponent,
           monasticDetail: finalMonasticDetail as MonasticComponent,
           relationDetail: finalRelationDetail as RelationComponent,
           routineDetail: finalRoutineDetail as RoutineComponent,
-          // Gộp commitments vào otherDetail như cũ
           otherDetail: {
             ...finalOtherDetail,
             ...mappedCommitments,
@@ -320,41 +338,6 @@ export default function ActivityRegistrationForm({
           </Field>
         );
 
-      // case ComponentTypeEnum.MultipleChoice: {
-      //   const details = comp.multipleChoiceDetails;
-      //   const isMulti = details?.multipleSelection;
-      //   const hasOther = details?.haveOtherValue;
-      //   return (
-      //     <Field key={comp.id} className="col-span-full">
-      //       <FieldLabel>{comp.label}</FieldLabel>
-      //       <Controller
-      //         control={control}
-      //         name={name}
-      //         render={({ field }) => (
-      //           <Select
-      //             onValueChange={field.onChange}
-      //             value={typeof field.value === "string" ? field.value : ""}
-      //           >
-      //             <SelectTrigger>
-      //               <SelectValue placeholder="Chọn một tùy chọn" />
-      //             </SelectTrigger>
-      //             <SelectContent>
-      //               {comp.multipleChoiceDetails?.options.map((opt) => (
-      //                 <SelectItem
-      //                   className="hover:cursor-pointer"
-      //                   key={opt.id}
-      //                   value={opt.label}
-      //                 >
-      //                   {opt.label}
-      //                 </SelectItem>
-      //               ))}
-      //             </SelectContent>
-      //           </Select>
-      //         )}
-      //       />
-      //     </Field>
-      //   );
-      // }
       case ComponentTypeEnum.MultipleChoice: {
         const details = comp.multipleChoiceDetails;
         const isMulti = details?.multipleSelection;
@@ -367,7 +350,6 @@ export default function ActivityRegistrationForm({
               control={control}
               name={name}
               render={({ field }) => {
-                // --- TRƯỜNG HỢP 1: CHỌN NHIỀU (Checkbox List) ---
                 if (isMulti) {
                   const currentValues = Array.isArray(field.value)
                     ? (field.value as string[])
@@ -402,7 +384,6 @@ export default function ActivityRegistrationForm({
                             </label>
                           </div>
                         ))}
-                        {/* Dựa vào biến hasOther từ API */}
                         {hasOther && (
                           <div className="flex items-center space-x-2">
                             <Checkbox
@@ -439,7 +420,6 @@ export default function ActivityRegistrationForm({
                   );
                 }
 
-                // --- TRƯỜNG HỢP 2: CHỌN MỘT (Select) ---
                 const isOtherSelected = field.value === "__OTHER__";
                 return (
                   <div className="space-y-2">
@@ -622,10 +602,14 @@ export default function ActivityRegistrationForm({
         );
     }
   };
-  console.log("Current template state:", template);
+  // console.log("Current template state:", template);
 
   if (!template)
-    return <div className="text-center p-10">Đang tải biểu mẫu...</div>;
+    return (
+      <div className="text-start text-muted-foreground">
+        Đang tải biểu mẫu...
+      </div>
+    );
 
   return (
     <div className="max-w-6xl mx-auto w-full">
@@ -686,6 +670,7 @@ export default function ActivityRegistrationForm({
               <Controller
                 control={control}
                 name="basic.dob"
+                rules={{ required: "Ngày sinh là thông tin bắt buộc" }}
                 render={({ field }) => {
                   const dateValue = field.value
                     ? parseISO(field.value)
@@ -745,11 +730,15 @@ export default function ActivityRegistrationForm({
               />
             </Field>
             <Field>
-              <FieldLabel>Email</FieldLabel>
+              <FieldLabel>
+                Email <span className="text-destructive">*</span>
+              </FieldLabel>
               <Input
                 type="email"
                 placeholder="Nhập email"
-                {...register("basic.email")}
+                {...register("basic.email", {
+                  required: "Email là thông tin bắt buộc",
+                })}
               />
             </Field>
             <Field className="col-span-full">
@@ -806,6 +795,28 @@ export default function ActivityRegistrationForm({
                   )}
                 </div>
               )}
+            </div>{" "}
+            <div className="col-span-full flex items-start space-x-3 p-3 rounded-lg bg-muted/20">
+              <Controller
+                control={control}
+                name="firstTimeRegistered"
+                render={({ field }) => (
+                  <Checkbox
+                    id="firstTimeRegistered"
+                    className="mt-1"
+                    checked={!!field.value}
+                    onCheckedChange={(checked) => {
+                      field.onChange(checked);
+                    }}
+                  />
+                )}
+              />
+              <FieldLabel
+                htmlFor="firstTimeRegistered"
+                className="font-normal leading-relaxed"
+              >
+                Đây là lần đầu tiên tôi tham gia sự kiện tại Ni Viện Viên Không.
+              </FieldLabel>
             </div>
             {/* )} */}
           </div>
@@ -1179,28 +1190,6 @@ export default function ActivityRegistrationForm({
                   Cam kết tham gia
                 </h3>
                 <div className="space-y-2">
-                  <div className="flex items-start space-x-3 p-3 rounded-lg bg-muted/20">
-                    <Controller
-                      control={control}
-                      name="firstTimeRegistered"
-                      render={({ field }) => (
-                        <Checkbox
-                          id="firstTimeRegistered"
-                          className="mt-1"
-                          checked={!!field.value}
-                          onCheckedChange={(checked) => {
-                            field.onChange(checked);
-                          }}
-                        />
-                      )}
-                    />
-                    <FieldLabel
-                      htmlFor="firstTimeRegistered"
-                      className="cursor-pointer font-normal leading-relaxed"
-                    >
-                      Đây là lần đầu tiên tôi tham gia khóa tu tại chùa
-                    </FieldLabel>
-                  </div>
                   {template.commitmentMessages.map((msg) => (
                     <div
                       key={msg.id}

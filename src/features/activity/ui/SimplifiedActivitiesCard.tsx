@@ -2,52 +2,43 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Activity } from "../model/activity.types";
-import { Locale } from "next-intl";
+import type { Locale } from "@/types/locale";
 import { extractFirstParagraph, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
   variant?: "top" | "bottom";
+  locale: Locale;
 }
-import { getLocale } from "next-intl/server";
 const SimplifiedNewsCard = async ({
   activity,
   isFirst = false,
   variant = "bottom",
+  locale,
 }: NewsCardProps) => {
-  const locale = (await getLocale()) as Locale;
+  // const locale = (await getLocale()) as Locale;
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
   if (isFirst === false && variant === "bottom") {
     return (
       <Link
         href={`/activity/${slug}-${documentId}`}
-        className="flex flex-col gap-1"
+        className="flex flex-col gap-2"
       >
-        <span className="text-xs text-muted-foreground font-mono">
-          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-        </span>
         <div className="flex gap-4 items-baseline group">
-          {/* <p className="text-muted-foreground select-none" aria-hidden="true">
-            •
-          </p> */}
-
-          <h3 className="text-md line-clamp-4 font-bold leading-snug group-hover:text-primary cursor-pointer mb-2">
+          <h3 className="text-md line-clamp-4 font-bold leading-snug group-hover:text-primary cursor-pointer">
             {activityName || "Untitled Activity"}
           </h3>
         </div>
-        <div className="flex gap-4 items-baseline group">
-          {/* <p className="opacity-0 select-none" aria-hidden="true">
-            •
-          </p> */}
-
-          <p
-            className={`line-clamp-3 text-sm text-secondary-foreground/80 font-mono`}
-          >
-            {extractFirstParagraph(content)}
-          </p>
-        </div>
+        <p
+          className={`line-clamp-3 text-sm text-secondary-foreground/80 font-mono mt-2`}
+        >
+          {extractFirstParagraph(content)}
+        </p>
+        <span className="text-xs text-muted-foreground font-mono">
+          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+        </span>
       </Link>
     );
   }
@@ -55,7 +46,6 @@ const SimplifiedNewsCard = async ({
   return (
     <Link href={`/activity/${slug}-${documentId}`}>
       <div className="flex flex-col gap-4">
-        {/* {isFirst &&  */}
         {coverImage && variant === "top" && (
           <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
             {(() => {
@@ -72,10 +62,7 @@ const SimplifiedNewsCard = async ({
           </div>
         )}
 
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted-foreground font-mono">
-            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-          </span>
+        <div className="flex flex-col gap-2">
           <h3
             className={`text-md font-bold leading-snug hover:text-primary cursor-pointer mb-2`}
           >
@@ -85,7 +72,10 @@ const SimplifiedNewsCard = async ({
             className={`line-clamp-2 text-sm text-secondary-foreground/80 font-mono`}
           >
             {extractFirstParagraph(content)}
-          </p>
+          </p>{" "}
+          <span className="text-xs text-muted-foreground font-mono">
+            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+          </span>
         </div>
       </div>
     </Link>

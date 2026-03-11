@@ -8,8 +8,6 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/shared/ui/dialog";
-import { Button } from "@/shared/ui/button";
-
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
   Accordion,
@@ -30,6 +28,7 @@ import { getImageUrl } from "@/shared/lib/api";
 import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
 import { notFound } from "next/navigation";
+import { DialogDescription } from "@radix-ui/react-dialog";
 export default async function ActivityPage({
   params,
 }: {
@@ -184,120 +183,53 @@ export default async function ActivityPage({
           {courseContent?.highlightedImages && (
             <HighlightSection images={courseContent.highlightedImages || []} />
           )}
-          <Dialog>
-            <DialogTrigger asChild>
-              <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
-                {/* Decor: Một vòng tròn mờ ở góc tạo điểm nhấn */}
-                <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
 
-                <div className="relative flex items-center justify-between">
-                  <div className="flex flex-col gap-0">
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
-                      {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
-                    </span>
-                    <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
-                      {locale === "vi"
-                        ? "Điền thông tin đăng ký ngay"
-                        : "Register Now"}
-                    </h4>
-                    {/* <p className="text-xs text-muted-foreground italic">
+          {data.registrationForm && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
+                  <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
+
+                  <div className="relative flex items-center justify-between">
+                    <div className="flex flex-col gap-0">
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+                        {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
+                      </span>
+                      <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
+                        {locale === "vi"
+                          ? "Điền thông tin đăng ký ngay"
+                          : "Register Now"}
+                      </h4>
+                      {/* <p className="text-xs text-muted-foreground italic">
                       {locale === "vi"
                         ? "* Số lượng đăng ký có hạn"
                         : "* Limited slots available"}
                     </p> */}
-                  </div>
+                    </div>
 
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
-                    <CirclePlus className="h-6 w-6" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+                      <CirclePlus className="h-6 w-6" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </DialogTrigger>
-            <DialogContent
-              aria-describedby="Registration form"
-              className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
-            >
-              <DialogTitle>Đăng ký tham gia</DialogTitle>
-              <DynamicActivityRegistrationForm
-                locale={locale}
-                documentId={documentId}
-              />
-            </DialogContent>
-          </Dialog>
+              </DialogTrigger>
+              <DialogContent
+                aria-describedby={documentId}
+                className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
+              >
+                <DialogTitle>Đăng ký tham gia</DialogTitle>
+                <DialogDescription>
+                  Vui lòng điền đầy đủ thông tin để đăng ký tham gia sự kiện.
+                </DialogDescription>
+                <DynamicActivityRegistrationForm
+                  locale={locale}
+                  documentId={documentId}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
         </aside>
       </div>
     </div>
   );
 }
-
-// export default async function ActivityPage({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) {
-//   const locale = (await getLocale()) as Locale;
-//   const { slug } = await params;
-//   const parts = slug.split("-");
-//   const documentId = parts.pop() as string;
-//   if (!documentId) {
-//     return <div>Không tìm thấy ID bài viết.</div>;
-//   }
-//   const response = await fetchActivityByDocumentId({
-//     locale,
-//     documentId: documentId,
-//     populate: "*",
-//   });
-
-//   if (!response || !response.data) return null;
-
-//   const data = response.data as Activity;
-
-//   const imageUrl = getImageUrl(data.coverImage);
-
-//   // console.log("imageUrl", imageUrl);
-//   return (
-//     <div className="mx-auto max-w-7xl px-4 py-10">
-//       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-//         {/* MAIN CONTENT */}
-//         <div className="lg:col-span-7 prose prose-orange max-w-none text-justify leading-relaxed">
-//           <header className="flex flex-col items-start mb-6 space-y-2">
-//             {/* <div className="flex flex-1 w-full items-center justify-between mb-2"> */}
-//             <div className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest">
-//               <span>{data.activityCategory}</span>
-//             </div>
-//             {/* </div> */}
-//             <h1 className="text-2xl md:text-4xl text-left font-bold leading-tight">
-//               {data.activityName}
-//             </h1>
-//             {data.publishedAt && (
-//               <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
-//                 <span>
-//                   {data?.publishedAt
-//                     ? formatFriendlyDate(data.publishedAt, locale)
-//                     : ""}
-//                 </span>
-//               </div>
-//             )}
-//             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
-//               <Image
-//                 src={imageUrl || "/placeholder.jpg"}
-//                 alt={data.activityName || "Activity cover image"}
-//                 fill
-//                 className="object-cover hover:scale-105 transition-transform duration-300"
-//                 priority
-//               />
-//             </div>
-//           </header>
-//           <div className="opacity-80 flex w-full justify-center my-10">
-//             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-//           </div>
-//           {data.content && <RichTextRenderer content={data.content} />}{" "}
-//         </div>
-
-//         <aside className="lg:col-span-3 space-y-8">
-//           <RelatedActivities activities={data.relatedActivities || []} />
-//         </aside>
-//       </div>
-//     </div>
-//   );
-// }

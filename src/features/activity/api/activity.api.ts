@@ -205,8 +205,11 @@ export async function fetchActivitiesByCategory(
   const query = buildQuery(options, false) as URLSearchParams;
 
   // Filter by category
-  query.set("filters[activityCategory][$eq]", options.category);
-
+  if (options.category === "Tất cả") {
+    // Do not add any filter for "all" category
+  } else {
+    query.set("filters[activityCategory][$eq]", options.category);
+  }
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
   );

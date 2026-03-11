@@ -29,11 +29,11 @@ export default function Navbar() {
     <div className="sticky top-0 z-50 border-b bg-card">
       <div className="mx-auto max-w-7xl p-4 grid grid-cols-3 items-center">
         {" "}
-        <Link className="flex  mr-auto" href="/">
+        <Link className="flex mr-auto" href="/">
           <Image
             src={logo}
             alt="Logo"
-            className="h-16 w-auto"
+            className="max-h-14 h-auto w-auto"
             loading="eager"
           />
         </Link>
@@ -45,7 +45,12 @@ export default function Navbar() {
           <LanguageSwitcher />
           <Sheet>
             <SheetTrigger asChild>
-              <Button aria-label="Menu" variant="ghost" size="icon" className="lg:hidden">
+              <Button
+                aria-label="Menu"
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+              >
                 <Menu />
               </Button>
             </SheetTrigger>

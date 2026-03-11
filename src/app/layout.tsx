@@ -14,6 +14,8 @@ import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
+import CustomCursor from "@/shared/layout/CustomerCursor";
+
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
   variable: "--font-lora",
@@ -52,7 +54,7 @@ const oswald = Oswald({
 export const metadata: Metadata = {
   title: {
     default: "Ni Viện Viên Không",
-    template: "%s | Ni Viện Viên Không", // %s sẽ được thay thế bằng title của page con
+    template: "%s | Ni Viện Viên Không",
   },
   description: "Ni Viện Viên Không",
 };
@@ -69,6 +71,7 @@ export default function RootLayout({
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
+          <CustomCursor />
           {children} <Toaster position="top-right" richColors />
         </NextIntlClientProvider>
         <MotionWrapper>

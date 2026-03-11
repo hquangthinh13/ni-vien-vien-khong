@@ -1,6 +1,7 @@
 import React from "react";
 import { fetchActivities } from "@/features/activity/api/activity.api";
-
+import type { Locale } from "@/types/locale";
+import { getLocale } from "next-intl/server";
 async function getActivitiesData() {
   const res = await fetchActivities({
     sort: ["publishedAt:desc"],
@@ -14,6 +15,8 @@ import SimplifiedNewsCard from "@/features/activity/ui/SimplifiedActivitiesCard"
 import MobileActivitiesCard from "@/features/activity/ui/MobileActivitiesCard";
 
 export default async function ActivitiesSection() {
+  const locale = (await getLocale()) as Locale;
+
   try {
     const posts = await getActivitiesData();
 
@@ -33,7 +36,11 @@ export default async function ActivitiesSection() {
       <div className="mx-auto mt-4">
         <section className="flex flex-col lg:hidden gap-0">
           {data.map((post) => (
-            <MobileActivitiesCard key={post.id} activity={post} />
+            <MobileActivitiesCard
+              locale={locale}
+              key={post.id}
+              activity={post}
+            />
           ))}
         </section>
         <section className="hidden lg:flex flex-col">
@@ -53,6 +60,7 @@ export default async function ActivitiesSection() {
                       activity={post}
                       variant="top"
                       isFirst={index === 0}
+                      locale={locale}
                     />
                   </div>
                 ),
@@ -69,6 +77,7 @@ export default async function ActivitiesSection() {
                       key={post.id}
                       activity={post}
                       variant="bottom"
+                      locale={locale}
                     />
                   </div>
                 ),

@@ -3,16 +3,15 @@ import Link from "next/link";
 import { extractFirstParagraph, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Activity } from "../model/activity.types";
-import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
 interface MobileCardProps {
   activity: Activity;
+  locale: Locale;
 }
 export default async function MobileActivitiesCard({
   activity,
+  locale,
 }: MobileCardProps) {
-  const locale = (await getLocale()) as Locale;
-
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
   const imageUrl = getImageUrl(coverImage);
@@ -34,13 +33,13 @@ export default async function MobileActivitiesCard({
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="text-[10px] text-muted-foreground">
+        <span className="text-xs text-muted-foreground font-mono">
           {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
         </span>
         <h3 className="text-sm font-bold leading-tight hover:text-primary line-clamp-1">
           {activityName || "Untitled Activity"}
         </h3>
-        <p className="line-clamp-2 text-xs text-secondary-foreground opacity-80">
+        <p className="line-clamp-2 font-mono text-xs text-secondary-foreground opacity-80">
           {extractFirstParagraph(content)}
         </p>
       </div>

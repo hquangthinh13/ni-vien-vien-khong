@@ -21,7 +21,7 @@ const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   if (item.items && item.items.length > 0) {
     return (
       <DropdownMenuSub>
-        <DropdownMenuSubTrigger className="text-md cursor-pointer">
+        <DropdownMenuSubTrigger className="text-sm cursor-pointer">
           <Link href={item.href || "#"} className="w-full ">
             {item.title}
           </Link>
@@ -38,7 +38,7 @@ const RecursiveMenuItem = ({ item }: { item: MenuItem }) => {
   }
 
   return (
-    <DropdownMenuItem asChild className="text-md">
+    <DropdownMenuItem asChild className="text-sm">
       <Link href={item.href || "#"} className="w-full cursor-pointer">
         {item.title}
       </Link>
@@ -53,7 +53,7 @@ const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="text-md font-bold cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-none focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none"
+            className="text-sm font-bold cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-none focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none"
           >
             {menu.href ? (
               <Link className="" href={menu.href}>
@@ -81,7 +81,7 @@ export default function DesktopNavigationMenu({
   menuData: MenuItem[];
 }) {
   return (
-    <div className="hidden lg:flex items-center gap-2">
+    <div className="hidden lg:flex items-center gap-1">
       {menuData.map((menu, idx) => {
         if (!menu.items) {
           return (
@@ -89,7 +89,7 @@ export default function DesktopNavigationMenu({
               key={idx}
               variant="ghost"
               asChild
-              className="text-md font-bold"
+              className="text-sm font-bold"
             >
               <Link href={menu.href || "#"}>{menu.title}</Link>
             </Button>
