@@ -38,6 +38,7 @@ export async function fetchActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -65,6 +66,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {
@@ -133,6 +135,7 @@ export async function fetchActiveActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 600 },
   });
 
   if (!res.ok) {
@@ -183,6 +186,7 @@ export async function fetchActivitiesByMonth(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -221,6 +225,7 @@ export async function fetchActivitiesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -254,6 +259,7 @@ export async function fetchCoursesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {

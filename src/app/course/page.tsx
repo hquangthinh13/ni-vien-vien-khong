@@ -32,7 +32,7 @@ export default async function CoursePage({
     populate: "coverImage",
     category: initialCategory,
   });
-  console.log("Fetched activities for category:", initialCategory, response);
+  // console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
 
   return (

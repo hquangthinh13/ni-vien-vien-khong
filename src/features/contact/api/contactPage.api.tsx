@@ -27,6 +27,7 @@ export async function fetchContactPage(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {
@@ -52,6 +53,7 @@ export async function fetchContactPageFields(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {

@@ -7,20 +7,7 @@ import lineOrnament from "@/public/ornament-01.svg";
 import type { Locale } from "@/types/locale";
 import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
 import { Metadata } from "next";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/shared/ui/dialog";
-import { Clock, MapPin, Info } from "lucide-react";
-import * as motion from "framer-motion/client";
-import { getImageUrl } from "@/shared/lib/api";
-import {
-  MonasteryAttributes,
-  MonasteryPageResponse,
-} from "@/features/monasteryPage/model/monasteryPage.types";
+import { MonasteryPageResponse } from "@/features/monasteryPage/model/monasteryPage.types";
 import MonasteryList from "@/features/monasteryPage/ui/MonasteryList";
 export const metadata: Metadata = {
   title: "Các tu viện khác",
@@ -35,20 +22,6 @@ export default async function MonasteryPage() {
   })) as MonasteryPageResponse;
 
   const monasteries = response.data?.monasteries || [];
-  console.log("Fetched monasteries:", monasteries);
-  console.log("Fetched monastery page data:", response);
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
-  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 my-10">

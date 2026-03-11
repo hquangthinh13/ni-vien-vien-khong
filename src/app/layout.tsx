@@ -56,7 +56,8 @@ export const metadata: Metadata = {
     default: "Ni Viện Viên Không",
     template: "%s | Ni Viện Viên Không",
   },
-  description: "Ni Viện Viên Không",
+  description:
+    "Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư Liễu Pháp.",
 };
 
 export default function RootLayout({
