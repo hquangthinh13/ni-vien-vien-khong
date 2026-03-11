@@ -7,6 +7,10 @@ import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/li
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Sách Sư Ông Viên Minh",
+};
 export default async function VienMinhListPage({
   searchParams,
 }: {

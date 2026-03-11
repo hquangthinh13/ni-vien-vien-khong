@@ -6,7 +6,10 @@ import { fetchHistoryPage } from "@/features/historyPage/api/historyPage.api";
 import type { HistoryPageAttributes } from "@/features/historyPage/model/historyPage.types";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Ni Viện Viên Không Xưa và Nay",
+};
 export default async function PastAndPresentPage() {
   const locale = (await getLocale()) as Locale;
 

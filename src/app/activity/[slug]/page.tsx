@@ -23,12 +23,55 @@ import {
 } from "@/features/activity/model/activity.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
-import { fetchActivityByDocumentIdWithRegistrationFormAndCourseContent } from "@/features/activity/api/activity.api";
+import {
+  fetchActivityByDocumentId,
+  fetchActivityByDocumentIdWithRegistrationFormAndCourseContent,
+} from "@/features/activity/api/activity.api";
 import { getImageUrl } from "@/shared/lib/api";
 import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
 import { notFound } from "next/navigation";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const parts = slug.split("-");
+  const documentId = parts.pop() as string;
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response = await fetchActivityByDocumentId({
+      locale,
+      documentId: documentId,
+    });
+
+    const data = response?.data as Activity;
+
+    if (!data) {
+      return { title: "Không tìm thấy hoạt động" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage);
+
+    return {
+      title: data.activityName,
+      description:
+        data.activityCategory || "Thông tin hoạt động tại Ni Viện Viên Không",
+      openGraph: {
+        title: data.activityName,
+        description: data.activityCategory,
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
 export default async function ActivityPage({
   params,
 }: {

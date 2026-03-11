@@ -1,128 +1,146 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import ActivityVibrantCard from "./ActivityVibrantCard";
-import { fetchCoursesByCategory } from "@/features/activity/api/activity.api";
-import type { Activity } from "@/features/activity/model/activity.types";
+import { useRouter, useSearchParams } from "next/navigation";
+import type { Activity } from "../model/activity.types";
 import type { CourseCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import ActivityVibrantCard from "./ActivityVibrantCard";
+import { Button } from "@/shared/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-interface CourseListProps {
+interface ActivityListProps {
   initialCourses: Activity[];
-  initialCategory: CourseCategory;
+  initialCategory: CourseCategory | "Tất cả";
   locale: Locale;
+  paginationMeta?: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+  currentPage: number;
 }
 
 export default function CourseList({
   initialCourses,
   initialCategory,
   locale,
-}: CourseListProps) {
-  const [courses, setCourses] = useState<Activity[]>(initialCourses);
-  const [category, setCategory] = useState<CourseCategory>(initialCategory);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  const { ref, inView } = useInView();
-
-  const handleTabChange = async (value: string) => {
-    const newCategory = value as CourseCategory;
-    setCategory(newCategory);
-    setLoading(true);
-
-    try {
-      const res = await fetchCoursesByCategory({
-        locale,
-        category: newCategory,
-        pagination: { page: 1, pageSize: 8 },
-        populate: "coverImage",
-        sort: "activityStartDate:desc",
-      });
-
-      const newData = Array.isArray(res.data) ? res.data : [];
-      setCourses(newData);
-      setPage(1);
-      setHasMore(newData.length >= 8);
-    } catch (error) {
-      console.error("Failed to change category:", error);
-    } finally {
-      setLoading(false);
-    }
+  paginationMeta,
+  currentPage,
+}: ActivityListProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const reverseMapping: Record<string, string> = {
+    "Khóa Tu Mùa Hè": "mua-he",
+    "Khóa Tu Xuất Gia Gieo Duyên": "xuat-gia-gieo-duyen",
+    "Khóa Thiền": "thien",
+    "Tất cả": "all",
   };
 
-  useEffect(() => {
-    if (inView && hasMore && !loading) {
-      const loadMore = async () => {
-        setLoading(true);
-        const nextPage = page + 1;
-        try {
-          const res = await fetchCoursesByCategory({
-            locale,
-            category,
-            pagination: { page: nextPage, pageSize: 8 },
-            populate: "coverImage",
-            sort: "activityDate:desc",
-          });
+  const handleUpdateQuery = (newCategory?: string, newPage?: number) => {
+    const params = new URLSearchParams(searchParams.toString());
 
-          const newData = Array.isArray(res.data) ? res.data : [];
-          if (newData.length === 0) {
-            setHasMore(false);
-          } else {
-            setCourses((prev) => [...prev, ...newData]);
-            setPage(nextPage);
-            setHasMore(newData.length === 8);
-          }
-        } catch (error) {
-          console.error("Failed to load more courses:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      loadMore();
+    if (newCategory) {
+      params.set("category", reverseMapping[newCategory] || "all");
+      params.set("page", "1");
     }
-  }, [inView, hasMore, loading, category, page, locale]);
+    if (newPage) {
+      params.set("page", newPage.toString());
+    }
+
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex w-full justify-center mb-6">
+    <div className="w-full flex flex-col items-center gap-4">
+      <div className="flex w-full justify-center items-center h-auto mb-6">
         <Tabs
-          defaultValue={initialCategory}
-          onValueChange={handleTabChange}
-          className="w-full flex flex-col items-center"
+          value={initialCategory}
+          onValueChange={(val) => handleUpdateQuery(val)}
+          className=" flex flex-col h-auto items-center"
         >
-          <TabsList variant="line">
-            <TabsTrigger value="Khóa Tu Mùa Hè">Khóa Tu Mùa Hè</TabsTrigger>
-            <TabsTrigger value="Khóa Tu Xuất Gia Gieo Duyên ">
+          <TabsList
+            variant="line"
+            className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
+          >
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Tất cả"
+            >
+              Tất cả
+            </TabsTrigger>
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit "
+              value="Khóa Tu Mùa Hè"
+            >
+              Khóa Tu Mùa Hè
+            </TabsTrigger>
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Khóa Tu Xuất Gia Gieo Duyên"
+            >
               Khóa Tu Xuất Gia Gieo Duyên
             </TabsTrigger>
-            <TabsTrigger value="Khóa Thiền">Khóa Thiền</TabsTrigger>
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Khóa Thiền"
+            >
+              Khóa Thiền
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
-      <div className="w-full max-w-7xl">
-        {courses.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-            {courses.map((course) => (
-              <div key={course.documentId} className="w-full">
-                <ActivityVibrantCard activity={course} locale={locale} />
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={initialCategory + currentPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full col-span-full"
+          >
+            {initialCourses.map((activity: Activity) => (
+              <ActivityVibrantCard
+                key={activity.documentId}
+                activity={activity}
+                locale={locale}
+              />
             ))}
-          </div>
-        ) : (
-          !loading && (
-            <div className="w-full text-sm flex justify-center items-start py-20 text-muted-foreground">
-              Không có dữ liệu cho mục này.
-            </div>
-          )
-        )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Infinite Scroll Trigger Area */}
-      <div ref={ref} className="min-h-[200px] w-full mt-2 max-w-7xl"></div>
+      {paginationMeta && paginationMeta.pageCount > 1 && (
+        <div className="flex justify-center gap-4 mt-6">
+          <Button
+            disabled={currentPage <= 1}
+            onClick={() => handleUpdateQuery(undefined, currentPage - 1)}
+            size="icon-lg"
+            variant="outline"
+            className="cursor-pointer"
+          >
+            <ChevronLeft />
+          </Button>
+          <span className="flex items-center text-muted-foreground text-sm">
+            {locale === "vi" ? "Trang" : "Page"} {currentPage}{" "}
+            {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
+          </span>
+
+          <Button
+            disabled={currentPage >= paginationMeta.pageCount}
+            onClick={() => handleUpdateQuery(undefined, currentPage + 1)}
+            className="cursor-pointer"
+            size="icon-lg"
+            variant="outline"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

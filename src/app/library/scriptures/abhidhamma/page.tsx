@@ -7,7 +7,10 @@ import type { Locale } from "@/types/locale";
 import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/linkedDocument.api";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/shared/ui/button";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Tạng Vi Diệu Pháp",
+};
 export default async function AbhidhammaListPage({
   searchParams,
 }: {

@@ -9,7 +9,8 @@ export type ActivityCategory =
 export type CourseCategory =
   | "Khóa Tu Mùa Hè"
   | "Khóa Tu Xuất Gia Gieo Duyên"
-  | "Khóa Thiền";
+  | "Khóa Thiền"
+  | "Tất cả";
 
 export type LinkedDocumentCategory =
   | "Tạng Kinh"

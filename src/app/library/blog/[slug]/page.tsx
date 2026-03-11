@@ -1,21 +1,54 @@
 import React from "react";
 import Image from "next/image";
-import { CalendarDays, PlayCircle } from "lucide-react";
-
+import { CalendarDays } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
-
 import lineOrnament from "@/public/ornament-01.svg";
 import { formatShortDate } from "@/shared/lib/utils";
-import {
-  Activity,
-  CourseContent,
-} from "@/features/activity/model/activity.types";
 import type { Blog } from "@/features/blog/model/blog.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
 import { fetchBlogByDocumentId } from "@/features/blog/api/blog.api";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const parts = slug.split("-");
+  const documentId = parts.pop() as string;
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response = await fetchBlogByDocumentId({
+      locale,
+      documentId: documentId,
+    });
+
+    const data = response?.data as Blog;
+
+    if (!data) {
+      return { title: "Không tìm thấy bài viết" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage);
+
+    return {
+      title: data.title,
+      description: "Chia sẻ từ Ni Viện Viên Không",
+      openGraph: {
+        title: data.title,
+        description: "Chia sẻ từ Ni Viện Viên Không",
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
 export default async function ActivityPage({
   params,
 }: {

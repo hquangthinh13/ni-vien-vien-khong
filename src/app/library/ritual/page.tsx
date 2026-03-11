@@ -7,6 +7,10 @@ import type { Locale } from "@/types/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { fetchRituals } from "@/features/ritual/api/ritual.api";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Nghi thức nghi lễ",
+};
 export default async function RitualListPage({
   searchParams,
 }: {

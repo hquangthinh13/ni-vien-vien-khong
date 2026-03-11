@@ -4,17 +4,19 @@ import React from "react";
 import QuestionCard from "@/features/question/ui/QuestionCard";
 import QuestionForm from "@/features/question/ui/QuestionForm";
 import { Button } from "@/shared/ui/button";
-
 import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
 import type { Locale } from "@/types/locale";
 import { getLocale } from "next-intl/server";
-import { Question } from "@/features/question/model/question.types";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogTrigger,
 } from "@/shared/ui/dialog";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Vấn đáp Phật pháp",
+};
 export default async function QuestionListPage({
   searchParams,
 }: {

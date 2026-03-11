@@ -211,6 +211,7 @@ export async function fetchActivitiesByCategory(
   // Filter by category
   if (options.category === "Tất cả") {
     // Do not add any filter for "all" category
+    query.set("filters[activityCategory][$ne]", "Khóa Tu"); // Exclude "Khóa Tu" from general activities
   } else {
     query.set("filters[activityCategory][$eq]", options.category);
   }
@@ -244,10 +245,27 @@ export async function fetchCoursesByCategory(
     options.sort = SORT_DEFAULT;
   }
   const query = buildQuery(options, false) as URLSearchParams;
-  // All course  have activity category = "course"
+
   query.set("filters[activityCategory][$eq]", "Khóa Tu");
+
+  if (options.category === "Tất cả") {
+    // Do not add any filter for "all" category
+  } else {
+    query.set("filters[courseContent][courseCategory][$eq]", options.category);
+  }
+  // All course  have activity category = "course"
+  // query.set("filters[activityCategory][$eq]", "Khóa Tu");
   // Filter by course category
-  query.set("filters[courseContent][courseCategory][$eq]", options.category);
+  // query.set("filters[courseContent][courseCategory][$eq]", options.category);
+
+  // Filter by year if provided
+  if (options.year) {
+    const startOfYear = `${options.year}-01-01T00:00:00.000Z`;
+    const endOfYear = `${options.year}-12-31T23:59:59.999Z`;
+
+    query.set("filters[activityStartDate][$between][0]", startOfYear);
+    query.set("filters[activityStartDate][$between][1]", endOfYear);
+  }
 
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,

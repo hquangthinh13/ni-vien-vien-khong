@@ -8,6 +8,44 @@ import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
+
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ documentId: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { documentId } = await params;
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response = await fetchPoemByDocumentId({
+      locale,
+      documentId: documentId,
+    });
+
+    const data = response?.data as Poem;
+
+    if (!data) {
+      return { title: "Không tìm thấy bài thơ" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage);
+
+    return {
+      title: data.title,
+      description: data.author || "Thông tin bài thơ tại Ni Viện Viên Không",
+      openGraph: {
+        title: data.title,
+        description: data.author || "Thông tin bài thơ tại Ni Viện Viên Không",
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
 export default async function PoemPage({
   params,
 }: {

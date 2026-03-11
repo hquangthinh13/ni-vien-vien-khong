@@ -120,4 +120,5 @@ export type FetchActivitiesByCategoryOptions = FetchActivitiesOptions & {
 
 export type FetchCourseByCategoryOptions = FetchActivitiesOptions & {
   category: CourseCategory;
+  year?: number;
 };

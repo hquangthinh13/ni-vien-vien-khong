@@ -77,9 +77,15 @@ const ActivityVibrantCard = ({
             />
           </div>{" "}
           <div className="flex flex-col items-start justify-end">
-            <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
-              {activity.activityCategory}
-            </span>{" "}
+            {activity.activityCategory != "Khóa Tu" ? (
+              <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
+                {activity.activityCategory}
+              </span>
+            ) : (
+              <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
+                {activity.courseContent?.courseCategory}
+              </span>
+            )}
             <h3 className="pr-20 text-lg font-bold drop-shadow-2xl line-clamp-2 ">
               {activity.activityName}
             </h3>

@@ -1,20 +1,55 @@
 import React from "react";
 import Image from "next/image";
 import { CalendarDays } from "lucide-react";
-
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
-
 import lineOrnament from "@/public/ornament-01.svg";
 import { formatShortDate } from "@/shared/lib/utils";
 import { Ritual } from "@/features/ritual/model/ritual.types";
 import { fetchRitualByDocumentId } from "@/features/ritual/api/ritual.api";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
-
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import RelatedRitualsSection from "@/features/ritual/ui/RelatedRitualsSection";
-export default async function ActivityPage({
+
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ documentId: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { documentId } = await params;
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response = await fetchRitualByDocumentId({
+      locale,
+      documentId: documentId,
+    });
+
+    const data = response?.data as Ritual;
+
+    if (!data) {
+      return { title: "Không tìm thấy nghi thức" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage);
+
+    return {
+      title: data.title,
+      description: "Thông tin nghi thức tại Ni Viện Viên Không",
+      openGraph: {
+        title: data.title,
+        description: "Thông tin nghi thức tại Ni Viện Viên Không",
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
+export default async function RitualPage({
   params,
 }: {
   params: Promise<{ documentId: string }>;

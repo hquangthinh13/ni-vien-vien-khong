@@ -6,6 +6,10 @@ import type { SceneryPageAttributes } from "@/features/sceneryPage/model/scenery
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
 import { fetchSceneryPage } from "@/features/sceneryPage/api/sceneryPage.api";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Tịnh Cảnh Viên Không",
+};
 export default async function PastAndPresentPage() {
   const locale = (await getLocale()) as Locale;
 
