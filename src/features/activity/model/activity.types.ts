@@ -37,6 +37,7 @@ export type CourseContent = {
 export interface Activity extends StrapiEntity {
   activityName: string;
   slug: string;
+  zaloGroup: string;
   content?: BlocksContent;
   activityStartDate: string; // ISO date string
   activityEndDate: string; // ISO date string
