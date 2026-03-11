@@ -16,6 +16,8 @@ import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import CustomCursor from "@/shared/layout/CustomerCursor";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
   variable: "--font-lora",
@@ -74,7 +76,7 @@ export default function RootLayout({
         <NextIntlClientProvider>
           <CustomCursor />
           {children} <Toaster position="top-right" richColors />{" "}
-          <SpeedInsights />
+          <SpeedInsights /> <Analytics />
         </NextIntlClientProvider>
         <MotionWrapper>
           <Footer />
