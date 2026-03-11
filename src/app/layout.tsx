@@ -58,28 +58,6 @@ export const metadata: Metadata = {
   },
   description:
     "Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư Liễu Pháp.",
-  openGraph: {
-    title: "Ni Viện Viên Không",
-    description: "Mô tả về Ni Viện Viên Không...",
-    url: "https://staging.vienkhongni.com/",
-    siteName: "Ni Viện Viên Không",
-    images: [
-      {
-        url: "https://staging.vienkhongni.com/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Banner Ni Viện Viên Không",
-      },
-    ],
-    locale: "vi_VN",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Ni Viện Viên Không",
-    description: "Mô tả về Ni Viện Viên Không...",
-    images: ["https://staging.vienkhongni.com/opengraph-image.png"],
-  },
 };
 
 export default function RootLayout({
