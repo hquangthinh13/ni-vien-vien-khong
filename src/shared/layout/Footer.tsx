@@ -134,13 +134,13 @@ const Footer = async () => {
                 {t("highlight-01")}{" "}
               </Link>
               <Link
-                href="/about"
+                href="/library/blog"
                 className="hover:text-primary transition-colors"
               >
                 {t("highlight-02")}{" "}
               </Link>
               <Link
-                href="/contact"
+                href="/library/calligraphy"
                 className="hover:text-primary transition-colors"
               >
                 {t("highlight-03")}{" "}

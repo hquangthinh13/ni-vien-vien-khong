@@ -19,6 +19,7 @@ import { HomePageAttributes } from "@/features/homePage/model/homePage.types";
 import { getImageUrl } from "@/shared/lib/api";
 import { MessageCircleQuestionMark } from "lucide-react";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
+import { DialogDescription } from "@radix-ui/react-dialog";
 export default async function Home() {
   const t = await getTranslations("HomePage");
   const locale = (await getLocale()) as Locale;
@@ -161,6 +162,11 @@ export default async function Home() {
                     className="max-h-[90vh] overflow-y-auto"
                   >
                     <DialogTitle>Đặt câu hỏi</DialogTitle>
+                    <DialogDescription>
+                      {locale === "vi"
+                        ? "Hãy đặt câu hỏi của bạn dưới đây và chúng tôi sẽ trả lời sớm nhất có thể."
+                        : "Please ask your question below and we will respond as soon as possible."}
+                    </DialogDescription>
                     <QuestionForm locale={locale} />
                   </DialogContent>
                 </Dialog>
