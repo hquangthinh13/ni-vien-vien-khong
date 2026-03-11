@@ -31,15 +31,14 @@ const CourseSidebarCard = async ({
       href={`/activity/${course.slug}-${course.documentId}`}
       className="group block w-full border-b border-border/50 pb-2 last:border-0 last:pb-0 transition-all"
     >
-      <div className="flex gap-3">
-        <div className="flex relative aspect-video w-36 sm:w-32 shrink-0 overflow-hidden rounded-md bg-muted">
+      <div className="flex gap-4">
+        <div className="group relative h-24 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted">
           {coverImageUrl && (
             <Image
               src={coverImageUrl}
               alt={course.activityName || "Course cover image"}
               fill
-              sizes="(max-width: 768px) 160px, 128px"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="group-hover:scale-105 transition-transform duration-300 object-cover"
             />
           )}
         </div>

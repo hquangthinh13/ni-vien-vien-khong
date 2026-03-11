@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface ActivityListProps {
   initialActivities: Activity[];
-  initialCategory: ActivityCategoryType;
+  initialCategory: ActivityCategoryType | "all";
   locale: Locale;
   paginationMeta?: {
     page: number;
@@ -37,6 +37,7 @@ export default function ActivityList({
     "Phật Sự Nước Ngoài": "international",
     "Lớp Học Phật Pháp": "dharma-class",
     "Tin Tức Khác": "others",
+    "Tất cả": "all",
   };
 
   const handleUpdateQuery = (newCategory?: string, newPage?: number) => {
@@ -59,12 +60,18 @@ export default function ActivityList({
         <Tabs
           value={initialCategory}
           onValueChange={(val) => handleUpdateQuery(val)}
-          className="w-full flex flex-col h-auto items-center"
+          className=" flex flex-col h-auto items-center"
         >
           <TabsList
             variant="line"
-            className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 bg-transparent p-1"
+            className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
           >
+            <TabsTrigger
+              className="cursor-pointer shrink-0 w-fit"
+              value="Tất cả"
+            >
+              Tất cả
+            </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit "
               value="Phật Sự Trong Nước"

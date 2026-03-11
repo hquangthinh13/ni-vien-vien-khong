@@ -52,7 +52,6 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
   const onPreSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Kiểm tra Ref ở đây hoàn toàn an toàn vì đây là Event Handler
     const token = recaptchaRef.current?.getValue();
 
     if (!token) {

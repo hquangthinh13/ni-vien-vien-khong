@@ -34,9 +34,7 @@ const ActivityVibrantCard = ({
         const palette = await v.getPalette();
 
         setColors({
-          // Màu DarkVibrant vẫn dùng cho Gradient
           bgGradient: palette.DarkVibrant?.hex || "#1a1a1a",
-          // Sử dụng Vibrant hoặc Muted cho màu lịch để tạo sự tương phản phù hợp
           calendarHeader:
             palette.Vibrant?.hex || palette.Muted?.hex || "#1a1a1a",
         });
@@ -53,7 +51,6 @@ const ActivityVibrantCard = ({
       className="group block"
     >
       <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-2xl transition-all duration-500 group-hover:scale-[1.01]">
-        {/* Layer 1: Ảnh */}
         {imageUrl && (
           <Image
             src={imageUrl}
@@ -64,7 +61,6 @@ const ActivityVibrantCard = ({
           />
         )}
 
-        {/* Layer 2: Gradient Overlay */}
         <div
           className="absolute inset-0 transition-colors duration-1000"
           style={{
@@ -72,7 +68,6 @@ const ActivityVibrantCard = ({
           }}
         />
 
-        {/* Layer 3: Nội dung */}
         <div className="absolute h-fit mt-auto inset-0 flex flex-row gap-4 justify-start p-4 text-white">
           <div className="flex items-start">
             <DateCard
