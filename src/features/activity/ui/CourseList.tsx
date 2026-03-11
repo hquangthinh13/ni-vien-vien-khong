@@ -5,6 +5,13 @@ import type { Activity } from "../model/activity.types";
 import type { CourseCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select";
 import ActivityVibrantCard from "./ActivityVibrantCard";
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -21,6 +28,8 @@ interface ActivityListProps {
     total: number;
   };
   currentPage: number;
+  availableYears: number[];
+  currentYear: number | undefined;
 }
 
 export default function CourseList({
@@ -29,6 +38,8 @@ export default function CourseList({
   locale,
   paginationMeta,
   currentPage,
+  availableYears,
+  currentYear,
 }: ActivityListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,11 +50,20 @@ export default function CourseList({
     "Tất cả": "all",
   };
 
-  const handleUpdateQuery = (newCategory?: string, newPage?: number) => {
+  const handleUpdateQuery = (
+    newCategory?: string,
+    newPage?: number,
+    newYear?: string,
+  ) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (newCategory) {
       params.set("category", reverseMapping[newCategory] || "all");
+      params.set("page", "1");
+    }
+    if (newYear) {
+      if (newYear === "all") params.delete("year");
+      else params.set("year", newYear);
       params.set("page", "1");
     }
     if (newPage) {
@@ -55,7 +75,7 @@ export default function CourseList({
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      <div className="flex w-full justify-center items-center h-auto mb-6">
+      <div className="flex flex-col w-full justify-center items-center h-auto mb-6 gap-4">
         <Tabs
           value={initialCategory}
           onValueChange={(val) => handleUpdateQuery(val)}
@@ -91,6 +111,29 @@ export default function CourseList({
             </TabsTrigger>
           </TabsList>
         </Tabs>
+        <div className="flex items-center gap-2">
+          <span className="text-xs uppercase font-mono tracking-wider font-normal text-muted-foreground whitespace-nowrap">
+            Năm{" "}
+          </span>
+          <Select
+            value={currentYear?.toString() || "all"}
+            onValueChange={(val) =>
+              handleUpdateQuery(undefined, undefined, val)
+            }
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Chọn năm" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tất cả</SelectItem>
+              {availableYears.map((year) => (
+                <SelectItem key={year} value={year.toString()}>
+                  Năm {year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">

@@ -1,5 +1,8 @@
 import React from "react";
-import { fetchCoursesByCategory } from "@/features/activity/api/activity.api";
+import {
+  fetchCoursesByCategory,
+  fetchAllCourseYears,
+} from "@/features/activity/api/activity.api";
 import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
@@ -13,11 +16,17 @@ export const metadata: Metadata = {
 export default async function CoursePage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; page?: string }>;
+  searchParams: Promise<{ category?: string; page?: string; year?: string }>;
 }) {
   const locale = (await getLocale()) as Locale;
-  const { category: categorySlug, page: pageSlug } = await searchParams;
+  const {
+    category: categorySlug,
+    page: pageSlug,
+    year: yearSlug,
+  } = await searchParams;
+  const currentYear = yearSlug ? Number(yearSlug) : undefined;
   const currentPage = Number(pageSlug) || 1;
+  const availableYears = await fetchAllCourseYears();
 
   const categoryMapping: Record<string, CourseCategory> = {
     "mua-he": "Khóa Tu Mùa Hè",
@@ -33,6 +42,7 @@ export default async function CoursePage({
     sort: ["activityStartDate:desc"],
     populate: ["coverImage", "courseContent"],
     category: initialCategory,
+    year: currentYear,
   });
   console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
@@ -57,6 +67,8 @@ export default async function CoursePage({
           locale={locale}
           paginationMeta={paginationMeta}
           currentPage={currentPage}
+          availableYears={availableYears}
+          currentYear={currentYear}
         />
       </div>
     </div>

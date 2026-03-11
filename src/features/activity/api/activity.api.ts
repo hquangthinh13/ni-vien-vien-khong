@@ -315,3 +315,39 @@ export function isActive(activity: Activity, referenceDate?: string): boolean {
   const status = getActivityStatus(activity, referenceDate);
   return status === "upcoming" || status === "ongoing";
 }
+export async function fetchAllCourseYears(): Promise<number[]> {
+  const query = new URLSearchParams();
+
+  query.set("fields[0]", "activityStartDate");
+
+  query.set("filters[activityCategory][$eq]", "Khóa Tu");
+
+  // query.set("pagination[limit]", "-1");
+
+  const url = getStrapiURL(
+    `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query.toString()}` : ""}`,
+  );
+
+  const res = await fetch(url, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${AUTHORIZED_TOKEN}` },
+    next: { revalidate: 3600 },
+  });
+
+  if (!res.ok) return [new Date().getFullYear()];
+
+  const response = await res.json();
+  const activities = response.data as Activity[];
+
+  console.log("Fetched activities for year extraction:", activities);
+
+  const years = Array.from(
+    new Set(
+      activities
+        .filter((a) => a.activityStartDate)
+        .map((a) => new Date(a.activityStartDate).getFullYear()),
+    ),
+  ).sort((a, b) => b - a);
+
+  return years.length > 0 ? years : [new Date().getFullYear()];
+}
