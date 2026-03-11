@@ -47,7 +47,7 @@ import { Switch } from "@/shared/ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { format, parseISO, isValid, differenceInYears } from "date-fns";
 import { Calendar as CalendarIcon, Clock2Icon, Send } from "lucide-react";
-import RichTextRenderer from "@/shared/layout/RichTextRenderer";
+import ActivityRegistrationContentRenderer from "./ActivityRegistrationContentRenderer";
 import { cn, isRichTextEmpty } from "@/shared/lib/utils";
 
 interface CustomizedComponentWithDetails extends CustomizedComponent {
@@ -167,14 +167,14 @@ export default function ActivityRegistrationForm({
 
       const age = differenceInYears(new Date(), dob);
 
-      if (activity.minAge !== undefined && age < activity.minAge) {
+      if (activity.minAge != null && age < activity.minAge) {
         toast.error(
           `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu tối thiểu ${activity.minAge} tuổi)`,
         );
         return;
       }
 
-      if (activity.maxAge !== undefined && age > activity.maxAge) {
+      if (activity.maxAge != null && age > activity.maxAge) {
         toast.error(
           `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu tối đa ${activity.maxAge} tuổi)`,
         );
@@ -622,11 +622,35 @@ export default function ActivityRegistrationForm({
             {template.registrationDescription &&
               !isRichTextEmpty(template.registrationDescription) && (
                 <div className="w-full p-4 bg-card rounded-md border">
-                  <RichTextRenderer
+                  <ActivityRegistrationContentRenderer
                     content={template.registrationDescription}
                   />
                 </div>
               )}
+            {activity?.ageRestricted && (
+              <div className="w-full ">
+                <p className="text-sm text-muted-foreground italic">
+                  Hoạt động này giới hạn độ tuổi
+                  {activity.minAge != null && (
+                    <>
+                      {" "}
+                      từ <strong>{activity.minAge} tuổi</strong>
+                    </>
+                  )}
+                  {activity.minAge != null && activity.maxAge != null && " đến"}
+                  {activity.maxAge != null && (
+                    <>
+                      {" "}
+                      dưới <strong>{activity.maxAge} tuổi</strong>
+                    </>
+                  )}
+                  {activity.minAge == null &&
+                    activity.maxAge == null &&
+                    " theo quy định"}
+                  . Vui lòng đảm bảo bạn đáp ứng yêu cầu này.
+                </p>
+              </div>
+            )}
           </section>
           {/* Section: Thông tin cơ bản */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -821,7 +845,7 @@ export default function ActivityRegistrationForm({
             {/* )} */}
           </div>
 
-          {/* Section: Identity (Nếu được bật trong Strapi) */}
+          {/* Section: Identity*/}
           {template.defaultIdentitySectionIncluded && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
@@ -1197,7 +1221,6 @@ export default function ActivityRegistrationForm({
                     >
                       <Controller
                         control={control}
-                        // Sử dụng Template Literal Type để tạo path an toàn thay vì dùng any
                         name={
                           `commitments.${msg.id}` as unknown as Path<RegistrationFormValues>
                         }
