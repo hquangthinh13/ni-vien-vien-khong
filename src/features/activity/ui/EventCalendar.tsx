@@ -127,7 +127,7 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
       .finally(() => {
         setLoadingByMonth((prev) => ({ ...prev, [monthKey]: false }));
       });
-    console.log("Fetching activities for", year, month);
+    // console.log("Fetching activities for", year, month);
     return () => {
       controller.abort();
     };

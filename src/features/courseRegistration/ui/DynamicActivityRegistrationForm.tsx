@@ -144,11 +144,11 @@ export default function ActivityRegistrationForm({
           setTemplate(data.registrationForm);
           setActivity(data);
         }
-        console.log(
-          "Loaded registration form template:",
-          data?.registrationForm,
-        );
-        console.log("Loaded activity data:", data);
+        // console.log(
+        //   "Loaded registration form template:",
+        //   data?.registrationForm,
+        // );
+        // console.log("Loaded activity data:", data);
       } catch (error) {
         toast.error("Không thể tải thông tin đăng ký");
       }
@@ -245,12 +245,12 @@ export default function ActivityRegistrationForm({
         });
 
         const finalPayload = builder.build();
-        console.log("Final Payload to API:", finalPayload);
+        // console.log("Final Payload to API:", finalPayload);
 
         await createActivityRegistration(finalPayload);
         toast.success("Đăng ký thành công!");
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         toast.error("Đã xảy ra lỗi khi gửi form");
       }
     });

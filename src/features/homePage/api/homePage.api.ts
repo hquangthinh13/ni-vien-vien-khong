@@ -5,7 +5,6 @@ import type {
   HomePageAttributes,
   HomePageResponse,
 } from "../model/homePage.types";
-import Home from "@/app/page";
 
 const HOME_PAGE_ENDPOINT = "/api/home-page";
 const AUTHORIZED_TOKEN =
@@ -28,6 +27,7 @@ export async function fetchHomePage(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {
@@ -53,6 +53,7 @@ export async function fetchHomePageFields(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {

@@ -12,7 +12,6 @@ const AUTHORIZED_TOKEN =
   process.env.NEXT_PUBLIC_STRAPI_API_TOKEN ||
   "";
 
-const SORT_DEFAULT = "publishedAt:desc";
 export async function fetchBlogs(
   options: FetchBlogsOptions = {},
 ): Promise<BlogResponse> {
@@ -27,6 +26,7 @@ export async function fetchBlogs(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -54,6 +54,7 @@ export async function fetchBlogByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {

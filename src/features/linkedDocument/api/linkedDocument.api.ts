@@ -31,6 +31,7 @@ export async function fetchLinkedDocuments(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
@@ -57,6 +58,7 @@ export async function fetchLinkedDocumentByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    cache: "force-cache",
   });
 
   if (!res.ok) {
@@ -87,6 +89,7 @@ export async function fetchLinkedDocumentsByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

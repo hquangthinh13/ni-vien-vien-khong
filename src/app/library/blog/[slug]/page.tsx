@@ -44,7 +44,7 @@ export default async function ActivityPage({
   }
 
   const data = response.data as Blog;
-  console.log("Fetched blog data:", data);
+  // console.log("Fetched blog data:", data);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
