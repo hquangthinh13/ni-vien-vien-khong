@@ -15,7 +15,7 @@ import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import CustomCursor from "@/shared/layout/CustomerCursor";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
   variable: "--font-lora",
@@ -73,7 +73,8 @@ export default function RootLayout({
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
           <CustomCursor />
-          {children} <Toaster position="top-right" richColors />
+          {children} <Toaster position="top-right" richColors />{" "}
+          <SpeedInsights />
         </NextIntlClientProvider>
         <MotionWrapper>
           <Footer />
