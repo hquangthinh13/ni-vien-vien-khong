@@ -41,9 +41,14 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
           </figure>
         ),
         paragraph: ({ children }) => (
-          <p className="not-last:mb-6 text-foreground/90 leading-7 text-justify">
+          <p className="not-last:mb-2 text-foreground/90 leading-7 text-justify">
             {children}
           </p>
+        ),
+        heading: ({ children }) => (
+          <h1 className="not-last:mb-4 text-primary leading-7 text-justify">
+            {children}
+          </h1>
         ),
         link: ({ children, url }) => {
           const isExternal = url.startsWith("http");

@@ -17,6 +17,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
         fill
         className="object-cover -z-10"
         priority
+        placeholder="blur"
       />
       <div className="hidden origin-top scale-75 lg:scale-100 lg:block absolute left-[10%] -translate-x-1/2 top-0 z-20 pointer-events-none">
         <Image

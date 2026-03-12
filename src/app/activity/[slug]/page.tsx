@@ -89,8 +89,9 @@ export default async function ActivityPage({
         documentId: documentId,
         populate: [
           "coverImage",
-          "courseContent.highlightedImages",
-          "courseContent.videoSection",
+          // "courseContent.highlightedImages",
+          // "courseContent.videoSection",
+          // "courseContent",
         ],
       });
   } catch (error) {
@@ -105,7 +106,7 @@ export default async function ActivityPage({
   }
 
   const data = response.data as Activity;
-  // console.log("Fetched activity data:", data);
+  console.log("Fetched activity data:", data);
   const courseContent = data?.courseContent as CourseContent;
   const videoList = courseContent?.videoSection || [];
   const sortedVideos = [...videoList].sort(
