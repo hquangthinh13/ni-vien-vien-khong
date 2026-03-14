@@ -15,7 +15,7 @@ const CourseSidebarCard = async ({
   locale,
 }: CourseSidebarCardProps & { locale: Locale }) => {
   const coverImageUrl = course.coverImage
-    ? getImageUrl(course.coverImage)
+    ? getImageUrl(course.coverImage, "thumbnail")
     : null;
 
   const startDate = course.activityStartDate
@@ -39,6 +39,9 @@ const CourseSidebarCard = async ({
               alt={course.activityName || "Course cover image"}
               fill
               className="group-hover:scale-105 transition-transform duration-300 object-cover"
+              priority
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
             />
           )}
         </div>

@@ -12,7 +12,7 @@ interface PoemCardProps {
 
 const PoemCard = ({ poem }: PoemCardProps) => {
   const { documentId, title, coverImage } = poem;
-  const imageUrl = getImageUrl(coverImage);
+  const imageUrl = getImageUrl(coverImage, "medium");
   return (
     <Link href={`/library/poem/${documentId}`}>
       <Card className="rounded-none mx-auto w-full h-full flex flex-col py-0 gap-0 hover:shadow-lg transition overflow-hidden delay-150 duration-300 ease-in-out">
@@ -34,6 +34,8 @@ const PoemCard = ({ poem }: PoemCardProps) => {
           width={600}
           height={400}
           className="aspect-16/10 w-full object-cover"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
         />
       </Card>
     </Link>

@@ -4,7 +4,10 @@ import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
 import PoemCard from "@/features/poem/ui/PoemCard";
 import type { Locale } from "@/types/locale";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Thơ thiền",
+};
 export default async function PoemListPage({
   searchParams,
 }: {

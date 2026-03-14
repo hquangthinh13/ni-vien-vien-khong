@@ -32,6 +32,7 @@ export async function fetchCalligraphies(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
@@ -58,6 +59,8 @@ export async function fetchCalligraphyByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    // next: { revalidate: 0 },
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
@@ -74,8 +77,13 @@ export async function fetchCalligraphiesByCategory(
 ): Promise<CalligraphyResponse> {
   const query = buildQuery(options, false) as URLSearchParams;
 
+  if (options.category === "Tất cả") {
+    // Do not add any filter for "all" category
+  } else {
+    query.set("filters[category][$eq]", options.category);
+  }
   // Filter by category
-  query.set("filters[category][$eq]", options.category);
+  // query.set("filters[category][$eq]", options.category);
 
   const url = getStrapiURL(
     `${CALLIGRAPHIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
@@ -88,6 +96,7 @@ export async function fetchCalligraphiesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

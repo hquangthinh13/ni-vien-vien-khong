@@ -15,7 +15,7 @@ export default async function CourseSection() {
       pagination: { limit: 5 },
       populate: "coverImage",
     });
-    console.log("Fetched courses:", category, res);
+    // console.log("Fetched courses:", category, res);
     const data = Array.isArray(res?.data)
       ? res.data
       : res?.data

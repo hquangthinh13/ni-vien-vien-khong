@@ -1,30 +1,61 @@
 import React from "react";
 import Image from "next/image";
-import { CalendarDays, PlayCircle } from "lucide-react";
-
+import { CalendarDays } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
-
 import lineOrnament from "@/public/ornament-01.svg";
 import { formatShortDate } from "@/shared/lib/utils";
-import {
-  Activity,
-  CourseContent,
-} from "@/features/activity/model/activity.types";
 import type { Blog } from "@/features/blog/model/blog.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
 import { fetchBlogByDocumentId } from "@/features/blog/api/blog.api";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
-export default async function ActivityPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+import { Metadata, ResolvingMetadata } from "next";
+import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+type Props = {
+  params: { slug: string };
+};
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const documentId = getDocumentIdFromSlug(slug);
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response = await fetchBlogByDocumentId({
+      locale,
+      documentId: documentId,
+    });
+
+    const data = response?.data as Blog;
+
+    if (!data) {
+      return { title: "Không tìm thấy bài viết" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage, "medium");
+
+    return {
+      title: data.title,
+      description: "Chia sẻ từ Ni Viện Viên Không",
+      openGraph: {
+        title: data.title,
+        description: "Chia sẻ từ Ni Viện Viên Không",
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
+export default async function ActivityPage({ params }: Props) {
   const locale = (await getLocale()) as Locale;
   const { slug } = await params;
-  const parts = slug.split("-");
-  const documentId = parts.pop() as string;
+  const documentId = getDocumentIdFromSlug(slug);
   let response;
   try {
     response = await fetchBlogByDocumentId({
@@ -44,7 +75,7 @@ export default async function ActivityPage({
   }
 
   const data = response.data as Blog;
-  console.log("Fetched blog data:", data);
+  // console.log("Fetched blog data:", data);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">

@@ -37,6 +37,7 @@ export type CourseContent = {
 export interface Activity extends StrapiEntity {
   activityName: string;
   slug: string;
+  zaloGroup: string;
   content?: BlocksContent;
   activityStartDate: string; // ISO date string
   activityEndDate: string; // ISO date string
@@ -95,6 +96,10 @@ export type ActivityResponse = {
   };
 };
 
+export type SingleActivityResponse = {
+  data: Activity | null;
+};
+
 // Fetch Options Types
 
 export type FetchActivitiesOptions = BaseFetchOptionsWithFields<Activity>;
@@ -119,4 +124,5 @@ export type FetchActivitiesByCategoryOptions = FetchActivitiesOptions & {
 
 export type FetchCourseByCategoryOptions = FetchActivitiesOptions & {
   category: CourseCategory;
+  year?: number;
 };

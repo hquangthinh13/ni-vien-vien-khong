@@ -24,6 +24,7 @@ const AUTHORIZED_TOKEN =
   "";
 
 const SORT_DEFAULT = "activityStartDate:asc";
+
 export async function fetchActivities(
   options: FetchActivitiesOptions = {},
 ): Promise<ActivityResponse> {
@@ -38,6 +39,7 @@ export async function fetchActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -65,6 +67,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1800 },
   });
 
   if (!res.ok) {
@@ -133,6 +136,7 @@ export async function fetchActiveActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 600 },
   });
 
   if (!res.ok) {
@@ -183,6 +187,7 @@ export async function fetchActivitiesByMonth(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -207,6 +212,7 @@ export async function fetchActivitiesByCategory(
   // Filter by category
   if (options.category === "Tất cả") {
     // Do not add any filter for "all" category
+    query.set("filters[activityCategory][$ne]", "Khóa Tu"); // Exclude "Khóa Tu" from general activities
   } else {
     query.set("filters[activityCategory][$eq]", options.category);
   }
@@ -221,6 +227,8 @@ export async function fetchActivitiesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    // next: { revalidate: 0 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -239,10 +247,27 @@ export async function fetchCoursesByCategory(
     options.sort = SORT_DEFAULT;
   }
   const query = buildQuery(options, false) as URLSearchParams;
-  // All course  have activity category = "course"
+
   query.set("filters[activityCategory][$eq]", "Khóa Tu");
+
+  if (options.category === "Tất cả") {
+    // Do not add any filter for "all" category
+  } else {
+    query.set("filters[courseContent][courseCategory][$eq]", options.category);
+  }
+  // All course  have activity category = "course"
+  // query.set("filters[activityCategory][$eq]", "Khóa Tu");
   // Filter by course category
-  query.set("filters[courseContent][courseCategory][$eq]", options.category);
+  // query.set("filters[courseContent][courseCategory][$eq]", options.category);
+
+  // Filter by year if provided
+  if (options.year) {
+    const startOfYear = `${options.year}-01-01T00:00:00.000Z`;
+    const endOfYear = `${options.year}-12-31T23:59:59.999Z`;
+
+    query.set("filters[activityStartDate][$between][0]", startOfYear);
+    query.set("filters[activityStartDate][$between][1]", endOfYear);
+  }
 
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
@@ -254,6 +279,7 @@ export async function fetchCoursesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -290,4 +316,40 @@ export function getActivityStatus(
 export function isActive(activity: Activity, referenceDate?: string): boolean {
   const status = getActivityStatus(activity, referenceDate);
   return status === "upcoming" || status === "ongoing";
+}
+export async function fetchAllCourseYears(): Promise<number[]> {
+  const query = new URLSearchParams();
+
+  query.set("fields[0]", "activityStartDate");
+
+  query.set("filters[activityCategory][$eq]", "Khóa Tu");
+
+  // query.set("pagination[limit]", "-1");
+
+  const url = getStrapiURL(
+    `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query.toString()}` : ""}`,
+  );
+
+  const res = await fetch(url, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${AUTHORIZED_TOKEN}` },
+    next: { revalidate: 3600 },
+  });
+
+  if (!res.ok) return [new Date().getFullYear()];
+
+  const response = await res.json();
+  const activities = response.data as Activity[];
+
+  // console.log("Fetched activities for year extraction:", activities);
+
+  const years = Array.from(
+    new Set(
+      activities
+        .filter((a) => a.activityStartDate)
+        .map((a) => new Date(a.activityStartDate).getFullYear()),
+    ),
+  ).sort((a, b) => b - a);
+
+  return years.length > 0 ? years : [new Date().getFullYear()];
 }

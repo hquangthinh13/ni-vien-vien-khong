@@ -1,5 +1,8 @@
 import React from "react";
-import { fetchCoursesByCategory } from "@/features/activity/api/activity.api";
+import {
+  fetchCoursesByCategory,
+  fetchAllCourseYears,
+} from "@/features/activity/api/activity.api";
 import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
@@ -13,27 +16,36 @@ export const metadata: Metadata = {
 export default async function CoursePage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; page?: string; year?: string }>;
 }) {
   const locale = (await getLocale()) as Locale;
-  const category = await searchParams;
+  const {
+    category: categorySlug,
+    page: pageSlug,
+    year: yearSlug,
+  } = await searchParams;
+  const currentYear = yearSlug ? Number(yearSlug) : undefined;
+  const currentPage = Number(pageSlug) || 1;
+  const availableYears = await fetchAllCourseYears();
+
   const categoryMapping: Record<string, CourseCategory> = {
     "mua-he": "Khóa Tu Mùa Hè",
     "xuat-gia-gieo-duyen": "Khóa Tu Xuất Gia Gieo Duyên",
     thien: "Khóa Thiền",
+    all: "Tất cả",
   };
-  const initialCategory =
-    categoryMapping[category?.category || ""] || "Khóa Tu Mùa Hè";
+  const initialCategory = categoryMapping[categorySlug || ""] || "Tất cả";
 
   const response = await fetchCoursesByCategory({
     locale: locale,
-    pagination: { page: 1, pageSize: 8 },
-    sort: "publishedAt:desc",
-    populate: "coverImage",
+    pagination: { page: currentPage, pageSize: 6 },
+    sort: ["activityStartDate:desc"],
+    populate: ["coverImage", "courseContent"],
     category: initialCategory,
+    year: currentYear,
   });
-  console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
+  const paginationMeta = response.meta?.pagination;
 
   return (
     <div className="mx-auto max-w-7xl px-4 my-10">
@@ -48,10 +60,14 @@ export default async function CoursePage({
       <div className="flex flex-1 w-full flex-col items-stretch">
         {" "}
         <CourseList
-          key={initialCategory}
+          key={`${initialCategory}-${currentPage}`}
           initialCourses={initialActivities}
           initialCategory={initialCategory}
           locale={locale}
+          paginationMeta={paginationMeta}
+          currentPage={currentPage}
+          availableYears={availableYears}
+          currentYear={currentYear}
         />
       </div>
     </div>

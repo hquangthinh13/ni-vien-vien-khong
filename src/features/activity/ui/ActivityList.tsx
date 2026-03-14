@@ -44,7 +44,7 @@ export default function ActivityList({
     const params = new URLSearchParams(searchParams.toString());
 
     if (newCategory) {
-      params.set("category", reverseMapping[newCategory] || "domestic");
+      params.set("category", reverseMapping[newCategory] || "all");
       params.set("page", "1");
     }
     if (newPage) {

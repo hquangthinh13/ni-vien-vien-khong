@@ -7,6 +7,10 @@ import Link from "next/link";
 import LinkedDocumentCard from "@/features/linkedDocument/ui/LinkedDocumentCard";
 import type { Locale } from "@/types/locale";
 import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/linkedDocument.api";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Tạng Luật",
+};
 export default async function SuttaListPage({
   searchParams,
 }: {

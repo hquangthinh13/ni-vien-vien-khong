@@ -58,6 +58,8 @@ const ActivityVibrantCard = ({
             fill
             className="object-cover transition-transform duration-1000 group-hover:scale-110"
             priority
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
           />
         )}
 
@@ -77,9 +79,15 @@ const ActivityVibrantCard = ({
             />
           </div>{" "}
           <div className="flex flex-col items-start justify-end">
-            <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
-              {activity.activityCategory}
-            </span>{" "}
+            {activity.activityCategory != "Khóa Tu" ? (
+              <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
+                {activity.activityCategory}
+              </span>
+            ) : (
+              <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
+                {activity.courseContent?.courseCategory}
+              </span>
+            )}
             <h3 className="pr-20 text-lg font-bold drop-shadow-2xl line-clamp-2 ">
               {activity.activityName}
             </h3>

@@ -6,7 +6,10 @@ import { fetchRulePage } from "@/features/rulePage/api/rulePage.api";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
 import { notFound } from "next/navigation";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Nội quy lưu trú",
+};
 export default async function RulePage() {
   const locale = (await getLocale()) as Locale;
 

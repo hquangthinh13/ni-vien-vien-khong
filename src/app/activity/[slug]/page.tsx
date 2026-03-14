@@ -29,22 +29,64 @@ import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/Dy
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
 import { notFound } from "next/navigation";
 import { DialogDescription } from "@radix-ui/react-dialog";
-export default async function ActivityPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+import { Metadata, ResolvingMetadata } from "next";
+import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+type Props = {
+  params: { slug: string };
+};
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const documentId = getDocumentIdFromSlug(slug);
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response =
+      await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
+        locale,
+        documentId: documentId,
+      });
+
+    const data = response?.data as Activity;
+
+    if (!data) {
+      return { title: "Không tìm thấy hoạt động" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage, "medium");
+
+    return {
+      title: data.activityName,
+      description:
+        data.activityCategory || "Thông tin hoạt động tại Ni Viện Viên Không",
+      openGraph: {
+        title: data.activityName,
+        description: data.activityCategory,
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
+export default async function ActivityPage({ params }: Props) {
   const locale = (await getLocale()) as Locale;
   const { slug } = await params;
-  const parts = slug.split("-");
-  const documentId = parts.pop() as string;
+  const documentId = getDocumentIdFromSlug(slug);
   let response;
   try {
     response =
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: "*",
+        populate: [
+          "coverImage",
+          "courseContent.highlightedImages",
+          "courseContent.videoSection",
+        ],
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -58,7 +100,7 @@ export default async function ActivityPage({
   }
 
   const data = response.data as Activity;
-  console.log("Fetched activity data:", data);
+  // console.log("Fetched activity data:", data);
   const courseContent = data?.courseContent as CourseContent;
   const videoList = courseContent?.videoSection || [];
   const sortedVideos = [...videoList].sort(
@@ -99,6 +141,8 @@ export default async function ActivityPage({
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             </div>
           </header>
@@ -111,9 +155,17 @@ export default async function ActivityPage({
           {courseContent?.videoSection &&
             courseContent.videoSection.length > 0 && (
               <section className="w-full mt-6 space-y-4">
-                <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
-                  <PlayCircle size={20} className="text-primary" /> Video
-                </h3>
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2">
+                    <PlayCircle size={20} className="text-primary" />
+                    Video
+                  </h3>
+                  {courseContent?.videoSection?.length > 0 && (
+                    <span className="text-xs text-muted-foreground font-medium font-mono uppercase tracking-widest">
+                      {courseContent.videoSection.length} video
+                    </span>
+                  )}
+                </div>
                 <Accordion
                   type="single"
                   collapsible
@@ -139,10 +191,10 @@ export default async function ActivityPage({
                             </div>
 
                             <div className="flex flex-col items-start gap-0.5">
-                              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground group-hover:text-primary transition-colors">
+                              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground group-hover:text-primary transition-colors">
                                 Video Khóa Tu
                               </span>
-                              <span className="text-sm  font-bold text-left line-clamp-1">
+                              <span className="text-sm font-bold text-left line-clamp-1">
                                 {video.title}
                               </span>
                             </div>
@@ -200,11 +252,12 @@ export default async function ActivityPage({
                           ? "Điền thông tin đăng ký ngay"
                           : "Register Now"}
                       </h4>
-                      {/* <p className="text-xs text-muted-foreground italic">
-                      {locale === "vi"
-                        ? "* Số lượng đăng ký có hạn"
-                        : "* Limited slots available"}
-                    </p> */}
+                      <p className="text-xs text-muted-foreground italic">
+                        {locale === "vi"
+                          ? "Số lượng đăng ký có hạn: "
+                          : "Limited slots available: "}{" "}
+                        {data.registrationLimit}
+                      </p>
                     </div>
 
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">

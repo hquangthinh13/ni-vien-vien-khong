@@ -45,7 +45,7 @@
         "books": {
           "title": "Danh mục sách",
           "author1": "Sách Sơ Tổ Hộ Tông",
-          "author2": "Sách Hòa Thượng Viên Minh",
+          "author2": "Sách Sư Ông Viên Minh",
           "pali": "Tài liệu học Pali",
           "others": "Danh mục sách khác"
         }
@@ -79,8 +79,8 @@
     "contact": "Liên hệ",
     "highlight": "Danh mục nổi bật",
     "highlight-01": "Khóa tu",
-    "highlight-02": "Pháp thoại",
-    "highlight-03": "Tam tạng kinh điển",
+    "highlight-02": "Chia sẻ",
+    "highlight-03": "Thư pháp thư họa",
     "highlight-04": "Tin tức",
     "follow": "Theo dõi ngay",
     "address": "Địa chỉ",

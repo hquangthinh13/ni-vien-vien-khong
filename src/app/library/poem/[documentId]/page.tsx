@@ -8,11 +8,47 @@ import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
-export default async function PoemPage({
-  params,
-}: {
-  params: Promise<{ documentId: string }>;
-}) {
+import { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: { documentId: string };
+};
+export async function generateMetadata(
+  { params }: { params: { documentId: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { documentId } = await params;
+  const locale = (await getLocale()) as Locale;
+
+  try {
+    const response = await fetchPoemByDocumentId({
+      locale,
+      documentId: documentId,
+    });
+
+    const data = response?.data as Poem;
+
+    if (!data) {
+      return { title: "Không tìm thấy bài thơ" };
+    }
+
+    const ogImage = getImageUrl(data.coverImage);
+
+    return {
+      title: data.title,
+      description: data.author || "Thông tin bài thơ tại Ni Viện Viên Không",
+      openGraph: {
+        title: data.title,
+        description: data.author || "Thông tin bài thơ tại Ni Viện Viên Không",
+        images: ogImage ? [ogImage] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "Ni Viện Viên Không" };
+  }
+}
+
+export default async function PoemPage({ params }: Props) {
   const locale = (await getLocale()) as Locale;
   const { documentId } = await params;
 
@@ -34,7 +70,7 @@ export default async function PoemPage({
     console.error("Error fetching poem by documentId:", error);
   }
 
-  const imageUrl = getImageUrl(data?.coverImage);
+  const imageUrl = getImageUrl(data?.coverImage, "medium");
   if (!data) {
     return <div className="text-center py-20">Không tìm thấy bài thơ.</div>;
   }
@@ -65,6 +101,8 @@ export default async function PoemPage({
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             </div>
           </div>

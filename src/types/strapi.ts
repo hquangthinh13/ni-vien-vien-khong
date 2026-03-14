@@ -17,7 +17,7 @@ export type BaseFetchOptionsWithFields<T> = SimpleFetchOptions & {
 
 export interface StrapiEntity {
   id: number;
-  documentId?: string;
+  documentId: string;
 }
 
 export type StrapiSingleResponse<T extends StrapiEntity> = {

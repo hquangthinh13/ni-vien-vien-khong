@@ -27,7 +27,7 @@ export default async function BlogPage({
   });
   const initialBlogs = Array.isArray(response.data) ? response.data : [];
 
-  console.log("Fetched blogs for page:", currentPage, response);
+  // console.log("Fetched blogs for page:", currentPage, response);
   const paginationMeta = response.meta?.pagination;
   return (
     <div className="mx-auto max-w-7xl px-4 my-10">

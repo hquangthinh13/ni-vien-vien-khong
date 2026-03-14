@@ -48,7 +48,7 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
   );
 
   if (mindMap) {
-    const imageUrl = getImageUrl(mindMap) as string;
+    const imageUrl = getImageUrl(mindMap, "large") as string;
 
     return (
       <Dialog>
@@ -67,6 +67,8 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
               fill
               className="object-contain"
               priority
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
             />
           </div>
 

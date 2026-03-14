@@ -28,7 +28,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
           <LayoutGrid size={20} className="text-primary" /> Ảnh nổi bật
         </h3>
         {images.length > 0 && (
-          <span className="text-xs text-muted-foreground font-medium">
+          <span className="text-xs text-muted-foreground font-medium font-mono uppercase tracking-widest">
             {images.length} hình ảnh
           </span>
         )}
@@ -45,18 +45,20 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
               onClick={() => setIndex(idx)}
             >
               <Image
-                src={getImageUrl(img) || "/placeholder.jpg"}
+                src={getImageUrl(img, "medium") || "/placeholder.jpg"}
                 alt={`Highlight ${idx}`}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
 
               {isLastVisible && (
                 <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white transition-colors group-hover:bg-black/40">
-                  <span className="text-lg font-bold">
+                  <span className="text-md font-mono font-bold">
                     +{images.length - 3}
                   </span>
-                  <span className="text-[10px] uppercase tracking-widest font-bold">
+                  <span className="text-xs font-mono uppercase tracking-widest font-normal">
                     Xem tất cả
                   </span>
                 </div>
@@ -105,11 +107,13 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={getImageUrl(images[index]) || "/placeholder.jpg"}
+                src={getImageUrl(images[index], "large") || "/placeholder.jpg"}
                 alt="Fullscreen view"
                 fill
                 className="object-contain"
                 priority
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
 
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm font-normal">

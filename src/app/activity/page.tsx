@@ -29,9 +29,9 @@ export default async function ActivityPage({
   const initialCategory = categoryMapping[categorySlug || ""] || "Tất cả";
   const response = await fetchActivitiesByCategory({
     locale,
-    pagination: { page: currentPage, pageSize: 3 },
-    sort: "[publishedAt:desc]",
-    populate: "coverImage",
+    pagination: { page: currentPage, pageSize: 6 },
+    sort: ["publishedAt:desc"],
+    populate: ["coverImage", "courseContent"],
     category: initialCategory,
   });
   // console.log("Fetched activities for category:", initialCategory, response);

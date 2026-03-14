@@ -20,13 +20,15 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
       <div className="flex flex-col gap-4">
         <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
           {(() => {
-            const imageUrl = getImageUrl(coverImage);
+            const imageUrl = getImageUrl(coverImage, "medium");
             return imageUrl ? (
               <Image
                 src={imageUrl}
                 alt={title || "Blog image"}
                 fill
                 className="object-cover"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
             ) : null;
           })()}

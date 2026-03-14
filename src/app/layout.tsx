@@ -15,6 +15,8 @@ import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import CustomCursor from "@/shared/layout/CustomerCursor";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
@@ -56,7 +58,8 @@ export const metadata: Metadata = {
     default: "Ni Viện Viên Không",
     template: "%s | Ni Viện Viên Không",
   },
-  description: "Ni Viện Viên Không",
+  description:
+    "Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư Liễu Pháp.",
 };
 
 export default function RootLayout({
@@ -71,8 +74,9 @@ export default function RootLayout({
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
-          <CustomCursor />
-          {children} <Toaster position="top-right" richColors />
+          {/* <CustomCursor /> */}
+          {children} <Toaster position="top-right" richColors />{" "}
+          <SpeedInsights /> <Analytics />
         </NextIntlClientProvider>
         <MotionWrapper>
           <Footer />
