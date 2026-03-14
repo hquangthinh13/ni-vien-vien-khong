@@ -13,15 +13,12 @@
     font-size: 16px;
   }
 }
-html,
+/* html,
 body,
 a,
 button {
   cursor: none !important;
-}
-.ornament-cursor {
-  /* filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5)); */
-}
+} */
 
 @custom-variant dark (&:is(.dark *));
 
