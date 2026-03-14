@@ -96,6 +96,10 @@ export type ActivityResponse = {
   };
 };
 
+export type SingleActivityResponse = {
+  data: Activity | null;
+};
+
 // Fetch Options Types
 
 export type FetchActivitiesOptions = BaseFetchOptionsWithFields<Activity>;

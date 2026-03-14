@@ -11,11 +11,13 @@ import { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import RelatedRitualsSection from "@/features/ritual/ui/RelatedRitualsSection";
-
 import { Metadata, ResolvingMetadata } from "next";
 
+type Props = {
+  params: { documentId: string };
+};
 export async function generateMetadata(
-  { params }: { params: Promise<{ documentId: string }> },
+  { params }: { params: { documentId: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
@@ -49,11 +51,7 @@ export async function generateMetadata(
   }
 }
 
-export default async function RitualPage({
-  params,
-}: {
-  params: Promise<{ documentId: string }>;
-}) {
+export default async function RitualPage({ params }: Props) {
   const locale = (await getLocale()) as Locale;
 
   const { documentId } = await params;
