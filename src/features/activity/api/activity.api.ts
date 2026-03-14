@@ -66,7 +66,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    cache: "force-cache",
+    next: { revalidate: 10 },
   });
 
   if (!res.ok) {

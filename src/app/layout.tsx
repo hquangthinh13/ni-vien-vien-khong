@@ -74,7 +74,7 @@ export default function RootLayout({
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
-          <CustomCursor />
+          {/* <CustomCursor /> */}
           {children} <Toaster position="top-right" richColors />{" "}
           <SpeedInsights /> <Analytics />
         </NextIntlClientProvider>

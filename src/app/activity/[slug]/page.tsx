@@ -23,10 +23,7 @@ import {
 } from "@/features/activity/model/activity.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
-import {
-  fetchActivityByDocumentId,
-  fetchActivityByDocumentIdWithRegistrationFormAndCourseContent,
-} from "@/features/activity/api/activity.api";
+import { fetchActivityByDocumentIdWithRegistrationFormAndCourseContent } from "@/features/activity/api/activity.api";
 import { getImageUrl } from "@/shared/lib/api";
 import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
@@ -44,10 +41,11 @@ export async function generateMetadata(
   const locale = (await getLocale()) as Locale;
 
   try {
-    const response = await fetchActivityByDocumentId({
-      locale,
-      documentId: documentId,
-    });
+    const response =
+      await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
+        locale,
+        documentId: documentId,
+      });
 
     const data = response?.data as Activity;
 
@@ -249,11 +247,12 @@ export default async function ActivityPage({
                           ? "Điền thông tin đăng ký ngay"
                           : "Register Now"}
                       </h4>
-                      {/* <p className="text-xs text-muted-foreground italic">
-                      {locale === "vi"
-                        ? "* Số lượng đăng ký có hạn"
-                        : "* Limited slots available"}
-                    </p> */}
+                      <p className="text-xs text-muted-foreground italic">
+                        {locale === "vi"
+                          ? "Số lượng đăng ký có hạn: "
+                          : "Limited slots available: "}{" "}
+                        {data.registrationLimit}
+                      </p>
                     </div>
 
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
