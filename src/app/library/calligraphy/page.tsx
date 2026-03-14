@@ -33,7 +33,7 @@ export default async function CaligraphyPage({
     pagination: { page: currentPage, pageSize: 6 },
     populate: ["coverImage", "relatedCalligraphies"],
   });
-  console.log("Fetched calligraphies for category:", initialCategory, res);
+  // console.log("Fetched calligraphies for category:", initialCategory, res);
   const initialData = Array.isArray(res.data) ? res.data : [];
   const paginationMeta = res.meta?.pagination;
   return (

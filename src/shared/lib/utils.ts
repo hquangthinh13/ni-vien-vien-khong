@@ -163,3 +163,8 @@ export const isRichTextEmpty = (
     });
   });
 };
+
+export const getDocumentIdFromSlug = (slug: string) => {
+  const parts = slug.split("-");
+  return parts.pop() as string;
+};

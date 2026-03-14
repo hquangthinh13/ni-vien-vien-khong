@@ -30,14 +30,16 @@ import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSe
 import { notFound } from "next/navigation";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Metadata, ResolvingMetadata } from "next";
-
+import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+type Props = {
+  params: { slug: string };
+};
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: { slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
-  const parts = slug.split("-");
-  const documentId = parts.pop() as string;
+  const documentId = getDocumentIdFromSlug(slug);
   const locale = (await getLocale()) as Locale;
 
   try {
@@ -70,15 +72,10 @@ export async function generateMetadata(
   }
 }
 
-export default async function ActivityPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ActivityPage({ params }: Props) {
   const locale = (await getLocale()) as Locale;
   const { slug } = await params;
-  const parts = slug.split("-");
-  const documentId = parts.pop() as string;
+  const documentId = getDocumentIdFromSlug(slug);
   let response;
   try {
     response =
@@ -158,9 +155,17 @@ export default async function ActivityPage({
           {courseContent?.videoSection &&
             courseContent.videoSection.length > 0 && (
               <section className="w-full mt-6 space-y-4">
-                <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
-                  <PlayCircle size={20} className="text-primary" /> Video
-                </h3>
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2">
+                    <PlayCircle size={20} className="text-primary" />
+                    Video
+                  </h3>
+                  {courseContent?.videoSection?.length > 0 && (
+                    <span className="text-xs text-muted-foreground font-medium font-mono uppercase tracking-widest">
+                      {courseContent.videoSection.length} video
+                    </span>
+                  )}
+                </div>
                 <Accordion
                   type="single"
                   collapsible
@@ -186,10 +191,10 @@ export default async function ActivityPage({
                             </div>
 
                             <div className="flex flex-col items-start gap-0.5">
-                              <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground group-hover:text-primary transition-colors">
+                              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground group-hover:text-primary transition-colors">
                                 Video Khóa Tu
                               </span>
-                              <span className="text-sm  font-bold text-left line-clamp-1">
+                              <span className="text-sm font-bold text-left line-clamp-1">
                                 {video.title}
                               </span>
                             </div>

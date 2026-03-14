@@ -144,10 +144,10 @@ export default function ActivityRegistrationForm({
           setTemplate(data.registrationForm);
           setActivity(data);
         }
-        console.log(
-          "Loaded registration form template:",
-          data?.registrationForm,
-        );
+        // console.log(
+        //   "Loaded registration form template:",
+        //   data?.registrationForm,
+        // );
         // console.log("Loaded activity data:", data);
       } catch (error) {
         toast.error("Không thể tải thông tin đăng ký");
@@ -580,7 +580,7 @@ export default function ActivityRegistrationForm({
                         className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         onChange={(e) => {
                           const timeValue = e.target.value;
-                          console.log("Selected time:", timeValue);
+                          // console.log("Selected time:", timeValue);
                         }}
                       />
                       <InputGroupAddon>

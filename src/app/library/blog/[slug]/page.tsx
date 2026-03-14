@@ -11,14 +11,17 @@ import { fetchBlogByDocumentId } from "@/features/blog/api/blog.api";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
+import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+type Props = {
+  params: { slug: string };
+};
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: { slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
-  const parts = slug.split("-");
-  const documentId = parts.pop() as string;
+  const documentId = getDocumentIdFromSlug(slug);
   const locale = (await getLocale()) as Locale;
 
   try {
@@ -49,15 +52,10 @@ export async function generateMetadata(
   }
 }
 
-export default async function ActivityPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ActivityPage({ params }: Props) {
   const locale = (await getLocale()) as Locale;
   const { slug } = await params;
-  const parts = slug.split("-");
-  const documentId = parts.pop() as string;
+  const documentId = getDocumentIdFromSlug(slug);
   let response;
   try {
     response = await fetchBlogByDocumentId({

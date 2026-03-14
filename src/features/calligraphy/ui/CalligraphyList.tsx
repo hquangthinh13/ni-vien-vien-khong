@@ -1,16 +1,17 @@
 "use client";
 
+import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import type { Calligraphy } from "../model/calligraphy.types";
 import type { CalligraphyCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Button } from "@/shared/ui/button";
 import CalligraphyCard from "./CalligraphyCard";
+import CalligraphyDialog from "./CalligraphyDialog";
+import { fetchCalligraphyByDocumentId } from "../api/calligraphy.api";
+
 interface CalligraphyListProps {
   initialCalligraphies: Calligraphy[];
   initialCategory: CalligraphyCategory;
@@ -33,6 +34,15 @@ export default function CalligraphyList({
 }: CalligraphyListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedCalligraphy, setSelectedCalligraphy] =
+    useState<Calligraphy | null>(null);
+  const [detailCache, setDetailCache] = useState<Record<string, Calligraphy>>(
+    {},
+  );
+
   const reverseMapping: Record<string, string> = {
     "Kinh Pháp Cú": "kinh-phap-cu",
     "Kinh Tụng": "kinh-tung",
@@ -62,6 +72,62 @@ export default function CalligraphyList({
 
     router.push(`?${params.toString()}`, { scroll: false });
   };
+
+  const initialMap = useMemo(() => {
+    return initialCalligraphies.reduce<Record<string, Calligraphy>>(
+      (acc, item) => {
+        acc[item.documentId] = item;
+        return acc;
+      },
+      {},
+    );
+  }, [initialCalligraphies]);
+
+  const handleOpenCalligraphy = useCallback(
+    async (documentId: string) => {
+      setOpen(true);
+
+      const cached =
+        detailCache[documentId] ||
+        initialMap[documentId] ||
+        selectedCalligraphy;
+
+      if (cached) {
+        setSelectedCalligraphy(cached);
+      }
+
+      if (detailCache[documentId]?.relatedCalligraphies?.length) {
+        return;
+      }
+
+      try {
+        setLoading(true);
+
+        const response = await fetchCalligraphyByDocumentId({
+          locale,
+          documentId,
+          fields: ["title", "description", "category", "documentId"],
+          populate: ["coverImage", "relatedCalligraphies"],
+        });
+
+        const data = response?.data;
+
+        if (data && !Array.isArray(data)) {
+          setSelectedCalligraphy(data);
+          setDetailCache((prev) => ({
+            ...prev,
+            [documentId]: data,
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch calligraphy detail:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [detailCache, initialMap, locale, selectedCalligraphy],
+  );
+
   return (
     <div className="w-full flex flex-col items-center">
       <div className="flex w-full justify-center mb-10">
@@ -81,9 +147,14 @@ export default function CalligraphyList({
 
       <div className="w-full max-w-7xl">
         {initialCalligraphies && initialCalligraphies.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {initialCalligraphies.map((item) => (
-              <CalligraphyCard key={item.documentId} calligraphy={item} />
+              <div key={item.documentId} className="group">
+                <CalligraphyCard
+                  calligraphy={item}
+                  onClick={() => handleOpenCalligraphy(item.documentId)}
+                />
+              </div>
             ))}
           </div>
         ) : (
@@ -92,6 +163,7 @@ export default function CalligraphyList({
           </div>
         )}
       </div>
+
       {paginationMeta && paginationMeta.pageCount > 1 && (
         <div className="flex justify-center gap-4 mt-6">
           <Button
@@ -103,6 +175,7 @@ export default function CalligraphyList({
           >
             <ChevronLeft />
           </Button>
+
           <span className="flex items-center text-muted-foreground text-sm">
             {locale === "vi" ? "Trang" : "Page"} {currentPage}{" "}
             {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
@@ -119,6 +192,14 @@ export default function CalligraphyList({
           </Button>
         </div>
       )}
+
+      <CalligraphyDialog
+        open={open}
+        onOpenChange={setOpen}
+        calligraphy={selectedCalligraphy}
+        loading={loading}
+        onSelectRelated={handleOpenCalligraphy}
+      />
     </div>
   );
 }

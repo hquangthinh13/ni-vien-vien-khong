@@ -24,6 +24,7 @@ const AUTHORIZED_TOKEN =
   "";
 
 const SORT_DEFAULT = "activityStartDate:asc";
+
 export async function fetchActivities(
   options: FetchActivitiesOptions = {},
 ): Promise<ActivityResponse> {
@@ -66,7 +67,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 10 },
+    next: { revalidate: 1800 },
   });
 
   if (!res.ok) {
@@ -226,6 +227,7 @@ export async function fetchActivitiesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    // next: { revalidate: 0 },
     next: { revalidate: 1200 },
   });
 
@@ -339,7 +341,7 @@ export async function fetchAllCourseYears(): Promise<number[]> {
   const response = await res.json();
   const activities = response.data as Activity[];
 
-  console.log("Fetched activities for year extraction:", activities);
+  // console.log("Fetched activities for year extraction:", activities);
 
   const years = Array.from(
     new Set(

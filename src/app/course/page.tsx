@@ -44,7 +44,6 @@ export default async function CoursePage({
     category: initialCategory,
     year: currentYear,
   });
-  console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
   const paginationMeta = response.meta?.pagination;
 

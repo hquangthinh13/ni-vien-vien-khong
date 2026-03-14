@@ -28,7 +28,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
           <LayoutGrid size={20} className="text-primary" /> Ảnh nổi bật
         </h3>
         {images.length > 0 && (
-          <span className="text-xs text-muted-foreground font-medium">
+          <span className="text-xs text-muted-foreground font-medium font-mono uppercase tracking-widest">
             {images.length} hình ảnh
           </span>
         )}
@@ -55,10 +55,10 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
 
               {isLastVisible && (
                 <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white transition-colors group-hover:bg-black/40">
-                  <span className="text-lg font-bold">
+                  <span className="text-md font-mono font-bold">
                     +{images.length - 3}
                   </span>
-                  <span className="text-[10px] uppercase tracking-widest font-bold">
+                  <span className="text-xs font-mono uppercase tracking-widest font-normal">
                     Xem tất cả
                   </span>
                 </div>
