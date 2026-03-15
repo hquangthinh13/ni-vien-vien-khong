@@ -66,7 +66,7 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-col pt-6 md:pt-0 border-t md:border-0">
                 <div className="flex justify-between items-center">
-                  <h2 className="page-header font-serif">Tin tức</h2>{" "}
+                  <h2 className="home-page-section-title">Tin tức</h2>{" "}
                   <div className="flex gap-2">
                     <Link
                       href="/activity"
@@ -90,9 +90,7 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    {t("foreword")}
-                  </h2>
+                  <h2 className="home-page-section-title">{t("foreword")}</h2>
                 </div>
                 <p className="flex mt-4 max-w-lg leading-snug text-justify text-muted-foreground">
                   {data?.openingMessage}
@@ -102,9 +100,7 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-col pt-6 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Khóa tu
-                  </h2>{" "}
+                  <h2 className="home-page-section-title">Khóa tu</h2>{" "}
                   <div className="flex gap-2">
                     <Link
                       href="/course"
@@ -120,9 +116,7 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-1 flex-col pt-6 pb-0 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Vấn đáp Phật pháp
-                  </h2>
+                  <h2 className="home-page-section-title">Vấn đáp Phật pháp</h2>
                   <Link
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
