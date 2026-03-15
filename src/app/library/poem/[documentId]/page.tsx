@@ -76,7 +76,7 @@ export default async function PoemPage({ params }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="page-container">
       <div className="flex flex-col gap-0 justify-center">
         <article className="w-full">
           <header className="space-y-2">

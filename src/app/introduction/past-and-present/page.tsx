@@ -20,12 +20,12 @@ export default async function PastAndPresentPage() {
   const data = fullResponse.data as HistoryPageAttributes | null;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="page-container">
       <div className="flex flex-col lg:flex-row gap-12">
         <article className="">
-          <header className="space-y-2">
-            <div className="text-center text-primary text-sm uppercase tracking-widest font-mono font-bold">
-              <span className="">Giới thiệu</span>
+          <header className="flex flex-col w-full items-center mb-6 space-y-2">
+            <div className="page-label items-center">
+              <span>Giới thiệu</span>
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">

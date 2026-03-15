@@ -30,12 +30,10 @@ export default async function BlogPage({
   // console.log("Fetched blogs for page:", currentPage, response);
   const paginationMeta = response.meta?.pagination;
   return (
-    <div className="mx-auto max-w-7xl px-4 my-10">
+    <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
         <TextMotionWrapper delay={0.2} className="text-center">
-          <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
-            Chia sẻ
-          </h2>
+          <h2 className="page-header"> Chia sẻ</h2>
         </TextMotionWrapper>
         <TextMotionWrapper delay={0.2}>
           <div className="opacity-80">

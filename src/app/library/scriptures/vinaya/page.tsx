@@ -35,11 +35,9 @@ export default async function SuttaListPage({
   const meta = response.meta?.pagination;
 
   return (
-    <div className="flex flex-col w-full mx-auto max-w-7xl px-4 my-10">
+    <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
-          Tạng Luật
-        </h2>
+        <h2 className="page-header"> Tạng Luật</h2>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>

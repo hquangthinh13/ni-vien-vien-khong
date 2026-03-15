@@ -109,17 +109,17 @@ export default async function ActivityPage({ params }: Props) {
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
+    <div className="page-container">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
         {" "}
         <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
           <header className="flex flex-col w-full items-start mb-6 space-y-2">
             {courseContent?.courseCategory ? (
-              <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
+              <div className="page-label items-start">
                 <span>{courseContent.courseCategory}</span>
               </div>
             ) : (
-              <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
+              <div className="page-label items-start">
                 <span>{data.activityCategory}</span>
               </div>
             )}

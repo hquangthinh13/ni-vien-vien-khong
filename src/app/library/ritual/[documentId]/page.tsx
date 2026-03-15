@@ -77,7 +77,7 @@ export default async function RitualPage({ params }: Props) {
   const publishedAt = data.publishedAt || new Date().toISOString();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
+    <div className="page-container">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
         {" "}
         <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">

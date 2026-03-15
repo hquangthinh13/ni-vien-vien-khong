@@ -59,16 +59,14 @@ export default async function Home() {
           priority
         />
       </MotionWrapper>
-      <div className="mx-auto max-w-7xl px-0 mb-6">
-        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-0 mb-6">
+      <div className="page-container">
+        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-6 mb-6">
           {/* Left */}
-          <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
+          <div className="flex flex-col justify-start gap-6 md:w-[70%]">
             <MotionWrapper>
-              <section className="flex flex-col pt-4 md:pt-0 border-t md:border-0">
+              <section className="flex flex-col pt-6 md:pt-0 border-t md:border-0">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Tin tức
-                  </h2>{" "}
+                  <h2 className="page-header font-serif">Tin tức</h2>{" "}
                   <div className="flex gap-2">
                     <Link
                       href="/activity"
@@ -82,11 +80,13 @@ export default async function Home() {
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>
-              <CalendarSection locale={locale} />{" "}
+              <section className="flex flex-col pt-6 border-t">
+                <CalendarSection locale={locale} />
+              </section>
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col md:w-[30%] md:border-l p-4 pb-0 gap-4">
+          <div className="flex flex-col md:w-[30%] md:border-l pl-0 md:pl-6 gap-6">
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
@@ -100,7 +100,7 @@ export default async function Home() {
               </section>{" "}
             </MotionWrapper>
             <MotionWrapper>
-              <section className="flex flex-col pt-4 border-t">
+              <section className="flex flex-col pt-6 border-t">
                 <div className="flex justify-between items-center">
                   <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                     Khóa tu
@@ -118,7 +118,7 @@ export default async function Home() {
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>
-              <section className="flex flex-1 flex-col pt-4 pb-0 border-t">
+              <section className="flex flex-1 flex-col pt-6 pb-0 border-t">
                 <div className="flex justify-between items-center">
                   <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
                     Vấn đáp Phật pháp
