@@ -4,7 +4,14 @@ import * as React from "react";
 import { Calendar } from "@/shared/ui/calendar-modified";
 import { Card, CardContent } from "@/shared/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
-import { format, isSameDay, isWithinInterval, parseISO } from "date-fns";
+import {
+  format,
+  isSameDay,
+  isWithinInterval,
+  parseISO,
+  startOfDay,
+  endOfDay,
+} from "date-fns";
 import { vi } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import type { Locale } from "@/types/locale";
@@ -24,30 +31,33 @@ function normalizeMonth(d: Date): Date {
 }
 
 function getActivityKey(a: Activity): string {
-  // StrapiEntity often has `documentId` (v5) or `id` (v4). Fall back to slug.
   const anyA = a as unknown as { documentId?: string; id?: string | number };
   return String(anyA.documentId ?? anyA.id ?? a.slug);
 }
+
 function activityIntersectsDay(a: Activity, day: Date): boolean {
   if (!a.activityStartDate) return false;
 
   const start = parseISO(a.activityStartDate);
   if (Number.isNaN(start.getTime())) return false;
 
+  const dayStart = startOfDay(day);
+  const dayEnd = endOfDay(day);
+
   // Single-day event
   if (!a.activityEndDate) {
-    return isSameDay(start, day);
+    return isWithinInterval(start, { start: dayStart, end: dayEnd });
   }
 
   const end = parseISO(a.activityEndDate);
 
   if (Number.isNaN(end.getTime()) || end < start) {
-    return isSameDay(start, day);
+    return isWithinInterval(start, { start: dayStart, end: dayEnd });
   }
 
-  return isWithinInterval(day, { start, end });
+  // overlap check
+  return start <= dayEnd && end >= dayStart;
 }
-
 export default function EventCalendar({ locale }: { locale: Locale }) {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     new Date(),

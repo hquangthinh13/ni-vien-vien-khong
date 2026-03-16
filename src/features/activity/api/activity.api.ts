@@ -39,7 +39,7 @@ export async function fetchActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 1200 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) {
@@ -67,7 +67,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 1800 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) {
@@ -136,7 +136,7 @@ export async function fetchActiveActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 600 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) {
@@ -162,20 +162,28 @@ export async function fetchActivitiesByMonth(
   // const endDate = new Date(options.year, options.month, 0)
   //   .toISOString()
   //   .split("T")[0];
-  function toDateString(year: number, month: number, day: number) {
-    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  function toDateTimeString(
+    year: number,
+    month: number,
+    day: number,
+    endOfDay = false,
+  ) {
+    const date = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return endOfDay ? `${date}T23:59:59.999Z` : `${date}T00:00:00.000Z`;
   }
-
-  const startDate = toDateString(options.year, options.month, 1);
+  const startDate = toDateTimeString(options.year, options.month, 1);
 
   const lastDay = new Date(options.year, options.month, 0).getDate();
 
-  const endDate = toDateString(options.year, options.month, lastDay);
-
+  const endDate = toDateTimeString(options.year, options.month, lastDay, true);
   // query.set("filters[activityStartDate][$gte]", startDate);
   // query.set("filters[activityEndDate][$lte]", endDate);
-  query.set("filters[activityStartDate][$gte]", startDate);
+
+  // query.set("filters[activityStartDate][$gte]", startDate);
+  // query.set("filters[activityStartDate][$lte]", endDate);
+
   query.set("filters[activityStartDate][$lte]", endDate);
+  query.set("filters[activityEndDate][$gte]", startDate);
   const url = getStrapiURL(
     `${ACTIVITIES_ENDPOINT}${query.toString() ? `?${query}` : ""}`,
   );
@@ -333,7 +341,7 @@ export async function fetchAllCourseYears(): Promise<number[]> {
   const res = await fetch(url, {
     method: "GET",
     headers: { Authorization: `Bearer ${AUTHORIZED_TOKEN}` },
-    next: { revalidate: 3600 },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) return [new Date().getFullYear()];

@@ -69,7 +69,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           <div className="flex-1 w-full p-3">
             <UpcomingEventSection locale={locale} />
           </div>
-          <div className="flex lg:min-h-[500px] items-center lg:items-start justify-center">
+          <div className="flex lg:min-h-125 items-center lg:items-start justify-center">
             <EventCalendar locale={locale} />
           </div>
         </div>
