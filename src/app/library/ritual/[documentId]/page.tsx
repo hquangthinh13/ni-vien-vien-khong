@@ -82,14 +82,14 @@ export default async function RitualPage({ params }: Props) {
         {" "}
         <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
           <header className="flex flex-col w-full items-start mb-6 space-y-2">
-            <div className="flex items-start gap-2 text-primary font-medium text-sm uppercase tracking-widest">
+            <div className="page-label items-start">
               <span>Nghi thức nghi lễ</span>
             </div>
             <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
               {data.title}
             </h1>
-            <div className="flex items-center gap-2 text-muted-foreground font-medium text-sm">
-              <CalendarDays size={18} className="text-primary" />
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
+              <CalendarDays size={18} className="" />
               <span>{formatShortDate(publishedAt, locale)}</span>
             </div>
 

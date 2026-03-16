@@ -73,11 +73,15 @@ interface RegistrationFormValues {
 interface Props {
   documentId: string;
   locale: Locale;
+  active: boolean;
+  onClose?: () => void;
 }
 
 export default function ActivityRegistrationForm({
   documentId,
   locale,
+  active,
+  onClose,
 }: Props) {
   const [isPending, startTransition] = useTransition();
   const [template, setTemplate] = useState<RegistrationFormTemplate | null>(
@@ -90,14 +94,17 @@ export default function ActivityRegistrationForm({
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<RegistrationFormValues>({
+    shouldFocusError: true,
+
     defaultValues: {
       firstTimeRegistered: false,
       basic: {
         fullName: "",
         dob: "",
-        gender: "Male",
+        gender: undefined,
         phoneNumber: "",
         email: "",
         address: "",
@@ -157,6 +164,9 @@ export default function ActivityRegistrationForm({
   }, [documentId]);
 
   const onSubmit = (values: RegistrationFormValues) => {
+    console.log(values);
+
+    console.log("values.basic", values.basic);
     if (activity?.ageRestricted) {
       const dob = parseISO(values.basic.dob);
 
@@ -245,13 +255,18 @@ export default function ActivityRegistrationForm({
         });
 
         const finalPayload = builder.build();
-        // console.log("Final Payload to API:", finalPayload);
+        console.log("Final Payload to API:", finalPayload);
 
         await createActivityRegistration(finalPayload);
         toast.success("Đăng ký thành công!");
+        reset(); // reset form
+
+        onClose?.();
       } catch (error) {
         // console.error(error);
-        toast.error("Đã xảy ra lỗi khi gửi form");
+        toast.error(
+          "Bạn chưa điền đầy đủ thông tin hoặc có lỗi xảy ra. Vui lòng kiểm tra lại.",
+        );
       }
     });
   };
@@ -613,7 +628,13 @@ export default function ActivityRegistrationForm({
 
   return (
     <div className="max-w-6xl mx-auto w-full">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={handleSubmit(onSubmit, () => {
+          const firstError = document.querySelector("[aria-invalid='true']");
+          firstError?.scrollIntoView({ behavior: "smooth", block: "center" });
+        })}
+        className="space-y-8"
+      >
         <div className="space-y-8">
           <section className="flex flex-col gap-4">
             <h1 className="text-xl font-bold uppercase text-primary mt-4">
@@ -663,30 +684,48 @@ export default function ActivityRegistrationForm({
               </FieldLabel>
               <Input
                 placeholder="Nhập họ và tên"
-                {...register("basic.fullName", { required: true })}
+                {...register("basic.fullName", {
+                  required: "Họ và tên là thông tin bắt buộc",
+                })}
               />
+              {errors.basic?.fullName && (
+                <p className="input-error-message">
+                  {errors.basic.fullName.message}
+                </p>
+              )}
             </Field>
             <Field>
               <FieldLabel>
                 Giới tính <span className="text-destructive">*</span>
               </FieldLabel>
-              <Select {...register("basic.gender", { required: true })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Chọn giới tính" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem className="hover:cursor-pointer" value="male">
-                    Nam
-                  </SelectItem>
-                  <SelectItem className="hover:cursor-pointer" value="female">
-                    Nữ
-                  </SelectItem>
-                  <SelectItem className="hover:cursor-pointer" value="other">
-                    Khác
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>{" "}
+
+              <Controller
+                control={control}
+                name="basic.gender"
+                rules={{ required: "Giới tính là thông tin bắt buộc" }}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value ?? ""}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn giới tính" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Male">Nam</SelectItem>
+                      <SelectItem value="Female">Nữ</SelectItem>
+                      {/* <SelectItem value="Other">Khác</SelectItem> */}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+
+              {errors.basic?.gender && (
+                <p className="input-error-message">
+                  {errors.basic.gender.message}
+                </p>
+              )}
+            </Field>
             <Field className="">
               <FieldLabel htmlFor="dob">
                 Ngày sinh <span className="text-destructive">*</span>
@@ -739,9 +778,7 @@ export default function ActivityRegistrationForm({
                 }}
               />
               {errors.basic?.dob && (
-                <p className="text-xs text-destructive">
-                  Vui lòng chọn ngày sinh
-                </p>
+                <p className="input-error-message">Vui lòng chọn ngày sinh</p>
               )}
             </Field>
             <Field>
@@ -750,8 +787,15 @@ export default function ActivityRegistrationForm({
               </FieldLabel>
               <Input
                 placeholder="Nhập số điện thoại"
-                {...register("basic.phoneNumber", { required: true })}
+                {...register("basic.phoneNumber", {
+                  required: "Số điện thoại là thông tin bắt buộc",
+                })}
               />
+              {errors.basic?.phoneNumber && (
+                <p className="input-error-message">
+                  {errors.basic.phoneNumber.message}
+                </p>
+              )}
             </Field>
             <Field>
               <FieldLabel>
@@ -764,6 +808,11 @@ export default function ActivityRegistrationForm({
                   required: "Email là thông tin bắt buộc",
                 })}
               />
+              {errors.basic?.email && (
+                <p className="input-error-message">
+                  {errors.basic.email.message}
+                </p>
+              )}
             </Field>
             <Field className="col-span-full">
               <FieldLabel>Địa chỉ</FieldLabel>
@@ -813,7 +862,7 @@ export default function ActivityRegistrationForm({
                     className=""
                   />
                   {errors.basic?.zaloName && (
-                    <p className="text-[13px] font-medium text-destructive animate-shake">
+                    <p className="input-error-message">
                       {errors.basic.zaloName.message}
                     </p>
                   )}
@@ -853,21 +902,31 @@ export default function ActivityRegistrationForm({
               </h3>
               <Field>
                 <FieldLabel>
-                  Số CCCD<span className="text-destructive">*</span>
+                  Số CCCD
+                  {/* <span className="text-destructive">*</span> */}
                 </FieldLabel>
                 <Input
                   placeholder="Nhập số CCCD"
-                  {...register("identityDetail.IDNumber")}
+                  {...register("identityDetail.IDNumber", {
+                    // required: "Số CCCD là thông tin bắt buộc",
+                  })}
                 />
+                {/* {errors.identityDetail?.IDNumber && (
+                  <p className="input-error-message">
+                    {errors.identityDetail.IDNumber.message}
+                  </p>
+                )} */}
               </Field>
 
               <Field className="">
                 <FieldLabel htmlFor="issueDate">
-                  Ngày đăng ký <span className="text-destructive">*</span>
+                  Ngày đăng ký
+                  {/* <span className="text-destructive">*</span> */}
                 </FieldLabel>
                 <Controller
                   control={control}
                   name="identityDetail.issueDate"
+                  // rules={{ required: "Ngày đăng ký là thông tin bắt buộc" }}
                   render={({ field }) => {
                     const dateValue = field.value
                       ? parseISO(field.value)
@@ -911,20 +970,22 @@ export default function ActivityRegistrationForm({
                     );
                   }}
                 />
-                {errors.basic?.dob && (
-                  <p className="text-xs text-destructive">
-                    Vui lòng chọn ngày sinh
+                {errors.identityDetail?.issueDate && (
+                  <p className="input-error-message">
+                    {errors.identityDetail.issueDate.message}
                   </p>
                 )}
               </Field>
 
               <Field className="col-span-full">
                 <FieldLabel>
-                  Khu vực đăng ký<span className="text-destructive">*</span>
+                  Khu vực đăng ký
+                  {/* <span className="text-destructive">*</span> */}
                 </FieldLabel>
                 <Controller
                   control={control}
                   name="identityDetail.issueAt"
+                  // rules={{ required: "Khu vực đăng ký là thông tin bắt buộc" }}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
                       {" "}
@@ -968,6 +1029,11 @@ export default function ActivityRegistrationForm({
                     {...register("identityDetail.issueAtOther")}
                   />
                 )}
+                {/* {errors.identityDetail?.issueAt && (
+                  <p className="input-error-message">
+                    {errors.identityDetail.issueAt.message}
+                  </p>
+                )} */}
               </Field>
               {renderSectionFields(FormSectionEnum.Identity)}
             </div>
@@ -1215,30 +1281,37 @@ export default function ActivityRegistrationForm({
                 </h3>
                 <div className="space-y-2">
                   {template.commitmentMessages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className="flex items-start space-x-3 p-3 rounded-lg bg-muted/20"
-                    >
-                      <Controller
-                        control={control}
-                        name={
-                          `commitments.${msg.id}` as unknown as Path<RegistrationFormValues>
-                        }
-                        render={({ field }) => (
-                          <Checkbox
-                            id={`commit-${msg.id}`}
-                            className="mt-1"
-                            checked={!!field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        )}
-                      />
-                      <FieldLabel
-                        htmlFor={`commit-${msg.id}`}
-                        className="cursor-pointer font-normal leading-relaxed"
-                      >
-                        {msg.label}
-                      </FieldLabel>
+                    <div key={msg.id} className="flex flex-col">
+                      <div className="flex items-start space-x-3 p-3 rounded-lg bg-muted/20">
+                        <Controller
+                          control={control}
+                          name={
+                            `commitments.${msg.id}` as unknown as Path<RegistrationFormValues>
+                          }
+                          rules={{
+                            required: "Bạn phải đồng ý với cam kết này",
+                          }}
+                          render={({ field }) => (
+                            <Checkbox
+                              id={`commit-${msg.id}`}
+                              className="mt-1"
+                              checked={!!field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          )}
+                        />
+                        <FieldLabel
+                          htmlFor={`commit-${msg.id}`}
+                          className="cursor-pointer font-normal leading-relaxed"
+                        >
+                          {msg.label}
+                        </FieldLabel>
+                      </div>
+                      {errors.commitments?.[msg.id] && (
+                        <p className="text-xs text-destructive">
+                          {errors.commitments[msg.id]?.message}
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -1250,7 +1323,7 @@ export default function ActivityRegistrationForm({
               size="lg"
               type="submit"
               className="hover:cursor-pointer uppercase tracking-wider"
-              disabled={isPending}
+              disabled={isPending || active === false}
             >
               {" "}
               <Send />

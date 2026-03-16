@@ -1,7 +1,7 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import logoQR from "@/public/logo_loading.svg";
+import logoQR from "@/public/logo.svg";
 
 export default function RegistrationQRCode({ value }: { value: string }) {
   return (

@@ -36,6 +36,7 @@ export async function createActivityRegistration(
     throw new Error(
       `Failed to create course registration: ${res.status} - ${JSON.stringify(errorData)}`,
     );
+    console.error("Error creating course registration:", errorData);
   }
 
   return (await res.json()) as ActivityRegistrationResponse;

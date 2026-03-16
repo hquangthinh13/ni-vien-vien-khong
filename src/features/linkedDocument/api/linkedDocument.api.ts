@@ -58,7 +58,7 @@ export async function fetchLinkedDocumentByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    cache: "force-cache",
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

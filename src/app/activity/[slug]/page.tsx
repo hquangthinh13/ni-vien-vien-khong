@@ -23,7 +23,10 @@ import {
 } from "@/features/activity/model/activity.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
-import { fetchActivityByDocumentIdWithRegistrationFormAndCourseContent } from "@/features/activity/api/activity.api";
+import {
+  fetchActivityByDocumentIdWithRegistrationFormAndCourseContent,
+  isActive,
+} from "@/features/activity/api/activity.api";
 import { getImageUrl } from "@/shared/lib/api";
 import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
@@ -31,6 +34,7 @@ import { notFound } from "next/navigation";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+import ActivityRegistrationDialog from "@/features/courseRegistration/ui/CourseregistrationDialog";
 type Props = {
   params: { slug: string };
 };
@@ -101,7 +105,9 @@ export default async function ActivityPage({ params }: Props) {
   }
 
   const data = response.data as Activity;
-  console.log("Fetched activity data:", data);
+  // console.log("Fetched activity data:", data);
+  const active = isActive(data);
+
   const courseContent = data?.courseContent as CourseContent;
   const videoList = courseContent?.videoSection || [];
   const sortedVideos = [...videoList].sort(
@@ -237,50 +243,59 @@ export default async function ActivityPage({ params }: Props) {
             <HighlightSection images={courseContent.highlightedImages || []} />
           )}
 
-          {data.registrationForm && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
-                  <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
+          {data.registrationForm && active && (
+            // <Dialog>
+            //   <DialogTrigger asChild>
+            //     <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
+            //       <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
 
-                  <div className="relative flex items-center justify-between">
-                    <div className="flex flex-col gap-0">
-                      <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
-                        {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
-                      </span>
-                      <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
-                        {locale === "vi"
-                          ? "Điền thông tin đăng ký ngay"
-                          : "Register Now"}
-                      </h4>
-                      <p className="text-xs text-muted-foreground italic">
-                        {locale === "vi"
-                          ? "Số lượng đăng ký có hạn: "
-                          : "Limited slots available: "}{" "}
-                        {data.registrationLimit}
-                      </p>
-                    </div>
+            //       <div className="relative flex items-center justify-between">
+            //         <div className="flex flex-col gap-0">
+            //           <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+            //             {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
+            //           </span>
+            //           <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
+            //             {locale === "vi"
+            //               ? "Điền thông tin đăng ký ngay"
+            //               : "Register Now"}
+            //           </h4>
+            //           <p className="text-xs text-muted-foreground italic">
+            //             {locale === "vi"
+            //               ? "Số lượng đăng ký có hạn: "
+            //               : "Limited slots available: "}{" "}
+            //             {data.registrationLimit}
+            //           </p>
+            //         </div>
 
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
-                      <CirclePlus className="h-6 w-6" />
-                    </div>
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent
-                aria-describedby={documentId}
-                className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
-              >
-                <DialogTitle>Đăng ký tham gia</DialogTitle>
-                <DialogDescription>
-                  Vui lòng điền đầy đủ thông tin để đăng ký tham gia sự kiện.
-                </DialogDescription>
-                <DynamicActivityRegistrationForm
-                  locale={locale}
-                  documentId={documentId}
-                />
-              </DialogContent>
-            </Dialog>
+            //         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+            //           <CirclePlus className="h-6 w-6" />
+            //         </div>
+            //       </div>
+            //     </div>
+            //   </DialogTrigger>
+            //   <DialogContent
+            //     aria-describedby={documentId}
+            //     className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
+            //   >
+            //     <DialogTitle>Đăng ký tham gia</DialogTitle>
+            //     <DialogDescription>
+            //       Vui lòng điền đầy đủ thông tin để đăng ký tham gia sự kiện.
+            //     </DialogDescription>
+            //     <DynamicActivityRegistrationForm
+            //       locale={locale}
+            //       documentId={documentId}
+            //       active={active}
+            //             onClose={() => setOpen(false)}
+
+            //     />
+            //   </DialogContent>
+            // </Dialog>
+            <ActivityRegistrationDialog
+              documentId={documentId}
+              locale={locale}
+              active={active}
+              registrationLimit={data.registrationLimit}
+            />
           )}
         </aside>
       </div>

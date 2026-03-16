@@ -154,7 +154,7 @@ export default async function Home() {
                   </DialogTrigger>
                   <DialogContent
                     aria-describedby="Question form"
-                    className="max-h-[90vh] overflow-y-auto"
+                    className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
                   >
                     <DialogTitle>Đặt câu hỏi</DialogTitle>
                     <DialogDescription>

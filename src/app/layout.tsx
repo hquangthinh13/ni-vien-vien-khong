@@ -14,7 +14,6 @@ import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
-import CustomCursor from "@/shared/layout/CustomerCursor";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -74,7 +73,6 @@ export default function RootLayout({
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
-          {/* <CustomCursor /> */}
           {children} <Toaster position="top-right" richColors />{" "}
           <SpeedInsights /> <Analytics />
         </NextIntlClientProvider>

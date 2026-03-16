@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import logo from "@/public/logo_loading.svg";
+import logo from "@/public/logo.svg";
 
 export default function LoadingMotion() {
   return (
