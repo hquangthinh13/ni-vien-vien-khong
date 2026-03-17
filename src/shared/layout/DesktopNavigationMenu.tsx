@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/shared/ui/button";
 import {
   DropdownMenu,
@@ -53,6 +52,7 @@ const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
+            size="lg"
             className="text-sm font-bold cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-none focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none"
           >
             {menu.href ? (
@@ -65,7 +65,7 @@ const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
             <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="min-w-[200px]">
+        <DropdownMenuContent align="start" className="min-w-50">
           {menu.items?.map((subItem: MenuItem, subIdx: number) => (
             <RecursiveMenuItem key={subIdx} item={subItem} />
           ))}
@@ -90,6 +90,7 @@ export default function DesktopNavigationMenu({
               variant="ghost"
               asChild
               className="text-sm font-bold"
+              size="lg"
             >
               <Link href={menu.href || "#"}>{menu.title}</Link>
             </Button>

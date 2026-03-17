@@ -21,19 +21,28 @@ const RecursiveAccordion = ({
   const hasItems = item.items && item.items.length > 0;
 
   const textStyle =
-    level === 1 ? "font-bold text-sm" : "font-medium text-[13px] opacity-90";
+    level === 1
+      ? "font-bold text-sm"
+      : level === 2
+        ? "font-medium text-[13px] opacity-90"
+        : "font-normal text-[13px] opacity-80";
 
   const itemStyle = level === 1 ? "border-b" : "border-none";
+
+  const indentStyle = {
+    paddingLeft: `${level * 16}px`,
+  };
 
   if (!hasItems) {
     return (
       <Link
         href={item.href || "#"}
         className={cn(
-          "flex py-3 px-4 hover:bg-accent transition-colors",
+          "flex py-3 pr-4 hover:bg-accent transition-colors",
           textStyle,
           itemStyle,
         )}
+        style={indentStyle}
       >
         {item.title}
       </Link>
@@ -44,12 +53,14 @@ const RecursiveAccordion = ({
     <AccordionItem value={value} className={itemStyle}>
       <AccordionTrigger
         className={cn(
-          "py-3 px-4 hover:no-underline hover:bg-accent/50",
+          "py-3 pr-4 hover:no-underline hover:bg-accent/50",
           textStyle,
         )}
+        style={indentStyle}
       >
         {item.title}
       </AccordionTrigger>
+
       <AccordionContent className="pb-0">
         <div
           className={cn(
