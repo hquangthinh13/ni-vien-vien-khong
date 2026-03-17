@@ -88,7 +88,7 @@ const ActivityVibrantCard = ({
                 {activity.courseContent?.courseCategory}
               </span>
             )}
-            <h3 className="pr-20 text-lg font-bold drop-shadow-2xl line-clamp-2 ">
+            <h3 className="pr-0 text-md font-bold drop-shadow-2xl line-clamp-2 ">
               {activity.activityName}
             </h3>
           </div>
