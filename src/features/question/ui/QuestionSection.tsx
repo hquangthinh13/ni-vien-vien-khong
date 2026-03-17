@@ -32,14 +32,16 @@ export default async function QuestionSection() {
 
   if (errorOccurred) {
     return (
-      <div className="text-center py-10 text-red-500">
+      <div className="py-4 text-red-500">
         Could not load questions. Please try again later.
       </div>
     );
   }
 
   if (questions.length === 0) {
-    return <div className="text-center py-10">No questions found.</div>;
+    return (
+      <div className="py-4 text-muted-foreground">No questions found.</div>
+    );
   }
 
   return (
