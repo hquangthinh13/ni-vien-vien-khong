@@ -179,7 +179,6 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
               showOutsideDays={false}
               className="rounded-none bg-none"
               classNames={{
-                root: "w-xs md:w-md",
                 day: "p-0",
                 table:
                   "w-full border-separate border-spacing-x-2 border-spacing-y-2 table-fixed",

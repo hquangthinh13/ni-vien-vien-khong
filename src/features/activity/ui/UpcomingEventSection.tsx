@@ -22,7 +22,7 @@ const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
 
     return (
       <section className="w-full">
-        <h2 className="text-xl text-center font-serif font-black mb-4 tracking-tighter text-secondary-foreground">
+        <h2 className="text-xl text-center font-serif font-black mb-4 tracking-tighter text-foreground">
           {locale === "vi" ? "Sự kiện sắp diễn ra" : "Upcoming Events"}
         </h2>
 
