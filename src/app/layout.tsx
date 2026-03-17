@@ -60,6 +60,8 @@ const styleScript = Style_Script({
   display: "swap",
 });
 
+const baseUrl = "https://staging.vienkhongni.com";
+
 export const metadata: Metadata = {
   title: {
     default: "Ni Viện Viên Không",
@@ -83,7 +85,7 @@ export const metadata: Metadata = {
     title: "Ni Viện Viên Không",
     description:
       "Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư Liễu Pháp.",
-    url: "https://vienkhongni.com",
+    url: baseUrl,
     siteName: "Ni Viện Viên Không",
     images: [
       {
@@ -100,9 +102,9 @@ export const metadata: Metadata = {
     countryName: "Vietnam",
   },
   alternates: {
-    canonical: "https://staging.vienkhongni.com",
+    canonical: baseUrl,
   },
-  metadataBase: new URL("https://staging.vienkhongni.com"),
+  metadataBase: new URL(baseUrl),
 };
 
 export const viewport: Viewport = {
