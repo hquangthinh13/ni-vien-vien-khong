@@ -1,13 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import HighlightSection from "@/features/activity/ui/HighlightSection";
-import { CalendarDays, CirclePlus, PlayCircle } from "lucide-react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogTrigger,
-} from "@/shared/ui/dialog";
+import { CalendarDays, PlayCircle } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
   Accordion,
@@ -28,10 +22,8 @@ import {
   isActive,
 } from "@/features/activity/api/activity.api";
 import { getImageUrl } from "@/shared/lib/api";
-import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
 import { notFound } from "next/navigation";
-import { DialogDescription } from "@radix-ui/react-dialog";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
 import ActivityRegistrationDialog from "@/features/courseRegistration/ui/CourseregistrationDialog";

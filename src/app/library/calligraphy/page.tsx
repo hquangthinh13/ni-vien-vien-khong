@@ -30,7 +30,7 @@ export default async function CaligraphyPage({
   const res = await fetchCalligraphiesByCategory({
     locale,
     category: initialCategory,
-    pagination: { page: currentPage, pageSize: 6 },
+    pagination: { page: currentPage, pageSize: 12 },
     populate: ["coverImage", "relatedCalligraphies"],
   });
   // console.log("Fetched calligraphies for category:", initialCategory, res);

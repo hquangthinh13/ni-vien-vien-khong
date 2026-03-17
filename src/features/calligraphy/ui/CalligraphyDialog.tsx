@@ -52,7 +52,7 @@ export default function CalligraphyDialog({
               {imageUrl && (
                 <Image
                   src={imageUrl}
-                  alt={calligraphy.title}
+                  alt={calligraphy.title || "Calligraphy Image"}
                   fill
                   className="object-contain p-4"
                   priority
@@ -68,7 +68,7 @@ export default function CalligraphyDialog({
                       {calligraphy.category}
                     </p>
                     <h2 className="text-2xl md:text-3xl text-secondary-foreground font-bold leading-tight">
-                      {calligraphy.title}
+                      {calligraphy.title || "Chưa có tiêu đề"}
                     </h2>
                   </div>
 
