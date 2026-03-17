@@ -6,6 +6,7 @@ import {
   Montserrat,
   Merriweather,
   Merriweather_Sans,
+  Style_Script,
 } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
@@ -52,6 +53,13 @@ const oswald = Oswald({
   display: "swap",
 });
 
+const styleScript = Style_Script({
+  subsets: ["latin"],
+  variable: "--font-script",
+  weight: "400",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Ni Viện Viên Không",
@@ -68,7 +76,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} antialiased`}
+      className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
       <body className={`min-h-screen bg-white`}>
         <Navbar /> <ScrollToTopButton />

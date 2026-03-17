@@ -25,7 +25,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           alt="Character"
           width={260}
           height={260}
-          className="drop-shadow-xl object-cover w-80 h-auto"
+          className="drop-shadow-xl object-cover w-70 h-auto"
         />
       </div>
       <div className="hidden lg:block absolute -bottom-5 -right-10 z-20 pointer-events-none">
@@ -34,7 +34,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           alt="Decoration"
           width={260}
           height={260}
-          className="w-80 h-auto drop-shadow-xl scale-x-[-1]"
+          className="w-70 h-auto drop-shadow-xl scale-x-[-1] -z-30"
         />
       </div>
       {/* Content */}

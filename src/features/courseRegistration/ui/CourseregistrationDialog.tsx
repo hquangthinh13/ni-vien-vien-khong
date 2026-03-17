@@ -8,7 +8,6 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/shared/ui/dialog";
-import { Button } from "@/shared/ui/button";
 import DynamicActivityRegistrationForm from "./DynamicActivityRegistrationForm";
 import type { Locale } from "@/types/locale";
 import { CirclePlus } from "lucide-react";

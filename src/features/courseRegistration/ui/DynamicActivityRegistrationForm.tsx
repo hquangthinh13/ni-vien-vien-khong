@@ -903,30 +903,30 @@ export default function ActivityRegistrationForm({
               <Field>
                 <FieldLabel>
                   Số CCCD
-                  {/* <span className="text-destructive">*</span> */}
+                  <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   placeholder="Nhập số CCCD"
                   {...register("identityDetail.IDNumber", {
-                    // required: "Số CCCD là thông tin bắt buộc",
+                    required: "Số CCCD là thông tin bắt buộc",
                   })}
                 />
-                {/* {errors.identityDetail?.IDNumber && (
+                {errors.identityDetail?.IDNumber && (
                   <p className="input-error-message">
                     {errors.identityDetail.IDNumber.message}
                   </p>
-                )} */}
+                )}
               </Field>
 
               <Field className="">
                 <FieldLabel htmlFor="issueDate">
-                  Ngày đăng ký
-                  {/* <span className="text-destructive">*</span> */}
+                  Ngày cấp
+                  <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Controller
                   control={control}
                   name="identityDetail.issueDate"
-                  // rules={{ required: "Ngày đăng ký là thông tin bắt buộc" }}
+                  rules={{ required: "Ngày cấp là thông tin bắt buộc" }}
                   render={({ field }) => {
                     const dateValue = field.value
                       ? parseISO(field.value)
@@ -947,7 +947,7 @@ export default function ActivityRegistrationForm({
                             {dateValue && isValid(dateValue) ? (
                               format(dateValue, "dd/MM/yyyy")
                             ) : (
-                              <span>Chọn ngày đăng ký</span>
+                              <span>Chọn ngày cấp CCCD</span>
                             )}
                           </Button>
                         </PopoverTrigger>
@@ -1052,14 +1052,14 @@ export default function ActivityRegistrationForm({
                 />
               </Field>
               <Field>
-                <FieldLabel>Chức vụ</FieldLabel>
+                <FieldLabel>Giới phẩm</FieldLabel>
                 <Controller
                   control={control}
                   name="monasticDetail.monasticRank"
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Chọn chức vụ tu sĩ" />
+                        <SelectValue placeholder="Chọn giới phẩm" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem
@@ -1145,9 +1145,9 @@ export default function ActivityRegistrationForm({
                 )}
               </Field>
               <Field className="">
-                <FieldLabel>Thiền viện hiện tại</FieldLabel>
+                <FieldLabel>Tự viện</FieldLabel>
                 <Input
-                  placeholder="Nhập tên thiền viện hiện tại"
+                  placeholder="Nhập tên tự viện (chùa/ni viện) của bạn"
                   {...register("monasticDetail.currentMonastery")}
                 />
               </Field>{" "}
