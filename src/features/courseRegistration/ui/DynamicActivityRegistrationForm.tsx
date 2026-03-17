@@ -980,12 +980,12 @@ export default function ActivityRegistrationForm({
               <Field className="col-span-full">
                 <FieldLabel>
                   Khu vực đăng ký
-                  {/* <span className="text-destructive">*</span> */}
+                  <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Controller
                   control={control}
                   name="identityDetail.issueAt"
-                  // rules={{ required: "Khu vực đăng ký là thông tin bắt buộc" }}
+                  rules={{ required: "Khu vực đăng ký là thông tin bắt buộc" }}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
                       {" "}
@@ -1029,11 +1029,11 @@ export default function ActivityRegistrationForm({
                     {...register("identityDetail.issueAtOther")}
                   />
                 )}
-                {/* {errors.identityDetail?.issueAt && (
+                {errors.identityDetail?.issueAt && (
                   <p className="input-error-message">
                     {errors.identityDetail.issueAt.message}
                   </p>
-                )} */}
+                )}
               </Field>
               {renderSectionFields(FormSectionEnum.Identity)}
             </div>
