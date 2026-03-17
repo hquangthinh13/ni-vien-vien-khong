@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   EB_Garamond,
   Oswald,
@@ -67,8 +67,48 @@ export const metadata: Metadata = {
   },
   description:
     "Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư Liễu Pháp.",
+  keywords: [
+    "Ni Viện Viên Không",
+    "Ni Sư Liễu Pháp",
+    "Ni Viện",
+    "Viên Không",
+    "Khóa Tu",
+    "Khóa Tu Mùa Hè",
+    "Đăng Ký Khóa Tu",
+    "Vấn Đáp Phật Pháp",
+    "Khóa Thiền",
+    "Khóa Tu Xuất Gia Gieo Duyên",
+  ],
+  openGraph: {
+    title: "Ni Viện Viên Không",
+    description:
+      "Trang web vienkhongni.com ra đời nhằm mục đích cho sự tiện ích đến toàn thể thân hữu, đạo hữu muốn tìm hiểu những sinh hoạt tín ngưỡng, tu tập, văn hoá, giáo dục, xã hội... của Ni Viện Viên Không và Ni Sư Liễu Pháp.",
+    url: "https://vienkhongni.com",
+    siteName: "Ni Viện Viên Không",
+    images: [
+      {
+        url: "/open-graph.png",
+        width: 1200,
+        height: 630,
+        alt: "Ni Viện Viên Không",
+      },
+    ],
+    locale: "vi_VN",
+    phoneNumbers: ["+84 974 469 963"],
+    emails: ["lieuphap@gmail.com", "nivienvienkhong2019@gmail.com"],
+    type: "website",
+    countryName: "Vietnam",
+  },
+  alternates: {
+    canonical: "https://staging.vienkhongni.com",
+  },
+  metadataBase: new URL("https://staging.vienkhongni.com"),
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -65,10 +65,21 @@ export async function generateMetadata(
       title: data.activityName,
       description:
         data.activityCategory || "Thông tin hoạt động tại Ni Viện Viên Không",
+      keywords: [
+        "Sự kiện",
+        "Tin tức",
+        "Khóa tu",
+        "Ni Viện Viên Không",
+        `${data.activityCategory}`,
+        `${data.activityName}`,
+      ],
       openGraph: {
         title: data.activityName,
         description: data.activityCategory,
         images: ogImage ? [ogImage] : [],
+      },
+      alternates: {
+        canonical: "https://staging.vienkhongni.com",
       },
     };
   } catch (error) {

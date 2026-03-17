@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import {
   Dialog,
   DialogTitle,
@@ -29,24 +28,9 @@ export default async function Home() {
   });
   const data = response.data as HomePageAttributes | null;
   const coverImage = getImageUrl(data?.coverImage);
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Ni Viện Viên Không",
-    url: "https://ni-vien-vien-khong-frontend.vercel.app",
-    logo: "https://ni-vien-vien-khong-frontend.vercel.app/logo.png",
-    sameAs: [
-      "https://www.facebook.com/Nivienvienkhong",
-      "https://www.youtube.com/c/NiVi%E1%BB%87nVi%C3%AAnKh%C3%B4ng",
-    ],
-  };
+
   return (
     <div>
-      <Script
-        id="organization-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
       <MotionWrapper>
         <Image
           className="mb-4"
