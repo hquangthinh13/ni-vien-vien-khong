@@ -55,10 +55,7 @@ export default function Navbar() {
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-[300px] p-0 space-y-0 gap-0"
-            >
+            <SheetContent side="right" className="w-75 p-0 space-y-0 gap-0">
               <SheetHeader className="p-4">
                 <SheetTitle className="">{t("menu")}</SheetTitle>
               </SheetHeader>

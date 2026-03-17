@@ -45,7 +45,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
               onClick={() => setIndex(idx)}
             >
               <Image
-                src={getImageUrl(img, "medium") || "/placeholder.jpg"}
+                src={getImageUrl(img, "medium") || "/placeholder.png"}
                 alt={`Highlight ${idx}`}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -107,7 +107,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={getImageUrl(images[index], "large") || "/placeholder.jpg"}
+                src={getImageUrl(images[index], "large") || "/placeholder.png"}
                 alt="Fullscreen view"
                 fill
                 className="object-contain"

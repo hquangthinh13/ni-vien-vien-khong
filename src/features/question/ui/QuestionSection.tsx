@@ -3,12 +3,9 @@ import React from "react";
 import QuestionCard from "./QuestionCard";
 import { fetchAnsweredQuestions } from "../api/question.api";
 import type { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
 import { Question } from "../model/question.types";
 
-export default async function QuestionSection() {
-  const locale = (await getLocale()) as Locale;
-
+export default async function QuestionSection({ locale }: { locale: Locale }) {
   let questions: Question[] = [];
   let errorOccurred = false;
 

@@ -53,7 +53,7 @@ const ActivityVibrantCard = ({
       <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-2xl transition-all duration-500 group-hover:scale-[1.01]">
         {imageUrl && (
           <Image
-            src={imageUrl}
+            src={imageUrl || "/placeholder.png"}
             alt={activity.activityName}
             fill
             className="object-cover transition-transform duration-1000 group-hover:scale-110"

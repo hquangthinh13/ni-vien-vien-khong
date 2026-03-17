@@ -96,7 +96,7 @@ export default async function PoemPage({ params }: Props) {
           <div className=" flex w-full justify-center">
             <div className="relative aspect-square w-full max-w-48 overflow-hidden rounded-full shadow-md mt-4">
               <Image
-                src={imageUrl || "/placeholder.jpg"}
+                src={imageUrl || "/placeholder.png"}
                 alt={data.title}
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-300"

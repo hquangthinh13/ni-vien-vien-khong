@@ -96,7 +96,7 @@ export default async function RitualPage({ params }: Props) {
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               <Image
                 src={
-                  getImageUrl(data.coverImage, "medium") || "/placeholder.jpg"
+                  getImageUrl(data.coverImage, "medium") || "/placeholder.png"
                 }
                 alt={data.title || "Ritual cover image"}
                 fill

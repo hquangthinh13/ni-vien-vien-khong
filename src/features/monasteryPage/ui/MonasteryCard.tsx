@@ -51,7 +51,7 @@ const MonasteryCard = ({ item, index }: MonasteryCardProps) => {
         <div className="w-full lg:w-1/2">
           <div className="max-w-xl md:max-w-4xl relative aspect-video w-full overflow-hidden rounded-xl shadow-lg transition-shadow group-hover:shadow-xl ease-in-out duration-300 border border-white/10">
             <Image
-              src={imageUrl || "/placeholder.jpg"}
+              src={imageUrl || "/placeholder.png"}
               alt={item.monasteryName}
               fill
               className="object-cover"
