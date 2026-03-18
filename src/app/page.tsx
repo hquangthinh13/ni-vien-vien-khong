@@ -27,12 +27,12 @@ export default async function Home() {
     <div>
       <MotionWrapper>
         <Image
-          className="mb-4"
           src={coverImage || "/placeholder.png"}
           alt="Cover image"
-          placeholder="blur"
           width={1600}
           height={900}
+          className="h-auto w-screen"
+          placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           sizes="100vw"
           quality={75}
