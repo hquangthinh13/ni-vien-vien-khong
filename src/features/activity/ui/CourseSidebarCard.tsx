@@ -29,10 +29,10 @@ const CourseSidebarCard = async ({
   return (
     <Link
       href={`/activity/${course.slug}-${course.documentId}`}
-      className="group block w-full border-b border-border/50 pb-2 last:border-0 last:pb-0 transition-all"
+      className="group block w-full border-b border-border not-last:pb-2 last:border-0 transition-all"
     >
-      <div className="flex gap-4">
-        <div className="group relative h-24 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted">
+      <div className="flex gap-2">
+        <div className="group relative h-18 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted">
           {coverImageUrl && (
             <Image
               src={coverImageUrl}
@@ -51,7 +51,7 @@ const CourseSidebarCard = async ({
               {startDate} {endDate ? `- ${endDate}` : ""}
             </span>
           </div>
-          <h4 className="text-sm font-semibold text-foreground line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+          <h4 className="text-sm font-semibold text-foreground line-clamp-3 leading-snug group-hover:text-primary transition-colors">
             {course.activityName || "Untitled Course"}
           </h4>
         </div>

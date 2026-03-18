@@ -11,6 +11,8 @@ import { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import RelatedRitualsSection from "@/features/ritual/ui/RelatedRitualsSection";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
@@ -94,17 +96,19 @@ export default async function RitualPage({ params }: Props) {
             </div>
 
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
-              <Image
-                src={
-                  getImageUrl(data.coverImage, "medium") || "/placeholder.png"
-                }
-                alt={data.title || "Ritual cover image"}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                priority
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-              />
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={
+                    getImageUrl(data.coverImage, "medium") || "/placeholder.png"
+                  }
+                  alt={data.title || "Ritual cover image"}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                />
+              </Zoom>
             </div>
           </header>
           <div className="opacity-80 flex w-full justify-center my-12">

@@ -42,9 +42,13 @@ export default async function QuestionSection({ locale }: { locale: Locale }) {
   }
 
   return (
-    <div className="grid grid-cols-1 w-full gap-4 my-4">
-      {questions.map((item) => (
-        <QuestionCard key={item.id} question={item} />
+    <div className="grid grid-cols-1 w-full gap-2 my-4">
+      {questions.map((item, index) => (
+        <QuestionCard
+          key={item.id}
+          question={item}
+          className={index !== questions.length - 1 ? "border-b pb-2" : ""}
+        />
       ))}
     </div>
   );

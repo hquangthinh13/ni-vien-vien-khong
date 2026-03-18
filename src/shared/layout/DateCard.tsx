@@ -34,10 +34,10 @@ const DateCard: React.FC<DateCardProps> = ({
   const year = format(date, "yyyy");
 
   return (
-    <div className="flex flex-col items-center justify-between w-18 h-full bg-white rounded-lg shadow-xl overflow-hidden">
+    <div className="flex flex-col items-center justify-between w-14 h-full bg-white rounded-lg shadow-xl overflow-hidden">
       <div
         style={{ backgroundColor: headerColor || "var(--primary)" }}
-        className="w-full text-xs tracking-wider font-mono font-bold text-white text-center py-1.5 leading-none uppercase"
+        className="w-full text-xs tracking-wider font-mono font-bold text-white text-center py-1 leading-none uppercase"
       >
         {monthDisplay}
       </div>

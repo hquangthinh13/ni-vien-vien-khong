@@ -1,14 +1,15 @@
 import { getStrapiURL, buildQuery } from "@/shared/lib/api";
-import type {
-  ActivityResponse,
-  Activity,
-  CourseStatus,
-  FetchActivitiesOptions,
-  FetchActivityByDocumentIdOptions,
-  FetchActiveActivityOptions,
-  FetchActivitiesByMonthOptions,
-  FetchActivitiesByCategoryOptions,
-  FetchCourseByCategoryOptions,
+import {
+  type ActivityResponse,
+  type Activity,
+  type CourseStatus,
+  type FetchActivitiesOptions,
+  type FetchActivityByDocumentIdOptions,
+  type FetchActiveActivityOptions,
+  type FetchActivitiesByMonthOptions,
+  type FetchActivitiesByCategoryOptions,
+  type FetchCourseByCategoryOptions,
+  STATUS_LABELS,
 } from "@/features/activity/model/activity.types";
 import {
   ACTIVITY_POPULATE_COURSE_CONTENT,
@@ -319,6 +320,18 @@ export function getActivityStatus(
     return "completed";
   }
   return "unknown";
+}
+
+export function getStatusLabel(
+  activity: Activity,
+  locale: string = "en",
+  referenceDate?: string,
+): string {
+  const status = getActivityStatus(activity, referenceDate);
+
+  const translation = STATUS_LABELS[status] || STATUS_LABELS.unknown;
+
+  return locale === "vi" ? translation.vi : translation.en;
 }
 
 export function isActive(activity: Activity, referenceDate?: string): boolean {

@@ -27,6 +27,8 @@ import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
 import ActivityRegistrationDialog from "@/features/courseRegistration/ui/CourseregistrationDialog";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 type Props = {
   params: { slug: string };
 };
@@ -94,12 +96,7 @@ export default async function ActivityPage({ params }: Props) {
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: [
-          "coverImage",
-          // "courseContent.highlightedImages",
-          // "courseContent.videoSection",
-          // "courseContent",
-        ],
+        populate: ["coverImage"],
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -150,16 +147,30 @@ export default async function ActivityPage({ params }: Props) {
               </div>
             )}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={getImageUrl(data.coverImage) || "/placeholder.png"}
+                  alt={data.activityName || "Course cover image"}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                />
+              </Zoom>
+            </div>
+            {/* <Zoom zoomMargin={80}>
               <Image
                 src={getImageUrl(data.coverImage) || "/placeholder.png"}
                 alt={data.activityName || "Course cover image"}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
+                className="flex rounded-2xl mt-4 hover:scale-105 transition-transform duration-300"
                 priority
                 placeholder="blur"
+                width={1280}
+                height={720}
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
-            </div>
+            </Zoom> */}
           </header>
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />

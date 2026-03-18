@@ -11,7 +11,8 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Calligraphy } from "../model/calligraphy.types";
 import { Button } from "@/shared/ui/button";
-
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 interface CalligraphyDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -50,13 +51,15 @@ export default function CalligraphyDialog({
           <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden">
             <div className="relative w-full lg:w-[60%] h-75 lg:h-full bg-zinc-100 flex items-center justify-center border-r">
               {imageUrl && (
-                <Image
-                  src={imageUrl}
-                  alt={calligraphy.title || "Calligraphy Image"}
-                  fill
-                  className="object-contain p-4"
-                  priority
-                />
+                <Zoom zoomMargin={80}>
+                  <Image
+                    src={imageUrl}
+                    alt={calligraphy.title || "Calligraphy Image"}
+                    fill
+                    className="object-contain p-4"
+                    priority
+                  />
+                </Zoom>
               )}
             </div>
 

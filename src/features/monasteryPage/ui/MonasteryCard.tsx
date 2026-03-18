@@ -7,7 +7,8 @@ import { getImageUrl } from "@/shared/lib/api";
 import { MonasteryAttributes } from "@/features/monasteryPage/model/monasteryPage.types";
 import { motion } from "framer-motion";
 import { Vibrant } from "node-vibrant/browser";
-
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 interface MonasteryCardProps {
   item: MonasteryAttributes;
   index: number;
@@ -50,15 +51,17 @@ const MonasteryCard = ({ item, index }: MonasteryCardProps) => {
       >
         <div className="w-full lg:w-1/2">
           <div className="max-w-xl md:max-w-4xl relative aspect-video w-full overflow-hidden rounded-xl shadow-lg transition-shadow group-hover:shadow-xl ease-in-out duration-300 border border-white/10">
-            <Image
-              src={imageUrl || "/placeholder.png"}
-              alt={item.monasteryName}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-            />
+            <Zoom zoomMargin={80}>
+              <Image
+                src={imageUrl || "/placeholder.png"}
+                alt={item.monasteryName}
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+              />
+            </Zoom>
             <div
               className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
               style={{ backgroundColor: accentColor }}

@@ -64,9 +64,13 @@ export default async function QuestionListPage({
           <QuestionForm locale={locale} />
         </DialogContent>
       </Dialog>
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {questions.map((item) => (
-          <QuestionCard key={item.id} question={item} />
+      <div className="mt-4 grid grid-cols-1 gap-4">
+        {questions.map((item, index) => (
+          <QuestionCard
+            key={item.id}
+            question={item}
+            className={index !== questions.length - 1 ? "border-b pb-4" : ""}
+          />
         ))}
       </div>
 

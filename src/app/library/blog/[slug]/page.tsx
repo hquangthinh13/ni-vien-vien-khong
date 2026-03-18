@@ -12,6 +12,8 @@ import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 type Props = {
   params: { slug: string };
 };
@@ -97,13 +99,15 @@ export default async function ActivityPage({ params }: Props) {
               </div>
             )}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
-              <Image
-                src={getImageUrl(data.coverImage) || "/placeholder.png"}
-                alt={data.title || "Blog cover image"}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                priority
-              />
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={getImageUrl(data.coverImage) || "/placeholder.png"}
+                  alt={data.title || "Blog cover image"}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  priority
+                />
+              </Zoom>
             </div>
           </header>
           <div className="opacity-80 flex w-full justify-center my-12">

@@ -5,6 +5,8 @@ import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
 import { extractFirstParagraph, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
+import { getStatusLabel } from "../api/activity.api";
+import { Badge } from "@/shared/ui/badge";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -17,26 +19,43 @@ const SimplifiedNewsCard = async ({
   variant = "bottom",
   locale,
 }: NewsCardProps) => {
-  // const locale = (await getLocale()) as Locale;
-  const { slug, documentId, activityName, coverImage, content, publishedAt } =
-    activity;
+  const status = getStatusLabel(activity, locale);
+  const {
+    slug,
+    documentId,
+    activityName,
+    coverImage,
+    content,
+    publishedAt,
+    activityCategory,
+  } = activity;
   if (isFirst === false && variant === "bottom") {
     return (
       <Link
         href={`/activity/${slug}-${documentId}`}
         className="flex flex-col gap-2"
       >
-        <div className="flex gap-4 items-baseline group">
-          <h3 className="text-md line-clamp-4 font-bold leading-snug group-hover:text-primary cursor-pointer">
-            {activityName || "Untitled Activity"}
-          </h3>
+        <h3
+          className={`text-md font-bold leading-snug hover:text-primary cursor-pointer`}
+        >
+          {activityName}
+        </h3>
+        <div className="flex gap-2 items-center mb-4">
+          <Badge variant="outline" className="font-mono">
+            {activityCategory !== "Khóa Tu"
+              ? activityCategory
+              : activity.courseContent?.courseCategory}
+          </Badge>
+          <Badge variant="outline" className="font-mono">
+            {status}
+          </Badge>
         </div>
         <p
           className={`line-clamp-3 text-sm text-secondary-foreground/80 font-mono mt-2`}
         >
           {extractFirstParagraph(content)}
         </p>
-        <span className="text-xs text-muted-foreground font-mono">
+        <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
           {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
         </span>
       </Link>
@@ -66,16 +85,26 @@ const SimplifiedNewsCard = async ({
 
         <div className="flex flex-col gap-2">
           <h3
-            className={`text-md font-bold leading-snug hover:text-primary cursor-pointer mb-2`}
+            className={`text-md font-bold leading-snug hover:text-primary cursor-pointer`}
           >
             {activityName}
           </h3>
+          <div className="flex gap-2 items-center mb-4">
+            <Badge variant="outline" className="font-mono">
+              {activityCategory !== "Khóa Tu"
+                ? activityCategory
+                : activity.courseContent?.courseCategory}
+            </Badge>
+            <Badge variant="outline" className="font-mono">
+              {status}
+            </Badge>
+          </div>
           <p
-            className={`line-clamp-2 text-sm text-secondary-foreground/80 font-mono`}
+            className={`line-clamp-3 text-sm text-secondary-foreground/80 font-mono`}
           >
             {extractFirstParagraph(content)}
           </p>{" "}
-          <span className="text-xs text-muted-foreground font-mono">
+          <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
             {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
           </span>
         </div>

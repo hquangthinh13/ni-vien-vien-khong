@@ -54,9 +54,7 @@ export default async function ActivitiesSection({
                 post && (
                   <div
                     key={post.id}
-                    className={
-                      index === 0 ? "lg:border-r pr-4" : "lg:border-r pl-4"
-                    }
+                    className={index === 0 ? "lg:border-r pr-4" : "pl-4"}
                   >
                     <SimplifiedNewsCard
                       key={post.id}

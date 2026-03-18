@@ -56,7 +56,7 @@ const ActivityVibrantCard = ({
             src={imageUrl || "/placeholder.png"}
             alt={activity.activityName}
             fill
-            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+            className="object-cover transition-transform duration-1000 group-hover:scale-[1.05]"
             priority
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="

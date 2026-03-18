@@ -8,6 +8,8 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import { Link as LinkIcon } from "lucide-react";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 interface ActivityRegistrationContentRendererProps {
   content: BlocksContent;
 }
@@ -22,14 +24,16 @@ const ActivityRegistrationContentRenderer = ({
         image: ({ image }) => (
           <figure className="lg:px-48 my-4 space-y-2">
             <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm">
-              <Image
-                src={image.url}
-                alt={image.alternativeText || ""}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-              />
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={image.url}
+                  alt={image.alternativeText || ""}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                />
+              </Zoom>
             </div>
             {image.caption && (
               <figcaption className="text-center">

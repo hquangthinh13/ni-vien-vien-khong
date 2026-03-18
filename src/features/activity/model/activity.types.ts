@@ -126,3 +126,10 @@ export type FetchCourseByCategoryOptions = FetchActivitiesOptions & {
   category: CourseCategory;
   year?: number;
 };
+
+export const STATUS_LABELS: Record<string, { vi: string; en: string }> = {
+  upcoming: { vi: "Sắp diễn ra", en: "Upcoming" },
+  ongoing: { vi: "Đang diễn ra", en: "Ongoing" },
+  completed: { vi: "Đã kết thúc", en: "Completed" },
+  unknown: { vi: "Không xác định", en: "Unknown" },
+};

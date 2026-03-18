@@ -29,7 +29,7 @@ export default async function ActivityPage({
   const initialCategory = categoryMapping[categorySlug || ""] || "Tất cả";
   const response = await fetchActivitiesByCategory({
     locale,
-    pagination: { page: currentPage, pageSize: 6 },
+    pagination: { page: currentPage, pageSize: 8 },
     sort: ["publishedAt:desc"],
     populate: ["coverImage", "courseContent"],
     category: initialCategory,
