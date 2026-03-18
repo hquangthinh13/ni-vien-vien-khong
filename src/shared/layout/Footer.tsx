@@ -67,13 +67,13 @@ const Footer = async () => {
             <div className="space-y-2 flex-col flex items-center md:items-start">
               <HoverCard>
                 <HoverCardTrigger>
-                  <div className="flex space-x-2 items-center">
+                  <div className="flex flex-col sm:flex-row gap-2 items-center sm:items-start">
                     <MapPin
                       size={15}
                       strokeWidth={1.5}
                       color="var(--muted-foreground)"
                     />
-                    <p className="text-muted-foreground ">
+                    <p className="text-muted-foreground text-center md:text-left">
                       {response.data?.address}
                     </p>
                   </div>
