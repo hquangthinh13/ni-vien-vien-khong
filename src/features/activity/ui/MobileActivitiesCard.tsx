@@ -38,7 +38,7 @@ export default async function MobileActivitiesCard({
         <span className="text-xs text-muted-foreground font-mono">
           {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
         </span>
-        <h3 className="text-sm font-bold leading-tight hover:text-primary line-clamp-1">
+        <h3 className="text-sm font-bold leading-tight hover:text-primary line-clamp-2">
           {activityName || "Untitled Activity"}
         </h3>
         <p className="line-clamp-2 font-mono text-xs text-secondary-foreground opacity-80">

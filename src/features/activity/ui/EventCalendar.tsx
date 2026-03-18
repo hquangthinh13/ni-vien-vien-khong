@@ -17,7 +17,7 @@ import { CalendarIcon } from "lucide-react";
 import type { Locale } from "@/types/locale";
 import type { Activity } from "@/features/activity/model/activity.types";
 import { fetchActivitiesByMonth } from "@/features/activity/api/activity.api";
-
+import Link from "next/link";
 type MonthKey = `${number}-${string}`;
 
 function toMonthKey(d: Date): MonthKey {
@@ -259,20 +259,24 @@ function ActivityItem({ activity }: { activity: Activity }) {
     : null;
 
   return (
-    <Card className="flex flex-1 p-0 border-l-4 border-l-primary">
-      <CardContent className="p-3 w-full">
-        <p className="font-semibold text-sm">{activity.activityName}</p>
+    <Link href={`/activity/${activity.slug}-${activity.documentId}`}>
+      <Card className="flex flex-1 p-0 border-l-4 border-l-primary">
+        <CardContent className="p-3 w-full">
+          <p className="font-semibold text-sm text-foreground hover:text-accent-foreground transition-colors duration-200 ease-in-out">
+            {activity.activityName}
+          </p>
 
-        <p className="text-xs text-muted-foreground mt-1 font-mono ">
-          {start && !Number.isNaN(start.getTime())
-            ? format(start, "dd/MM/yyyy HH:mm")
-            : activity.activityStartDate}
+          <p className="text-xs text-muted-foreground mt-1 font-mono ">
+            {start && !Number.isNaN(start.getTime())
+              ? format(start, "dd/MM/yyyy HH:mm")
+              : activity.activityStartDate}
 
-          {end && start && !Number.isNaN(end.getTime()) && end >= start
-            ? ` - ${format(end, "dd/MM/yyyy HH:mm")}`
-            : ""}
-        </p>
-      </CardContent>
-    </Card>
+            {end && start && !Number.isNaN(end.getTime()) && end >= start
+              ? ` - ${format(end, "dd/MM/yyyy HH:mm")}`
+              : ""}
+          </p>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
