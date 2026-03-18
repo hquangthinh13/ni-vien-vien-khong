@@ -51,7 +51,7 @@ const CourseSidebarCard = async ({
               {startDate} {endDate ? `- ${endDate}` : ""}
             </span>
           </div>
-          <h4 className="text-sm font-semibold text-foreground line-clamp-3 leading-snug group-hover:text-primary transition-colors">
+          <h4 className="text-sm font-bold text-foreground line-clamp-3 leading-snug group-hover:text-primary transition-colors">
             {course.activityName || "Untitled Course"}
           </h4>
         </div>

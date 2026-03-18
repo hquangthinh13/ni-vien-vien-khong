@@ -14,6 +14,7 @@ import { Input } from "@/shared/ui/input";
 import type { Locale } from "@/types/locale";
 import { createQuestion } from "../api/question.api";
 import { QuestionFormData } from "../model/question.types";
+import { Send } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Vui lòng nhập họ tên đầy đủ"),
@@ -185,8 +186,9 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
             <Button
               type="submit"
               disabled={isPending}
-              className="cursor-pointer"
+              className="hover:cursor-pointer uppercase tracking-wider"
             >
+              <Send />
               {isPending ? "Đang gửi..." : "Gửi câu hỏi"}
             </Button>
           </div>
