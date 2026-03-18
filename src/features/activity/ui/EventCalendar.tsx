@@ -12,7 +12,7 @@ import {
   startOfDay,
   endOfDay,
 } from "date-fns";
-import { vi } from "date-fns/locale";
+import { enUS, vi } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import type { Locale } from "@/types/locale";
 import type { Activity } from "@/features/activity/model/activity.types";
@@ -207,50 +207,43 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
             />
           </div>
         </PopoverTrigger>
-
-        <PopoverContent
-          className="w-80"
-          align="center"
-          side={isLargeScreen ? "left" : "bottom"}
-        >
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="h-4 w-4 text-primary" />
-              <h3 className="font-semibold text-sm">
-                Sự kiện ngày{" "}
-                {selectedDate
-                  ? format(selectedDate, "dd/MM/yyyy", { locale: vi })
-                  : ""}
-              </h3>
-            </div>
-
-            {(isLoading || error) && (
-              <div className="text-xs">
-                {isLoading ? (
-                  <p className="text-muted-foreground italic">
-                    Đang tải lịch tháng…
-                  </p>
-                ) : null}
-                {error ? <p className="text-destructive">{error}</p> : null}
-              </div>
-            )}
-
-            <div className="flex flex-col gap-2">
-              {selectedDayActivities.length > 0 ? (
-                selectedDayActivities.map((activity) => (
-                  <ActivityItem
-                    key={getActivityKey(activity)}
-                    activity={activity}
-                  />
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground italic">
-                  Không có sự kiện nào cho ngày này.
-                </p>
+        {selectedDayActivities.length > 0 ? (
+          <PopoverContent
+            className="w-80 p-4 rounded-xl max-h-96 overflow-auto"
+            align="center"
+            side={isLargeScreen ? "left" : "bottom"}
+          >
+            <div className="space-y-3">
+              {(isLoading || error) && (
+                <div className="text-xs">
+                  {isLoading ? (
+                    <p className="text-muted-foreground italic">
+                      Đang tải lịch tháng…
+                    </p>
+                  ) : null}
+                  {error ? <p className="text-destructive">{error}</p> : null}
+                </div>
               )}
+
+              <div className="flex flex-col gap-2">
+                {
+                  selectedDayActivities.length > 0 &&
+                    selectedDayActivities.map((activity) => (
+                      <ActivityItem
+                        key={getActivityKey(activity)}
+                        activity={activity}
+                      />
+                    ))
+                  //  : (
+                  //   <p className="text-sm text-muted-foreground italic">
+                  //     Không có sự kiện nào cho ngày này.
+                  //   </p>
+                  // )
+                }
+              </div>
             </div>
-          </div>
-        </PopoverContent>
+          </PopoverContent>
+        ) : null}
       </Popover>
     </div>
   );
@@ -268,9 +261,9 @@ function ActivityItem({ activity }: { activity: Activity }) {
   return (
     <Card className="flex flex-1 p-0 border-l-4 border-l-primary">
       <CardContent className="p-3 w-full">
-        <p className="font-medium text-sm">{activity.activityName}</p>
+        <p className="font-semibold text-sm">{activity.activityName}</p>
 
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground mt-1 font-mono ">
           {start && !Number.isNaN(start.getTime())
             ? format(start, "dd/MM/yyyy HH:mm")
             : activity.activityStartDate}
