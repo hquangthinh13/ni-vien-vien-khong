@@ -27,13 +27,13 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-50 border-b bg-card">
-      <div className="mx-auto max-w-7xl p-4 grid grid-cols-3 items-center">
+      <div className="mx-auto max-w-7xl px-4 py-2 grid grid-cols-3 items-center">
         {" "}
         <Link className="flex mr-auto" href="/">
           <Image
             src={logo}
             alt="Logo"
-            className="max-h-14 h-auto w-auto"
+            className="max-h-12 h-auto w-auto"
             loading="eager"
             priority
           />
@@ -55,10 +55,7 @@ export default function Navbar() {
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-[300px] p-0 space-y-0 gap-0"
-            >
+            <SheetContent side="right" className="w-75 p-0 space-y-0 gap-0">
               <SheetHeader className="p-4">
                 <SheetTitle className="">{t("menu")}</SheetTitle>
               </SheetHeader>

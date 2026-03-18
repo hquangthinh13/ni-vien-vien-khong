@@ -1,11 +1,9 @@
 import React from "react";
 import { fetchActivitiesByCategory } from "@/features/activity/api/activity.api";
 import type { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
 import CourseSidebarCard from "./CourseSidebarCard";
 
-export default async function CourseSection() {
-  const locale = (await getLocale()) as Locale;
+export default async function CourseSection({ locale }: { locale: Locale }) {
   const category = "Khóa Tu";
   try {
     const res = await fetchActivitiesByCategory({

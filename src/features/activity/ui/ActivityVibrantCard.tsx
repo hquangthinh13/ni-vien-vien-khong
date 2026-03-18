@@ -53,10 +53,10 @@ const ActivityVibrantCard = ({
       <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-2xl transition-all duration-500 group-hover:scale-[1.01]">
         {imageUrl && (
           <Image
-            src={imageUrl}
+            src={imageUrl || "/placeholder.png"}
             alt={activity.activityName}
             fill
-            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+            className="object-cover transition-transform duration-1000 group-hover:scale-[1.05]"
             priority
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
@@ -88,7 +88,7 @@ const ActivityVibrantCard = ({
                 {activity.courseContent?.courseCategory}
               </span>
             )}
-            <h3 className="pr-20 text-lg font-bold drop-shadow-2xl line-clamp-2 ">
+            <h3 className="pr-0 text-md font-bold drop-shadow-2xl line-clamp-2 ">
               {activity.activityName}
             </h3>
           </div>

@@ -26,7 +26,7 @@ export async function fetchBlogs(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 1200 },
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
@@ -54,7 +54,7 @@ export async function fetchBlogByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    cache: "force-cache",
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

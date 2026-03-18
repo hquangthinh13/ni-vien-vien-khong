@@ -11,10 +11,10 @@ export default function useMenuConfig(): MenuItem[] {
 
   return [
     // 1. Trang chủ
-    {
-      title: t("home.trigger"),
-      href: "/",
-    },
+    // {
+    //   title: t("home.trigger"),
+    //   href: "/",
+    // },
 
     // 2. Giới thiệu
     {

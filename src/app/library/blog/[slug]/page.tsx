@@ -12,6 +12,8 @@ import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 type Props = {
   params: { slug: string };
 };
@@ -78,12 +80,12 @@ export default async function ActivityPage({ params }: Props) {
   // console.log("Fetched blog data:", data);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
+    <div className="page-container">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
         {" "}
         <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
           <header className="flex flex-col w-full items-start mb-6 space-y-2">
-            <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
+            <div className="page-label items-start">
               <span>Chia sẻ</span>
             </div>
 
@@ -97,13 +99,15 @@ export default async function ActivityPage({ params }: Props) {
               </div>
             )}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
-              <Image
-                src={getImageUrl(data.coverImage) || "/placeholder.jpg"}
-                alt={data.title || "Blog cover image"}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                priority
-              />
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={getImageUrl(data.coverImage) || "/placeholder.png"}
+                  alt={data.title || "Blog cover image"}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  priority
+                />
+              </Zoom>
             </div>
           </header>
           <div className="opacity-80 flex w-full justify-center my-12">

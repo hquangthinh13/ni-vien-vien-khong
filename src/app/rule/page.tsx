@@ -22,11 +22,11 @@ export default async function RulePage() {
     notFound();
   }
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 min-h-lvh">
+    <div className="page-container">
       <div className="flex flex-col gap-12">
         <article className="">
-          <header className="space-y-2">
-            <div className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest">
+          <header className="flex flex-col w-full items-center mb-6 space-y-2">
+            <div className="page-label items-center">
               <span>Nội quy lưu trú</span>
             </div>
 

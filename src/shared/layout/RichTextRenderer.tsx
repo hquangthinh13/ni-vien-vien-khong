@@ -8,6 +8,8 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import { Link as LinkIcon } from "lucide-react";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 interface RichTextRendererProps {
   content: BlocksContent;
 }
@@ -59,14 +61,16 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
         image: ({ image }) => (
           <figure className="lg:px-48 my-8 space-y-3">
             <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm">
-              <Image
-                src={image.url}
-                alt={image.alternativeText || ""}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-              />
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={image.url}
+                  alt={image.alternativeText || ""}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                />
+              </Zoom>
             </div>
             {image.caption && (
               <figcaption className="text-center">
@@ -80,10 +84,11 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
           </figure>
         ),
         paragraph: ({ children }) => (
-          <p className="not-last:mb-6 text-foreground/90 leading-7 text-justify">
+          <p className="not-last:mb-2 text-foreground/90 leading-7 text-justify">
             {children}
           </p>
         ),
+
         link: ({ children, url }) => {
           const isExternal = url.startsWith("http");
 

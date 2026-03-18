@@ -40,21 +40,21 @@ const CalligraphyCard = ({ calligraphy, onClick }: CalligraphyCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="cursor-pointer relative aspect-square w-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-lg transition-all duration-500 group-hover:scale-[1.01] text-left"
+      className="cursor-pointer relative aspect-3/4 w-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-lg transition-all duration-300 text-center"
     >
       {imageUrl && (
         <Image
           src={imageUrl}
-          alt={calligraphy.title}
+          alt={calligraphy.title || "Calligraphy Image"}
           fill
-          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+          className="object-contain transition-transform duration-300"
           placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAlCAYAAAAeJYohAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABLSURBVGhD7c+hAcAgEMBAyv7rvqlpPSMcORmX55351kX2GXQN6xrWNaxrWNewrmFdw7qGdQ3rGtY1rGtY17CuYV3DuoZ1DeuuG/4Bi/IELZ15iRoAAAAASUVORK5CYII="
         />
       )}
 
       <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 flex items-end p-4 text-white"
+        className="absolute inset-0 opacity-0 group-hover:opacity-90 transition-opacity duration-500 ease-in-out flex items-end p-4 text-white"
         style={{
           background: `linear-gradient(to bottom, transparent 0%, ${colors.bgGradient}99 65%, ${colors.bgGradient} 80%)`,
         }}
@@ -63,7 +63,7 @@ const CalligraphyCard = ({ calligraphy, onClick }: CalligraphyCardProps) => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="pr-4 text-lg font-medium text-white"
+          className="text-center px-4 text-xl font-medium font-serif text-white"
         >
           {calligraphy.title}
         </motion.p>

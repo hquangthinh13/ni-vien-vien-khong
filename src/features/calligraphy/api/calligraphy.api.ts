@@ -32,7 +32,7 @@ export async function fetchCalligraphies(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 3600 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -60,7 +60,7 @@ export async function fetchCalligraphyByDocumentId(
     },
     signal: options.signal,
     // next: { revalidate: 0 },
-    next: { revalidate: 3600 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -96,7 +96,7 @@ export async function fetchCalligraphiesByCategory(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 3600 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {

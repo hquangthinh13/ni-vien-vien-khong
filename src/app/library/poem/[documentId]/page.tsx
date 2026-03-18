@@ -8,6 +8,8 @@ import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
@@ -76,7 +78,7 @@ export default async function PoemPage({ params }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="page-container">
       <div className="flex flex-col gap-0 justify-center">
         <article className="w-full">
           <header className="space-y-2">
@@ -95,15 +97,17 @@ export default async function PoemPage({ params }: Props) {
           </header>
           <div className=" flex w-full justify-center">
             <div className="relative aspect-square w-full max-w-48 overflow-hidden rounded-full shadow-md mt-4">
-              <Image
-                src={imageUrl || "/placeholder.jpg"}
-                alt={data.title}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                priority
-                placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-              />
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={imageUrl || "/placeholder.png"}
+                  alt={data.title}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                />
+              </Zoom>
             </div>
           </div>
 

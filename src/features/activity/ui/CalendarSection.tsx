@@ -17,6 +17,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
         fill
         className="object-cover -z-10"
         priority
+        placeholder="blur"
       />
       <div className="hidden origin-top scale-75 lg:scale-100 lg:block absolute left-[10%] -translate-x-1/2 top-0 z-20 pointer-events-none">
         <Image
@@ -24,7 +25,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           alt="Character"
           width={260}
           height={260}
-          className="drop-shadow-xl object-cover w-80 h-auto"
+          className="drop-shadow-xl object-cover w-70 h-auto"
         />
       </div>
       <div className="hidden lg:block absolute -bottom-5 -right-10 z-20 pointer-events-none">
@@ -33,7 +34,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           alt="Decoration"
           width={260}
           height={260}
-          className="w-80 h-auto drop-shadow-xl scale-x-[-1]"
+          className="w-70 h-auto drop-shadow-xl scale-x-[-1] -z-30"
         />
       </div>
       {/* Content */}
@@ -50,7 +51,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           </div>
           <div className="flex items-center justify-center w-fit mx-auto">
             {" "}
-            <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
+            <h2 className="home-page-section-title">
               {locale === "vi"
                 ? "Lịch hoạt động trong tháng"
                 : "Monthly Activity Calendar"}
@@ -68,7 +69,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           <div className="flex-1 w-full p-3">
             <UpcomingEventSection locale={locale} />
           </div>
-          <div className="flex lg:min-h-[500px] items-center lg:items-start justify-center">
+          <div className="flex lg:min-h-125 items-center lg:items-start justify-center">
             <EventCalendar locale={locale} />
           </div>
         </div>

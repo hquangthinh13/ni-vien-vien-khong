@@ -24,12 +24,10 @@ export default async function MonasteryPage() {
   const monasteries = response.data?.monasteries || [];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 my-10">
+    <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-12">
         <TextMotionWrapper delay={0.2} className="text-center">
-          <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
-            Các tu viện khác
-          </h2>
+          <h2 className="page-header">Các tu viện khác</h2>
         </TextMotionWrapper>
         <TextMotionWrapper delay={0.2}>
           <div className="opacity-80">

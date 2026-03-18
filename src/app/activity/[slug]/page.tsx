@@ -1,13 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import HighlightSection from "@/features/activity/ui/HighlightSection";
-import { CalendarDays, CirclePlus, PlayCircle } from "lucide-react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogTrigger,
-} from "@/shared/ui/dialog";
+import { CalendarDays, PlayCircle } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
   Accordion,
@@ -23,14 +17,18 @@ import {
 } from "@/features/activity/model/activity.types";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
-import { fetchActivityByDocumentIdWithRegistrationFormAndCourseContent } from "@/features/activity/api/activity.api";
+import {
+  fetchActivityByDocumentIdWithRegistrationFormAndCourseContent,
+  isActive,
+} from "@/features/activity/api/activity.api";
 import { getImageUrl } from "@/shared/lib/api";
-import DynamicActivityRegistrationForm from "@/features/courseRegistration/ui/DynamicActivityRegistrationForm";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
 import { notFound } from "next/navigation";
-import { DialogDescription } from "@radix-ui/react-dialog";
 import { Metadata, ResolvingMetadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+import ActivityRegistrationDialog from "@/features/courseRegistration/ui/CourseregistrationDialog";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 type Props = {
   params: { slug: string };
 };
@@ -61,10 +59,26 @@ export async function generateMetadata(
       title: data.activityName,
       description:
         data.activityCategory || "Thông tin hoạt động tại Ni Viện Viên Không",
+      keywords: [
+        "Sự kiện",
+        "Tin tức",
+        "Khóa tu",
+        "Ni Viện Viên Không",
+        `${data.activityCategory}`,
+        `${data.activityName}`,
+      ],
       openGraph: {
         title: data.activityName,
         description: data.activityCategory,
-        images: ogImage ? [ogImage] : [],
+        images: {
+          url: ogImage as string,
+          width: 1200,
+          height: 630,
+          alt: data.activityName,
+        },
+      },
+      alternates: {
+        canonical: "https://staging.vienkhongni.com",
       },
     };
   } catch (error) {
@@ -82,11 +96,7 @@ export default async function ActivityPage({ params }: Props) {
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: [
-          "coverImage",
-          "courseContent.highlightedImages",
-          "courseContent.videoSection",
-        ],
+        populate: ["coverImage"],
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -101,6 +111,8 @@ export default async function ActivityPage({ params }: Props) {
 
   const data = response.data as Activity;
   // console.log("Fetched activity data:", data);
+  const active = isActive(data);
+
   const courseContent = data?.courseContent as CourseContent;
   const videoList = courseContent?.videoSection || [];
   const sortedVideos = [...videoList].sort(
@@ -108,17 +120,17 @@ export default async function ActivityPage({ params }: Props) {
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
+    <div className="page-container">
       <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
         {" "}
         <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
           <header className="flex flex-col w-full items-start mb-6 space-y-2">
             {courseContent?.courseCategory ? (
-              <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
+              <div className="page-label items-start">
                 <span>{courseContent.courseCategory}</span>
               </div>
             ) : (
-              <div className="flex items-start gap-2 text-primary text-sm uppercase tracking-widest font-mono font-bold">
+              <div className="page-label items-start">
                 <span>{data.activityCategory}</span>
               </div>
             )}
@@ -135,16 +147,30 @@ export default async function ActivityPage({ params }: Props) {
               </div>
             )}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
+              <Zoom zoomMargin={80}>
+                <Image
+                  src={getImageUrl(data.coverImage) || "/placeholder.png"}
+                  alt={data.activityName || "Course cover image"}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  priority
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                />
+              </Zoom>
+            </div>
+            {/* <Zoom zoomMargin={80}>
               <Image
-                src={getImageUrl(data.coverImage) || "/placeholder.jpg"}
+                src={getImageUrl(data.coverImage) || "/placeholder.png"}
                 alt={data.activityName || "Course cover image"}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
+                className="flex rounded-2xl mt-4 hover:scale-105 transition-transform duration-300"
                 priority
                 placeholder="blur"
+                width={1280}
+                height={720}
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
-            </div>
+            </Zoom> */}
           </header>
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
@@ -236,50 +262,59 @@ export default async function ActivityPage({ params }: Props) {
             <HighlightSection images={courseContent.highlightedImages || []} />
           )}
 
-          {data.registrationForm && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
-                  <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
+          {data.registrationForm && active && (
+            // <Dialog>
+            //   <DialogTrigger asChild>
+            //     <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
+            //       <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
 
-                  <div className="relative flex items-center justify-between">
-                    <div className="flex flex-col gap-0">
-                      <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
-                        {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
-                      </span>
-                      <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
-                        {locale === "vi"
-                          ? "Điền thông tin đăng ký ngay"
-                          : "Register Now"}
-                      </h4>
-                      <p className="text-xs text-muted-foreground italic">
-                        {locale === "vi"
-                          ? "Số lượng đăng ký có hạn: "
-                          : "Limited slots available: "}{" "}
-                        {data.registrationLimit}
-                      </p>
-                    </div>
+            //       <div className="relative flex items-center justify-between">
+            //         <div className="flex flex-col gap-0">
+            //           <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+            //             {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
+            //           </span>
+            //           <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
+            //             {locale === "vi"
+            //               ? "Điền thông tin đăng ký ngay"
+            //               : "Register Now"}
+            //           </h4>
+            //           <p className="text-xs text-muted-foreground italic">
+            //             {locale === "vi"
+            //               ? "Số lượng đăng ký có hạn: "
+            //               : "Limited slots available: "}{" "}
+            //             {data.registrationLimit}
+            //           </p>
+            //         </div>
 
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
-                      <CirclePlus className="h-6 w-6" />
-                    </div>
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent
-                aria-describedby={documentId}
-                className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
-              >
-                <DialogTitle>Đăng ký tham gia</DialogTitle>
-                <DialogDescription>
-                  Vui lòng điền đầy đủ thông tin để đăng ký tham gia sự kiện.
-                </DialogDescription>
-                <DynamicActivityRegistrationForm
-                  locale={locale}
-                  documentId={documentId}
-                />
-              </DialogContent>
-            </Dialog>
+            //         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+            //           <CirclePlus className="h-6 w-6" />
+            //         </div>
+            //       </div>
+            //     </div>
+            //   </DialogTrigger>
+            //   <DialogContent
+            //     aria-describedby={documentId}
+            //     className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
+            //   >
+            //     <DialogTitle>Đăng ký tham gia</DialogTitle>
+            //     <DialogDescription>
+            //       Vui lòng điền đầy đủ thông tin để đăng ký tham gia sự kiện.
+            //     </DialogDescription>
+            //     <DynamicActivityRegistrationForm
+            //       locale={locale}
+            //       documentId={documentId}
+            //       active={active}
+            //             onClose={() => setOpen(false)}
+
+            //     />
+            //   </DialogContent>
+            // </Dialog>
+            <ActivityRegistrationDialog
+              documentId={documentId}
+              locale={locale}
+              active={active}
+              registrationLimit={data.registrationLimit}
+            />
           )}
         </aside>
       </div>

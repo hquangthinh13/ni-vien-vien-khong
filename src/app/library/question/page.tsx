@@ -40,11 +40,9 @@ export default async function QuestionListPage({
   const meta = response.meta?.pagination;
 
   return (
-    <div className="flex flex-col w-full mx-auto max-w-7xl px-4 my-10">
+    <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
-          Vấn đáp Phật pháp
-        </h2>
+        <h2 className="page-header"> Vấn đáp Phật pháp</h2>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
@@ -59,16 +57,20 @@ export default async function QuestionListPage({
         </DialogTrigger>
         <DialogContent
           aria-describedby="Question form"
-          className="max-h-[90vh] overflow-y-auto"
+          className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
         >
           {" "}
           <DialogTitle>Đặt câu hỏi</DialogTitle>
           <QuestionForm locale={locale} />
         </DialogContent>
       </Dialog>
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {questions.map((item) => (
-          <QuestionCard key={item.id} question={item} />
+      <div className="mt-4 grid grid-cols-1 gap-4">
+        {questions.map((item, index) => (
+          <QuestionCard
+            key={item.id}
+            question={item}
+            className={index !== questions.length - 1 ? "border-b pb-4" : ""}
+          />
         ))}
       </div>
 

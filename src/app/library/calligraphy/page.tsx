@@ -30,18 +30,16 @@ export default async function CaligraphyPage({
   const res = await fetchCalligraphiesByCategory({
     locale,
     category: initialCategory,
-    pagination: { page: currentPage, pageSize: 6 },
+    pagination: { page: currentPage, pageSize: 12 },
     populate: ["coverImage", "relatedCalligraphies"],
   });
   // console.log("Fetched calligraphies for category:", initialCategory, res);
   const initialData = Array.isArray(res.data) ? res.data : [];
   const paginationMeta = res.meta?.pagination;
   return (
-    <div className="w-full max-w-7xl mx-auto my-10">
+    <div className="page-container">
       <div className="flex flex-col w-full gap-6 items-center mb-10 px-4">
-        <h2 className="font-bold text-2xl uppercase tracking-wider relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary">
-          Thư pháp thư họa
-        </h2>
+        <h2 className="page-header"> Thư pháp thư họa</h2>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>

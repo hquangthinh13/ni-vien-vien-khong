@@ -1,12 +1,13 @@
 import React from "react";
 import { fetchActivities } from "@/features/activity/api/activity.api";
 import type { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
-async function getActivitiesData() {
+
+async function getActivitiesData({ locale }: { locale: Locale }) {
   const res = await fetchActivities({
     sort: ["publishedAt:desc"],
     pagination: { limit: 5 },
     populate: "*",
+    locale,
   });
   // console.log("Fetched activities data:", res);
   return res;
@@ -14,11 +15,13 @@ async function getActivitiesData() {
 import SimplifiedNewsCard from "@/features/activity/ui/SimplifiedActivitiesCard";
 import MobileActivitiesCard from "@/features/activity/ui/MobileActivitiesCard";
 
-export default async function ActivitiesSection() {
-  const locale = (await getLocale()) as Locale;
-
+export default async function ActivitiesSection({
+  locale,
+}: {
+  locale: Locale;
+}) {
   try {
-    const posts = await getActivitiesData();
+    const posts = await getActivitiesData({ locale });
 
     const data = Array.isArray(posts?.data)
       ? posts.data
@@ -51,9 +54,7 @@ export default async function ActivitiesSection() {
                 post && (
                   <div
                     key={post.id}
-                    className={
-                      index === 0 ? "lg:border-r pr-4" : "lg:border-r pl-4"
-                    }
+                    className={index === 0 ? "lg:border-r pr-4" : "pl-4"}
                   >
                     <SimplifiedNewsCard
                       key={post.id}

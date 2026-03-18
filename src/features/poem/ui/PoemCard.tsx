@@ -29,7 +29,7 @@ const PoemCard = ({ poem }: PoemCardProps) => {
           </h3>
         </CardContent>{" "}
         <Image
-          src={imageUrl || "/placeholder.jpg"}
+          src={imageUrl || "/placeholder.png"}
           alt={coverImage?.alternativeText || poem.title || "Poem image"}
           width={600}
           height={400}

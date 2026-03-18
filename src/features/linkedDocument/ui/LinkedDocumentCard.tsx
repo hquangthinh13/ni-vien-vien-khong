@@ -55,7 +55,7 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
         <DialogTrigger asChild className="group w-full">
           {CardContent}
         </DialogTrigger>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
           </DialogHeader>

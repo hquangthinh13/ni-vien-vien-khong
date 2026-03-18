@@ -1,74 +1,52 @@
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogTrigger,
-} from "@/shared/ui/dialog";
+import { Suspense } from "react";
+
 import ActivitiesSection from "@/features/activity/ui/ActivitiesSection";
 import QuestionSection from "@/features/question/ui/QuestionSection";
 import CalendarSection from "@/features/activity/ui/CalendarSection";
-import QuestionForm from "@/features/question/ui/QuestionForm";
 import type { Locale } from "@/types/locale";
 import { getTranslations, getLocale } from "next-intl/server";
 import CourseSection from "@/features/activity/ui/CourseSection";
 import { fetchHomePage } from "@/features/homePage/api/homePage.api";
 import { HomePageAttributes } from "@/features/homePage/model/homePage.types";
 import { getImageUrl } from "@/shared/lib/api";
-import { MessageCircleQuestionMark } from "lucide-react";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
-import { DialogDescription } from "@radix-ui/react-dialog";
+import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger";
 export default async function Home() {
-  const t = await getTranslations("HomePage");
   const locale = (await getLocale()) as Locale;
-  const response = await fetchHomePage({
-    populate: "*",
-    locale,
-  });
+
+  const [t, response] = await Promise.all([
+    getTranslations("HomePage"),
+    fetchHomePage({ populate: "*", locale }),
+  ]);
   const data = response.data as HomePageAttributes | null;
-  const coverImage = getImageUrl(data?.coverImage);
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Ni Viện Viên Không",
-    url: "https://ni-vien-vien-khong-frontend.vercel.app",
-    logo: "https://ni-vien-vien-khong-frontend.vercel.app/logo.png",
-    sameAs: [
-      "https://www.facebook.com/Nivienvienkhong",
-      "https://www.youtube.com/c/NiVi%E1%BB%87nVi%C3%AAnKh%C3%B4ng",
-    ],
-  };
+  const coverImage = getImageUrl(data?.coverImage, "original");
+
   return (
     <div>
-      <Script
-        id="organization-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
       <MotionWrapper>
         <Image
           className="mb-4"
-          src={coverImage || "placeholder.jpg"}
+          src={coverImage || "/placeholder.png"}
           alt="Cover image"
           placeholder="blur"
-          width={1920}
+          width={1600}
+          height={900}
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-          height={1080}
+          sizes="100vw"
+          quality={75}
           priority
         />
       </MotionWrapper>
-      <div className="mx-auto max-w-7xl px-0 mb-6">
-        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-0 mb-6">
+      <div className="page-container">
+        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-6 mb-6">
           {/* Left */}
-          <div className="flex flex-col justify-start gap-4 md:w-[70%] p-4">
+          <div className="flex flex-col justify-start gap-6 md:w-[70%]">
             <MotionWrapper>
-              <section className="flex flex-col pt-4 md:pt-0 border-t md:border-0">
+              <section className="flex flex-col pt-6 md:pt-0 border-t md:border-0">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Tin tức
-                  </h2>{" "}
+                  <h2 className="home-page-section-title">Tin tức</h2>{" "}
                   <div className="flex gap-2">
                     <Link
                       href="/activity"
@@ -78,21 +56,25 @@ export default async function Home() {
                     </Link>
                   </div>
                 </div>
-                <ActivitiesSection />
+                <Suspense fallback={<div>Đang tải tin tức...</div>}>
+                  <ActivitiesSection locale={locale} />
+                </Suspense>
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>
-              <CalendarSection locale={locale} />{" "}
+              <section className="flex flex-col pt-6 border-t">
+                <Suspense fallback={<div>Đang tải lịch hoạt động...</div>}>
+                  <CalendarSection locale={locale} />
+                </Suspense>
+              </section>
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col md:w-[30%] md:border-l p-4 pb-0 gap-4">
+          <div className="flex flex-col md:w-[30%] md:border-l pl-0 md:pl-6 gap-6">
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    {t("foreword")}
-                  </h2>
+                  <h2 className="home-page-section-title">{t("foreword")}</h2>
                 </div>
                 <p className="flex mt-4 max-w-lg leading-snug text-justify text-muted-foreground">
                   {data?.openingMessage}
@@ -100,11 +82,9 @@ export default async function Home() {
               </section>{" "}
             </MotionWrapper>
             <MotionWrapper>
-              <section className="flex flex-col pt-4 border-t">
+              <section className="flex flex-col pt-6 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Khóa tu
-                  </h2>{" "}
+                  <h2 className="home-page-section-title">Khóa tu</h2>{" "}
                   <div className="flex gap-2">
                     <Link
                       href="/course"
@@ -114,15 +94,15 @@ export default async function Home() {
                     </Link>
                   </div>
                 </div>
-                <CourseSection />
+                <Suspense fallback={<div>Đang tải khóa tu...</div>}>
+                  <CourseSection locale={locale} />
+                </Suspense>
               </section>{" "}
             </MotionWrapper>{" "}
             <MotionWrapper>
-              <section className="flex flex-1 flex-col pt-4 pb-0 border-t">
+              <section className="flex flex-1 flex-col pt-6 pb-0 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-bold font-serif text-2xl whitespace-nowrap relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-primary after:transition-all after:duration-300 hover:after:w-0">
-                    Vấn đáp Phật pháp
-                  </h2>
+                  <h2 className="home-page-section-title">Vấn đáp Phật pháp</h2>
                   <Link
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
@@ -130,47 +110,11 @@ export default async function Home() {
                     Xem thêm
                   </Link>
                 </div>
+                <Suspense fallback={<div>Đang tải câu hỏi...</div>}>
+                  <QuestionSection locale={locale} />{" "}
+                </Suspense>
 
-                <QuestionSection />
-
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
-                      <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
-
-                      <div className="relative flex items-center justify-between">
-                        <div className="flex flex-col gap-0">
-                          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
-                            {locale === "vi"
-                              ? "Bạn có thắc mắc?"
-                              : "Have a Question?"}
-                          </span>
-                          <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
-                            {locale === "vi"
-                              ? "Đặt câu hỏi cho chúng tôi"
-                              : "Ask a Question"}
-                          </h4>
-                        </div>
-
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
-                          <MessageCircleQuestionMark className="h-6 w-6" />
-                        </div>
-                      </div>
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent
-                    aria-describedby="Question form"
-                    className="max-h-[90vh] overflow-y-auto"
-                  >
-                    <DialogTitle>Đặt câu hỏi</DialogTitle>
-                    <DialogDescription>
-                      {locale === "vi"
-                        ? "Hãy đặt câu hỏi của bạn dưới đây và chúng tôi sẽ trả lời sớm nhất có thể."
-                        : "Please ask your question below and we will respond as soon as possible."}
-                    </DialogDescription>
-                    <QuestionForm locale={locale} />
-                  </DialogContent>
-                </Dialog>
+                <QuestionDialogTrigger locale={locale} />
               </section>{" "}
             </MotionWrapper>{" "}
           </div>
