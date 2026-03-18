@@ -89,7 +89,7 @@ export const metadata: Metadata = {
     siteName: "Ni Viện Viên Không",
     images: [
       {
-        url: "/open-graph.png",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Ni Viện Viên Không",

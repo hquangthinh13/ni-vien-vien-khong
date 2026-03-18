@@ -62,7 +62,7 @@ const Contact = async () => {
                   <item.icon size={20} strokeWidth={1.5} />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  <p className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     {item.label}
                   </p>
                   <p className="text-sm md:text-base font-medium">
@@ -74,7 +74,7 @@ const Contact = async () => {
           </div>
         </div>
 
-        <div className="lg:col-span-6 w-full h-full min-h-[100px]">
+        <div className="lg:col-span-6 w-full h-full min-h-25">
           <EmbeddedMap />
           <p className="mt-4 text-xs text-center text-muted-foreground italic">
             * {t("map-caption")}
