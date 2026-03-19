@@ -168,3 +168,30 @@ export const getDocumentIdFromSlug = (slug: string) => {
   const parts = slug.split("-");
   return parts.pop() as string;
 };
+
+export function getYouTubeThumbnail(
+  url: string,
+  quality: "maxres" | "hq" | "sd" | "default" = "maxres",
+): string | null {
+  // Regex để trích xuất ID video từ các định dạng URL phổ biến
+  const regExp =
+    /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+
+  if (match && match[2].length === 11) {
+    const videoId = match[2];
+
+    // Bản đồ các loại chất lượng ảnh
+    const qualityMap = {
+      maxres: "maxresdefault",
+      hq: "hqdefault",
+      sd: "sddefault",
+      default: "default",
+    };
+
+    const suffix = qualityMap[quality] || "maxresdefault";
+    return `https://img.youtube.com/vi/${videoId}/${suffix}.jpg`;
+  }
+
+  return null;
+}

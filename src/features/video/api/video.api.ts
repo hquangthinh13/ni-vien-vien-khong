@@ -28,6 +28,7 @@ export async function fetchVideo(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -54,6 +55,7 @@ export async function fetchVideoByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {

@@ -5,6 +5,7 @@ import {
 } from "@/types/strapi";
 import type { Locale } from "@/types/locale";
 export type Video = {
+  id: number;
   title: string;
   videoLink?: string;
 };
