@@ -108,7 +108,7 @@ export default async function ActivityPage({ params }: Props) {
   }
 
   const data = response.data as VideoPlaylist;
-  console.log("Video data:", data);
+  //   console.log("Video data:", data);
   const numberOfVideos = data.videos.length;
 
   let thumbnailUrl;
@@ -116,6 +116,7 @@ export default async function ActivityPage({ params }: Props) {
     const firstVideoUrl = data.videos[0].videoLink;
     thumbnailUrl = getYouTubeThumbnail(firstVideoUrl);
   }
+  //   console.log("Thumbnail URL:", thumbnailUrl);
 
   return (
     <div className="page-container">
