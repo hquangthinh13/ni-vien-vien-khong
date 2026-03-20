@@ -37,7 +37,8 @@ const nextConfig: NextConfig = {
         pathname: "/vi/**",
       },
     ],
-    unoptimized: process.env.NODE_ENV === "development",
+    // unoptimized: process.env.NODE_ENV === "development",
+    unoptimized: true,
   },
 };
 
