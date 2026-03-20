@@ -29,6 +29,7 @@ export async function generateMetadata(
     const response = await fetchRitualByDocumentId({
       locale,
       documentId: documentId,
+      populate: "*",
     });
 
     const data = response?.data as Ritual;
@@ -37,7 +38,7 @@ export async function generateMetadata(
       return { title: "Không tìm thấy nghi thức" };
     }
 
-    const ogImage = getImageUrl(data.coverImage);
+    const ogImage = getImageUrl(data.coverImage, "medium");
 
     return {
       title: data.title,

@@ -140,7 +140,7 @@ export default async function ActivityPage({ params }: Props) {
             <Zoom zoomMargin={80}>
               <Image
                 src={
-                  getImageUrl(data.coverImage) ||
+                  getImageUrl(data.coverImage, "large") ||
                   thumbnailUrl ||
                   "/placeholder.png"
                 }

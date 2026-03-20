@@ -211,7 +211,7 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
           <PopoverContent
             className="w-80 p-4 rounded-xl max-h-96 overflow-auto"
             align="center"
-            side={isLargeScreen ? "left" : "bottom"}
+            side={isLargeScreen ? "right" : "bottom"}
           >
             <div className="space-y-3">
               {(isLoading || error) && (

@@ -163,7 +163,10 @@ export default async function ActivityPage({ params }: Props) {
               {" "}
               <Zoom zoomMargin={80}>
                 <Image
-                  src={getImageUrl(data.coverImage) || "/placeholder.png"}
+                  src={
+                    getImageUrl(data.coverImage, "original") ||
+                    "/placeholder.png"
+                  }
                   alt={data.activityName || "Course cover image"}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
