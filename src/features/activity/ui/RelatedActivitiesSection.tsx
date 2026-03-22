@@ -12,7 +12,7 @@ interface RelatedActivitiesProps {
 
 const RelatedActivitiesSection = ({ activities }: RelatedActivitiesProps) => {
   const locale = useLocale() as Locale;
-  console.log("RelatedActivities - activities prop:", activities);
+  // console.log("RelatedActivities - activities prop:", activities);
   if (!activities || activities.length === 0) return null;
   return (
     <section className="space-y-4">
