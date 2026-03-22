@@ -48,7 +48,7 @@ export default async function Home() {
                 <div className="flex justify-between items-center">
                   <h1 className="home-page-section-title">
                     {locale === "vi" ? "Tin tức" : "Activities"}
-                  </h1>{" "}
+                  </h1>
                   <div className="flex gap-2">
                     <Link
                       href="/activity"

@@ -21,7 +21,7 @@ export default async function BlogPage({
 
   const response = await fetchBlogs({
     locale,
-    pagination: { page: currentPage, pageSize: 3 },
+    pagination: { page: currentPage, pageSize: 6 },
     sort: "[publishedAt:desc]",
     populate: "coverImage",
   });

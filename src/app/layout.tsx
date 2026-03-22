@@ -125,11 +125,13 @@ export default async function RootLayout({
       lang={locale}
       className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
-      <body className={`min-h-screen bg-white`}>
+      <body className="min-h-screen flex flex-col bg-white">
+        {" "}
         <Navbar /> <ScrollToTopButton />
         <NextIntlClientProvider>
-          {children} <Toaster position="top-right" richColors />{" "}
-          <SpeedInsights /> <Analytics />
+          <main className="flex-1">{children}</main>{" "}
+          <Toaster position="top-right" richColors /> <SpeedInsights />{" "}
+          <Analytics />
         </NextIntlClientProvider>
         <MotionWrapper>
           <Footer />
