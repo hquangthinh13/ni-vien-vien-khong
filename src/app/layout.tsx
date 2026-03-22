@@ -17,6 +17,8 @@ import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@/types/locale";
 
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
@@ -111,13 +113,16 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = (await getLocale()) as Locale;
+
   return (
     <html
+      lang={locale}
       className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
       <body className={`min-h-screen bg-white`}>

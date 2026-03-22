@@ -18,7 +18,7 @@ export default async function IntroductionPage() {
   return (
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h2 className="page-header"> {data.title}</h2>
+        <h1 className="page-header"> {data.title}</h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>

@@ -33,11 +33,11 @@ export default function QuestionDialogTrigger({ locale }: { locale: Locale }) {
               <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
                 {locale === "vi" ? "Bạn có thắc mắc?" : "Have a Question?"}
               </span>
-              <h4 className="font-serif text-lg font-black uppercase tracking-normal text-foreground ">
+              <span className="font-serif text-lg font-black uppercase tracking-normal text-foreground ">
                 {locale === "vi"
                   ? "Đặt câu hỏi cho chúng tôi"
                   : "Ask a Question"}
-              </h4>
+              </span>
             </div>
 
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">

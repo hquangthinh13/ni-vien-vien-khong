@@ -42,9 +42,9 @@ export default function LoadingMotion() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-2xl font-semibold tracking-[0.3em] text-foreground font-serif">
+            <h1 className="text-2xl font-semibold tracking-[0.3em] text-foreground font-serif">
               NI VIỆN VIÊN KHÔNG
-            </h2>
+            </h1>
 
             {/* <div className="flex items-center justify-center gap-2 mt-3">
               {[0, 1, 2].map((i) => (

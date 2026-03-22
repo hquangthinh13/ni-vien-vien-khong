@@ -168,44 +168,42 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
     <div className="flex flex-col gap-4 justify-center items-start">
       <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>
-          <div>
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleDayClick}
-              locale={vi}
-              month={visibleMonth}
-              onMonthChange={handleMonthChange}
-              showOutsideDays={false}
-              className="rounded-none bg-none"
-              classNames={{
-                day: "p-0",
-                table:
-                  "w-full border-separate border-spacing-x-2 border-spacing-y-2 table-fixed",
-                caption_label: "text-lg font-bold font-serif",
-                weekday:
-                  "text-foreground rounded-md flex-1 font-normal text-sm select-none",
-              }}
-              modifiers={{
-                hasEventCurrentMonth: (day) =>
-                  day.getMonth() === visibleMonth.getMonth() &&
-                  day.getFullYear() === visibleMonth.getFullYear() &&
-                  activities.some((a) => activityIntersectsDay(a, day)),
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleDayClick}
+            locale={locale === "vi" ? vi : enUS}
+            month={visibleMonth}
+            onMonthChange={handleMonthChange}
+            showOutsideDays={false}
+            className="rounded-none bg-none"
+            classNames={{
+              day: "p-0",
+              table:
+                "w-full border-separate border-spacing-x-2 border-spacing-y-2 table-fixed",
+              caption_label: "text-lg font-bold font-serif",
+              weekday:
+                "text-foreground rounded-md flex-1 font-normal text-sm select-none",
+            }}
+            modifiers={{
+              hasEventCurrentMonth: (day) =>
+                day.getMonth() === visibleMonth.getMonth() &&
+                day.getFullYear() === visibleMonth.getFullYear() &&
+                activities.some((a) => activityIntersectsDay(a, day)),
 
-                hasEventOutsideMonth: (day) =>
-                  (day.getMonth() !== visibleMonth.getMonth() ||
-                    day.getFullYear() !== visibleMonth.getFullYear()) &&
-                  activities.some((a) => activityIntersectsDay(a, day)),
-              }}
-              modifiersClassNames={{
-                hasEventCurrentMonth:
-                  "[&_button]:border [&_button]:border-2 [&_button]:border-primary [&_button]:rounded-full",
+              hasEventOutsideMonth: (day) =>
+                (day.getMonth() !== visibleMonth.getMonth() ||
+                  day.getFullYear() !== visibleMonth.getFullYear()) &&
+                activities.some((a) => activityIntersectsDay(a, day)),
+            }}
+            modifiersClassNames={{
+              hasEventCurrentMonth:
+                "[&_button]:border [&_button]:border-2 [&_button]:border-primary [&_button]:rounded-full",
 
-                hasEventOutsideMonth:
-                  "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground [&_button]:rounded-full [&_button]:opacity-60",
-              }}
-            />
-          </div>
+              hasEventOutsideMonth:
+                "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground [&_button]:rounded-full [&_button]:opacity-60",
+            }}
+          />
         </PopoverTrigger>
         {selectedDayActivities.length > 0 ? (
           <PopoverContent

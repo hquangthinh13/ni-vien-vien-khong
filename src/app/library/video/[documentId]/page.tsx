@@ -135,7 +135,13 @@ export default async function ActivityPage({ params }: Props) {
             <CalendarDays size={18} className="" />
             <span>{formatShortDate(data.publishedAt as string, locale)}</span>
           </div>
-
+          {data.description && (
+            <section className="w-full mx-auto mt-4">
+              <p className="text-muted-foreground leading-relaxed text-center">
+                {data.description}
+              </p>
+            </section>
+          )}
           <div className="relative aspect-video w-full max-w-2xl overflow-hidden rounded-2xl shadow-md mt-4">
             <Zoom zoomMargin={80}>
               <Image
@@ -154,19 +160,10 @@ export default async function ActivityPage({ params }: Props) {
             </Zoom>
           </div>
         </header>
-        <div className="opacity-80 flex w-full justify-center my-12">
+        <div className="opacity-80 flex w-full justify-center my-4">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
-        {data.description && (
-          <section className="w-full mx-auto mb-6">
-            <h2 className="font-bold text-lg text-center uppercase tracking-wider flex justify-center items-center gap-2 mb-4">
-              Mô tả
-            </h2>
-            <p className="text-muted-foreground leading-relaxed text-center">
-              {data.description}
-            </p>
-          </section>
-        )}
+
         {data.videos.length > 0 && (
           <section className="w-full mt-6 space-y-4">
             <div className="flex items-center justify-between border-b pb-2">

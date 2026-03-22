@@ -39,7 +39,7 @@ export default async function CaligraphyPage({
   return (
     <div className="page-container">
       <div className="flex flex-col w-full gap-6 items-center mb-10 px-4">
-        <h2 className="page-header"> Thư pháp thư họa</h2>
+        <h1 className="page-header"> Thư pháp thư họa</h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>

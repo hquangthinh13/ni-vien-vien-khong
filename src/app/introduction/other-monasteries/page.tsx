@@ -27,7 +27,7 @@ export default async function MonasteryPage() {
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-12">
         <TextMotionWrapper delay={0.2} className="text-center">
-          <h2 className="page-header">Các tu viện khác</h2>
+          <h1 className="page-header">Các tu viện khác</h1>
         </TextMotionWrapper>
         <TextMotionWrapper delay={0.2}>
           <div className="opacity-80">
