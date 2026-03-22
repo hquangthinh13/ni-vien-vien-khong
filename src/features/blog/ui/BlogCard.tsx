@@ -35,11 +35,11 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <h3
+          <span
             className={`text-md font-bold leading-snug hover:text-primary cursor-pointer mb-2`}
           >
             {title}
-          </h3>
+          </span>
           <p
             className={`line-clamp-2 text-sm text-secondary-foreground/80 font-mono`}
           >

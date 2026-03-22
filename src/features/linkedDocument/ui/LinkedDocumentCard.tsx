@@ -30,9 +30,9 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
       <div className="flex-1 min-w-0 text-left">
         <Tooltip>
           <TooltipTrigger asChild>
-            <h3 className="text-sm font-medium text-foreground leading-snug truncate group-hover:text-primary transition-colors">
+            <span className="text-sm font-medium text-foreground leading-snug truncate group-hover:text-primary transition-colors">
               {title}
-            </h3>
+            </span>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="max-w-xs">
             <span>{title}</span>

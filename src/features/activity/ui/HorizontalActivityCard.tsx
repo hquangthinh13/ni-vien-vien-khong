@@ -52,9 +52,9 @@ export const HorizontalActivityCard = ({
         {/* Content */}
         <div className="flex min-w-0 flex-col justify-between">
           <div className="flex flex-col gap-2">
-            <h3 className="text-md font-bold leading-snug cursor-pointer group-hover:text-primary line-clamp-2">
+            <span className="text-md font-bold leading-snug cursor-pointer group-hover:text-primary line-clamp-2">
               {activityName}
-            </h3>
+            </span>
 
             <div className="flex flex-wrap gap-2 items-center mb-1">
               <Badge variant="outline" className="font-mono">

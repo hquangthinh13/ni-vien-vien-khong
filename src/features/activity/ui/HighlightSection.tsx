@@ -24,9 +24,9 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between border-b pb-2">
-        <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2">
+        <span className="font-bold text-lg uppercase tracking-wider flex items-center gap-2">
           <LayoutGrid size={20} className="text-primary" /> Ảnh nổi bật
-        </h3>
+        </span>
         {images.length > 0 && (
           <span className="text-xs text-muted-foreground font-medium font-mono uppercase tracking-widest">
             {images.length} hình ảnh

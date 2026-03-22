@@ -199,10 +199,10 @@ export default async function ActivityPage({ params }: Props) {
             courseContent.videoSection.length > 0 && (
               <section className="w-full mt-6 space-y-4">
                 <div className="flex items-center justify-between border-b pb-2">
-                  <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2">
+                  <span className="font-bold text-lg uppercase tracking-wider flex items-center gap-2">
                     <PlayCircle size={20} className="text-primary" />
                     Video
-                  </h3>
+                  </span>
                   {courseContent?.videoSection?.length > 0 && (
                     <span className="text-xs text-muted-foreground font-medium font-mono uppercase tracking-widest">
                       {courseContent.videoSection.length} video

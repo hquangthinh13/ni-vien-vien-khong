@@ -35,11 +35,11 @@ const SimplifiedNewsCard = async ({
         href={`/activity/${slug}-${documentId}`}
         className="flex flex-col gap-2"
       >
-        <h3
+        <span
           className={`text-md font-bold leading-snug hover:text-primary cursor-pointer`}
         >
           {activityName}
-        </h3>
+        </span>
         <div className="flex gap-2 items-center mb-4">
           <Badge variant="outline" className="font-mono">
             {activity.courseContent?.courseCategory || activityCategory}
@@ -86,11 +86,11 @@ const SimplifiedNewsCard = async ({
         )}
 
         <div className="flex flex-col gap-2">
-          <h3
+          <span
             className={`text-md font-bold leading-snug hover:text-primary cursor-pointer`}
           >
             {activityName}
-          </h3>
+          </span>
           <div className="flex gap-2 items-center mb-4">
             <Badge variant="outline" className="font-mono">
               {activity.courseContent?.courseCategory || activityCategory}

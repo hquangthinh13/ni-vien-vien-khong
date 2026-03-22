@@ -16,9 +16,9 @@ const RelatedActivitiesSection = ({ activities }: RelatedActivitiesProps) => {
   if (!activities || activities.length === 0) return null;
   return (
     <section className="space-y-4">
-      <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
+      <span className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
         <ScrollText size={20} className="text-primary" /> Liên quan
-      </h3>
+      </span>
       <div className="space-y-6">
         {activities.map((item) => (
           <Link
