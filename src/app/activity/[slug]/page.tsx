@@ -45,7 +45,7 @@ export async function generateMetadata(
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: ["coverImage"],
+        populate: ["coverImage", "relatedActivities"],
       });
 
     const data = response?.data as Activity;
@@ -109,7 +109,7 @@ export default async function ActivityPage({ params }: Props) {
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: ["coverImage"],
+        populate: ["coverImage", "relatedActivities"],
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
