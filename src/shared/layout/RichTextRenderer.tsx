@@ -23,6 +23,7 @@ const headingStyles: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
 };
 
 const RichTextRenderer = ({ content }: RichTextRendererProps) => {
+  console.log("Rendering RichTextRenderer with content:", content);
   return (
     <BlocksRenderer
       content={content}
@@ -92,14 +93,36 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
         link: ({ children, url }) => {
           const isExternal = url.startsWith("http");
 
+          interface StrapiTextNode {
+            props: {
+              text?: string;
+            };
+          }
+
+          const hasTextContent = React.Children.toArray(children).some(
+            (child) => {
+              if (typeof child === "string") return child.trim().length > 0;
+
+              if (React.isValidElement(child)) {
+                const strapiChild = child as unknown as StrapiTextNode;
+                return (strapiChild.props.text?.trim().length ?? 0) > 0;
+              }
+
+              return false;
+            },
+          );
+
+          if (!hasTextContent) return null;
+
           return (
             <Link
               href={url}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
-              className="flex items-center gap-1 text-primary font-normal tracking-wide italic hover:text-primary/80 transition-all hover:underline ease-in-out duration-150"
+              className="inline-flex items-center gap-1 text-primary font-normal tracking-wide italic hover:text-primary/80 transition-all hover:underline ease-in-out duration-150"
             >
-              <LinkIcon className="flex w-4 h-4" /> {children}
+              <LinkIcon className="w-4 h-4 shrink-0" />
+              <span>{children}</span>
             </Link>
           );
         },
