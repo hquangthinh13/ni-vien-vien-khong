@@ -44,7 +44,10 @@ const ActivityVibrantCard = ({
     };
     extractColor();
   }, [imageUrl]);
-
+  const displayCategory =
+    activity.activityCategory === "Khóa Tu"
+      ? activity.courseContent?.courseCategory || "Khóa Tu"
+      : activity.activityCategory;
   return (
     <Link
       href={`/activity/${activity.slug}-${activity.documentId}`}
@@ -79,15 +82,10 @@ const ActivityVibrantCard = ({
             />
           </div>{" "}
           <div className="flex flex-col items-start justify-end">
-            {activity.activityCategory != "Khóa Tu" ? (
-              <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
-                {activity.activityCategory}
-              </span>
-            ) : (
-              <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
-                {activity.courseContent?.courseCategory}
-              </span>
-            )}
+            <span className="font-mono font-normal text-xs uppercase tracking-widest opacity-100 ">
+              {displayCategory}
+            </span>
+
             <span className="pr-0 text-md font-bold drop-shadow-2xl line-clamp-2 ">
               {activity.activityName}
             </span>

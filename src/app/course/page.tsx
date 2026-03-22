@@ -33,6 +33,7 @@ export default async function CoursePage({
     "xuat-gia-gieo-duyen": "Khóa Tu Xuất Gia Gieo Duyên",
     thien: "Khóa Thiền",
     all: "Tất cả",
+    khac: "Khác",
   };
   const initialCategory = categoryMapping[categorySlug || ""] || "Tất cả";
 

@@ -10,6 +10,7 @@ export type CourseCategory =
   | "Khóa Tu Mùa Hè"
   | "Khóa Tu Xuất Gia Gieo Duyên"
   | "Khóa Thiền"
+  | "Khác"
   | "Tất cả";
 
 export type LinkedDocumentCategory =

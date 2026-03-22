@@ -47,6 +47,7 @@ export default function CourseList({
     "Khóa Tu Mùa Hè": "mua-he",
     "Khóa Tu Xuất Gia Gieo Duyên": "xuat-gia-gieo-duyen",
     "Khóa Thiền": "thien",
+    Khác: "khac",
     "Tất cả": "all",
   };
 
@@ -108,6 +109,10 @@ export default function CourseList({
               value="Khóa Thiền"
             >
               Khóa Thiền
+            </TabsTrigger>
+
+            <TabsTrigger className="cursor-pointer shrink-0 w-fit" value="Khác">
+              Khác
             </TabsTrigger>
           </TabsList>
         </Tabs>
