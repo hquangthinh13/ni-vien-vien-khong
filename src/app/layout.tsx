@@ -60,7 +60,7 @@ const styleScript = Style_Script({
   display: "swap",
 });
 
-const baseUrl = "https://staging.vienkhongni.com";
+const baseUrl = "https://vienkhongni.com";
 
 export const metadata: Metadata = {
   title: {

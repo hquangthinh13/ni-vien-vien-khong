@@ -37,7 +37,11 @@ export default async function QuestionSection({ locale }: { locale: Locale }) {
 
   if (questions.length === 0) {
     return (
-      <div className="py-4 text-muted-foreground">No questions found.</div>
+      <div className="py-4 text-muted-foreground">
+        {locale === "vi"
+          ? "Chưa có câu hỏi nào được gửi."
+          : "No questions found."}
+      </div>
     );
   }
 

@@ -15,7 +15,6 @@ import {
   SheetTitle,
 } from "@/shared/ui/sheet";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-
 import MobileNavigationMenu from "./MobileNavigationMenu";
 import DesktopNavigationMenu from "./DesktopNavigationMenu";
 import useMenuConfig from "@/shared/lib/menu-config";

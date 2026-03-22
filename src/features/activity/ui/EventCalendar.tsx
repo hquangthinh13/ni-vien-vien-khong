@@ -218,7 +218,9 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
                 <div className="text-xs">
                   {isLoading ? (
                     <p className="text-muted-foreground italic">
-                      Đang tải lịch tháng…
+                      {locale === "vi"
+                        ? "Đang tải lịch tháng…"
+                        : "The calendar is loading…"}
                     </p>
                   ) : null}
                   {error ? <p className="text-destructive">{error}</p> : null}

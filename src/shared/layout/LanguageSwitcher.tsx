@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@iconify/react";
+import dynamic from "next/dynamic";
 
 function getLocaleFromCookie() {
   if (typeof document === "undefined") return "vi";
@@ -15,7 +16,7 @@ function getLocaleFromCookie() {
   return locale === "en" ? "en" : "vi";
 }
 
-export function LanguageSwitcher() {
+const LanguageSwitcher = () => {
   const router = useRouter();
   const [currentLocale, setCurrentLocale] = React.useState<"vi" | "en">(() =>
     getLocaleFromCookie(),
@@ -51,4 +52,16 @@ export function LanguageSwitcher() {
       )}
     </Button>
   );
-}
+};
+
+const LanguageSwitcherWrapper = dynamic(() => import("./LanguageSwitcher"), {
+  ssr: false,
+  loading: () => (
+    <Button variant="ghost" size="lg">
+      ...
+    </Button>
+  ),
+});
+
+export { LanguageSwitcherWrapper as LanguageSwitcher };
+export default LanguageSwitcher;

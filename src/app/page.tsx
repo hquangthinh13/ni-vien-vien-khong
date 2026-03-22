@@ -52,7 +52,7 @@ export default async function Home() {
                       href="/activity"
                       className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                     >
-                      Xem thêm
+                      {locale === "vi" ? "Xem thêm" : "View more"}
                     </Link>
                   </div>
                 </div>
@@ -90,7 +90,7 @@ export default async function Home() {
                       href="/course"
                       className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                     >
-                      Xem thêm
+                      {locale === "vi" ? "Xem thêm" : "View more"}
                     </Link>
                   </div>
                 </div>
@@ -107,7 +107,7 @@ export default async function Home() {
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                   >
-                    Xem thêm
+                    {locale === "vi" ? "Xem thêm" : "View more"}
                   </Link>
                 </div>
                 <Suspense fallback={<div>Đang tải câu hỏi...</div>}>
