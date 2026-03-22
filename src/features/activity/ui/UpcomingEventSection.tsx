@@ -18,7 +18,19 @@ const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
         ? [response.data]
         : [];
 
-    if (activities.length === 0) return null;
+    if (activities.length === 0)
+      return (
+        <section className="w-full">
+          <h2 className="text-xl text-center font-serif font-black mb-4 tracking-tighter text-foreground">
+            {locale === "vi" ? "Sự kiện sắp diễn ra" : "Upcoming Events"}
+          </h2>
+          <p className="text-center text-secondary-foreground text-md font-mono">
+            {locale === "vi"
+              ? "Hiện chưa có sự kiện sắp diễn ra."
+              : "No upcoming events at the moment."}
+          </p>
+        </section>
+      );
 
     return (
       <section className="w-full">

@@ -51,11 +51,11 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           </div>
           <div className="flex items-center justify-center w-fit mx-auto">
             {" "}
-            <h2 className="home-page-section-title">
+            <h1 className="home-page-section-title">
               {locale === "vi"
                 ? "Lịch hoạt động trong tháng"
                 : "Monthly Activity Calendar"}
-            </h2>{" "}
+            </h1>{" "}
           </div>
 
           <p className="text-center text-xs uppercase tracking-wide text-secondary-foreground font-mono">

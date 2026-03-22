@@ -23,20 +23,22 @@ const nextConfig: NextConfig = {
         port: "1337",
         pathname: "/uploads/**",
       },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-        pathname: "/**",
-      },
+
       {
         hostname: "vienkhongni.com",
         protocol: "https",
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        port: "",
+        pathname: "/vi/**",
+      },
     ],
-    unoptimized: process.env.NODE_ENV === "development",
+    // unoptimized: process.env.NODE_ENV === "development",
+    unoptimized: true,
   },
 };
 

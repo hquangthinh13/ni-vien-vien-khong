@@ -42,10 +42,12 @@ const SimplifiedNewsCard = async ({
         </h3>
         <div className="flex gap-2 items-center mb-4">
           <Badge variant="outline" className="font-mono">
-            {activityCategory !== "Khóa Tu"
+            {activity.courseContent?.courseCategory || activityCategory}
+            {/* {activityCategory !== "Khóa Tu"
               ? activityCategory
-              : activity.courseContent?.courseCategory}
+              : activity.courseContent?.courseCategory} */}
           </Badge>
+
           <Badge variant="outline" className="font-mono">
             {status}
           </Badge>
@@ -91,9 +93,11 @@ const SimplifiedNewsCard = async ({
           </h3>
           <div className="flex gap-2 items-center mb-4">
             <Badge variant="outline" className="font-mono">
-              {activityCategory !== "Khóa Tu"
+              {activity.courseContent?.courseCategory || activityCategory}
+
+              {/* {activityCategory !== "Khóa Tu"
                 ? activityCategory
-                : activity.courseContent?.courseCategory}
+                : activity.courseContent?.courseCategory} */}
             </Badge>
             <Badge variant="outline" className="font-mono">
               {status}

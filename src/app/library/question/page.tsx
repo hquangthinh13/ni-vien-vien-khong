@@ -42,7 +42,7 @@ export default async function QuestionListPage({
   return (
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h2 className="page-header"> Vấn đáp Phật pháp</h2>
+        <h1 className="page-header"> Vấn đáp Phật pháp</h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
@@ -70,6 +70,7 @@ export default async function QuestionListPage({
             key={item.id}
             question={item}
             className={index !== questions.length - 1 ? "border-b pb-4" : ""}
+            fontSize="md"
           />
         ))}
       </div>

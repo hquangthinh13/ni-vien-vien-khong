@@ -24,15 +24,15 @@ export default async function Home() {
   const coverImage = getImageUrl(data?.coverImage, "original");
 
   return (
-    <div>
+    <main>
       <MotionWrapper>
         <Image
-          className="mb-4"
           src={coverImage || "/placeholder.png"}
           alt="Cover image"
-          placeholder="blur"
           width={1600}
           height={900}
+          className="h-auto w-screen"
+          placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           sizes="100vw"
           quality={75}
@@ -46,13 +46,15 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-col pt-6 md:pt-0 border-t md:border-0">
                 <div className="flex justify-between items-center">
-                  <h2 className="home-page-section-title">Tin tức</h2>{" "}
+                  <h1 className="home-page-section-title">
+                    {locale === "vi" ? "Tin tức" : "Activities"}
+                  </h1>{" "}
                   <div className="flex gap-2">
                     <Link
                       href="/activity"
                       className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                     >
-                      Xem thêm
+                      {locale === "vi" ? "Xem thêm" : "View more"}
                     </Link>
                   </div>
                 </div>
@@ -74,7 +76,7 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
-                  <h2 className="home-page-section-title">{t("foreword")}</h2>
+                  <h1 className="home-page-section-title">{t("foreword")}</h1>
                 </div>
                 <p className="flex mt-4 max-w-lg leading-snug text-justify text-muted-foreground">
                   {data?.openingMessage}
@@ -84,13 +86,15 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-col pt-6 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="home-page-section-title">Khóa tu</h2>{" "}
+                  <h1 className="home-page-section-title">
+                    {locale === "vi" ? "Khóa tu" : "Courses"}
+                  </h1>
                   <div className="flex gap-2">
                     <Link
                       href="/course"
                       className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                     >
-                      Xem thêm
+                      {locale === "vi" ? "Xem thêm" : "View more"}
                     </Link>
                   </div>
                 </div>
@@ -102,12 +106,14 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-1 flex-col pt-6 pb-0 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="home-page-section-title">Vấn đáp Phật pháp</h2>
+                  <h1 className="home-page-section-title">
+                    {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
+                  </h1>
                   <Link
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                   >
-                    Xem thêm
+                    {locale === "vi" ? "Xem thêm" : "View more"}
                   </Link>
                 </div>
                 <Suspense fallback={<div>Đang tải câu hỏi...</div>}>
@@ -120,6 +126,6 @@ export default async function Home() {
           </div>
         </div>
       </div>{" "}
-    </div>
+    </main>
   );
 }

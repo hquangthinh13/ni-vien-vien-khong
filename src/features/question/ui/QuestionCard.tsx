@@ -18,9 +18,14 @@ import { cn } from "@/shared/lib/utils";
 interface QuestionCardProps {
   question: Question;
   className?: string;
+  fontSize?: "sm" | "md";
 }
 
-const QuestionCard = async ({ question, className }: QuestionCardProps) => {
+const QuestionCard = async ({
+  question,
+  className,
+  fontSize = "sm",
+}: QuestionCardProps) => {
   const hasVideo = !!question.videoResponseContent;
   const hasBlog = !!question.blogResponseContent;
   const locale = (await getLocale()) as Locale;
@@ -77,7 +82,9 @@ const QuestionCard = async ({ question, className }: QuestionCardProps) => {
                   ? formatFriendlyDate(question.createdAt, locale, false)
                   : ""}
               </span>
-              <h3 className="text-md font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200">
+              <h3
+                className={`text-${fontSize} font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200`}
+              >
                 {question.title}
               </h3>{" "}
               <span className="ml-auto text-xs text-secondary-foreground/80 font-mono">

@@ -197,7 +197,7 @@ function CalendarDayButton({
   }, [modifiers.focused]);
 
   return (
-    <div className="p-3">
+    <div className="p-1.5 md:p-3">
       <Button
         ref={ref}
         variant="ghost"
@@ -218,7 +218,7 @@ function CalendarDayButton({
           className,
         )}
         {...props}
-      ></Button>
+      />
     </div>
   );
 }

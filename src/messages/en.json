@@ -2,52 +2,26 @@
   "Navbar": {
     "activity": {
       "trigger": "News",
-      "href": "/activity",
-      "items": [
-        {
-          "title": "Domestic Buddhist Activities",
-          "href": "/activity?category=domestic",
-          "desc": ""
-        },
-        {
-          "title": "International Buddhist Activities",
-          "href": "/activity?category=international",
-          "desc": ""
-        },
-        {
-          "title": "Dharma Classes",
-          "href": "/activity?category=dharma-class",
-          "desc": ""
-        },
-        {
-          "title": "Other News",
-          "href": "/activity?category=others",
-          "desc": ""
-        }
-      ]
+      "href": "/activity"
     },
     "about": {
       "trigger": "About",
       "items": [
         {
-          "title": "Vien Khong Nunnery – Past and Present",
-          "href": "/introduction/past-and-present",
-          "desc": ""
+          "title": "Vien Khong Nunnery: Past and Present",
+          "href": "/introduction/past-and-present"
         },
         {
-          "title": "The Serenity of Vien Khong",
-          "href": "/introduction/scenery-of-vien-khong",
-          "desc": ""
+          "title": "Vien Khong Scenery",
+          "href": "/introduction/scenery-of-vien-khong"
         },
         {
-          "title": "Daily Practice Schedule",
-          "href": "/introduction/schedule",
-          "desc": ""
+          "title": "Practice Schedule",
+          "href": "/introduction/schedule"
         },
         {
           "title": "Other Monasteries",
-          "href": "/introduction/others",
-          "desc": ""
+          "href": "/introduction/other-monasteries"
         }
       ]
     },
@@ -55,36 +29,38 @@
       "trigger": "Library",
       "sections": {
         "scriptures": {
-          "title": "The Tipiṭaka",
+          "title": "Buddhist Scriptures (Tipitaka)",
           "english": "English",
           "vietnamese": {
             "title": "Vietnamese",
-            "sutta": "Sutta Piṭaka",
-            "vinaya": "Vinaya Piṭaka",
-            "abhidhamma": "Abhidhamma Piṭaka"
+            "sutta": "Sutta Pitaka",
+            "vinaya": "Vinaya Pitaka",
+            "abhidhamma": "Abhidhamma Pitaka",
+            "abhidharma": "Abhidharma Pitaka"
           }
         },
         "books": {
-          "title": "Book Collection",
-          "author1": "Books by Patriarch Ho Tong",
-          "author2": "Books by Most Venerable Vien Minh",
-          "pali": "Pali Study Materials",
-          "others": "Other Books"
+          "title": "Book Catalog",
+          "author1": "Books by Most Ven. Ho Tong",
+          "author2": "Books by Most Ven. Vien Minh",
+          "pali": "Pali Learning Materials",
+          "others": "Other Book Categories"
         }
       },
       "items": [
-        { "title": "Ritual Ceremonies", "href": "/library/ritual" },
-        { "title": "Calligraphy & Painting", "href": "/library/calligraphy" },
+        { "title": "Insights", "href": "/library/blog" },
+        { "title": "Dharma Talks", "href": "/library/video" },
+        { "title": "Rituals & Ceremonies", "href": "/library/ritual" },
+        { "title": "Calligraphy & Art", "href": "/library/calligraphy" },
         { "title": "Zen Poetry", "href": "/library/poem" },
-        { "title": "Dharma Q&A", "href": "/library/question" },
-        { "title": "Dharma Talks", "href": "/library/dharma-talk" }
+        { "title": "Dharma Q&A", "href": "/library/question" }
       ]
     },
     "visit": {
       "trigger": "Visit",
       "items": [
-        { "title": "Visitor Guidelines", "href": "/rule", "desc": "" },
-        { "title": "How to Get to the Nunnery", "href": "/contact", "desc": "" }
+        { "title": "Stay Regulations", "href": "/rule" },
+        { "title": "Directions to Nunnery", "href": "/contact" }
       ]
     },
     "course": {
@@ -98,11 +74,11 @@
     "menu": "Menu"
   },
   "Footer": {
-    "contact": "Contact",
-    "highlight": "Highlights",
+    "contact": "Contact Us",
+    "highlight": "Featured Categories",
     "highlight-01": "Retreats",
-    "highlight-02": "Dharma Talks",
-    "highlight-03": "The Tipiṭaka",
+    "highlight-02": "Insights",
+    "highlight-03": "Calligraphy & Art",
     "highlight-04": "News",
     "follow": "Follow Us",
     "address": "Address",
@@ -113,8 +89,8 @@
     "foreword": "Foreword"
   },
   "ContactPage": {
-    "title": "Directions to the Nunnery",
-    "map-caption": "Click the map to get directions"
+    "title": "Directions to Nunnery",
+    "map-caption": "Click on the map for directions"
   },
   "CoursePage": {
     "title": "Retreats"

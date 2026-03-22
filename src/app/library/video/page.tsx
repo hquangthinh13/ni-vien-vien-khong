@@ -1,17 +1,18 @@
 import { getLocale } from "next-intl/server";
 import Image from "next/image";
+import Link from "next/link";
 import lineOrnament from "@/public/ornament-01.svg";
-import LinkedDocumentCard from "@/features/linkedDocument/ui/LinkedDocumentCard";
+import VideoCard from "@/features/video/ui/VideoCard";
 import type { Locale } from "@/types/locale";
-import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/linkedDocument.api";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/shared/ui/button";
-import Link from "next/link";
+import { fetchVideo } from "@/features/video/api/video.api";
 import { Metadata } from "next";
+
 export const metadata: Metadata = {
-  title: "Sách Sơ Tổ Hộ Tông",
+  title: "Pháp thoại",
 };
-export default async function SuttaListPage({
+export default async function VideoListPage({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string }>;
@@ -21,14 +22,13 @@ export default async function SuttaListPage({
   const currentPage = Number(page) || 1;
   const pageSize = 12;
 
-  const response = await fetchLinkedDocumentsByCategory({
-    category: "Sách Sơ Tổ Hộ Tông",
+  const response = await fetchVideo({
     locale,
     pagination: {
       page: currentPage,
       pageSize: pageSize,
     },
-    sort: ["title:asc"],
+    sort: ["createdAt:desc"],
     populate: "*",
   });
   const docs = Array.isArray(response.data) ? response.data : [];
@@ -37,7 +37,7 @@ export default async function SuttaListPage({
   return (
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header"> Sách Sơ Tổ Hộ Tông</h1>
+        <h1 className="page-header">Pháp thoại</h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
@@ -45,7 +45,7 @@ export default async function SuttaListPage({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {docs.map((doc) => (
-          <LinkedDocumentCard key={doc.documentId} doc={doc} />
+          <VideoCard key={doc.documentId} video={doc} />
         ))}
       </div>
 

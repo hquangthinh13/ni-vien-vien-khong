@@ -59,21 +59,21 @@ const Footer = async () => {
           {/* Lien he */}
           <div className="space-y-4 md:col-span-6 ">
             <div className="space-y-2">
-              <h4 className="font-bold uppercase justify-center flex md:justify-start">
+              <h1 className="font-bold uppercase justify-center flex md:justify-start">
                 {t("contact")}
-              </h4>
+              </h1>
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
             <div className="space-y-2 flex-col flex items-center md:items-start">
               <HoverCard>
                 <HoverCardTrigger>
-                  <div className="flex space-x-2 items-center">
+                  <div className="flex flex-col sm:flex-row gap-2 items-center sm:items-start">
                     <MapPin
                       size={15}
                       strokeWidth={1.5}
                       color="var(--muted-foreground)"
                     />
-                    <p className="text-muted-foreground ">
+                    <p className="text-muted-foreground text-center md:text-left">
                       {response.data?.address}
                     </p>
                   </div>
@@ -121,9 +121,9 @@ const Footer = async () => {
           {/* Danh muc noi bat */}
           <div className="space-y-4 md:col-span-3">
             <div className="space-y-2">
-              <h4 className="font-bold uppercase justify-center flex md:justify-start">
+              <h1 className="font-bold uppercase justify-center flex md:justify-start">
                 {t("highlight")}
-              </h4>
+              </h1>
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
             <div className="space-y-2 text-muted-foreground flex flex-col items-center md:items-start">
@@ -157,9 +157,9 @@ const Footer = async () => {
           {/* Theo doi ngay */}
           <div className="space-y-4 md:col-span-3">
             <div className="space-y-2">
-              <h4 className="font-bold uppercase justify-center flex md:justify-start">
+              <h1 className="font-bold uppercase justify-center flex md:justify-start">
                 {t("follow")}
-              </h4>
+              </h1>
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
             <div className="flex gap-6 items-center justify-center md:justify-start text-foreground">

@@ -12,12 +12,12 @@ import {
   startOfDay,
   endOfDay,
 } from "date-fns";
-import { vi } from "date-fns/locale";
+import { enUS, vi } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import type { Locale } from "@/types/locale";
 import type { Activity } from "@/features/activity/model/activity.types";
 import { fetchActivitiesByMonth } from "@/features/activity/api/activity.api";
-
+import Link from "next/link";
 type MonthKey = `${number}-${string}`;
 
 function toMonthKey(d: Date): MonthKey {
@@ -168,89 +168,82 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
     <div className="flex flex-col gap-4 justify-center items-start">
       <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>
-          <div>
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleDayClick}
-              locale={vi}
-              month={visibleMonth}
-              onMonthChange={handleMonthChange}
-              showOutsideDays={false}
-              className="rounded-none bg-none"
-              classNames={{
-                day: "p-0",
-                table:
-                  "w-full border-separate border-spacing-x-2 border-spacing-y-2 table-fixed",
-                caption_label: "text-lg font-bold font-serif",
-                weekday:
-                  "text-foreground rounded-md flex-1 font-normal text-sm select-none",
-              }}
-              modifiers={{
-                hasEventCurrentMonth: (day) =>
-                  day.getMonth() === visibleMonth.getMonth() &&
-                  day.getFullYear() === visibleMonth.getFullYear() &&
-                  activities.some((a) => activityIntersectsDay(a, day)),
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleDayClick}
+            locale={locale === "vi" ? vi : enUS}
+            month={visibleMonth}
+            onMonthChange={handleMonthChange}
+            showOutsideDays={false}
+            className="rounded-none bg-none"
+            classNames={{
+              day: "p-0",
+              table:
+                "w-full border-separate border-spacing-x-2 border-spacing-y-2 table-fixed",
+              caption_label: "text-lg font-bold font-serif",
+              weekday:
+                "text-foreground rounded-md flex-1 font-normal text-sm select-none",
+            }}
+            modifiers={{
+              hasEventCurrentMonth: (day) =>
+                day.getMonth() === visibleMonth.getMonth() &&
+                day.getFullYear() === visibleMonth.getFullYear() &&
+                activities.some((a) => activityIntersectsDay(a, day)),
 
-                hasEventOutsideMonth: (day) =>
-                  (day.getMonth() !== visibleMonth.getMonth() ||
-                    day.getFullYear() !== visibleMonth.getFullYear()) &&
-                  activities.some((a) => activityIntersectsDay(a, day)),
-              }}
-              modifiersClassNames={{
-                hasEventCurrentMonth:
-                  "[&_button]:border [&_button]:border-2 [&_button]:border-primary [&_button]:rounded-full",
+              hasEventOutsideMonth: (day) =>
+                (day.getMonth() !== visibleMonth.getMonth() ||
+                  day.getFullYear() !== visibleMonth.getFullYear()) &&
+                activities.some((a) => activityIntersectsDay(a, day)),
+            }}
+            modifiersClassNames={{
+              hasEventCurrentMonth:
+                "[&_button]:border [&_button]:border-2 [&_button]:border-primary [&_button]:rounded-full",
 
-                hasEventOutsideMonth:
-                  "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground [&_button]:rounded-full [&_button]:opacity-60",
-              }}
-            />
-          </div>
+              hasEventOutsideMonth:
+                "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground [&_button]:rounded-full [&_button]:opacity-60",
+            }}
+          />
         </PopoverTrigger>
-
-        <PopoverContent
-          className="w-80"
-          align="center"
-          side={isLargeScreen ? "left" : "bottom"}
-        >
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="h-4 w-4 text-primary" />
-              <h3 className="font-semibold text-sm">
-                Sự kiện ngày{" "}
-                {selectedDate
-                  ? format(selectedDate, "dd/MM/yyyy", { locale: vi })
-                  : ""}
-              </h3>
-            </div>
-
-            {(isLoading || error) && (
-              <div className="text-xs">
-                {isLoading ? (
-                  <p className="text-muted-foreground italic">
-                    Đang tải lịch tháng…
-                  </p>
-                ) : null}
-                {error ? <p className="text-destructive">{error}</p> : null}
-              </div>
-            )}
-
-            <div className="flex flex-col gap-2">
-              {selectedDayActivities.length > 0 ? (
-                selectedDayActivities.map((activity) => (
-                  <ActivityItem
-                    key={getActivityKey(activity)}
-                    activity={activity}
-                  />
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground italic">
-                  Không có sự kiện nào cho ngày này.
-                </p>
+        {selectedDayActivities.length > 0 ? (
+          <PopoverContent
+            className="w-80 p-4 rounded-xl max-h-96 overflow-auto"
+            align="center"
+            side={isLargeScreen ? "right" : "bottom"}
+          >
+            <div className="space-y-3">
+              {(isLoading || error) && (
+                <div className="text-xs">
+                  {isLoading ? (
+                    <p className="text-muted-foreground italic">
+                      {locale === "vi"
+                        ? "Đang tải lịch tháng…"
+                        : "The calendar is loading…"}
+                    </p>
+                  ) : null}
+                  {error ? <p className="text-destructive">{error}</p> : null}
+                </div>
               )}
+
+              <div className="flex flex-col gap-2">
+                {
+                  selectedDayActivities.length > 0 &&
+                    selectedDayActivities.map((activity) => (
+                      <ActivityItem
+                        key={getActivityKey(activity)}
+                        activity={activity}
+                      />
+                    ))
+                  //  : (
+                  //   <p className="text-sm text-muted-foreground italic">
+                  //     Không có sự kiện nào cho ngày này.
+                  //   </p>
+                  // )
+                }
+              </div>
             </div>
-          </div>
-        </PopoverContent>
+          </PopoverContent>
+        ) : null}
       </Popover>
     </div>
   );
@@ -266,20 +259,24 @@ function ActivityItem({ activity }: { activity: Activity }) {
     : null;
 
   return (
-    <Card className="flex flex-1 p-0 border-l-4 border-l-primary">
-      <CardContent className="p-3 w-full">
-        <p className="font-medium text-sm">{activity.activityName}</p>
+    <Link href={`/activity/${activity.slug}-${activity.documentId}`}>
+      <Card className="flex flex-1 p-0 border-l-4 border-l-primary">
+        <CardContent className="p-3 w-full">
+          <p className="font-semibold text-sm text-foreground hover:text-accent-foreground transition-colors duration-200 ease-in-out">
+            {activity.activityName}
+          </p>
 
-        <p className="text-xs text-muted-foreground mt-1">
-          {start && !Number.isNaN(start.getTime())
-            ? format(start, "dd/MM/yyyy HH:mm")
-            : activity.activityStartDate}
+          <p className="text-xs text-muted-foreground mt-1 font-mono ">
+            {start && !Number.isNaN(start.getTime())
+              ? format(start, "dd/MM/yyyy HH:mm")
+              : activity.activityStartDate}
 
-          {end && start && !Number.isNaN(end.getTime()) && end >= start
-            ? ` - ${format(end, "dd/MM/yyyy HH:mm")}`
-            : ""}
-        </p>
-      </CardContent>
-    </Card>
+            {end && start && !Number.isNaN(end.getTime()) && end >= start
+              ? ` - ${format(end, "dd/MM/yyyy HH:mm")}`
+              : ""}
+          </p>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

@@ -38,11 +38,11 @@ export default function ActivityRegistrationDialog({
               <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
                 {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
               </span>
-              <h4 className="font-serif text-lg font-black uppercase tracking-normal text-foreground">
+              <span className="font-serif text-lg font-black uppercase tracking-normal text-foreground">
                 {locale === "vi"
                   ? "Điền thông tin đăng ký ngay"
                   : "Register Now"}
-              </h4>
+              </span>
               {registrationLimit && (
                 <p className="text-xs text-muted-foreground italic">
                   {locale === "vi"

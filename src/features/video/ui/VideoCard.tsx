@@ -1,0 +1,48 @@
+import React from "react";
+import Link from "next/link";
+import { Video } from "lucide-react";
+import type { VideoPlaylist } from "../model/video.types";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { getYouTubeThumbnail } from "@/shared/lib/utils";
+interface VideoProps {
+  video: VideoPlaylist;
+}
+
+const VideoCard = ({ video }: VideoProps) => {
+  const { title, documentId, description, coverImage, videos } = video;
+
+  const numberOfVideos = video.videos.length;
+  if (numberOfVideos > 0 && videos[0].videoLink) {
+    const firstVideoUrl = videos[0].videoLink;
+    const thumbnailUrl = getYouTubeThumbnail(firstVideoUrl);
+  }
+  return (
+    <Link href={`/library/video/${documentId}`} className="block group">
+      <div className="flex items-center gap-3 p-3 bg-white border border-border rounded-lg hover:border-primary/50 hover:bg-orange-50/30 transition-all duration-200 shadow-sm hover:shadow-md">
+        <div className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+          <Video size={16} />
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <h3 className="text-sm font-medium text-foreground leading-snug truncate group-hover:text-primary transition-colors">
+                {title}
+              </h3>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="max-w-xs">
+              <span>{title}</span>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
+        {/* <ChevronRight
+          size={14}
+          className="text-muted-foreground group-hover:translate-x-1 transition-transform"
+        /> */}
+      </div>
+    </Link>
+  );
+};
+
+export default VideoCard;

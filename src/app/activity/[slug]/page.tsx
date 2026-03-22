@@ -30,10 +30,10 @@ import ActivityRegistrationDialog from "@/features/courseRegistration/ui/Courser
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
+  { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
@@ -45,6 +45,7 @@ export async function generateMetadata(
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
+        populate: ["coverImage"],
       });
 
     const data = response?.data as Activity;
@@ -54,7 +55,7 @@ export async function generateMetadata(
     }
 
     const ogImage = getImageUrl(data.coverImage, "medium");
-
+    // console.log("ogImage", ogImage);
     return {
       title: data.activityName,
       description:
@@ -70,15 +71,27 @@ export async function generateMetadata(
       openGraph: {
         title: data.activityName,
         description: data.activityCategory,
-        images: {
-          url: ogImage as string,
-          width: 1200,
-          height: 630,
-          alt: data.activityName,
-        },
+        url: `/activity/${data.slug}-${data.documentId}`,
+        images: ogImage
+          ? [
+              {
+                url: ogImage,
+                width: 1200,
+                height: 630,
+                alt: data.activityName,
+              },
+            ]
+          : ["/open-graph.png"],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: data.activityName,
+        description:
+          data.activityCategory || "Thông tin hoạt động tại Ni Viện Viên Không",
+        images: ogImage ? [ogImage] : ["/open-graph.png"],
       },
       alternates: {
-        canonical: "https://staging.vienkhongni.com",
+        canonical: `/activity/${data.slug}-${data.documentId}`,
       },
     };
   } catch (error) {
@@ -145,18 +158,22 @@ export default async function ActivityPage({ params }: Props) {
                   {formatShortDate(data.activityEndDate, locale)}
                 </span>
               </div>
-            )}
+            )}{" "}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
+              {" "}
               <Zoom zoomMargin={80}>
                 <Image
-                  src={getImageUrl(data.coverImage) || "/placeholder.png"}
+                  src={
+                    getImageUrl(data.coverImage, "original") ||
+                    "/placeholder.png"
+                  }
                   alt={data.activityName || "Course cover image"}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                   priority
                   placeholder="blur"
                   blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-                />
+                />{" "}
               </Zoom>
             </div>
             {/* <Zoom zoomMargin={80}>
