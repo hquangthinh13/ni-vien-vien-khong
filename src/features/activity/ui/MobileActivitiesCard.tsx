@@ -7,19 +7,28 @@ import { Locale } from "@/types/locale";
 interface MobileCardProps {
   activity: Activity;
   locale: Locale;
+  isCourse?: boolean;
 }
 export default async function MobileActivitiesCard({
   activity,
   locale,
+  isCourse = false,
 }: MobileCardProps) {
-  const { slug, documentId, activityName, coverImage, content, publishedAt } =
-    activity;
+  const {
+    slug,
+    documentId,
+    activityName,
+    coverImage,
+    content,
+    publishedAt,
+    activityStartDate,
+  } = activity;
   const imageUrl = getImageUrl(coverImage, "medium");
 
   return (
     <Link
       href={`/activity/${slug}-${documentId}`}
-      className="flex gap-4 not-first:pt-2 not-last:pb-2 border-b last:border-0 items-start"
+      className="flex gap-2 not-first:pt-2 not-last:pb-2 border-b last:border-0 items-start"
     >
       <div className="group relative h-24 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted">
         {imageUrl && (
@@ -35,8 +44,10 @@ export default async function MobileActivitiesCard({
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="text-xs text-muted-foreground font-mono">
-          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+        <span className="uppercase text-xs text-muted-foreground font-mono">
+          {publishedAt && !isCourse
+            ? formatFriendlyDate(publishedAt, locale, true)
+            : formatFriendlyDate(activityStartDate, locale, false)}
         </span>
         <span className="text-sm font-bold leading-tight hover:text-primary line-clamp-2">
           {activityName || "Untitled Activity"}

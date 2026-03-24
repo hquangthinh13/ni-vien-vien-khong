@@ -16,7 +16,6 @@ import {
 } from "@/features/activity/api/activity.api";
 import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
 
-import { HomePageAttributes } from "@/features/homePage/model/homePage.types";
 import { getImageUrl } from "@/shared/lib/api";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger";
@@ -88,16 +87,18 @@ export default async function Home() {
         />
       </MotionWrapper>
       <div className="page-container">
-        <div className="flex flex-col-reverse md:flex-row min-h-12 gap-6 mb-6">
+        <div className="flex flex-col-reverse lg:flex-row min-h-12 gap-6 mb-6">
           {/* Left */}
-          <div className="flex flex-col justify-start gap-6 md:w-[70%]">
+          <div className="flex flex-col justify-start gap-6 lg:w-[70%]">
             {activities.length > 0 && (
               <MotionWrapper>
-                <section className="flex flex-col pt-6 md:pt-0 border-t md:border-0">
+                <section className="flex flex-col pt-6 lg:pt-0 border-t lg:border-0">
                   <div className="flex justify-between items-center">
-                    <h2 className="home-page-section-title">
-                      {locale === "vi" ? "Tin tức" : "Activities"}
-                    </h2>
+                    <Link href="/activity">
+                      <h2 className="home-page-section-title">
+                        {locale === "vi" ? "Tin tức" : "Activities"}
+                      </h2>
+                    </Link>
                     <div className="flex gap-2">
                       <Link
                         href="/activity"
@@ -120,13 +121,14 @@ export default async function Home() {
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col md:w-[30%] md:border-l pl-0 md:pl-6 gap-6">
+          <div className="flex flex-col lg:w-[30%] lg:border-l pl-0 lg:pl-6 gap-6">
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
+                  {" "}
                   <h1 className="home-page-section-title">{t("foreword")}</h1>
                 </div>
-                <p className="flex mt-4 max-w-lg leading-snug text-justify text-muted-foreground">
+                <p className="flex mt-4 leading-snug text-justify text-muted-foreground">
                   {homePage?.openingMessage}
                 </p>
               </section>{" "}
@@ -135,9 +137,12 @@ export default async function Home() {
               <MotionWrapper>
                 <section className="flex flex-col pt-6 border-t">
                   <div className="flex justify-between items-center">
-                    <h2 className="home-page-section-title">
-                      {locale === "vi" ? "Khóa tu" : "Courses"}
-                    </h2>
+                    {" "}
+                    <Link href="/course">
+                      <h2 className="home-page-section-title">
+                        {locale === "vi" ? "Khóa tu" : "Courses"}
+                      </h2>
+                    </Link>
                     <div className="flex gap-2">
                       <Link
                         href="/course"
@@ -154,9 +159,11 @@ export default async function Home() {
             <MotionWrapper>
               <section className="flex flex-1 flex-col pt-6 pb-0 border-t">
                 <div className="flex justify-between items-center">
-                  <h2 className="home-page-section-title">
-                    {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
-                  </h2>
+                  <Link href="/library/question">
+                    <h2 className="home-page-section-title">
+                      {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
+                    </h2>
+                  </Link>
                   <Link
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"

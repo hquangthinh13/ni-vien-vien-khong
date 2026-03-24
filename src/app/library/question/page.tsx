@@ -75,6 +75,7 @@ export default async function QuestionListPage({
             question={item}
             className={index !== questions.length - 1 ? "border-b pb-4" : ""}
             fontSize="md"
+            locale={locale}
           />
         ))}
       </div>
