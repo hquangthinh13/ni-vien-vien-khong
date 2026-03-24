@@ -39,7 +39,9 @@ export default async function SuttaListPage({
   return (
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header"> Tạng Kinh</h1>
+        <h1 className="page-header">
+          {locale === "vi" ? "Tạng Kinh" : "Sutta Texts"}
+        </h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>

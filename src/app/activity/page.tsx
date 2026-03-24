@@ -41,7 +41,9 @@ export default async function ActivityPage({
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
         <TextMotionWrapper delay={0.2} className="text-center">
-          <h1 className="page-header">Tin tức</h1>
+          <h1 className="page-header">
+            {locale === "vi" ? "Tin tức" : "Activities"}
+          </h1>
         </TextMotionWrapper>
         <TextMotionWrapper delay={0.2}>
           <div className="opacity-80">

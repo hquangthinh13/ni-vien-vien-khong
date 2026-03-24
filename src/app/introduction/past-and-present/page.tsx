@@ -25,7 +25,7 @@ export default async function PastAndPresentPage() {
         <article className="">
           <header className="flex flex-col w-full items-center mb-6 space-y-2">
             <div className="page-label items-center">
-              <span>Giới thiệu</span>
+              <span>{locale === "vi" ? "Giới thiệu" : "Introduction"}</span>
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">

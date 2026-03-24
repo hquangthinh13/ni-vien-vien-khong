@@ -70,37 +70,38 @@ export default function ActivityList({
               className="cursor-pointer shrink-0 w-fit"
               value="Tất cả"
             >
-              Tất cả
+              {locale === "vi" ? "Tất cả" : "All"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit "
               value="Phật Sự Trong Nước"
             >
-              Phật Sự Trong Nước{" "}
+              {locale === "vi" ? "Phật Sự Trong Nước" : "Domestic Activities"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Phật Sự Nước Ngoài"
             >
-              Phật Sự Nước Ngoài{" "}
+              {locale === "vi"
+                ? "Phật Sự Nước Ngoài"
+                : "International Activities"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Lớp Học Phật Pháp"
             >
-              Lớp Học Phật Pháp{" "}
+              {locale === "vi" ? "Lớp Học Phật Pháp" : "Dharma Classes"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Tin Tức Khác"
             >
-              Tin Tức Khác{" "}
+              {locale === "vi" ? "Tin Tức Khác" : "Others"}
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
-      {/* <div className="grid grid-cols-1 md:grid-cols-1 gap-6 w-full"> */}
       <AnimatePresence mode="wait">
         <motion.div
           key={initialCategory + currentPage}
@@ -119,7 +120,6 @@ export default function ActivityList({
           ))}
         </motion.div>
       </AnimatePresence>
-      {/* </div> */}
 
       {paginationMeta && paginationMeta.pageCount > 1 && (
         <div className="flex justify-center gap-4 mt-6">

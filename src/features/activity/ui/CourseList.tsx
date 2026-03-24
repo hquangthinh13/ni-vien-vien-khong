@@ -90,35 +90,37 @@ export default function CourseList({
               className="cursor-pointer shrink-0 w-fit"
               value="Tất cả"
             >
-              Tất cả
+              {locale === "vi" ? "Tất cả" : "All"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit "
               value="Khóa Tu Mùa Hè"
             >
-              Khóa Tu Mùa Hè
+              {locale === "vi" ? "Khóa Tu Mùa Hè" : "Summer Retreats"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Khóa Tu Xuất Gia Gieo Duyên"
             >
-              Khóa Tu Xuất Gia Gieo Duyên
+              {locale === "vi"
+                ? "Khóa Tu Xuất Gia Gieo Duyên"
+                : "Monastic Retreats"}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Khóa Thiền"
             >
-              Khóa Thiền
+              {locale === "vi" ? "Khóa Thiền" : "Meditation Retreats"}
             </TabsTrigger>
 
             <TabsTrigger className="cursor-pointer shrink-0 w-fit" value="Khác">
-              Khác
+              {locale === "vi" ? "Khác" : "Others"}
             </TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2">
           <span className="text-xs uppercase font-mono tracking-wider font-normal text-muted-foreground whitespace-nowrap">
-            Năm{" "}
+            {locale === "vi" ? "Năm" : "Year"}
           </span>
           <Select
             value={currentYear?.toString() || "all"}
@@ -127,13 +129,17 @@ export default function CourseList({
             }
           >
             <SelectTrigger className="w-30">
-              <SelectValue placeholder="Chọn năm" />
+              <SelectValue
+                placeholder={locale === "vi" ? "Chọn năm" : "Select Year"}
+              />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tất cả</SelectItem>
+              <SelectItem value="all">
+                {locale === "vi" ? "Tất cả" : "All Years"}
+              </SelectItem>
               {availableYears.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
-                  Năm {year}
+                  {locale === "vi" ? `Năm ${year}` : `Year ${year}`}
                 </SelectItem>
               ))}
             </SelectContent>

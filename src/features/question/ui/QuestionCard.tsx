@@ -11,24 +11,23 @@ import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { BlocksContent } from "@strapi/blocks-react-renderer";
 import { Locale } from "next-intl";
 import { formatFriendlyDate } from "@/shared/lib/utils";
-import { getLocale } from "next-intl/server";
-import { MessageCircleQuestion } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 
 interface QuestionCardProps {
   question: Question;
   className?: string;
   fontSize?: "sm" | "md";
+  locale?: Locale;
 }
 
 const QuestionCard = async ({
   question,
   className,
   fontSize = "sm",
+  locale,
 }: QuestionCardProps) => {
   const hasVideo = !!question.videoResponseContent;
   const hasBlog = !!question.blogResponseContent;
-  const locale = (await getLocale()) as Locale;
 
   const getEmbedUrl = (url?: string) => {
     if (!url) return "";
@@ -45,41 +44,15 @@ const QuestionCard = async ({
     <div className={cn("w-full", className)}>
       <Dialog>
         <DialogTrigger asChild>
-          {/* <div className="group relative w-full cursor-pointer overflow-hidden rounded-xl border border-orange-100 bg-white p-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg active:scale-[0.98]">
-            <span className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-primary/5 to-transparent transition-transform duration-500 group-hover:translate-x-[100%]" />
-
-            <div className="relative flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
-                  {question.createdAt
-                    ? formatFriendlyDate(question.createdAt, locale, true)
-                    : ""}
-                </span>
-                <MessageCircleQuestion
-                  size={14}
-                  className="text-primary/40 transition-transform duration-300 group-hover:rotate-12 group-hover:text-primary"
-                />
-              </div>
-
-              <h3 className="text-sm font-bold leading-snug text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                {question.title}
-              </h3>
-
-              <div className="flex items-center justify-between mt-1">
-                <span className="text-[11px] text-secondary-foreground/60 italic">
-                  — {question.fullName}
-                </span>
-                <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-tighter text-primary opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  Xem chi tiết <ArrowRight size={10} />
-                </div>
-              </div>
-            </div>
-          </div> */}
           <div className="group block cursor-pointer">
             <div className="flex flex-col gap-2">
               <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
                 {question.createdAt
-                  ? formatFriendlyDate(question.createdAt, locale, false)
+                  ? formatFriendlyDate(
+                      question.createdAt,
+                      locale as string,
+                      false,
+                    )
                   : ""}
               </span>
               <h3

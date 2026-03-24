@@ -13,7 +13,7 @@ export default async function IntroductionPage() {
 
   const data = response.data;
 
-  if (!data) return <div>Không tìm thấy dữ liệu.</div>;
+  if (!data) return null;
 
   return (
     <div className="page-container">

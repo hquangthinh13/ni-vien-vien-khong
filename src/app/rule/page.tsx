@@ -27,7 +27,9 @@ export default async function RulePage() {
         <article className="">
           <header className="flex flex-col w-full items-center mb-6 space-y-2">
             <div className="page-label items-center">
-              <span>Nội quy lưu trú</span>
+              <span>
+                {locale === "vi" ? "Nội quy lưu trú" : "Residence Rules"}
+              </span>
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">

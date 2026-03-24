@@ -42,7 +42,9 @@ export default async function QuestionListPage({
   return (
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header"> Vấn đáp Phật pháp</h1>
+        <h1 className="page-header">
+          {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
+        </h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
@@ -51,7 +53,7 @@ export default async function QuestionListPage({
         <DialogTrigger asChild>
           <div className="flex w-full justify-center">
             <Button variant="outline" className="cursor-pointer">
-              Đặt câu hỏi
+              {locale === "vi" ? "Gửi câu hỏi" : "Submit Question"}
             </Button>
           </div>
         </DialogTrigger>
@@ -60,7 +62,9 @@ export default async function QuestionListPage({
           className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
         >
           {" "}
-          <DialogTitle>Đặt câu hỏi</DialogTitle>
+          <DialogTitle>
+            {locale === "vi" ? "Đặt câu hỏi" : "Ask a Question"}
+          </DialogTitle>
           <QuestionForm locale={locale} />
         </DialogContent>
       </Dialog>
@@ -86,7 +90,8 @@ export default async function QuestionListPage({
             </a>
           )}
           <span className="flex items-center">
-            Trang {meta.page} trên {meta.pageCount}
+            {locale === "vi" ? "Trang" : "Page"} {meta.page}{" "}
+            {locale === "vi" ? "trên" : "of"} {meta.pageCount}
           </span>
           {currentPage < meta.pageCount && (
             <a
