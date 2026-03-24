@@ -3,7 +3,6 @@ import { fetchActivities } from "@/features/activity/api/activity.api";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://vienkhongni.com";
 
-  // 1. Định nghĩa các trang tĩnh (Static Routes)
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -78,10 +77,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     },
   ];
-
-  // 2. Xử lý các trang động (Dynamic Routes: activity/[slug])
-  // Nếu bạn có API để lấy danh sách các hoạt động, hãy fetch ở đây
-  // Ví dụ: const activities = await fetchActivitiesFromAPI()
 
   const response = await fetchActivities({
     sort: "updatedAt:desc",
