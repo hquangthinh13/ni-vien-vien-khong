@@ -15,6 +15,7 @@ import MotionWrapper from "@/shared/motion/MotionWrapper";
 import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger";
 export default async function Home() {
   const locale = (await getLocale()) as Locale;
+  console.log("Check API URL:", process.env.NEXT_PUBLIC_API_URL);
   const t = await getTranslations("HomePage");
 
   const response = await fetchHomePage({ populate: "*", locale });

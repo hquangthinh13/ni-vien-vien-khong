@@ -28,7 +28,7 @@ export async function fetchHomePage(
     },
     signal: options.signal,
     // cache: "force-cache",
-    next: { revalidate: 3600 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
