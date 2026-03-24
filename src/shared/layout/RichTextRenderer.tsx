@@ -27,7 +27,7 @@ const RichTextRenderer = ({
   content,
   isPoem = false,
 }: RichTextRendererProps) => {
-  console.log("Rendering RichTextRenderer with content:", content);
+  // console.log("Rendering RichTextRenderer with content:", content);
   return (
     <BlocksRenderer
       content={content}

@@ -9,7 +9,7 @@ async function getActivitiesData({ locale }: { locale: Locale }) {
     populate: "*",
     locale,
   });
-  console.log("Fetched activities data:", res);
+  // console.log("Fetched activities data:", res);
   return res;
 }
 import SimplifiedNewsCard from "@/features/activity/ui/SimplifiedActivitiesCard";

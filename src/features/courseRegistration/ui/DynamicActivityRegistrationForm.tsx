@@ -164,9 +164,9 @@ export default function ActivityRegistrationForm({
   }, [documentId]);
 
   const onSubmit = (values: RegistrationFormValues) => {
-    console.log(values);
+    // console.log(values);
 
-    console.log("values.basic", values.basic);
+    // console.log("values.basic", values.basic);
     if (activity?.ageRestricted) {
       const dob = parseISO(values.basic.dob);
 
@@ -255,7 +255,7 @@ export default function ActivityRegistrationForm({
         });
 
         const finalPayload = builder.build();
-        console.log("Final Payload to API:", finalPayload);
+        // console.log("Final Payload to API:", finalPayload);
 
         await createActivityRegistration(finalPayload);
         toast.success("Đăng ký thành công!");

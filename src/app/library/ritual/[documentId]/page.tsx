@@ -77,7 +77,7 @@ export default async function RitualPage({ params }: Props) {
   }
 
   const data = response.data as Ritual;
-  console.log("Fetched ritual data:", data);
+  // console.log("Fetched ritual data:", data);
   return (
     <div className="page-container">
       {/* <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start"> */}{" "}
