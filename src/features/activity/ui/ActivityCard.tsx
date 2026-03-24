@@ -21,7 +21,7 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
   const status = getStatusLabel(activity, locale);
 
   return (
-    <Link href={`/library/activity/${slug}-${documentId}`}>
+    <Link href={`/activity/${slug}-${documentId}`}>
       <div className="group flex flex-col h-full gap-4">
         <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
           {(() => {
