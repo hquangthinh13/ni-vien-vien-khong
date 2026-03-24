@@ -60,40 +60,44 @@ export default function ActivityList({
         <Tabs
           value={initialCategory}
           onValueChange={(val) => handleUpdateQuery(val)}
-          className=" flex flex-col h-auto items-center"
+          className="flex flex-col h-auto items-center w-full"
         >
           <TabsList
             variant="line"
             className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
           >
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Tất cả"
             >
               {locale === "vi" ? "Tất cả" : "All"}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit "
+              className="cursor-pointer flex-none w-fit"
               value="Phật Sự Trong Nước"
             >
               {locale === "vi" ? "Phật Sự Trong Nước" : "Domestic Activities"}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Phật Sự Nước Ngoài"
             >
               {locale === "vi"
                 ? "Phật Sự Nước Ngoài"
                 : "International Activities"}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Lớp Học Phật Pháp"
             >
               {locale === "vi" ? "Lớp Học Phật Pháp" : "Dharma Classes"}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Tin Tức Khác"
             >
               {locale === "vi" ? "Tin Tức Khác" : "Others"}
@@ -101,7 +105,6 @@ export default function ActivityList({
           </TabsList>
         </Tabs>
       </div>
-
       <AnimatePresence mode="wait">
         <motion.div
           key={initialCategory + currentPage}

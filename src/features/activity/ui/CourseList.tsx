@@ -76,30 +76,30 @@ export default function CourseList({
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      <div className="flex flex-col w-full justify-center items-center h-auto mb-6 gap-4">
+      <div className="flex-col w-full justify-center items-center h-auto mb-6">
         <Tabs
           value={initialCategory}
           onValueChange={(val) => handleUpdateQuery(val)}
-          className=" flex flex-col h-auto items-center"
+          className="flex flex-col h-auto items-center w-full"
         >
           <TabsList
             variant="line"
             className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
           >
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Tất cả"
             >
               {locale === "vi" ? "Tất cả" : "All"}
             </TabsTrigger>
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit "
+              className="cursor-pointer flex-none w-fit "
               value="Khóa Tu Mùa Hè"
             >
               {locale === "vi" ? "Khóa Tu Mùa Hè" : "Summer Retreats"}
             </TabsTrigger>
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Khóa Tu Xuất Gia Gieo Duyên"
             >
               {locale === "vi"
@@ -107,18 +107,21 @@ export default function CourseList({
                 : "Monastic Retreats"}
             </TabsTrigger>
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Khóa Thiền"
             >
               {locale === "vi" ? "Khóa Thiền" : "Meditation Retreats"}
             </TabsTrigger>
 
-            <TabsTrigger className="cursor-pointer shrink-0 w-fit" value="Khác">
+            <TabsTrigger
+              className="cursor-pointer flex-none w-fit"
+              value="Khác"
+            >
               {locale === "vi" ? "Khác" : "Others"}
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        <div className="flex items-center gap-2">
+        <div className="mt-4 flex justify-center items-center gap-2">
           <span className="text-xs uppercase font-mono tracking-wider font-normal text-muted-foreground whitespace-nowrap">
             {locale === "vi" ? "Năm" : "Year"}
           </span>

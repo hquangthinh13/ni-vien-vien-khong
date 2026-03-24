@@ -16,6 +16,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
         alt="Desktop Background"
         fill
         className="object-cover -z-10"
+        quality={70}
         priority
         placeholder="blur"
       />
@@ -25,6 +26,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           alt="Character"
           width={260}
           height={260}
+          quality={70}
           className="drop-shadow-xl object-cover w-70 h-auto"
         />
       </div>
@@ -35,6 +37,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           width={260}
           height={260}
           className="w-70 h-auto drop-shadow-xl scale-x-[-1] -z-30"
+          quality={70}
         />
       </div>
       {/* Content */}
