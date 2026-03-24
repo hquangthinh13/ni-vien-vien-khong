@@ -52,7 +52,9 @@ const VideoCard = ({ video, locale }: VideoProps) => {
             {description}
           </p>{" "}
           <span className="mt-auto text-xs text-muted-foreground font-mono uppercase">
-            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+            {publishedAt
+              ? formatFriendlyDate(publishedAt, locale as string, true)
+              : ""}
           </span>
         </div>
       </div>
