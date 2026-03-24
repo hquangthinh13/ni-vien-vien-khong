@@ -6,14 +6,12 @@ import { Card, CardContent } from "@/shared/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import {
   format,
-  isSameDay,
   isWithinInterval,
   parseISO,
   startOfDay,
   endOfDay,
 } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
 import type { Locale } from "@/types/locale";
 import type { Activity } from "@/features/activity/model/activity.types";
 import { fetchActivitiesByMonth } from "@/features/activity/api/activity.api";
@@ -106,7 +104,7 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
 
   React.useEffect(() => {
     // Fetch only when we don't already have this month cached.
-    if (activitiesByMonth[monthKey]) return;
+    // if (activitiesByMonth[monthKey]) return;
 
     inflightRef.current?.abort();
     const controller = new AbortController();

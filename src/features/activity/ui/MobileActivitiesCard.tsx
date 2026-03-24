@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { extractFirstParagraph, formatFriendlyDate } from "@/shared/lib/utils";
+import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Activity } from "../model/activity.types";
 import { Locale } from "@/types/locale";
@@ -41,8 +41,8 @@ export default async function MobileActivitiesCard({
         <span className="text-sm font-bold leading-tight hover:text-primary line-clamp-2">
           {activityName || "Untitled Activity"}
         </span>
-        <p className="line-clamp-2 font-mono text-xs text-secondary-foreground opacity-80">
-          {extractFirstParagraph(content)}
+        <p className="line-clamp-2 font-mono text-xs text-secondary-foreground">
+          {extractPreviewContent(content)}
         </p>
       </div>
     </Link>

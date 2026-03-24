@@ -15,9 +15,10 @@ const RelatedRitualsSection = ({ rituals, locale }: RelatedRitualsProps) => {
   const localeToUse = locale as Locale;
   if (!rituals || rituals.length === 0) return null;
   return (
-    <section className="space-y-4">
+    <section className="space-y-4 mt-6">
       <h3 className="font-bold text-lg uppercase tracking-wider flex items-center gap-2 border-b pb-2">
-        <ScrollText size={20} className="text-primary" /> Liên quan
+        <ScrollText size={20} className="text-primary" />
+        {localeToUse === "en" ? "Related Rituals" : "Nghi thức liên quan"}
       </h3>
       <div className="space-y-6">
         {rituals.map((item) => (

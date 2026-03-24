@@ -124,25 +124,28 @@ export default async function ActivityPage({ params }: Props) {
         {/* <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed"> */}
         <header className="flex flex-col w-full items-center mb-6 space-y-2">
           <div className="page-label items-center">
-            <span>Pháp thoại</span>
+            <span>{locale === "vi" ? "Pháp thoại" : "Dharma Talks"}</span>
           </div>
 
           <h1 className="text-xl md:text-4xl text-center font-bold leading-tight max-w-4xl">
             {data.title}
           </h1>
+          <div className="opacity-80 flex w-full justify-center my-4">
+            <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
+          </div>
 
-          <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
+          {/* <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
             <CalendarDays size={18} className="" />
             <span>{formatShortDate(data.publishedAt as string, locale)}</span>
-          </div>
+          </div> */}
           {data.description && (
-            <section className="w-full mx-auto mt-4">
+            <section className="w-full mx-auto mt-4 max-w-4xl">
               <p className="text-muted-foreground leading-relaxed text-center">
                 {data.description}
               </p>
             </section>
           )}
-          <div className="relative aspect-video w-full max-w-2xl overflow-hidden rounded-2xl shadow-md mt-4">
+          {/* <div className="relative aspect-video w-full max-w-2xl overflow-hidden rounded-2xl shadow-md mt-4">
             <Zoom zoomMargin={80}>
               <Image
                 src={
@@ -158,11 +161,8 @@ export default async function ActivityPage({ params }: Props) {
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />{" "}
             </Zoom>
-          </div>
+          </div> */}
         </header>
-        <div className="opacity-80 flex w-full justify-center my-4">
-          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-        </div>
 
         {data.videos.length > 0 && (
           <section className="w-full mt-6 space-y-4">

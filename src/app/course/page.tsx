@@ -39,7 +39,7 @@ export default async function CoursePage({
 
   const response = await fetchCoursesByCategory({
     locale: locale,
-    pagination: { page: currentPage, pageSize: 6 },
+    pagination: { page: currentPage, pageSize: 9 },
     sort: ["activityStartDate:desc"],
     populate: ["coverImage", "courseContent"],
     category: initialCategory,

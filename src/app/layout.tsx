@@ -11,6 +11,8 @@ import {
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import Footer from "@/shared/layout/Footer";
+import { ScrollProgress } from "@/shared/ui/scroll-progress";
+
 import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
@@ -136,12 +138,14 @@ export default async function RootLayout({
       <body className="min-h-screen flex flex-col bg-white">
         {" "}
         <Navbar /> <ScrollToTopButton />
+        <ScrollProgress className="h-1" />
         <NextIntlClientProvider>
           <main className="flex-1">{children}</main>{" "}
           <Toaster position="top-right" richColors /> <SpeedInsights />{" "}
           <Analytics />
         </NextIntlClientProvider>
         <MotionWrapper>
+          {" "}
           <Footer />
         </MotionWrapper>
       </body>

@@ -20,7 +20,7 @@ export default async function VideoListPage({
   const locale = (await getLocale()) as Locale;
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
-  const pageSize = 12;
+  const pageSize = 9;
 
   const response = await fetchVideo({
     locale,
@@ -43,9 +43,9 @@ export default async function VideoListPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {docs.map((doc) => (
-          <VideoCard key={doc.documentId} video={doc} />
+          <VideoCard key={doc.documentId} video={doc} locale={locale} />
         ))}
       </div>
 

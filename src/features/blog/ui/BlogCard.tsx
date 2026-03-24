@@ -1,11 +1,9 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Blog } from "../model/blog.types";
 import type { Locale } from "@/types/locale";
-import { extractFirstParagraph, formatFriendlyDate } from "@/shared/lib/utils";
+import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 interface BlogCardProps {
   blog: Blog;
@@ -17,7 +15,7 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
 
   return (
     <Link href={`/library/blog/${slug}-${documentId}`}>
-      <div className="flex flex-col gap-4">
+      <div className="group flex flex-col h-full gap-4">
         <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
           {(() => {
             const imageUrl = getImageUrl(coverImage, "medium");
@@ -26,7 +24,7 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
                 src={imageUrl}
                 alt={title || "Blog image"}
                 fill
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
                 placeholder="blur"
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
               />
@@ -34,18 +32,18 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
           })()}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col h-full gap-2">
           <span
-            className={`text-md font-bold leading-snug hover:text-primary cursor-pointer mb-2`}
+            className={`text-md font-bold leading-snug group-hover:text-primary cursor-pointer mb-2`}
           >
             {title}
           </span>
           <p
             className={`line-clamp-2 text-sm text-secondary-foreground/80 font-mono`}
           >
-            {extractFirstParagraph(blogContent)}
+            {extractPreviewContent(blogContent)}
           </p>{" "}
-          <span className="text-xs text-muted-foreground font-mono">
+          <span className="mt-auto text-xs text-muted-foreground font-mono uppercase">
             {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
           </span>
         </div>

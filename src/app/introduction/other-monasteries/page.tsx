@@ -25,7 +25,7 @@ export default async function MonasteryPage() {
 
   return (
     <div className="page-container">
-      <div className="flex flex-col gap-6 items-center mb-12">
+      <div className="flex flex-col gap-6 items-center mb-6">
         <TextMotionWrapper delay={0.2} className="text-center">
           <h1 className="page-header">Các tu viện khác</h1>
         </TextMotionWrapper>
@@ -35,11 +35,11 @@ export default async function MonasteryPage() {
           </div>
         </TextMotionWrapper>
       </div>{" "}
-      <TextMotionWrapper delay={0.3} className="mt-8">
+      {/* <TextMotionWrapper delay={0.3} className="mt-8">
         <p className="text-muted-foreground text-justify">
           {response.data?.content}
         </p>
-      </TextMotionWrapper>
+      </TextMotionWrapper> */}
       <MonasteryList items={monasteries} />{" "}
     </div>
   );

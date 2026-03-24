@@ -63,7 +63,7 @@ export default async function RitualPage({ params }: Props) {
     response = await fetchRitualByDocumentId({
       locale,
       documentId: documentId,
-      populate: "*",
+      populate: "relatedRituals",
     });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -77,25 +77,24 @@ export default async function RitualPage({ params }: Props) {
   }
 
   const data = response.data as Ritual;
-  const publishedAt = data.publishedAt || new Date().toISOString();
-
+  console.log("Fetched ritual data:", data);
   return (
     <div className="page-container">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
-        {" "}
-        <div className="lg:col-span-7 w-full max-w-none text-justify leading-relaxed">
-          <header className="flex flex-col w-full items-start mb-6 space-y-2">
-            <div className="page-label items-start">
-              <span>Nghi thức nghi lễ</span>
-            </div>
-            <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
-              {data.title}
-            </h1>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
-              <CalendarDays size={18} className="" />
-              <span>{formatShortDate(publishedAt, locale)}</span>
-            </div>
+      {/* <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start"> */}{" "}
+      <div className="w-full max-w-none text-justify leading-relaxed">
+        <header className="flex flex-col w-full items-center mb-6 space-y-2">
+          <div className="page-label items-start">
+            <span>Nghi thức nghi lễ</span>
+          </div>
+          <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
+            {data.title}
+          </h1>
+          {/* <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
+            <CalendarDays size={18} className="" />
+            <span>{formatShortDate(publishedAt, locale)}</span>
+          </div> */}
 
+          {data.coverImage && (
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               <Zoom zoomMargin={80}>
                 <Image
@@ -111,21 +110,20 @@ export default async function RitualPage({ params }: Props) {
                 />
               </Zoom>
             </div>
-          </header>
-          <div className="opacity-80 flex w-full justify-center my-12">
-            <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-          </div>
-          <div className="w-full">
-            {data.content && <RichTextRenderer content={data.content || []} />}
-          </div>{" "}
+          )}
+        </header>
+        <div className="opacity-80 flex w-full justify-center my-12">
+          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
-        <aside className="lg:col-span-3 w-full space-y-6">
-          <RelatedRitualsSection
-            locale={locale}
-            rituals={data.relatedRituals || []}
-          />
-        </aside>
+        <div className="w-full">
+          {data.content && <RichTextRenderer content={data.content || []} />}
+        </div>{" "}
       </div>
+      <RelatedRitualsSection
+        locale={locale}
+        rituals={data.relatedRituals || []}
+      />
     </div>
+    // </div>
   );
 }

@@ -3,12 +3,14 @@
 import React from "react";
 import Link from "next/link";
 import type { Poem } from "../model/poem.types";
+import { Locale } from "@/types/locale";
 
 interface RelatedPoemsProps {
   poems: Poem[];
+  locale?: Locale;
 }
 
-const RelatedPoems = ({ poems }: RelatedPoemsProps) => {
+const RelatedPoems = ({ poems, locale }: RelatedPoemsProps) => {
   if (!poems || poems.length === 0) return null;
 
   return (

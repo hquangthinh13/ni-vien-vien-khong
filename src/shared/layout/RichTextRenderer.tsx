@@ -12,6 +12,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 interface RichTextRendererProps {
   content: BlocksContent;
+  isPoem?: boolean;
 }
 const headingStyles: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
   1: "text-3xl md:text-4xl font-bold tracking-tight mt-10 mb-6 text-foreground font-serif",
@@ -22,7 +23,10 @@ const headingStyles: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
   6: "text-sm md:text-base font-semibold uppercase tracking-wide mt-6 mb-3 text-foreground/80 font-serif",
 };
 
-const RichTextRenderer = ({ content }: RichTextRendererProps) => {
+const RichTextRenderer = ({
+  content,
+  isPoem = false,
+}: RichTextRendererProps) => {
   console.log("Rendering RichTextRenderer with content:", content);
   return (
     <BlocksRenderer
@@ -60,8 +64,12 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
         ),
 
         image: ({ image }) => (
-          <figure className="lg:px-48 my-8 space-y-3">
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm">
+          <figure
+            className={`${isPoem ? "px-24 lg:px-80" : "px-24 lg:px-48"}  my-8 space-y-3`}
+          >
+            <div
+              className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-xl shadow-sm`}
+            >
               <Zoom zoomMargin={80}>
                 <Image
                   src={image.url}
@@ -85,7 +93,9 @@ const RichTextRenderer = ({ content }: RichTextRendererProps) => {
           </figure>
         ),
         paragraph: ({ children }) => (
-          <p className="not-last:mb-2 text-foreground/90 leading-7 text-justify">
+          <p
+            className={`${isPoem ? "italic text-center" : " text-justify"} not-last:mb-2 text-foreground/90 leading-7 `}
+          >
             {children}
           </p>
         ),

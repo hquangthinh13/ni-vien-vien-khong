@@ -5,8 +5,7 @@ import type { Activity } from "../model/activity.types";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import ActivityVibrantCard from "./ActivityVibrantCard";
-import { HorizontalActivityCard } from "./HorizontalActivityCard";
+import ActivityCard from "./ActivityCard";
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -77,25 +76,25 @@ export default function ActivityList({
               className="cursor-pointer shrink-0 w-fit "
               value="Phật Sự Trong Nước"
             >
-              Phật sự trong nước
+              Phật Sự Trong Nước{" "}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Phật Sự Nước Ngoài"
             >
-              Phật sự ngoài nước
+              Phật Sự Nước Ngoài{" "}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Lớp Học Phật Pháp"
             >
-              Lớp học Phật pháp
+              Lớp Học Phật Pháp{" "}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer shrink-0 w-fit"
               value="Tin Tức Khác"
             >
-              Tin tức khác
+              Tin Tức Khác{" "}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -109,10 +108,10 @@ export default function ActivityList({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-1 gap-4 w-full col-span-full"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
         >
           {initialActivities.map((activity: Activity) => (
-            <HorizontalActivityCard
+            <ActivityCard
               key={activity.documentId}
               activity={activity}
               locale={locale}

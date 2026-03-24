@@ -1,45 +1,60 @@
 import React from "react";
 import Link from "next/link";
-import { Video } from "lucide-react";
+import Image from "next/image";
 import type { VideoPlaylist } from "../model/video.types";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { getYouTubeThumbnail } from "@/shared/lib/utils";
+import { getImageUrl } from "@/shared/lib/api";
+import { formatFriendlyDate } from "@/shared/lib/utils";
+import type { Locale } from "@/types/locale";
 interface VideoProps {
   video: VideoPlaylist;
+  locale?: Locale;
 }
 
-const VideoCard = ({ video }: VideoProps) => {
-  const { title, documentId, description, coverImage, videos } = video;
+const VideoCard = ({ video, locale }: VideoProps) => {
+  const { title, documentId, description, coverImage, videos, publishedAt } =
+    video;
 
   const numberOfVideos = video.videos.length;
+
+  let thumbnailUrl;
   if (numberOfVideos > 0 && videos[0].videoLink) {
     const firstVideoUrl = videos[0].videoLink;
-    const thumbnailUrl = getYouTubeThumbnail(firstVideoUrl);
+    thumbnailUrl = getYouTubeThumbnail(firstVideoUrl);
   }
   return (
-    <Link href={`/library/video/${documentId}`} className="block group">
-      <div className="flex items-center gap-3 p-3 bg-white border border-border rounded-lg hover:border-primary/50 hover:bg-orange-50/30 transition-all duration-200 shadow-sm hover:shadow-md">
-        <div className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-          <Video size={16} />
+    <Link href={`/library/video/${documentId}`}>
+      <div className="group flex flex-col h-full gap-4">
+        <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
+          <Image
+            src={
+              getImageUrl(coverImage, "large") ||
+              thumbnailUrl ||
+              "/placeholder.png"
+            }
+            alt={title || "Blog image"}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+          />
         </div>
 
-        <div className="flex-1 min-w-0">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <h3 className="text-sm font-medium text-foreground leading-snug truncate group-hover:text-primary transition-colors">
-                {title}
-              </h3>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="max-w-xs">
-              <span>{title}</span>
-            </TooltipContent>
-          </Tooltip>
+        <div className="flex flex-col h-full gap-2">
+          <span
+            className={`text-md font-bold leading-snug group-hover:text-primary cursor-pointer mb-2`}
+          >
+            {title}
+          </span>
+          <p
+            className={`line-clamp-3 text-sm text-secondary-foreground/80 font-mono`}
+          >
+            {description}
+          </p>{" "}
+          <span className="mt-auto text-xs text-muted-foreground font-mono uppercase">
+            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+          </span>
         </div>
-
-        {/* <ChevronRight
-          size={14}
-          className="text-muted-foreground group-hover:translate-x-1 transition-transform"
-        /> */}
       </div>
     </Link>
   );

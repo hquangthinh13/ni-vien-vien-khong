@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import lineOrnament from "@/public/ornament-00.svg";
-import PoetryRenderer from "@/features/poem/ui/PoetryRenderer";
+import lineOrnament from "@/public/ornament-01.svg";
 import { fetchPoemByDocumentId } from "@/features/poem/api/poem.api";
 import type { Poem } from "@/features/poem/model/poem.types";
 import { getLocale } from "next-intl/server";
@@ -11,6 +10,7 @@ import RelatedPoems from "@/features/poem/ui/RelatedPoems";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Metadata, ResolvingMetadata } from "next";
+import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 
 type Props = {
   params: { documentId: string };
@@ -60,7 +60,7 @@ export default async function PoemPage({ params }: Props) {
     const fullResponse = await fetchPoemByDocumentId({
       documentId: documentId,
       locale,
-      populate: "*",
+      // populate: "*",
     });
     data = (
       Array.isArray(fullResponse.data)
@@ -72,35 +72,29 @@ export default async function PoemPage({ params }: Props) {
     console.error("Error fetching poem by documentId:", error);
   }
 
-  const imageUrl = getImageUrl(data?.coverImage, "medium");
+  // const imageUrl = getImageUrl(data?.coverImage, "medium");
   if (!data) {
     return <div className="text-center py-20">Không tìm thấy bài thơ.</div>;
   }
 
   return (
     <div className="page-container">
-      <div className="flex flex-col gap-0 justify-center">
-        <article className="w-full">
-          <header className="space-y-2">
-            <div className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest">
-              <span>Thơ thiền</span>
-            </div>
+      {/* <div className="w-full grid grid-cols-1 lg:grid-cols-10 gap-6 items-start"> */}{" "}
+      <div className="w-full max-w-none text-justify leading-relaxed">
+        <header className="flex flex-col w-full items-center mb-6 space-y-2">
+          <div className="page-label items-start">
+            <span>{locale === "en" ? "Poem" : "Thơ thiền"}</span>
+          </div>
+          <h1 className="text-xl md:text-4xl text-left font-bold leading-tight max-w-4xl">
+            {data.title}
+          </h1>
 
-            <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">
-              {data.title}
-            </h1>
-            {data.author && (
-              <p className="text-center text-sm italic text-muted-foreground">
-                {data.author}
-              </p>
-            )}
-          </header>
-          <div className=" flex w-full justify-center">
-            <div className="relative aspect-square w-full max-w-48 overflow-hidden rounded-full shadow-md mt-4">
+          {/* {data.coverImage && (
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-md mt-4">
               <Zoom zoomMargin={80}>
                 <Image
                   src={imageUrl || "/placeholder.png"}
-                  alt={data.title}
+                  alt={data.title || "Ritual cover image"}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                   priority
@@ -109,27 +103,21 @@ export default async function PoemPage({ params }: Props) {
                 />
               </Zoom>
             </div>
-          </div>
-
-          <div className="opacity-80 flex w-full justify-center my-8 scale-y-[-1]">
-            <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
-          </div>
-
-          <div className="poem-content-wrapper">
-            <PoetryRenderer content={data.content || []} />
-          </div>
-
-          <div className="opacity-80 flex w-full justify-center mt-8">
-            <Image src={lineOrnament} alt="Ornament" className="w-auto h-4" />
-          </div>
-        </article>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {poems.map((poem) => (
-            <PoemCard key={poem.documentId} poem={poem} />
-          ))}
-        </div>{" "} */}
-        <RelatedPoems poems={data.relatedPoems || []} />
+          )} */}
+        </header>{" "}
+        <div className="opacity-80 flex w-full justify-center my-4">
+          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
+        </div>
+        {/* <div className="opacity-80 flex w-full justify-center my-12">
+          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
+        </div> */}
+        <div className="w-full">
+          {data.content && (
+            <RichTextRenderer isPoem={true} content={data.content || []} />
+          )}
+        </div>{" "}
       </div>
+      <RelatedPoems locale={locale} poems={data.relatedPoems || []} />
     </div>
   );
 }

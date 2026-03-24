@@ -82,54 +82,34 @@ export const formatShortDate = (
     return `${monthNames[month]} ${day}, ${year}`;
   }
 };
-export const extractFirstParagraph = (content?: BlocksContent): string => {
-  if (!content || content.length === 0) return "";
-
-  // Tìm block đầu tiên có type là 'paragraph'
-  const firstParagraph = content.find(
-    (block): block is Extract<BlocksContent[number], { type: "paragraph" }> =>
-      block.type === "paragraph",
-  );
-
-  if (!firstParagraph || !firstParagraph.children) return "";
-
-  // Sử dụng reduce hoặc map để nối chuỗi từ các children
-  return firstParagraph.children
-    .map((child) => {
-      // Chỉ lấy text nếu child có thuộc tính 'text'
-      if ("text" in child) {
-        return child.text;
-      }
-      return "";
-    })
-    .join("")
-    .trim();
-};
-export const extractFirstFourLines = (content?: BlocksContent): string => {
+export const extractPreviewContent = (
+  content?: BlocksContent,
+  maxLength: number = 200,
+): string => {
   if (!content || content.length === 0) return "";
 
   let fullText = "";
 
-  // 1. Duyệt qua tất cả các blocks để lấy text thô
   for (const block of content) {
-    if (block.type === "paragraph" && block.children) {
+    // Chỉ lấy text từ các block dạng paragraph hoặc heading để tránh lấy text rác từ các block đặc biệt
+    if (block.type === "paragraph" || block.type.startsWith("heading")) {
       const blockText = block.children
         .map((child) => ("text" in child ? child.text : ""))
         .join("");
 
-      // Thêm dấu xuống dòng sau mỗi block paragraph để phân tách dòng thực tế
-      fullText += blockText + "\n";
+      fullText += blockText + " ";
     }
+
+    if (fullText.length >= maxLength) break;
   }
 
-  // 2. Tách chuỗi thành mảng các dòng dựa trên ký tự xuống dòng
-  const lines = fullText
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0); // Loại bỏ dòng trống nếu cần
+  const trimmedText = fullText.trim();
 
-  // 3. Lấy 4 dòng đầu tiên và nối lại
-  return lines.slice(0, 4).join("\n");
+  if (trimmedText.length > maxLength) {
+    return trimmedText.substring(0, maxLength).split(/\s(?=\S*$)/)[0] + "...";
+  }
+
+  return trimmedText;
 };
 export const formatTimeShort = (timeStr: string) => {
   if (!timeStr) return "";
