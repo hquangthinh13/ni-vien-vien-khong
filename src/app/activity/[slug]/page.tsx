@@ -118,12 +118,9 @@ export default async function ActivityPage({ params }: Props) {
     throw error;
   }
 
-  if (!response || !response.data) {
-    notFound();
-  }
+  const data = response?.data as Activity;
+  if (!data) notFound();
 
-  const data = response.data as Activity;
-  // console.log("Fetched activity data:", data);
   const active = isActive(data);
 
   const courseContent = data?.courseContent as CourseContent;

@@ -28,6 +28,8 @@ const LanguageSwitcher = () => {
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000; samesite=lax`;
 
     setCurrentLocale(newLocale);
+    router.push("/");
+
     router.refresh();
   };
 
