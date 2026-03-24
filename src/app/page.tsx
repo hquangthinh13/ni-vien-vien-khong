@@ -15,11 +15,13 @@ import MotionWrapper from "@/shared/motion/MotionWrapper";
 import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger";
 export default async function Home() {
   const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("HomePage");
 
-  const [t, response] = await Promise.all([
-    getTranslations("HomePage"),
-    fetchHomePage({ populate: "*", locale }),
-  ]);
+  const response = await fetchHomePage({ populate: "*", locale });
+  // const [t, response] = await Promise.all([
+  //   getTranslations("HomePage"),
+  //   fetchHomePage({ populate: "*", locale }),
+  // ]);
   const data = response.data as HomePageAttributes | null;
   const coverImage = getImageUrl(data?.coverImage, "original");
 

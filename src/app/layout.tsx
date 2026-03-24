@@ -138,7 +138,7 @@ export default async function RootLayout({
       <body className="min-h-screen flex flex-col bg-white">
         {" "}
         <Navbar /> <ScrollToTopButton />
-        {/* <ScrollProgress className="h-1" /> */}
+        <ScrollProgress className="h-1" />
         <NextIntlClientProvider>
           <main className="flex-1">{children}</main>{" "}
           <Toaster position="top-right" richColors /> <SpeedInsights />{" "}
