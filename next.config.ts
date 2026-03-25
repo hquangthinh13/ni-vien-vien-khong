@@ -48,7 +48,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/wp-:path*",
+        source: "/wp-(.*)",
         destination: "/",
         permanent: true,
       },
