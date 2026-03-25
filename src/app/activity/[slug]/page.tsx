@@ -45,7 +45,11 @@ export async function generateMetadata(
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: ["coverImage", "relatedActivities"],
+        populate: [
+          "coverImage",
+          "relatedActivities",
+          "relatedActivities.coverImage",
+        ],
       });
 
     const data = response?.data as Activity;
@@ -109,7 +113,11 @@ export default async function ActivityPage({ params }: Props) {
       await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
         locale,
         documentId: documentId,
-        populate: ["coverImage", "relatedActivities"],
+        populate: [
+          "coverImage",
+          "relatedActivities",
+          "relatedActivities.coverImage",
+        ],
       });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -232,7 +240,9 @@ export default async function ActivityPage({ params }: Props) {
 
                             <div className="flex flex-col items-start gap-0.5">
                               <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground group-hover:text-primary transition-colors">
-                                Video Khóa Tu
+                                {locale === "vi"
+                                  ? "Video Khóa Tu"
+                                  : "Video of the Course"}
                               </span>
                               <span className="text-sm font-bold text-left line-clamp-1">
                                 {video.title}
@@ -258,7 +268,9 @@ export default async function ActivityPage({ params }: Props) {
                                 size={32}
                               />
                               <p className="text-sm text-muted-foreground italic">
-                                Video đang được cập nhật...
+                                {locale === "vi"
+                                  ? "Vui lòng quay lại sau"
+                                  : "Please check back later"}
                               </p>
                             </div>
                           )}
@@ -271,58 +283,15 @@ export default async function ActivityPage({ params }: Props) {
             )}
         </div>
         <aside className="lg:col-span-3 w-full space-y-6">
-          <RelatedActivitiesSection activities={data.relatedActivities || []} />
+          <RelatedActivitiesSection
+            locale={locale}
+            activities={data.relatedActivities || []}
+          />
           {courseContent?.highlightedImages && (
             <HighlightSection images={courseContent.highlightedImages || []} />
           )}
 
           {data.registrationForm && active && (
-            // <Dialog>
-            //   <DialogTrigger asChild>
-            //     <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
-            //       <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
-
-            //       <div className="relative flex items-center justify-between">
-            //         <div className="flex flex-col gap-0">
-            //           <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
-            //             {locale === "vi" ? "Tham gia sự kiện" : "Join us"}
-            //           </span>
-            //           <h4 className="font-serif text-lg font-black uppercase tracking-normal text-secondary-foreground">
-            //             {locale === "vi"
-            //               ? "Điền thông tin đăng ký ngay"
-            //               : "Register Now"}
-            //           </h4>
-            //           <p className="text-xs text-muted-foreground italic">
-            //             {locale === "vi"
-            //               ? "Số lượng đăng ký có hạn: "
-            //               : "Limited slots available: "}{" "}
-            //             {data.registrationLimit}
-            //           </p>
-            //         </div>
-
-            //         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
-            //           <CirclePlus className="h-6 w-6" />
-            //         </div>
-            //       </div>
-            //     </div>
-            //   </DialogTrigger>
-            //   <DialogContent
-            //     aria-describedby={documentId}
-            //     className="max-h-[90vh] md:min-w-2xl lg:min-w-3xl overflow-y-auto"
-            //   >
-            //     <DialogTitle>Đăng ký tham gia</DialogTitle>
-            //     <DialogDescription>
-            //       Vui lòng điền đầy đủ thông tin để đăng ký tham gia sự kiện.
-            //     </DialogDescription>
-            //     <DynamicActivityRegistrationForm
-            //       locale={locale}
-            //       documentId={documentId}
-            //       active={active}
-            //             onClose={() => setOpen(false)}
-
-            //     />
-            //   </DialogContent>
-            // </Dialog>
             <ActivityRegistrationDialog
               documentId={documentId}
               locale={locale}
