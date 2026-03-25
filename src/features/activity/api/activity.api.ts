@@ -40,7 +40,7 @@ export async function fetchActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -68,7 +68,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -137,7 +137,7 @@ export async function fetchActiveActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -354,7 +354,7 @@ export async function fetchAllCourseYears(): Promise<number[]> {
   const res = await fetch(url, {
     method: "GET",
     headers: { Authorization: `Bearer ${AUTHORIZED_TOKEN}` },
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) return [new Date().getFullYear()];
