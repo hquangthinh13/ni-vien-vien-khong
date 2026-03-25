@@ -44,7 +44,9 @@ export async function fetchActivities(
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch activities: ${res.status}`);
+    // throw new Error(`Failed to fetch activities: ${res.status}`);
+    console.error(`Strapi Error ${res.status}: ${url}`);
+    return { data: [] };
   }
 
   return (await res.json()) as ActivityResponse;
@@ -241,9 +243,11 @@ export async function fetchActivitiesByCategory(
   });
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to fetch activities by category: ${res.statusText} (${res.status})`,
-    );
+    // throw new Error(
+    //   `Failed to fetch activities by category: ${res.statusText} (${res.status})`,
+    // );
+    console.error(`Strapi Error ${res.status}: ${url}`);
+    return { data: [] }; //
   }
 
   return (await res.json()) as ActivityResponse;
@@ -292,7 +296,9 @@ export async function fetchCoursesByCategory(
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch courses by category: ${res.status}`);
+    // throw new Error(`Failed to fetch courses by category: ${res.status}`);
+    console.error(`Strapi Error ${res.status}: ${url}`);
+    return { data: [] }; //
   }
   return (await res.json()) as ActivityResponse;
 }
