@@ -6,7 +6,7 @@ import ActivitiesSection from "@/features/activity/ui/ActivitiesSection";
 import QuestionSection from "@/features/question/ui/QuestionSection";
 import CalendarSection from "@/features/activity/ui/CalendarSection";
 import type { Locale } from "@/types/locale";
-import { getTranslations, getLocale } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import CourseSection from "@/features/activity/ui/CourseSection";
 
 import { fetchHomePage } from "@/features/homePage/api/homePage.api";
@@ -22,39 +22,35 @@ import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger"
 
 export default async function Home() {
   const locale = (await getLocale()) as Locale;
-
   const category = "Khóa Tu";
-  const [
-    t,
-    homePageResponse,
-    activityResponse,
-    courseResponse,
-    questionResponse,
-  ] = await Promise.all([
-    getTranslations("HomePage"),
-    fetchHomePage({ populate: "*", locale }),
-    fetchActivities({
-      sort: ["publishedAt:desc"],
-      pagination: { limit: 5 },
-      populate: "*",
-      locale,
-    }),
-    fetchActivitiesByCategory({
-      locale,
-      category: category,
-      sort: ["activityStartDate:desc"],
-      pagination: { limit: 4 },
-      populate: "coverImage",
-    }),
-    fetchAnsweredQuestions({
-      locale,
-      sort: ["publishedAt:desc"],
-      pagination: { limit: 3 },
-      populate: "*",
-    }),
-  ]);
+  const [homePageResponse, activityResponse, courseResponse, questionResponse] =
+    await Promise.all([
+      fetchHomePage({ populate: "*", locale }),
+      fetchActivities({
+        sort: ["publishedAt:desc"],
+        pagination: { limit: 5 },
+        populate: "*",
+        locale,
+      }),
+      fetchActivitiesByCategory({
+        locale,
+        category: category,
+        sort: ["activityStartDate:desc"],
+        pagination: { limit: 4 },
+        populate: "coverImage",
+      }),
+      fetchAnsweredQuestions({
+        locale,
+        sort: ["publishedAt:desc"],
+        pagination: { limit: 3 },
+        populate: "*",
+      }),
+    ]).catch((error) => {
+      console.error("Error fetching data for home page:", error);
+      return [null, null, null, null];
+    });
 
-  const homePage = homePageResponse.data || null;
+  const homePage = homePageResponse?.data || null;
   const coverImage = getImageUrl(homePage?.coverImage, "original");
 
   const activities = Array.isArray(activityResponse?.data)
@@ -128,7 +124,9 @@ export default async function Home() {
               <section className="flex flex-col">
                 <div className="flex w-fit">
                   {" "}
-                  <h1 className="home-page-section-title">{t("foreword")}</h1>
+                  <h1 className="home-page-section-title">
+                    {locale === "vi" ? "Lời ngỏ" : "Foreword"}
+                  </h1>
                 </div>
                 <p className="flex mt-4 leading-snug text-justify text-muted-foreground">
                   {homePage?.openingMessage}
