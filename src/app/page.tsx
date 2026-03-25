@@ -20,37 +20,90 @@ import { getImageUrl } from "@/shared/lib/api";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger";
 
+import { HomePageResponse } from "@/features/homePage/model/homePage.types";
+import { ActivityResponse } from "@/features/activity/model/activity.types";
+import { QuestionResponse } from "@/features/question/model/question.types";
+async function safeFetch<T>(promise: Promise<T>, fallback: T): Promise<T> {
+  try {
+    const data = await promise;
+    return data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return fallback;
+  }
+}
+
 export default async function Home() {
   const locale = (await getLocale()) as Locale;
   const category = "Khóa Tu";
+  // const [homePageResponse, activityResponse, courseResponse, questionResponse] =
+  //   await Promise.all([
+  //     fetchHomePage({ populate: "*", locale }),
+  //     fetchActivities({
+  //       sort: ["publishedAt:desc"],
+  //       pagination: { limit: 5 },
+  //       populate: "*",
+  //       locale,
+  //     }),
+  //     fetchActivitiesByCategory({
+  //       locale,
+  //       category: category,
+  //       sort: ["activityStartDate:desc"],
+  //       pagination: { limit: 4 },
+  //       populate: "coverImage",
+  //     }),
+  //     fetchAnsweredQuestions({
+  //       locale,
+  //       sort: ["publishedAt:desc"],
+  //       pagination: { limit: 3 },
+  //       populate: "*",
+  //     }),
+  //   ]).catch((error) => {
+  //     console.error("Error fetching data for home page:", error);
+  //     return [null, null, null, null];
+  //   });
+
+  // const homePage = homePageResponse?.data || null;
   const [homePageResponse, activityResponse, courseResponse, questionResponse] =
     await Promise.all([
-      fetchHomePage({ populate: "*", locale }),
-      fetchActivities({
-        sort: ["publishedAt:desc"],
-        pagination: { limit: 5 },
-        populate: "*",
-        locale,
-      }),
-      fetchActivitiesByCategory({
-        locale,
-        category: category,
-        sort: ["activityStartDate:desc"],
-        pagination: { limit: 4 },
-        populate: "coverImage",
-      }),
-      fetchAnsweredQuestions({
-        locale,
-        sort: ["publishedAt:desc"],
-        pagination: { limit: 3 },
-        populate: "*",
-      }),
-    ]).catch((error) => {
-      console.error("Error fetching data for home page:", error);
-      return [null, null, null, null];
-    });
+      safeFetch(fetchHomePage({ populate: "*", locale }), {
+        data: null,
+      } as HomePageResponse),
+      safeFetch(
+        fetchActivities({
+          sort: ["publishedAt:desc"],
+          pagination: { limit: 5 },
+          populate: "*",
+          locale,
+        }),
+        { data: [] } as ActivityResponse,
+      ),
+      safeFetch(
+        fetchActivitiesByCategory({
+          locale,
+          category: category,
+          sort: ["activityStartDate:desc"],
+          pagination: { limit: 4 },
+          populate: "coverImage",
+        }),
+        { data: [] } as ActivityResponse,
+      ),
+      safeFetch(
+        fetchAnsweredQuestions({
+          locale,
+          sort: ["publishedAt:desc"],
+          pagination: { limit: 3 },
+          populate: "*",
+        }),
+        { data: [] } as QuestionResponse,
+      ),
+    ]);
 
-  const homePage = homePageResponse?.data || null;
+  // 3. Xử lý dữ liệu (TypeScript sẽ rất hài lòng với cách này)
+  const homePage =
+    homePageResponse?.data && !Array.isArray(homePageResponse.data)
+      ? homePageResponse.data
+      : null;
   const coverImage = getImageUrl(homePage?.coverImage, "original");
 
   const activities = Array.isArray(activityResponse?.data)
