@@ -19,6 +19,7 @@ import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
 import { getImageUrl } from "@/shared/lib/api";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import QuestionDialogTrigger from "@/features/question/ui/QuestionDialogTrigger";
+
 export default async function Home() {
   const locale = (await getLocale()) as Locale;
 
@@ -42,7 +43,7 @@ export default async function Home() {
       locale,
       category: category,
       sort: ["activityStartDate:desc"],
-      pagination: { limit: 5 },
+      pagination: { limit: 4 },
       populate: "coverImage",
     }),
     fetchAnsweredQuestions({
@@ -52,6 +53,7 @@ export default async function Home() {
       populate: "*",
     }),
   ]);
+
   const homePage = homePageResponse.data || null;
   const coverImage = getImageUrl(homePage?.coverImage, "original");
 
