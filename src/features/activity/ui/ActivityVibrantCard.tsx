@@ -8,6 +8,7 @@ import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import DateCard from "@/shared/layout/DateCard";
+import { categoryMap } from "@/types/categories";
 
 interface ActivityVibrantCardProps {
   activity: Activity;
@@ -44,10 +45,16 @@ const ActivityVibrantCard = ({
     };
     extractColor();
   }, [imageUrl]);
-  const displayCategory =
+
+  const rawCategoryKey =
     activity.activityCategory === "Khóa Tu"
       ? activity.courseContent?.courseCategory || "Khóa Tu"
       : activity.activityCategory;
+
+  const displayCategory = rawCategoryKey
+    ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
+    : "";
+
   return (
     <Link
       href={`/activity/${activity.slug}-${activity.documentId}`}

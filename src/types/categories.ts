@@ -1,3 +1,5 @@
+import { Locale } from "./locale";
+
 export type ActivityCategory =
   | "Phật Sự Trong Nước"
   | "Phật Sự Nước Ngoài"
@@ -12,6 +14,33 @@ export type CourseCategory =
   | "Khóa Thiền"
   | "Khác"
   | "Tất cả";
+
+export const categoryMap: Record<Locale, Record<string, string>> = {
+  vi: {
+    "Phật Sự Trong Nước": "Hoạt Động Trong Nước",
+    "Phật Sự Nước Ngoài": "Hoạt Động Nước Ngoài",
+    "Lớp Học Phật Pháp": "Lớp Học Phật Pháp",
+    "Tin Tức Khác": "Khác",
+    "Khóa Tu": "Khóa Tu",
+    "Tất cả": "Tất cả",
+    "Khóa Tu Mùa Hè": "Khóa Tu Mùa Hè",
+    "Khóa Tu Xuất Gia Gieo Duyên": "Khóa Tu Xuất Gia",
+    "Khóa Thiền": "Khóa Thiền",
+    Khác: "Khác",
+  },
+  en: {
+    "Phật Sự Trong Nước": "Domestic Activities",
+    "Phật Sự Nước Ngoài": "International Activities",
+    "Lớp Học Phật Pháp": "Dharma Classes",
+    "Tin Tức Khác": "Others",
+    "Khóa Tu": "Retreats",
+    "Tất cả": "All",
+    "Khóa Tu Mùa Hè": "Summer Retreats",
+    "Khóa Tu Xuất Gia Gieo Duyên": "Monastic Retreats",
+    "Khóa Thiền": "Meditation Retreats",
+    Khác: "Others",
+  },
+};
 
 export type LinkedDocumentCategory =
   | "Tạng Kinh"

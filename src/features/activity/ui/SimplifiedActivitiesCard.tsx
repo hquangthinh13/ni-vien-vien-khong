@@ -7,6 +7,7 @@ import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { getStatusLabel } from "../api/activity.api";
 import { Badge } from "@/shared/ui/badge";
+import { categoryMap } from "@/types/categories";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -17,15 +18,19 @@ const SimplifiedNewsCard = async ({
   activity,
   isFirst = false,
   variant = "bottom",
-  locale,
+  locale = "vi",
 }: NewsCardProps) => {
   const status = getStatusLabel(activity, locale);
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
-  const displayCategory =
+  const rawCategoryKey =
     activity.activityCategory === "Khóa Tu"
       ? activity.courseContent?.courseCategory || "Khóa Tu"
       : activity.activityCategory;
+
+  const displayCategory = rawCategoryKey
+    ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
+    : "";
   if (isFirst === false && variant === "bottom") {
     return (
       <Link

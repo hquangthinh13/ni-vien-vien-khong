@@ -7,6 +7,8 @@ import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { Badge } from "@/shared/ui/badge";
 import { getStatusLabel } from "../api/activity.api";
+import { categoryMap } from "@/types/categories";
+
 interface ActivityCardProps {
   activity: Activity;
   locale: Locale;
@@ -14,10 +16,14 @@ interface ActivityCardProps {
 const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
-  const displayCategory =
+  const rawCategoryKey =
     activity.activityCategory === "Khóa Tu"
       ? activity.courseContent?.courseCategory || "Khóa Tu"
       : activity.activityCategory;
+
+  const displayCategory = rawCategoryKey
+    ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
+    : "";
   const status = getStatusLabel(activity, locale);
 
   return (
