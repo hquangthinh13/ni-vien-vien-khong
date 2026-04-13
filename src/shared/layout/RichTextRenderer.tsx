@@ -65,7 +65,7 @@ const RichTextRenderer = ({
 
         image: ({ image }) => (
           <figure
-            className={`${isPoem ? "px-24 lg:px-80" : "px-24 lg:px-48"}  my-8 space-y-3`}
+            className={`${isPoem ? "px-8 lg:px-80" : "px-4 lg:px-48"}  my-8 space-y-3`}
           >
             <div
               className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-xl shadow-sm`}
