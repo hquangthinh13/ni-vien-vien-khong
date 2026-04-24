@@ -62,6 +62,7 @@ export type CustomizedComponent = {
   label: string;
   section: FormSection;
   type: ComponentType;
+  isRequired: boolean;
 };
 export type TextInput = {
   id: number;

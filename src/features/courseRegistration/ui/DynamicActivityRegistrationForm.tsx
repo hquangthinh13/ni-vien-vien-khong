@@ -287,7 +287,9 @@ export default function ActivityRegistrationForm({
         return "otherDetail";
     }
   };
-
+const getFieldError = (name: string) => {
+    return name.split(".").reduce((acc: any, part) => acc && acc[part], errors);
+  };
   const renderSectionFields = (sectionName: FormSectionEnum) => {
     const fields =
       template?.customizedComponents.filter((c) => c.section === sectionName) ||
@@ -309,16 +311,16 @@ export default function ActivityRegistrationForm({
     comp: CustomizedComponentWithDetails,
     name: Path<RegistrationFormValues>,
   ) => {
+    const fieldError = getFieldError(name); 
     switch (comp.type) {
       case ComponentTypeEnum.Number:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>{comp.label}{comp.isRequired && <span className="text-destructive">*</span>}</FieldLabel>
             <Input
               type="number"
-              {...register(name, {})}
-              placeholder={comp.label}
-            />
+{...register(name, { required: comp.isRequired ? "Trường này là bắt buộc" : false })}              placeholder={comp.label}
+            />{fieldError && <p className="input-error-message">{fieldError.message as string}</p>}
           </Field>
         );
 
@@ -331,6 +333,7 @@ export default function ActivityRegistrationForm({
             <Controller
               control={control}
               name={name}
+              rules={{ required: comp.isRequired ? "Vui lòng xác nhận" : false }}
               render={({ field }) => (
                 <Switch
                   className="shrink-0 hover:cursor-pointer"
@@ -341,16 +344,16 @@ export default function ActivityRegistrationForm({
               )}
             />
             <FieldLabel htmlFor={name} className="cursor-pointer">
-              {comp.label}
-            </FieldLabel>
+              {comp.label}{comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>{fieldError && <p className="input-error-message">{fieldError.message as string}</p>}
           </Field>
         );
       case ComponentTypeEnum.LongText:
         return (
           <Field key={comp.id} className="col-span-full">
-            <FieldLabel>{comp.label}</FieldLabel>
-            <Textarea {...register(name)} placeholder={comp.label} />
-          </Field>
+            <FieldLabel>{comp.label}{comp.isRequired && <span className="text-destructive">*</span>}</FieldLabel>
+            <Textarea {...register(name, { required: comp.isRequired ? "Trường này là bắt buộc" : false })} placeholder={comp.label} />
+          {fieldError && <p className="input-error-message">{fieldError.message as string}</p>}</Field>
         );
 
       case ComponentTypeEnum.MultipleChoice: {
@@ -360,10 +363,19 @@ export default function ActivityRegistrationForm({
 
         return (
           <Field key={comp.id} className="col-span-full">
-            <FieldLabel>{comp.label}</FieldLabel>
+            <FieldLabel>{comp.label}{comp.isRequired && <span className="text-destructive">*</span>}</FieldLabel>
             <Controller
               control={control}
               name={name}
+              rules={{
+                validate: (value) => {
+                  if (comp.isRequired) {
+                    if (isMulti && (!value || (value as string[]).length === 0)) return "Vui lòng chọn ít nhất một tùy chọn";
+                    if (!isMulti && !value) return "Vui lòng chọn một tùy chọn";
+                  }
+                  return true;
+                }
+              }}
               render={({ field }) => {
                 if (isMulti) {
                   const currentValues = Array.isArray(field.value)
@@ -422,14 +434,16 @@ export default function ActivityRegistrationForm({
                           </div>
                         )}
                       </div>
-                      {isOtherChecked && (
+                      {isOtherChecked && (<div>
                         <Input
                           placeholder="Vui lòng nhập nội dung khác..."
-                          {...register(
-                            `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
-                          )}
+                         {...register(`dynamicOthers.${comp.label}` as Path<RegistrationFormValues>, {
+                               required: "Vui lòng nhập chi tiết"
+                            })}
                           className="mt-2 animate-in fade-in slide-in-from-top-1"
-                        />
+                        />{errors.dynamicOthers?.[comp.label] && (
+                             <p className="input-error-message mt-1">{errors.dynamicOthers[comp.label]?.message}</p>
+                          )}</div>
                       )}
                     </div>
                   );
@@ -449,7 +463,7 @@ export default function ActivityRegistrationForm({
                       }}
                       value={field.value as string}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Chọn một tùy chọn" />
                       </SelectTrigger>
                       <SelectContent>
@@ -468,29 +482,32 @@ export default function ActivityRegistrationForm({
                         )}
                       </SelectContent>
                     </Select>
-                    {isOtherSelected && (
+                    {isOtherSelected && (<div>
                       <Input
                         placeholder="Vui lòng nhập nội dung khác..."
-                        {...register(
-                          `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
-                        )}
+                      {...register(`dynamicOthers.${comp.label}` as Path<RegistrationFormValues>, {
+                            required: "Vui lòng nhập chi tiết"
+                          })}
                         className="animate-in fade-in slide-in-from-top-1"
-                      />
+                      />{errors.dynamicOthers?.[comp.label] && (
+                           <p className="input-error-message mt-1">{errors.dynamicOthers[comp.label]?.message}</p>
+                        )}</div>
                     )}
                   </div>
                 );
               }}
-            />
+            />{fieldError && <p className="input-error-message mt-1">{fieldError.message as string}</p>}
           </Field>
         );
       }
       case ComponentTypeEnum.Date:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>{comp.label}{comp.isRequired && <span className="text-destructive">*</span>}</FieldLabel>
             <Controller
               control={control}
               name={name}
+              rules={{ required: comp.isRequired ? "Vui lòng chọn ngày" : false }}
               render={({ field }) => {
                 const dateValue =
                   typeof field.value === "string"
@@ -532,16 +549,17 @@ export default function ActivityRegistrationForm({
                   </Popover>
                 );
               }}
-            />
+            />{fieldError && <p className="input-error-message mt-1">{fieldError.message as string}</p>}
           </Field>
         );
       case ComponentTypeEnum.DateTime:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>{comp.label}{comp.isRequired && <span className="text-destructive">*</span>}</FieldLabel>
             <Controller
               control={control}
               name={name}
+              rules={{ required: comp.isRequired ? "Vui lòng chọn ngày và giờ" : false }}
               render={({ field }) => {
                 const dateValue =
                   typeof field.value === "string"
@@ -605,15 +623,15 @@ export default function ActivityRegistrationForm({
                   </div>
                 );
               }}
-            />
+            />{fieldError && <p className="input-error-message mt-1">{fieldError.message as string}</p>}
           </Field>
         );
       default:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
-            <Input {...register(name)} placeholder={comp.label} />
-          </Field>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>{comp.label}{comp.isRequired && <span className="text-destructive">*</span>}</FieldLabel>
+            <Input {...register(name, { required: comp.isRequired ? "Trường này là bắt buộc" : false })} placeholder={comp.label} />
+          {fieldError && <p className="input-error-message">{fieldError.message as string}</p>}</Field>
         );
     }
   };
