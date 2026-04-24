@@ -191,6 +191,8 @@ export default function ActivityRegistrationForm({
         return;
       }
     }
+
+  
     const processDynamicSection = <T extends DynamicFields>(
       sectionData: T,
     ): T => {
@@ -286,6 +288,10 @@ export default function ActivityRegistrationForm({
       default:
         return "otherDetail";
     }
+  };
+
+    const hasCustomFieldsForSection = (section: FormSectionEnum) => {
+    return template?.customizedComponents?.some((comp) => comp.section === section);
   };
 const getFieldError = (name: string) => {
     return name.split(".").reduce((acc: any, part) => acc && acc[part], errors);
@@ -913,11 +919,13 @@ const getFieldError = (name: string) => {
           </div>
 
           {/* Section: Identity*/}
-          {template.defaultIdentitySectionIncluded && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+{(template.defaultIdentitySectionIncluded || hasCustomFieldsForSection(FormSectionEnum.Identity)) && (            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin Căn cước
               </h3>
+
+              {template.defaultIdentitySectionIncluded && (
+                <>
               <Field>
                 <FieldLabel>
                   Số CCCD
@@ -1052,16 +1060,19 @@ const getFieldError = (name: string) => {
                     {errors.identityDetail.issueAt.message}
                   </p>
                 )}
-              </Field>
+              </Field></>
+              )}
+
               {renderSectionFields(FormSectionEnum.Identity)}
             </div>
           )}
-
-          {template.defaultMonasticSectionIncluded && (
+{(template.defaultMonasticSectionIncluded || hasCustomFieldsForSection(FormSectionEnum.Monastic)) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin tu sĩ
               </h3>
+              {template.defaultMonasticSectionIncluded && (
+                <>
               <Field className="col-span-full">
                 <FieldLabel>Pháp danh</FieldLabel>
                 <Input
@@ -1176,15 +1187,20 @@ const getFieldError = (name: string) => {
                   {...register("monasticDetail.yearsOfPractice")}
                   type="number"
                 />
-              </Field>
+              </Field></>
+              )}
               {renderSectionFields(FormSectionEnum.Monastic)}
             </div>
           )}
-          {template.defaultRelationSectionIncluded && (
+
+          {(template.defaultRelationSectionIncluded || hasCustomFieldsForSection(FormSectionEnum.Relation)) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin liên hệ
               </h3>
+
+              {template.defaultRelationSectionIncluded && (
+                <>
               <Field className="col-span-full">
                 <FieldLabel>Họ tên người thân</FieldLabel>
                 <Input
@@ -1205,15 +1221,18 @@ const getFieldError = (name: string) => {
                   placeholder="Nhập mối quan hệ"
                   {...register("relationDetail.relationship")}
                 />
-              </Field>
+              </Field></>)}
               {renderSectionFields(FormSectionEnum.Relation)}
             </div>
           )}
-          {template.defaultRoutineSectionIncluded && (
+          {(template.defaultRoutineSectionIncluded || hasCustomFieldsForSection(FormSectionEnum.Routine)) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin lịch trình
               </h3>
+
+              {template.defaultRoutineSectionIncluded && (
+                <>
               <Field className="col-span-full">
                 <FieldLabel>Yêu cầu về chế độ ăn uống</FieldLabel>
                 <Controller
@@ -1273,7 +1292,8 @@ const getFieldError = (name: string) => {
                 >
                   Tôi có tình trạng sức khỏe đặc biệt cần lưu ý
                 </FieldLabel>
-              </div>
+              </div></>
+              )}
               {renderSectionFields(FormSectionEnum.Routine)}
             </div>
           )}
@@ -1306,9 +1326,9 @@ const getFieldError = (name: string) => {
                           name={
                             `commitments.${msg.id}` as unknown as Path<RegistrationFormValues>
                           }
-                          rules={{
-                            required: "Bạn phải đồng ý với cam kết này",
-                          }}
+                         rules={{
+                    validate: (value) => value === true || "Bạn phải đồng ý với cam kết này",
+                  }}
                           render={({ field }) => (
                             <Checkbox
                               id={`commit-${msg.id}`}
