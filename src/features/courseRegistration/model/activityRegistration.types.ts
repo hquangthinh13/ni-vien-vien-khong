@@ -36,7 +36,7 @@ export interface ActivityRegistration extends StrapiEntity {
   registreeData: BasicInfoComponent;
   registrationPayLoad?: RegistrationPayload;
   firstTimeRegistered: boolean;
-  registrationStatus: RegistrationStatus;
+  registrationStatus: RegistrationStatus; // Field to check the status of registration
   confirmed?: boolean;
   confirmationToken?: string;
   registeredActivity?: Activity;
