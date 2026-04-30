@@ -47,7 +47,7 @@ const ActivityRegistrationContentRenderer = ({
           </figure>
         ),
         paragraph: ({ children }) => (
-          <p className="not-last:mb-0 text-sm text-foreground/90 text-justify">
+          <p className="not-last:mb-4 text-sm text-foreground/90 text-justify">
             {children}
           </p>
         ),

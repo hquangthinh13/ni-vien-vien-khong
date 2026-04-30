@@ -158,10 +158,10 @@ export default function ActivityRegistrationForm({
           setTemplate(data.registrationForm);
           setActivity(data);
         }
-        // console.log(
-        //   "Loaded registration form template:",
-        //   data?.registrationForm,
-        // );
+        console.log(
+          "Loaded registration form template:",
+          data?.registrationForm,
+        );
         // console.log("Loaded activity data:", data);
       } catch (error) {
         toast.error("Không thể tải thông tin đăng ký");
@@ -174,32 +174,6 @@ export default function ActivityRegistrationForm({
     // console.log(values);
 
     // console.log("values.basic", values.basic);
-
-    // Logic tính tuổi theo số năm trọn vẹn (tính đến ngày hiện tại)
-    // if (activity?.ageRestricted) {
-    //   const dob = parseISO(values.basic.dob);
-
-    //   if (!isValid(dob)) {
-    //     toast.error("Vui lòng chọn ngày sinh hợp lệ");
-    //     return;
-    //   }
-
-    //   const age = differenceInYears(new Date(), dob);
-
-    //   if (activity.minAge != null && age < activity.minAge) {
-    //     toast.error(
-    //       `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu tối thiểu ${activity.minAge} tuổi)`,
-    //     );
-    //     return;
-    //   }
-
-    //   if (activity.maxAge != null && age > activity.maxAge) {
-    //     toast.error(
-    //       `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu tối đa ${activity.maxAge} tuổi)`,
-    //     );
-    //     return;
-    //   }
-    // }
 
     // Logic tính tuổi theo năm sinh (năm hiện tại trừ năm sinh)
     if (activity?.ageRestricted) {
@@ -231,23 +205,56 @@ export default function ActivityRegistrationForm({
     }
     const processDynamicSection = <T extends DynamicFields>(
       sectionData: T,
+      sectionEnum: FormSectionEnum,
     ): T => {
-      const processed = { ...sectionData };
+      const processed: Record<string, any> = { ...sectionData };
+      const sectionComps =
+        template?.customizedComponents.filter(
+          (c) => c.section === sectionEnum,
+        ) || [];
 
-      Object.keys(values.dynamicOthers).forEach((label) => {
-        const otherText = values.dynamicOthers[label];
-        const originalVal = processed[label];
+      sectionComps.forEach((comp) => {
+        // Lấy lại key đã dùng lưu trong Form
+        const rhfKey = comp.attributeName || `field_${comp.id}`;
+        // Key chuẩn gửi lên API (ưu tiên attributeName, nếu null thì dùng label gốc)
+        const payloadKey = comp.attributeName || comp.label;
 
-        if (originalVal === "__OTHER__") {
-          (processed as DynamicFields)[label] = otherText;
-        } else if (Array.isArray(originalVal)) {
-          (processed as DynamicFields)[label] = originalVal.map((v) =>
-            v === "__OTHER__" ? otherText : v,
-          );
+        let val = processed[rhfKey];
+        const otherText = values.dynamicOthers[rhfKey];
+
+        if (val === "__OTHER__") {
+          val = otherText;
+        } else if (Array.isArray(val)) {
+          val = val.map((v) => (v === "__OTHER__" ? otherText : v));
+        }
+
+        // Gắn vào payload theo tên chuẩn
+        if (val !== undefined) {
+          processed[payloadKey] = val;
+        }
+
+        // Xóa đi phần key rác (chỉ dùng nội bộ cho RHF) nếu nó khác với payload key
+        if (rhfKey !== payloadKey && processed[rhfKey] !== undefined) {
+          delete processed[rhfKey];
         }
       });
-      return processed;
+
+      return processed as T;
     };
+    //   Object.keys(values.dynamicOthers).forEach((label) => {
+    //     const otherText = values.dynamicOthers[label];
+    //     const originalVal = processed[label];
+
+    //     if (originalVal === "__OTHER__") {
+    //       (processed as DynamicFields)[label] = otherText;
+    //     } else if (Array.isArray(originalVal)) {
+    //       (processed as DynamicFields)[label] = originalVal.map((v) =>
+    //         v === "__OTHER__" ? otherText : v,
+    //       );
+    //     }
+    //   });
+    //   return processed;
+    // };
 
     const mappedCommitments: Record<string, boolean> = {};
     if (template?.commitmentMessages) {
@@ -259,17 +266,24 @@ export default function ActivityRegistrationForm({
 
     const finalIdentityDetail = processDynamicSection(
       values.identityDetail as DynamicFields,
+      FormSectionEnum.Identity,
     );
     const finalMonasticDetail = processDynamicSection(
       values.monasticDetail as DynamicFields,
+      FormSectionEnum.Monastic,
     );
     const finalRelationDetail = processDynamicSection(
       values.relationDetail as DynamicFields,
+      FormSectionEnum.Relation,
     );
     const finalRoutineDetail = processDynamicSection(
       values.routineDetail as DynamicFields,
+      FormSectionEnum.Routine,
     );
-    const finalOtherDetail = processDynamicSection(values.otherDetail);
+    const finalOtherDetail = processDynamicSection(
+      values.otherDetail as DynamicFields,
+      FormSectionEnum.Others,
+    );
 
     startTransition(async () => {
       try {
@@ -355,12 +369,14 @@ export default function ActivityRegistrationForm({
     const formKey = getSectionKey(sectionName) || "others";
 
     return fields.map((comp) => {
-      const fieldPath =
-        `${formKey}.${comp.label}` as Path<RegistrationFormValues>;
+      const rhfKey = comp.attributeName || `field_${comp.id}`;
+
+      const fieldPath = `${formKey}.${rhfKey}` as Path<RegistrationFormValues>;
 
       return renderDynamicField(
         comp as CustomizedComponentWithDetails,
         fieldPath,
+        rhfKey,
       );
     });
   };
@@ -368,6 +384,7 @@ export default function ActivityRegistrationForm({
   const renderDynamicField = (
     comp: CustomizedComponentWithDetails,
     name: Path<RegistrationFormValues>,
+    rhfKey: string,
   ) => {
     const fieldError = getFieldError(name);
     switch (comp.type) {
@@ -533,16 +550,16 @@ export default function ActivityRegistrationForm({
                           <Input
                             placeholder="Vui lòng nhập nội dung khác..."
                             {...register(
-                              `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
+                              `dynamicOthers.${rhfKey}` as Path<RegistrationFormValues>,
                               {
                                 required: "Vui lòng nhập chi tiết",
                               },
                             )}
                             className="mt-2 animate-in fade-in slide-in-from-top-1"
                           />
-                          {errors.dynamicOthers?.[comp.label] && (
+                          {errors.dynamicOthers?.[rhfKey] && (
                             <p className="input-error-message mt-1">
-                              {errors.dynamicOthers[comp.label]?.message}
+                              {errors.dynamicOthers[rhfKey]?.message}
                             </p>
                           )}
                         </div>
@@ -559,7 +576,7 @@ export default function ActivityRegistrationForm({
                         field.onChange(val);
                         if (val !== "__OTHER__")
                           setValue(
-                            `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
+                            `dynamicOthers.${rhfKey}` as Path<RegistrationFormValues>,
                             "",
                           );
                       }}
@@ -568,7 +585,7 @@ export default function ActivityRegistrationForm({
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Chọn một tùy chọn" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent position="popper">
                         {details?.options.map((opt) => (
                           <SelectItem key={opt.id} value={opt.label}>
                             {opt.label}
@@ -589,16 +606,16 @@ export default function ActivityRegistrationForm({
                         <Input
                           placeholder="Vui lòng nhập nội dung khác..."
                           {...register(
-                            `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
+                            `dynamicOthers.${rhfKey}` as Path<RegistrationFormValues>,
                             {
                               required: "Vui lòng nhập chi tiết",
                             },
                           )}
                           className="animate-in fade-in slide-in-from-top-1"
                         />
-                        {errors.dynamicOthers?.[comp.label] && (
+                        {errors.dynamicOthers?.[rhfKey] && (
                           <p className="input-error-message mt-1">
-                            {errors.dynamicOthers[comp.label]?.message}
+                            {errors.dynamicOthers[rhfKey]?.message}{" "}
                           </p>
                         )}
                       </div>
@@ -877,10 +894,9 @@ export default function ActivityRegistrationForm({
                     <SelectTrigger>
                       <SelectValue placeholder="Chọn giới tính" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent position="popper">
                       <SelectItem value="Male">Nam</SelectItem>
                       <SelectItem value="Female">Nữ</SelectItem>
-                      {/* <SelectItem value="Other">Khác</SelectItem> */}
                     </SelectContent>
                   </Select>
                 )}
@@ -1000,14 +1016,22 @@ export default function ActivityRegistrationForm({
             <Field className="col-span-full">
               <FieldLabel className="text-sm font-semibold">
                 Tên hiển thị trên Zalo
+                <span className="text-destructive">*</span>
               </FieldLabel>
               <Input
-                {...register("basic.zaloName")}
+                {...register("basic.zaloName", {
+                  required: "Tên hiển thị trên Zalo là thông tin bắt buộc",
+                })}
                 placeholder="Nhập tên hiển thị của bạn trên Zalo"
               />
+              {errors.basic?.zaloName && (
+                <p className="input-error-message">
+                  {errors.basic.zaloName.message}
+                </p>
+              )}
             </Field>
 
-            <div className="col-span-full flex items-start space-x-3 p-3 rounded-lg bg-muted/20">
+            <div className="col-span-full flex items-start space-x-2 p-2 pl-0 rounded-lg bg-muted/20">
               <Controller
                 control={control}
                 name="firstTimeRegistered"
@@ -1024,7 +1048,7 @@ export default function ActivityRegistrationForm({
               />
               <FieldLabel
                 htmlFor="firstTimeRegistered"
-                className="font-normal leading-relaxed"
+                className="font-normal leading-relaxed cursor-pointer"
               >
                 Đây là lần đầu tiên tôi tham gia sự kiện tại Ni Viện Viên Không.
               </FieldLabel>
@@ -1145,7 +1169,7 @@ export default function ActivityRegistrationForm({
                           <SelectTrigger>
                             <SelectValue placeholder="Chọn khu vực đăng ký" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent position="popper">
                             <SelectItem
                               className="hover:cursor-pointer"
                               value="Bộ Công An"
@@ -1222,7 +1246,7 @@ export default function ActivityRegistrationForm({
                           <SelectTrigger>
                             <SelectValue placeholder="Chọn giới phẩm" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent position="popper">
                             <SelectItem
                               className="hover:cursor-pointer"
                               value="Tỳ Kheo Ni"
@@ -1271,7 +1295,7 @@ export default function ActivityRegistrationForm({
                           <SelectTrigger>
                             <SelectValue placeholder="Chọn truyền thống tu sĩ" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent position="popper">
                             <SelectItem
                               className="hover:cursor-pointer"
                               value="Nam Tông"
@@ -1424,7 +1448,7 @@ export default function ActivityRegistrationForm({
                           <SelectTrigger>
                             <SelectValue placeholder="Chọn chế độ ăn uống" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent position="popper">
                             <SelectItem
                               className="hover:cursor-pointer"
                               value="Ăn chay"
@@ -1513,7 +1537,7 @@ export default function ActivityRegistrationForm({
                 <div className="space-y-2">
                   {template.commitmentMessages.map((msg) => (
                     <div key={msg.id} className="flex flex-col">
-                      <div className="flex items-start space-x-4 p-2 pl-0 rounded-lg bg-muted/20">
+                      <div className="flex items-start space-x-2 p-2 pl-0 rounded-lg bg-muted/20">
                         <Controller
                           control={control}
                           name={
