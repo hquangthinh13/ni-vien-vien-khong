@@ -3,11 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
-import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
+import {
+  cn,
+  extractPreviewContent,
+  formatFriendlyDate,
+} from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
-import { getStatusLabel } from "../api/activity.api";
+import { getActivityStatus, getStatusLabel } from "../api/activity.api";
 import { Badge } from "@/shared/ui/badge";
 import { categoryMap } from "@/types/categories";
+import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -21,6 +26,8 @@ const SimplifiedNewsCard = async ({
   locale = "vi",
 }: NewsCardProps) => {
   const status = getStatusLabel(activity, locale);
+  const statusKey = getActivityStatus(activity);
+  const statusConfig = getActivityStatusConfig(statusKey);
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
   const rawCategoryKey =
@@ -47,11 +54,15 @@ const SimplifiedNewsCard = async ({
           {activityName}
         </span>
         <div className="flex gap-2 items-center mb-2">
-          <Badge variant="secondary" className="font-mono">
+          <Badge variant="default" className="font-mono">
             {displayCategory}
           </Badge>
 
-          <Badge variant="secondary" className="font-mono">
+          <Badge
+            variant="outline"
+            className={cn("font-mono shadow-none", statusConfig.className)}
+          >
+            {" "}
             {status}
           </Badge>
         </div>
@@ -92,11 +103,14 @@ const SimplifiedNewsCard = async ({
             {activityName}
           </span>
           <div className="flex gap-2 items-center mb-2">
-            <Badge variant="secondary" className="font-mono">
+            <Badge variant="default" className="font-mono">
               {displayCategory}
             </Badge>
 
-            <Badge variant="secondary" className="font-mono">
+            <Badge
+              variant="outline"
+              className={cn("font-mono shadow-none", statusConfig.className)}
+            >
               {status}
             </Badge>
           </div>

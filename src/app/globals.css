@@ -36,6 +36,9 @@
   .input-error-message {
     @apply text-xs font-medium text-destructive;
   }
+  .input-section {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
 }
 
 @custom-variant dark (&:is(.dark *));
