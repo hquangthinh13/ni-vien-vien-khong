@@ -26,7 +26,7 @@ import { ComponentTypeEnum, FormSectionEnum } from "@/types/form-components";
 // UI Components (Shadcn)
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
-import { Field, FieldDescription, FieldLabel } from "@/shared/ui/field";
+import { Field, FieldLabel } from "@/shared/ui/field";
 import { Textarea } from "@/shared/ui/textarea";
 import {
   Select,
@@ -174,6 +174,34 @@ export default function ActivityRegistrationForm({
     // console.log(values);
 
     // console.log("values.basic", values.basic);
+
+    // Logic tính tuổi theo số năm trọn vẹn (tính đến ngày hiện tại)
+    // if (activity?.ageRestricted) {
+    //   const dob = parseISO(values.basic.dob);
+
+    //   if (!isValid(dob)) {
+    //     toast.error("Vui lòng chọn ngày sinh hợp lệ");
+    //     return;
+    //   }
+
+    //   const age = differenceInYears(new Date(), dob);
+
+    //   if (activity.minAge != null && age < activity.minAge) {
+    //     toast.error(
+    //       `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu tối thiểu ${activity.minAge} tuổi)`,
+    //     );
+    //     return;
+    //   }
+
+    //   if (activity.maxAge != null && age > activity.maxAge) {
+    //     toast.error(
+    //       `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu tối đa ${activity.maxAge} tuổi)`,
+    //     );
+    //     return;
+    //   }
+    // }
+
+    // Logic tính tuổi theo năm sinh (năm hiện tại trừ năm sinh)
     if (activity?.ageRestricted) {
       const dob = parseISO(values.basic.dob);
 
@@ -182,23 +210,25 @@ export default function ActivityRegistrationForm({
         return;
       }
 
-      const age = differenceInYears(new Date(), dob);
+      // Lấy năm hiện tại và năm sinh để trừ trực tiếp
+      const currentYear = new Date().getFullYear();
+      const birthYear = dob.getFullYear();
+      const age = currentYear - birthYear;
 
       if (activity.minAge != null && age < activity.minAge) {
         toast.error(
-          `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu tối thiểu ${activity.minAge} tuổi)`,
+          `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu từ năm sinh ${currentYear - activity.minAge} trở về trước)`,
         );
         return;
       }
 
       if (activity.maxAge != null && age > activity.maxAge) {
         toast.error(
-          `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu tối đa ${activity.maxAge} tuổi)`,
+          `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu từ năm sinh ${currentYear - activity.maxAge} trở về sau)`,
         );
         return;
       }
     }
-
     const processDynamicSection = <T extends DynamicFields>(
       sectionData: T,
     ): T => {
