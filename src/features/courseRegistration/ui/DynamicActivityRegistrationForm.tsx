@@ -158,10 +158,10 @@ export default function ActivityRegistrationForm({
           setTemplate(data.registrationForm);
           setActivity(data);
         }
-        console.log(
-          "Loaded registration form template:",
-          data?.registrationForm,
-        );
+        // console.log(
+        //   "Loaded registration form template:",
+        //   data?.registrationForm,
+        // );
         // console.log("Loaded activity data:", data);
       } catch (error) {
         toast.error("Không thể tải thông tin đăng ký");
