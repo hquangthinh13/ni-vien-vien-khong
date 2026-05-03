@@ -127,6 +127,7 @@ export default async function ActivityPage({ params }: Props) {
   }
 
   const data = response?.data as Activity;
+
   if (!data) notFound();
 
   const active = isActive(data);
@@ -181,18 +182,6 @@ export default async function ActivityPage({ params }: Props) {
                 />{" "}
               </Zoom>
             </div>
-            {/* <Zoom zoomMargin={80}>
-              <Image
-                src={getImageUrl(data.coverImage) || "/placeholder.png"}
-                alt={data.activityName || "Course cover image"}
-                className="flex rounded-2xl mt-4 hover:scale-105 transition-transform duration-300"
-                priority
-                placeholder="blur"
-                width={1280}
-                height={720}
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
-              />
-            </Zoom> */}
           </header>
           <div className="opacity-80 flex w-full justify-center my-12">
             <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
@@ -291,12 +280,13 @@ export default async function ActivityPage({ params }: Props) {
             <HighlightSection images={courseContent.highlightedImages || []} />
           )}
 
-          {data.registrationForm && active && (
+          {data.registrationForm && (
             <ActivityRegistrationDialog
               documentId={documentId}
               locale={locale}
               active={active}
               registrationLimit={data.registrationLimit}
+              formOpened={data.formOpened}
             />
           )}
         </aside>

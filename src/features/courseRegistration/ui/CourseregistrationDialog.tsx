@@ -61,11 +61,13 @@ export default function ActivityRegistrationDialog({
                       {registrationLimit}
                     </>
                   )}
-                  {registrationLimit && formOpened === false && " - "}
-                  {formOpened === false &&
+                  {registrationLimit &&
+                    (formOpened === false || !active) &&
+                    " - "}
+                  {(formOpened === false || !active) &&
                     (locale === "vi"
-                      ? " - Form đăng ký đã đóng"
-                      : " - Registration form is closed")}
+                      ? "Form đăng ký đã đóng"
+                      : "Registration form is closed")}
                 </p>
               </div>
 
