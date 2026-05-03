@@ -55,6 +55,7 @@ export interface Activity extends StrapiEntity {
   createdAt?: string;
   updatedAt?: string;
   locale?: Locale;
+  formOpened?: boolean;
 }
 
 export type CustomizedComponent = {
