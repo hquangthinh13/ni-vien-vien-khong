@@ -49,7 +49,7 @@ import { format, parseISO, isValid, differenceInYears } from "date-fns";
 import { Calendar as CalendarIcon, Clock2Icon, Send } from "lucide-react";
 import ActivityRegistrationContentRenderer from "./ActivityRegistrationContentRenderer";
 import { cn, isRichTextEmpty } from "@/shared/lib/utils";
-
+import { vi, enGB } from "date-fns/locale";
 interface CustomizedComponentWithDetails extends CustomizedComponent {
   multipleChoiceDetails?: MultipleChoiceOption;
 }
@@ -672,12 +672,15 @@ export default function ActivityRegistrationForm({
                       <Calendar
                         mode="single"
                         selected={dateValue}
+                        locale={locale === "vi" ? vi : enGB}
                         captionLayout="dropdown"
                         startMonth={new Date(1900, 0)}
                         endMonth={new Date(2100, 0)}
-                        onSelect={(date) =>
-                          field.onChange(date ? date.toISOString() : "")
-                        }
+                        onSelect={(date) => {
+                          field.onChange(
+                            date ? format(date, "yyyy-MM-dd") : "",
+                          );
+                        }}
                         // disabled={(date) =>
                         //   date > new Date() || date < new Date("1900-01-01")
                         // }
@@ -712,7 +715,10 @@ export default function ActivityRegistrationForm({
                   typeof field.value === "string"
                     ? parseISO(field.value)
                     : undefined;
-
+                const timeString =
+                  dateValue && isValid(dateValue)
+                    ? format(dateValue, "HH:mm")
+                    : "";
                 return (
                   <div className="flex flex-row gap-2">
                     <Popover>
@@ -736,6 +742,7 @@ export default function ActivityRegistrationForm({
                         <Calendar
                           mode="single"
                           selected={dateValue}
+                          locale={locale === "vi" ? vi : enGB}
                           captionLayout="dropdown"
                           startMonth={new Date(1900, 0)}
                           endMonth={new Date(2100, 0)}
@@ -745,7 +752,9 @@ export default function ActivityRegistrationForm({
                               date.setHours(dateValue.getHours());
                               date.setMinutes(dateValue.getMinutes());
                             }
-                            field.onChange(date.toISOString());
+                            field.onChange(
+                              format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                            );
                           }}
                         />
                       </PopoverContent>
@@ -757,10 +766,31 @@ export default function ActivityRegistrationForm({
                         type="time"
                         step="60"
                         defaultValue="10:30"
+                        value={timeString}
                         className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         onChange={(e) => {
-                          const timeValue = e.target.value;
-                          // console.log("Selected time:", timeValue);
+                          const timeValue = e.target.value; // Kết quả trả về dạng "HH:mm", ví dụ: "14:30"
+                          if (!timeValue) return;
+
+                          // Tách giờ và phút ra từ chuỗi
+                          const [hours, minutes] = timeValue
+                            .split(":")
+                            .map(Number);
+
+                          // Nếu đã chọn ngày thì lấy ngày đó, nếu chưa thì mặc định lấy ngày hôm nay
+                          const newDate =
+                            dateValue && isValid(dateValue)
+                              ? new Date(dateValue)
+                              : new Date();
+
+                          // Cập nhật giờ phút mới
+                          newDate.setHours(hours);
+                          newDate.setMinutes(minutes);
+
+                          // Lưu vào form state
+                          field.onChange(
+                            format(newDate, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                          );
                         }}
                       />
                       <InputGroupAddon>
@@ -945,10 +975,13 @@ export default function ActivityRegistrationForm({
                           mode="single"
                           selected={dateValue}
                           captionLayout="dropdown"
+                          locale={locale === "vi" ? vi : enGB}
                           fromYear={1900}
                           toYear={new Date().getFullYear()}
                           onSelect={(date) => {
-                            field.onChange(date ? date.toISOString() : "");
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : "",
+                            );
                           }}
                           disabled={(date) =>
                             date > new Date() || date < new Date("1900-01-01")
@@ -1125,11 +1158,12 @@ export default function ActivityRegistrationForm({
                                 mode="single"
                                 selected={dateValue}
                                 captionLayout="dropdown"
+                                locale={locale === "vi" ? vi : enGB}
                                 fromYear={1900}
                                 toYear={new Date().getFullYear()}
                                 onSelect={(date) => {
                                   field.onChange(
-                                    date ? date.toISOString() : "",
+                                    date ? format(date, "yyyy-MM-dd") : "",
                                   );
                                 }}
                                 disabled={(date) =>
