@@ -271,7 +271,7 @@ export default async function ActivityPage({ params }: Props) {
               </section>
             )}
         </div>
-        <aside className="lg:col-span-3 w-full space-y-6">
+        <aside className="lg:col-span-3 w-full space-y-6 lg:sticky lg:top-24 lg:h-fit">
           <RelatedActivitiesSection
             locale={locale}
             activities={data.relatedActivities || []}
