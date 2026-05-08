@@ -34,6 +34,7 @@ export default async function ActivityPage({
     populate: ["coverImage", "courseContent"],
     category: initialCategory,
   });
+
   // console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
   const paginationMeta = response.meta?.pagination;

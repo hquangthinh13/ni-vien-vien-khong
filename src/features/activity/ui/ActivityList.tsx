@@ -105,24 +105,38 @@ export default function ActivityList({
           </TabsList>
         </Tabs>
       </div>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={initialCategory + currentPage}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
-        >
-          {initialActivities.map((activity: Activity) => (
-            <ActivityCard
-              key={activity.documentId}
-              activity={activity}
-              locale={locale}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      {initialActivities.length > 0 ? (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={initialCategory + currentPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
+          >
+            {initialActivities.map((activity: Activity) => (
+              <ActivityCard
+                key={activity.documentId}
+                activity={activity}
+                locale={locale}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 w-full text-center text-muted-foreground text-sm"
+          >
+            {locale === "vi" ? "Chưa có hoạt động." : "No results."}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {paginationMeta && paginationMeta.pageCount > 1 && (
         <div className="flex justify-center gap-4 mt-6">
