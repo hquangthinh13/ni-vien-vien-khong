@@ -172,7 +172,7 @@ export default async function Home() {
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col lg:w-[30%] lg:border-l pl-0 lg:pl-6 gap-6">
+          <div className="flex flex-col lg:w-[30%] lg:border-l pl-0 lg:pl-6 gap-6 lg:sticky lg:top-24 lg:h-fit">
             <MotionWrapper>
               <section className="flex flex-col">
                 <div className="flex w-fit">
