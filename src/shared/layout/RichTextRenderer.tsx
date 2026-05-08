@@ -70,7 +70,7 @@ const RichTextRenderer = ({
             <div
               className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-xl shadow-sm`}
             >
-              <Zoom zoomMargin={80}>
+              <Zoom zoomMargin={0}>
                 <Image
                   src={image.url}
                   alt={image.alternativeText || ""}

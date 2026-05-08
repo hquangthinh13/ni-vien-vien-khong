@@ -5,11 +5,7 @@
 
 @layer base {
   * {
-    /* --font-script: Style Script, cursive; */
     @apply border-border outline-ring/50;
-  }
-  :root {
-    --font-script: "Your Font Name", sans-serif;
   }
   body {
     @apply bg-background text-foreground;
@@ -79,7 +75,7 @@
   --font-sans: Merriweather, ui-serif, serif;
   --font-serif: Oswald, ui-serif, serif;
   --font-mono: Montserrat, ui-monospace, monospace;
-  /* --font-script: Style Script, cursive; */
+  --font-script: Style Script, cursive;
   --radius: 0.125rem;
   --shadow-x: 0px;
   --shadow-y: 2px;
@@ -263,6 +259,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
+  --font-script: var(--font-script);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

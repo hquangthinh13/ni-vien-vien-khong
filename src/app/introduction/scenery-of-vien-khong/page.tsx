@@ -13,22 +13,32 @@ export const metadata: Metadata = {
 export default async function PastAndPresentPage() {
   const locale = (await getLocale()) as Locale;
 
-  const fullResponse = await fetchSceneryPage({
-    locale,
-    populate: "*",
-  });
-  const data = fullResponse.data as SceneryPageAttributes | null;
+  let data: SceneryPageAttributes | null = null;
+
+  try {
+    const fullResponse = await fetchSceneryPage({
+      locale,
+      populate: "*",
+    });
+    data = fullResponse.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+
   return (
     <div className="page-container">
       <div className="flex flex-col lg:flex-row gap-12">
-        <article className="">
+        <article className="w-full">
           <header className="flex flex-col w-full items-center mb-6 space-y-2">
             <div className="page-label items-center">
               <span>{locale === "vi" ? "Giới thiệu" : "Introduction"}</span>
             </div>
 
             <h1 className="text-2xl md:text-4xl text-center font-bold leading-tight">
-              {data?.title}
+              {data?.title ||
+                (locale === "vi"
+                  ? "Tịnh Cảnh Viên Không"
+                  : "Scenery of Vien Khong")}
             </h1>
           </header>
           <div className="opacity-80 flex w-full justify-center my-8 scale-y-[-1]">

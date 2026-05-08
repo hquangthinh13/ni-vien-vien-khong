@@ -178,7 +178,7 @@ const MonasteryCard = ({ item, index, locale }: MonasteryCardProps) => {
             style={{ backgroundColor: accentColor }}
           />
           <div className="relative aspect-4/3 w-full overflow-hidden rounded-sm shadow-2xl">
-            <Zoom zoomMargin={80}>
+            <Zoom zoomMargin={0}>
               <Image
                 src={imageUrl || "/placeholder.png"}
                 alt={item.monasteryName}

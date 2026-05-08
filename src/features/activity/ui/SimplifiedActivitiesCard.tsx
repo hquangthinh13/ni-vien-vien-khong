@@ -58,13 +58,14 @@ const SimplifiedNewsCard = async ({
             {displayCategory}
           </Badge>
 
-          <Badge
-            variant="outline"
-            className={cn("font-mono shadow-none", statusConfig.className)}
-          >
-            {" "}
-            {status}
-          </Badge>
+          {status !== "Đã kết thúc" && status !== "Completed" && (
+            <Badge
+              variant="outline"
+              className={cn("font-mono shadow-none", statusConfig.className)}
+            >
+              {status}
+            </Badge>
+          )}
         </div>
         <p
           className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}
@@ -107,12 +108,14 @@ const SimplifiedNewsCard = async ({
               {displayCategory}
             </Badge>
 
-            <Badge
-              variant="outline"
-              className={cn("font-mono shadow-none", statusConfig.className)}
-            >
-              {status}
-            </Badge>
+            {status !== "Đã kết thúc" && status !== "Completed" && (
+              <Badge
+                variant="outline"
+                className={cn("font-mono shadow-none", statusConfig.className)}
+              >
+                {status}
+              </Badge>
+            )}
           </div>
           <p
             className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}

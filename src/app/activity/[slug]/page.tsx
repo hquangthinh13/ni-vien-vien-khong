@@ -167,7 +167,7 @@ export default async function ActivityPage({ params }: Props) {
             )}{" "}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               {" "}
-              <Zoom zoomMargin={80}>
+              <Zoom zoomMargin={0}>
                 <Image
                   src={
                     getImageUrl(data.coverImage, "original") ||

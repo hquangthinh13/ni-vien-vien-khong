@@ -51,7 +51,7 @@ export default function CalligraphyDialog({
           <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden">
             <div className="relative w-full lg:w-[60%] h-75 lg:h-full bg-zinc-100 flex items-center justify-center border-r">
               {imageUrl && (
-                <Zoom zoomMargin={80}>
+                <Zoom zoomMargin={0}>
                   <Image
                     src={imageUrl}
                     alt={calligraphy.title || "Calligraphy Image"}

@@ -37,7 +37,9 @@ export default async function VideoListPage({
   return (
     <div className="page-container">
       <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header">Pháp thoại</h1>
+        <h1 className="page-header">
+          {locale === "vi" ? "Pháp thoại" : "Dharma Talks"}
+        </h1>
         <div className="opacity-80">
           <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
         </div>
