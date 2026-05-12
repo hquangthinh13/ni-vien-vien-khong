@@ -5,11 +5,15 @@ const ACTIVITY_STATUS_CONFIG = {
   },
   ongoing: {
     label: { vi: "Đang diễn ra", en: "Ongoing" },
-    className: "bg-pink-500",
+    className: "bg-emerald-500",
+  },
+  completed: {
+    label: { vi: "Đã kết thúc", en: "Completed" },
+    className: "bg-rose-500",
   },
   unknown: {
     label: { vi: "Không xác định", en: "Unknown" },
-    className: "bg-mauve-500",
+    className: "bg-gray-500",
   },
 } as const;
 

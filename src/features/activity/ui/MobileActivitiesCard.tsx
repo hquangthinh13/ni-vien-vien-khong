@@ -4,6 +4,9 @@ import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Activity } from "../model/activity.types";
 import { Locale } from "@/types/locale";
+import { categoryMap } from "@/types/categories";
+import ActivityVibrantBadge from "./ActivityVibrantBadge";
+
 interface MobileCardProps {
   activity: Activity;
   locale: Locale;
@@ -24,6 +27,14 @@ export default async function MobileActivitiesCard({
     activityStartDate,
   } = activity;
   const imageUrl = getImageUrl(coverImage, "medium");
+  const rawCategoryKey =
+    activity.activityCategory === "Khóa Tu"
+      ? activity.courseContent?.courseCategory || "Khóa Tu"
+      : activity.activityCategory;
+
+  const displayCategory = rawCategoryKey
+    ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
+    : "";
 
   return (
     <Link
@@ -52,9 +63,13 @@ export default async function MobileActivitiesCard({
         <span className="text-sm font-bold leading-tight hover:text-primary line-clamp-2">
           {activityName || "Untitled Activity"}
         </span>
-        <p className="line-clamp-2 font-mono text-xs text-secondary-foreground">
+        <p className="line-clamp-3 font-mono text-xs text-secondary-foreground mb-2">
           {extractPreviewContent(content)}
         </p>
+        {/* <ActivityVibrantBadge
+          displayCategory={displayCategory}
+          imageUrl={imageUrl}
+        /> */}
       </div>
     </Link>
   );

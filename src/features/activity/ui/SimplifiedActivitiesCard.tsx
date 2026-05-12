@@ -49,9 +49,6 @@ const SimplifiedNewsCard = async ({
         className="flex flex-col gap-2"
       >
         {" "}
-        <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
-          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-        </span>
         <span
           className={`text-md font-bold leading-snug hover:text-primary cursor-pointer`}
         >
@@ -78,7 +75,10 @@ const SimplifiedNewsCard = async ({
           className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}
         >
           {extractPreviewContent(content)}
-        </p>
+        </p>{" "}
+        <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
+          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+        </span>
       </Link>
     );
   }

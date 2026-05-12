@@ -41,7 +41,7 @@ const ActivityVibrantBadge = ({
       className="font-mono"
       style={{ backgroundColor: colors.vibrant }}
     >
-      <span className="bg-white w-1.5 aspect-square rounded-full mr-0.5" />{" "}
+      {/* <span className="bg-white w-1.5 aspect-square rounded-full mr-0.5" />{" "} */}
       {displayCategory}
     </Badge>
   );

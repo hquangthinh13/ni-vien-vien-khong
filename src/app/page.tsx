@@ -138,12 +138,25 @@ export default async function Home() {
         />
       </MotionWrapper>
       <div className="page-container">
-        <div className="flex flex-col-reverse lg:flex-row min-h-12 gap-6 mb-6">
+        <div className="flex flex-col lg:flex-row min-h-12 gap-6 mb-6">
           {/* Left */}
           <div className="flex flex-col justify-start gap-6 lg:w-[70%]">
+            <MotionWrapper className="flex lg:hidden">
+              <section className="flex flex-col">
+                <div className="flex w-fit">
+                  {" "}
+                  <h1 className="home-page-section-title">
+                    {locale === "vi" ? "Lời ngỏ" : "Foreword"}
+                  </h1>
+                </div>
+                <p className="flex mt-4 leading-snug text-justify text-muted-foreground">
+                  {homePage?.openingMessage}
+                </p>
+              </section>{" "}
+            </MotionWrapper>
             {activities.length > 0 && (
               <MotionWrapper>
-                <section className="flex flex-col pt-6 lg:pt-0 border-t lg:border-0">
+                <section className="flex flex-col pt-6 lg:pt-0 border-t-0 lg:border-0">
                   <div className="flex justify-between items-center">
                     <Link href="/activity">
                       <h2 className="home-page-section-title">
@@ -164,7 +177,7 @@ export default async function Home() {
               </MotionWrapper>
             )}
             <MotionWrapper>
-              <section className="flex flex-col pt-6 border-t">
+              <section className="flex flex-col pt-6 border-t-0">
                 <Suspense fallback={<div>Đang tải lịch hoạt động...</div>}>
                   <CalendarSection locale={locale} />
                 </Suspense>
@@ -172,8 +185,8 @@ export default async function Home() {
             </MotionWrapper>{" "}
           </div>
           {/* Right */}
-          <div className="flex flex-col lg:w-[30%] lg:border-l pl-0 lg:pl-6 gap-6 lg:sticky lg:top-24 lg:h-fit">
-            <MotionWrapper>
+          <div className="flex flex-col lg:w-[30%] lg:border-l-0 pl-0 lg:pl-6 gap-6 lg:sticky lg:top-24 lg:h-fit">
+            <MotionWrapper className="lg:flex hidden">
               <section className="flex flex-col">
                 <div className="flex w-fit">
                   {" "}
@@ -188,7 +201,7 @@ export default async function Home() {
             </MotionWrapper>
             {courses.length > 0 && (
               <MotionWrapper>
-                <section className="flex flex-col pt-6 border-t">
+                <section className="flex flex-col pt-6 border-t-0">
                   <div className="flex justify-between items-center">
                     {" "}
                     <Link href="/course">
@@ -210,7 +223,7 @@ export default async function Home() {
               </MotionWrapper>
             )}
             <MotionWrapper>
-              <section className="flex flex-1 flex-col pt-6 pb-0 border-t">
+              <section className="flex flex-1 flex-col pt-6 pb-0 border-t-0">
                 <div className="flex justify-between items-center">
                   <Link href="/library/question">
                     <h2 className="home-page-section-title">
