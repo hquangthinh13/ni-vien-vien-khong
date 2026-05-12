@@ -230,16 +230,15 @@ export default async function Home() {
                       {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
                     </h2>
                   </Link>
-                  <Link
+                  {/* <Link
                     href="/library/question"
                     className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
                   >
                     {locale === "vi" ? "Xem thêm" : "View more"}
-                  </Link>
+                  </Link> */}
+                  <QuestionDialogTrigger locale={locale} />
                 </div>
                 <QuestionSection locale={locale} questions={questions} />
-
-                <QuestionDialogTrigger locale={locale} />
               </section>
             </MotionWrapper>
           </div>
