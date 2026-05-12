@@ -13,6 +13,7 @@ import { getActivityStatus, getStatusLabel } from "../api/activity.api";
 import { Badge } from "@/shared/ui/badge";
 import { categoryMap } from "@/types/categories";
 import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
+import ActivityVibrantBadge from "./ActivityVibrantBadge";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -38,6 +39,9 @@ const SimplifiedNewsCard = async ({
   const displayCategory = rawCategoryKey
     ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
     : "";
+
+  const imageUrl = getImageUrl(activity?.coverImage, "medium");
+
   if (isFirst === false && variant === "bottom") {
     return (
       <Link
@@ -45,32 +49,36 @@ const SimplifiedNewsCard = async ({
         className="flex flex-col gap-2"
       >
         {" "}
-        <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
-          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-        </span>
         <span
           className={`text-md font-bold leading-snug hover:text-primary cursor-pointer`}
         >
           {activityName}
         </span>
         <div className="flex gap-2 items-center mb-2">
-          <Badge variant="default" className="font-mono">
-            {displayCategory}
-          </Badge>
-
-          <Badge
-            variant="outline"
-            className={cn("font-mono shadow-none", statusConfig.className)}
-          >
-            {" "}
-            {status}
-          </Badge>
+          <ActivityVibrantBadge
+            displayCategory={displayCategory}
+            imageUrl={imageUrl}
+          />
+          {status !== "Đã kết thúc" && status !== "Completed" && (
+            <Badge
+              variant="outline"
+              className={cn(
+                "font-mono shadow-none text-white",
+                statusConfig.className,
+              )}
+            >
+              {status}
+            </Badge>
+          )}
         </div>
         <p
           className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}
         >
           {extractPreviewContent(content)}
-        </p>
+        </p>{" "}
+        <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
+          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
+        </span>
       </Link>
     );
   }
@@ -81,7 +89,6 @@ const SimplifiedNewsCard = async ({
         {coverImage && variant === "top" && (
           <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
             {(() => {
-              const imageUrl = getImageUrl(coverImage, "large");
               return imageUrl ? (
                 <Image
                   src={imageUrl}
@@ -103,16 +110,21 @@ const SimplifiedNewsCard = async ({
             {activityName}
           </span>
           <div className="flex gap-2 items-center mb-2">
-            <Badge variant="default" className="font-mono">
-              {displayCategory}
-            </Badge>
-
-            <Badge
-              variant="outline"
-              className={cn("font-mono shadow-none", statusConfig.className)}
-            >
-              {status}
-            </Badge>
+            <ActivityVibrantBadge
+              displayCategory={displayCategory}
+              imageUrl={imageUrl}
+            />
+            {status !== "Đã kết thúc" && status !== "Completed" && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  "font-mono shadow-none text-white",
+                  statusConfig.className,
+                )}
+              >
+                {status}
+              </Badge>
+            )}
           </div>
           <p
             className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}

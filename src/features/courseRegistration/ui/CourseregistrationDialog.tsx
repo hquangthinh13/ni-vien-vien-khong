@@ -70,7 +70,7 @@ export default function ActivityRegistrationDialog({
               </p>
             </div>
 
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+            <div className="flex aspect-square h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
               <CirclePlus className="h-6 w-6" />
             </div>
           </div>

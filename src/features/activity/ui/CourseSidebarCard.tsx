@@ -6,9 +6,11 @@ import { getImageUrl } from "@/shared/lib/api";
 import { formatFriendlyDate } from "@/shared/lib/utils";
 import type { Locale } from "@/types/locale";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import ActivityVibrantBadge from "./ActivityVibrantBadge";
+import { categoryMap } from "@/types/categories";
 interface CourseSidebarCardProps {
   course: Activity;
-  locale?: Locale;
+  locale: Locale;
 }
 
 const CourseSidebarCard = async ({
@@ -25,6 +27,10 @@ const CourseSidebarCard = async ({
       ? "Ngày chưa xác định"
       : "Date not specified";
 
+  const rawCategoryKey = course.courseContent?.courseCategory || "Khóa Tu";
+  const displayCategory = rawCategoryKey
+    ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
+    : "";
   return (
     <Link
       href={`/activity/${course.slug}-${course.documentId}`}
@@ -57,8 +63,12 @@ const CourseSidebarCard = async ({
           <TooltipContent side="bottom" className="max-w-64">
             {course.activityName || "Untitled Course"}
           </TooltipContent>
-        </Tooltip>
-      </div>
+        </Tooltip>{" "}
+        {/* <ActivityVibrantBadge
+          displayCategory={displayCategory}
+          imageUrl={coverImageUrl}
+        /> */}
+      </div>{" "}
     </Link>
   );
 };

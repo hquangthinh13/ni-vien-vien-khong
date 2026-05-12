@@ -3,12 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
-import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
+import {
+  cn,
+  extractPreviewContent,
+  formatFriendlyDate,
+} from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { Badge } from "@/shared/ui/badge";
-import { getStatusLabel } from "../api/activity.api";
+import { getActivityStatus, getStatusLabel } from "../api/activity.api";
 import { categoryMap } from "@/types/categories";
-
+import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
+import ActivityVibrantBadge from "./ActivityVibrantBadge";
 interface ActivityCardProps {
   activity: Activity;
   locale: Locale;
@@ -25,13 +30,16 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
     ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
     : "";
   const status = getStatusLabel(activity, locale);
+  const imageUrl = getImageUrl(coverImage, "medium");
+  const statusKey = getActivityStatus(activity);
+
+  const statusConfig = getActivityStatusConfig(statusKey);
 
   return (
     <Link href={`/activity/${slug}-${documentId}`}>
       <div className="group flex flex-col h-full gap-4">
         <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
           {(() => {
-            const imageUrl = getImageUrl(coverImage, "medium");
             return imageUrl ? (
               <Image
                 src={imageUrl}
@@ -52,13 +60,21 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
             {activityName}
           </span>
           <div className="flex gap-2 items-center mb-4">
-            <Badge variant="secondary" className="font-mono">
-              {displayCategory}
-            </Badge>
-
-            <Badge variant="secondary" className="font-mono">
-              {status}
-            </Badge>
+            <ActivityVibrantBadge
+              displayCategory={displayCategory}
+              imageUrl={imageUrl}
+            />
+            {status !== "Đã kết thúc" && status !== "Completed" && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  "font-mono shadow-none text-white",
+                  statusConfig.className,
+                )}
+              >
+                {status}
+              </Badge>
+            )}
           </div>{" "}
           <p
             className={`line-clamp-2 text-sm text-secondary-foreground font-mono`}

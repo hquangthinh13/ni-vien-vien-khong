@@ -5,7 +5,7 @@ import { Locale } from "@/types/locale";
 import CourseSidebarCard from "@/features/activity/ui/CourseSidebarCard";
 interface RelatedActivitiesProps {
   activities: Activity[];
-  locale?: Locale;
+  locale: Locale;
 }
 
 const RelatedActivitiesSection = ({

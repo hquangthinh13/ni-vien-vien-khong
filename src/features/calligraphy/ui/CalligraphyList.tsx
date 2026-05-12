@@ -137,10 +137,21 @@ export default function CalligraphyList({
           className="w-full flex flex-col items-center"
         >
           <TabsList variant="line" className="flex-wrap justify-center h-auto">
-            <TabsTrigger value="Tất cả">Tất cả</TabsTrigger>
-            <TabsTrigger value="Kinh Pháp Cú">Kinh Pháp Cú</TabsTrigger>
-            <TabsTrigger value="Kinh Tụng">Kinh Tụng</TabsTrigger>
-            <TabsTrigger value="Chủ Đề Khác">Chủ Đề Khác</TabsTrigger>
+            <TabsTrigger value="Tất cả">
+              {locale === "vi" ? "Tất cả" : "All"}
+            </TabsTrigger>
+            <TabsTrigger value="Kinh Pháp Cú">
+              {" "}
+              {locale === "vi" ? "Kinh Pháp Cú" : "Dhammapada"}
+            </TabsTrigger>
+            <TabsTrigger value="Kinh Tụng">
+              {" "}
+              {locale === "vi" ? "Kinh Tụng" : "Chanting"}
+            </TabsTrigger>
+            <TabsTrigger value="Chủ Đề Khác">
+              {" "}
+              {locale === "vi" ? "Chủ Đề Khác" : "Others"}
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -159,7 +170,9 @@ export default function CalligraphyList({
           </div>
         ) : (
           <div className="w-full py-20 text-center text-muted-foreground">
-            Không tìm thấy tác phẩm nào.
+            {locale === "vi"
+              ? "Không tìm thấy tác phẩm nào."
+              : "No calligraphy found."}
           </div>
         )}
       </div>

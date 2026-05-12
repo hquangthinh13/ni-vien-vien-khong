@@ -167,7 +167,7 @@ export default async function ActivityPage({ params }: Props) {
             )}{" "}
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl shadow-md mt-4">
               {" "}
-              <Zoom zoomMargin={80}>
+              <Zoom zoomMargin={0}>
                 <Image
                   src={
                     getImageUrl(data.coverImage, "original") ||
@@ -271,7 +271,7 @@ export default async function ActivityPage({ params }: Props) {
               </section>
             )}
         </div>
-        <aside className="lg:col-span-3 w-full space-y-6">
+        <aside className="lg:col-span-3 w-full space-y-6 lg:sticky lg:top-24 lg:h-fit">
           <RelatedActivitiesSection
             locale={locale}
             activities={data.relatedActivities || []}
