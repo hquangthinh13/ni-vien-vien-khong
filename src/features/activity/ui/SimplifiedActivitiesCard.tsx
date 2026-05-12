@@ -13,6 +13,7 @@ import { getActivityStatus, getStatusLabel } from "../api/activity.api";
 import { Badge } from "@/shared/ui/badge";
 import { categoryMap } from "@/types/categories";
 import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
+import ActivityVibrantBadge from "./ActivityVibrantBadge";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -38,6 +39,9 @@ const SimplifiedNewsCard = async ({
   const displayCategory = rawCategoryKey
     ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
     : "";
+
+  const imageUrl = getImageUrl(activity?.coverImage, "medium");
+
   if (isFirst === false && variant === "bottom") {
     return (
       <Link
@@ -54,14 +58,17 @@ const SimplifiedNewsCard = async ({
           {activityName}
         </span>
         <div className="flex gap-2 items-center mb-2">
-          <Badge variant="default" className="font-mono">
-            {displayCategory}
-          </Badge>
-
+          <ActivityVibrantBadge
+            displayCategory={displayCategory}
+            imageUrl={imageUrl}
+          />
           {status !== "Đã kết thúc" && status !== "Completed" && (
             <Badge
               variant="outline"
-              className={cn("font-mono shadow-none", statusConfig.className)}
+              className={cn(
+                "font-mono shadow-none text-white",
+                statusConfig.className,
+              )}
             >
               {status}
             </Badge>
@@ -82,7 +89,6 @@ const SimplifiedNewsCard = async ({
         {coverImage && variant === "top" && (
           <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
             {(() => {
-              const imageUrl = getImageUrl(coverImage, "large");
               return imageUrl ? (
                 <Image
                   src={imageUrl}
@@ -104,14 +110,17 @@ const SimplifiedNewsCard = async ({
             {activityName}
           </span>
           <div className="flex gap-2 items-center mb-2">
-            <Badge variant="default" className="font-mono">
-              {displayCategory}
-            </Badge>
-
+            <ActivityVibrantBadge
+              displayCategory={displayCategory}
+              imageUrl={imageUrl}
+            />
             {status !== "Đã kết thúc" && status !== "Completed" && (
               <Badge
                 variant="outline"
-                className={cn("font-mono shadow-none", statusConfig.className)}
+                className={cn(
+                  "font-mono shadow-none text-white",
+                  statusConfig.className,
+                )}
               >
                 {status}
               </Badge>
