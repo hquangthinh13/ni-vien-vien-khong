@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/select";
-import ActivityVibrantCard from "./ActivityVibrantCard";
+import UpdatedActivityVibrantCard from "./UpdatedActivityVibrantCard";
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -163,7 +163,7 @@ export default function CourseList({
             className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full col-span-full"
           >
             {initialCourses.map((activity: Activity) => (
-              <ActivityVibrantCard
+              <UpdatedActivityVibrantCard
                 key={activity.documentId}
                 activity={activity}
                 locale={locale}

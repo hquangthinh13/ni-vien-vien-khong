@@ -1,17 +1,18 @@
 import { getLocale } from "next-intl/server";
-import Image from "next/image";
-import Link from "next/link";
-import lineOrnament from "@/public/ornament-01.svg";
-import VideoCard from "@/features/video/ui/VideoCard";
 import type { Locale } from "@/types/locale";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/shared/ui/button";
+import VideoCard from "@/features/video/ui/VideoCard";
 import { fetchVideo } from "@/features/video/api/video.api";
 import { Metadata } from "next";
+import PageShell from "@/shared/layout/PageShell";
+import PageHeader from "@/shared/layout/PageHeader";
+import ContentGrid from "@/shared/layout/ContentGrid";
+import EmptyState from "@/shared/layout/EmptyState";
+import Pagination from "@/shared/layout/Pagination";
 
 export const metadata: Metadata = {
   title: "Pháp thoại",
 };
+
 export default async function VideoListPage({
   searchParams,
 }: {
@@ -26,60 +27,42 @@ export default async function VideoListPage({
     locale,
     pagination: {
       page: currentPage,
-      pageSize: pageSize,
+      pageSize,
     },
     sort: ["createdAt:desc"],
     populate: "*",
   });
+
   const docs = Array.isArray(response.data) ? response.data : [];
   const meta = response.meta?.pagination;
 
   return (
-    <div className="page-container">
-      <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header">
-          {locale === "vi" ? "Pháp thoại" : "Dharma Talks"}
-        </h1>
-        <div className="opacity-80">
-          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-        </div>
-      </div>
+    <PageShell>
+      <PageHeader title={locale === "vi" ? "Pháp thoại" : "Dharma Talks"} />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {docs.map((doc) => (
-          <VideoCard key={doc.documentId} video={doc} locale={locale} />
-        ))}
-      </div>
-
-      {meta && meta.pageCount > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
-          {currentPage > 1 ? (
-            <Link href={`?page=${currentPage - 1}`}>
-              <Button size="icon" variant="outline" className="cursor-pointer">
-                <ChevronLeft />
-              </Button>
-            </Link>
-          ) : (
-            <Button size="icon" variant="outline" disabled>
-              <ChevronLeft />
-            </Button>
-          )}
-          <span className="flex items-center text-muted-foreground text-sm">
-            Trang {meta.page} trên {meta.pageCount}
-          </span>
-          {currentPage < meta.pageCount ? (
-            <Link href={`?page=${currentPage + 1}`}>
-              <Button className="cursor-pointer" size="icon" variant="outline">
-                <ChevronRight />
-              </Button>
-            </Link>
-          ) : (
-            <Button size="icon" variant="outline" disabled>
-              <ChevronRight />
-            </Button>
-          )}
-        </div>
+      {docs.length === 0 ? (
+        <EmptyState
+          message={
+            locale === "vi"
+              ? "Hiện chưa có pháp thoại nào."
+              : "No dharma talks available yet."
+          }
+        />
+      ) : (
+        <ContentGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {docs.map((doc) => (
+            <VideoCard key={doc.documentId} video={doc} locale={locale} />
+          ))}
+        </ContentGrid>
       )}
-    </div>
+
+      {meta ? (
+        <Pagination
+          currentPage={currentPage}
+          pageCount={meta.pageCount}
+          locale={locale}
+        />
+      ) : null}
+    </PageShell>
   );
 }

@@ -52,6 +52,18 @@ export async function fetchActivities(
   return (await res.json()) as ActivityResponse;
 }
 
+export async function fetchLatestActivities(
+  locale: string,
+  limit: number = 5,
+): Promise<ActivityResponse> {
+  return fetchActivities({
+    locale,
+    sort: ["publishedAt:desc"],
+    pagination: { limit },
+    populate: ["coverImage", "courseContent"],
+  });
+}
+
 // ============ 2. Fetch Activity by DocumentId ============
 
 export async function fetchActivityByDocumentId(

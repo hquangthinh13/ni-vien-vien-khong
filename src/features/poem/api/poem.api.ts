@@ -37,6 +37,18 @@ export async function fetchPoems(
   return (await res.json()) as PoemResponse;
 }
 
+export async function fetchLatestPoems(
+  locale: string,
+  limit: number = 5,
+): Promise<PoemResponse> {
+  return fetchPoems({
+    locale,
+    sort: ["publishedAt:desc"],
+    pagination: { limit },
+    populate: "*",
+  });
+}
+
 // ============ 2. Fetch Poem by DocumentId ============
 
 export async function fetchPoemByDocumentId(
