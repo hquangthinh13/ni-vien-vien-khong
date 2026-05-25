@@ -1,15 +1,16 @@
 import { fetchActivitiesByCategory } from "@/features/activity/api/activity.api";
 import { getLocale } from "next-intl/server";
-import Image from "next/image";
-import lineOrnament from "@/public/ornament-01.svg";
 import type { Locale } from "@/types/locale";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import ActivityList from "@/features/activity/ui/ActivityList";
-import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
 import { Metadata } from "next";
+import PageShell from "@/shared/layout/PageShell";
+import PageHeader from "@/shared/layout/PageHeader";
+
 export const metadata: Metadata = {
   title: "Tin tức",
 };
+
 export default async function ActivityPage({
   searchParams,
 }: {
@@ -27,6 +28,7 @@ export default async function ActivityPage({
     all: "Tất cả",
   };
   const initialCategory = categoryMapping[categorySlug || ""] || "Tất cả";
+
   const response = await fetchActivitiesByCategory({
     locale,
     pagination: { page: currentPage, pageSize: 9 },
@@ -35,23 +37,12 @@ export default async function ActivityPage({
     category: initialCategory,
   });
 
-  // console.log("Fetched activities for category:", initialCategory, response);
   const initialActivities = Array.isArray(response.data) ? response.data : [];
   const paginationMeta = response.meta?.pagination;
+
   return (
-    <div className="page-container">
-      <div className="flex flex-col gap-6 items-center mb-6">
-        <TextMotionWrapper delay={0.2} className="text-center">
-          <h1 className="page-header">
-            {locale === "vi" ? "Tin tức" : "Activities"}
-          </h1>
-        </TextMotionWrapper>
-        <TextMotionWrapper delay={0.2}>
-          <div className="opacity-80">
-            <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-          </div>{" "}
-        </TextMotionWrapper>
-      </div>
+    <PageShell>
+      <PageHeader title={locale === "vi" ? "Tin tức" : "Activities"} />
       <ActivityList
         key={`${initialCategory}-${currentPage}`}
         initialActivities={initialActivities}
@@ -60,6 +51,6 @@ export default async function ActivityPage({
         locale={locale}
         currentPage={currentPage}
       />
-    </div>
+    </PageShell>
   );
 }

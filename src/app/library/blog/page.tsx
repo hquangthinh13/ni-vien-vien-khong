@@ -1,14 +1,15 @@
 import { fetchBlogs } from "@/features/blog/api/blog.api";
 import { getLocale } from "next-intl/server";
-import Image from "next/image";
-import lineOrnament from "@/public/ornament-01.svg";
 import type { Locale } from "@/types/locale";
-import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
 import { Metadata } from "next";
 import BlogList from "@/features/blog/ui/BlogList";
+import PageShell from "@/shared/layout/PageShell";
+import PageHeader from "@/shared/layout/PageHeader";
+
 export const metadata: Metadata = {
   title: "Chia sẻ",
 };
+
 export default async function BlogPage({
   searchParams,
 }: {
@@ -26,23 +27,11 @@ export default async function BlogPage({
     populate: "coverImage",
   });
   const initialBlogs = Array.isArray(response.data) ? response.data : [];
-
-  // console.log("Fetched blogs for page:", currentPage, response);
   const paginationMeta = response.meta?.pagination;
+
   return (
-    <div className="page-container">
-      <div className="flex flex-col gap-6 items-center mb-6">
-        <TextMotionWrapper delay={0.2} className="text-center">
-          <h1 className="page-header">
-            {locale === "vi" ? "Chia sẻ" : "Blog"}
-          </h1>
-        </TextMotionWrapper>
-        <TextMotionWrapper delay={0.2}>
-          <div className="opacity-80">
-            <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-          </div>{" "}
-        </TextMotionWrapper>
-      </div>
+    <PageShell>
+      <PageHeader title={locale === "vi" ? "Chia sẻ" : "Blog"} />
       <BlogList
         key={currentPage}
         initialBlogs={initialBlogs}
@@ -50,6 +39,6 @@ export default async function BlogPage({
         locale={locale}
         currentPage={currentPage}
       />
-    </div>
+    </PageShell>
   );
 }

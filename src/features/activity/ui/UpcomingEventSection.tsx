@@ -1,7 +1,7 @@
 import React from "react";
 import type { Locale } from "@/types/locale";
 import { fetchActiveActivities } from "../api/activity.api";
-import ActivityVibrantCard from "./ActivityVibrantCard";
+import UpdatedActivityVibrantCard from "./UpdatedActivityVibrantCard";
 
 const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
   try {
@@ -9,7 +9,7 @@ const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
       locale,
       populate: "*",
       sort: ["activityStartDate:asc"],
-      pagination: { page: 1, pageSize: 2 },
+      pagination: { page: 1, pageSize: 1 },
     });
     // console.log("Fetched upcoming activities:", response);
     const activities = Array.isArray(response?.data)
@@ -40,7 +40,7 @@ const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
 
         <div className="grid grid-cols-1 gap-4 px-4 md:px-0">
           {activities.map((item) => (
-            <ActivityVibrantCard
+            <UpdatedActivityVibrantCard
               key={item.documentId}
               activity={item}
               locale={locale}

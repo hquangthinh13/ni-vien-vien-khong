@@ -42,7 +42,7 @@ export default function LoadingMotion() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl text-foreground font-script">
+            <h1 className="lg:text-6xl text-2xl md:text-4xl text-foreground font-script">
               Ni Viện Viên Không
             </h1>
 
@@ -69,7 +69,7 @@ export default function LoadingMotion() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0, duration: 0.8 }}
-            className="text-2xl text-muted-foreground font-mono"
+            className="text-lg md:text-xl lg:text-2xl text-muted-foreground font-mono"
           >
             www.vienkhongni.com
           </motion.p>

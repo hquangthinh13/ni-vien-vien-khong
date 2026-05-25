@@ -19,7 +19,7 @@ const RelatedActivitiesSection = ({
         <ScrollText size={20} className="text-primary" />{" "}
         {locale === "vi" ? "Liên quan" : "Related activities"}
       </span>
-      <div className="space-y-6">
+      <div className="space-y-2">
         {activities.map((item: Activity) => (
           <CourseSidebarCard
             key={item.documentId}

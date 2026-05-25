@@ -4,15 +4,17 @@ import {
   fetchAllCourseYears,
 } from "@/features/activity/api/activity.api";
 import { getLocale } from "next-intl/server";
-import Image from "next/image";
-import lineOrnament from "@/public/ornament-01.svg";
 import type { Locale } from "@/types/locale";
 import type { CourseCategory } from "@/types/categories";
 import CourseList from "@/features/activity/ui/CourseList";
 import { Metadata } from "next";
+import PageShell from "@/shared/layout/PageShell";
+import PageHeader from "@/shared/layout/PageHeader";
+
 export const metadata: Metadata = {
   title: "Khóa tu",
 };
+
 export default async function CoursePage({
   searchParams,
 }: {
@@ -24,6 +26,7 @@ export default async function CoursePage({
     page: pageSlug,
     year: yearSlug,
   } = await searchParams;
+
   const currentYear = yearSlug ? Number(yearSlug) : undefined;
   const currentPage = Number(pageSlug) || 1;
   const availableYears = await fetchAllCourseYears();
@@ -38,28 +41,21 @@ export default async function CoursePage({
   const initialCategory = categoryMapping[categorySlug || ""] || "Tất cả";
 
   const response = await fetchCoursesByCategory({
-    locale: locale,
+    locale,
     pagination: { page: currentPage, pageSize: 9 },
     sort: ["activityStartDate:desc"],
     populate: ["coverImage", "courseContent"],
     category: initialCategory,
     year: currentYear,
   });
+
   const initialActivities = Array.isArray(response.data) ? response.data : [];
   const paginationMeta = response.meta?.pagination;
 
   return (
-    <div className="page-container">
-      <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header">
-          {locale === "vi" ? "Khóa tu" : "Courses"}
-        </h1>
-        <div className="opacity-80">
-          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-        </div>
-      </div>
-      <div className="flex flex-1 w-full flex-col items-stretch">
-        {" "}
+    <PageShell>
+      <PageHeader title={locale === "vi" ? "Khóa tu" : "Courses"} />
+      <div className="flex w-full flex-1 flex-col items-stretch">
         <CourseList
           key={`${initialCategory}-${currentPage}`}
           initialCourses={initialActivities}
@@ -71,6 +67,6 @@ export default async function CoursePage({
           currentYear={currentYear}
         />
       </div>
-    </div>
+    </PageShell>
   );
 }
