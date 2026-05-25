@@ -1,15 +1,17 @@
 import React from "react";
-import Image from "next/image";
 import { getLocale } from "next-intl/server";
-import lineOrnament from "@/public/ornament-01.svg";
 import CalligraphyList from "@/features/calligraphy/ui/CalligraphyList";
 import { fetchCalligraphiesByCategory } from "@/features/calligraphy/api/calligraphy.api";
 import type { CalligraphyCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Metadata } from "next";
+import PageShell from "@/shared/layout/PageShell";
+import PageHeader from "@/shared/layout/PageHeader";
+
 export const metadata: Metadata = {
   title: "Thư pháp thư họa",
 };
+
 export default async function CaligraphyPage({
   searchParams,
 }: {
@@ -33,30 +35,21 @@ export default async function CaligraphyPage({
     pagination: { page: currentPage, pageSize: 12 },
     populate: ["coverImage", "relatedCalligraphies"],
   });
-  // console.log("Fetched calligraphies for category:", initialCategory, res);
+
   const initialData = Array.isArray(res.data) ? res.data : [];
   const paginationMeta = res.meta?.pagination;
-  return (
-    <div className="page-container">
-      <div className="flex flex-col w-full gap-6 items-center mb-10 px-4">
-        <h1 className="page-header">
-          {locale === "vi" ? "Thư pháp thư họa" : "Calligraphy"}
-        </h1>
-        <div className="opacity-80">
-          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-        </div>
-      </div>
 
-      <div className="w-full px-4">
-        <CalligraphyList
-          key={`${initialCategory}-${currentPage}`}
-          initialCategory={initialCategory}
-          locale={locale}
-          paginationMeta={paginationMeta}
-          currentPage={currentPage}
-          initialCalligraphies={initialData}
-        />
-      </div>
-    </div>
+  return (
+    <PageShell>
+      <PageHeader title={locale === "vi" ? "Thư pháp thư họa" : "Calligraphy"} />
+      <CalligraphyList
+        key={`${initialCategory}-${currentPage}`}
+        initialCategory={initialCategory}
+        locale={locale}
+        paginationMeta={paginationMeta}
+        currentPage={currentPage}
+        initialCalligraphies={initialData}
+      />
+    </PageShell>
   );
 }

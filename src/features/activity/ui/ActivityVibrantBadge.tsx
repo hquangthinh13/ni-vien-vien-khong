@@ -2,14 +2,17 @@
 import { Vibrant } from "node-vibrant/browser";
 import React, { useEffect, useState } from "react";
 import { Badge } from "@/shared/ui/badge";
+import { cn } from "@/shared/lib/utils";
 interface ActivityVibrantBadgeProps {
   displayCategory: string;
   imageUrl: string | null;
+  className?: string;
 }
 
 const ActivityVibrantBadge = ({
   displayCategory,
   imageUrl,
+  className,
 }: ActivityVibrantBadgeProps) => {
   const [colors, setColors] = useState({
     dark: "#1a1a1a",
@@ -38,7 +41,7 @@ const ActivityVibrantBadge = ({
   return (
     <Badge
       variant="default"
-      className="font-mono"
+      className={cn("font-mono", className)}
       style={{ backgroundColor: colors.vibrant }}
     >
       {/* <span className="bg-white w-1.5 aspect-square rounded-full mr-0.5" />{" "} */}

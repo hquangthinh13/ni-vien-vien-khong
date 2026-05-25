@@ -189,7 +189,6 @@ export default async function Home() {
             <MotionWrapper className="lg:flex hidden">
               <section className="flex flex-col">
                 <div className="flex w-fit">
-                  {" "}
                   <h1 className="home-page-section-title">
                     {locale === "vi" ? "Lời ngỏ" : "Foreword"}
                   </h1>

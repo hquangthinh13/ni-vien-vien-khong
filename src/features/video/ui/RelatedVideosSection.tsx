@@ -1,0 +1,50 @@
+import Link from "next/link";
+import { ScrollText } from "lucide-react";
+import type { VideoPlaylist } from "@/features/video/model/video.types";
+import type { Locale } from "@/types/locale";
+import { formatFriendlyDate } from "@/shared/lib/utils";
+
+interface RelatedVideosSectionProps {
+  videos: VideoPlaylist[];
+  locale: Locale;
+}
+
+export default function RelatedVideosSection({
+  videos,
+  locale,
+}: RelatedVideosSectionProps) {
+  if (!videos || videos.length === 0) return null;
+
+  return (
+    <section className="mt-6 space-y-4">
+      <h3 className="flex items-center gap-2 border-b pb-2 text-lg font-bold uppercase tracking-wider">
+        <ScrollText size={20} className="text-primary" />
+        {locale === "vi" ? "Pháp thoại liên quan" : "Related Dharma Talks"}
+      </h3>
+      <div className="space-y-6">
+        {videos.map((item) => (
+          <Link
+            key={item.documentId}
+            href={`/library/video/${item.documentId}`}
+            className="group block"
+          >
+            <div className="flex gap-2">
+              <div className="flex flex-1 flex-col gap-1">
+                <span className="flex items-center text-[10px] text-muted-foreground md:text-xs">
+                  {item?.publishedAt
+                    ? formatFriendlyDate(item.publishedAt, locale)
+                    : item?.createdAt
+                      ? formatFriendlyDate(item.createdAt, locale)
+                      : ""}
+                </span>
+                <h5 className="flex text-sm font-bold leading-tight transition-colors group-hover:text-primary md:text-md">
+                  {item.title}
+                </h5>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}

@@ -36,6 +36,18 @@ export async function fetchBlogs(
   return (await res.json()) as BlogResponse;
 }
 
+export async function fetchLatestBlogs(
+  locale: string,
+  limit: number = 5,
+): Promise<BlogResponse> {
+  return fetchBlogs({
+    locale,
+    sort: ["publishedAt:desc"],
+    pagination: { limit },
+    populate: "coverImage",
+  });
+}
+
 // ============ 2. Fetch Blog by DocumentId ============
 
 export async function fetchBlogByDocumentId(

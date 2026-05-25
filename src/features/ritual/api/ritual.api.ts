@@ -37,6 +37,18 @@ export async function fetchRituals(
   return (await res.json()) as RitualResponse;
 }
 
+export async function fetchLatestRituals(
+  locale: string,
+  limit: number = 5,
+): Promise<RitualResponse> {
+  return fetchRituals({
+    locale,
+    sort: ["publishedAt:desc"],
+    pagination: { limit },
+    populate: "*",
+  });
+}
+
 // ============ 2. Fetch Ritual by DocumentId ============
 
 export async function fetchRitualByDocumentId(

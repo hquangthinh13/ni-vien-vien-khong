@@ -38,6 +38,18 @@ export async function fetchVideo(
   return (await res.json()) as VideoPlaylistResponse;
 }
 
+export async function fetchLatestVideoPlaylists(
+  locale: string,
+  limit: number = 5,
+): Promise<VideoPlaylistResponse> {
+  return fetchVideo({
+    locale,
+    sort: ["publishedAt:desc"],
+    pagination: { limit },
+    populate: "coverImage",
+  });
+}
+
 // ============ 2. Fetch Video by DocumentId ============
 
 export async function fetchVideoByDocumentId(
