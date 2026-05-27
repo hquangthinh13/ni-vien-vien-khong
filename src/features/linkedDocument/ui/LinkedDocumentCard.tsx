@@ -5,6 +5,7 @@ import { ScrollText, ChevronRight, ExternalLink } from "lucide-react";
 import { LinkedDocument } from "../model/linkedDocument.types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { getImageUrl } from "@/shared/lib/api";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
   Dialog,
   DialogTitle,
@@ -68,7 +69,7 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
               className="object-contain"
               priority
               placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+              blurDataURL={DEFAULT_BLUR_DATA_URL}
             />
           </div>
 

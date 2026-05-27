@@ -49,7 +49,7 @@ import { format, parseISO, isValid, differenceInYears } from "date-fns";
 import { Calendar as CalendarIcon, Clock2Icon, Send } from "lucide-react";
 import ActivityRegistrationContentRenderer from "./ActivityRegistrationContentRenderer";
 import { cn, isRichTextEmpty } from "@/shared/lib/utils";
-
+import { vi, enGB } from "date-fns/locale";
 interface CustomizedComponentWithDetails extends CustomizedComponent {
   multipleChoiceDetails?: MultipleChoiceOption;
 }
@@ -113,7 +113,7 @@ export default function ActivityRegistrationForm({
       },
       identityDetail: {
         IDNumber: "",
-        issueAt: "Bộ Công An",
+        issueAt: undefined,
         issueDate: "",
       },
       monasticDetail: {},
@@ -121,17 +121,24 @@ export default function ActivityRegistrationForm({
       routineDetail: {
         medicalConditions: false,
         foodAllergies: "",
-        dietaryRequirement: "Ăn chay",
+        dietaryRequirement: undefined,
       },
       otherDetail: {},
       commitments: {},
       dynamicOthers: {},
     },
   });
-  const watchHaveZalo = useWatch({
+  const watchZaloName = useWatch({
     control,
-    name: "basic.haveZalo",
+    name: "basic.zaloName",
   });
+  useEffect(() => {
+    if (watchZaloName && watchZaloName.trim() !== "") {
+      setValue("basic.haveZalo", true);
+    } else {
+      setValue("basic.haveZalo", false);
+    }
+  }, [watchZaloName, setValue]);
   const watchTradition = useWatch({
     control,
     name: "monasticDetail.monasticTradition",
@@ -167,6 +174,8 @@ export default function ActivityRegistrationForm({
     // console.log(values);
 
     // console.log("values.basic", values.basic);
+
+    // Logic tính tuổi theo năm sinh (năm hiện tại trừ năm sinh)
     if (activity?.ageRestricted) {
       const dob = parseISO(values.basic.dob);
 
@@ -175,41 +184,77 @@ export default function ActivityRegistrationForm({
         return;
       }
 
-      const age = differenceInYears(new Date(), dob);
+      // Lấy năm hiện tại và năm sinh để trừ trực tiếp
+      const currentYear = new Date().getFullYear();
+      const birthYear = dob.getFullYear();
+      const age = currentYear - birthYear;
 
       if (activity.minAge != null && age < activity.minAge) {
         toast.error(
-          `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu tối thiểu ${activity.minAge} tuổi)`,
+          `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu từ năm sinh ${currentYear - activity.minAge} trở về trước)`,
         );
         return;
       }
 
       if (activity.maxAge != null && age > activity.maxAge) {
         toast.error(
-          `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu tối đa ${activity.maxAge} tuổi)`,
+          `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu từ năm sinh ${currentYear - activity.maxAge} trở về sau)`,
         );
         return;
       }
     }
     const processDynamicSection = <T extends DynamicFields>(
       sectionData: T,
+      sectionEnum: FormSectionEnum,
     ): T => {
-      const processed = { ...sectionData };
+      const processed: Record<string, any> = { ...sectionData };
+      const sectionComps =
+        template?.customizedComponents.filter(
+          (c) => c.section === sectionEnum,
+        ) || [];
 
-      Object.keys(values.dynamicOthers).forEach((label) => {
-        const otherText = values.dynamicOthers[label];
-        const originalVal = processed[label];
+      sectionComps.forEach((comp) => {
+        // Lấy lại key đã dùng lưu trong Form
+        const rhfKey = comp.attributeName || `field_${comp.id}`;
+        // Key chuẩn gửi lên API (ưu tiên attributeName, nếu null thì dùng label gốc)
+        const payloadKey = comp.attributeName || comp.label;
 
-        if (originalVal === "__OTHER__") {
-          (processed as DynamicFields)[label] = otherText;
-        } else if (Array.isArray(originalVal)) {
-          (processed as DynamicFields)[label] = originalVal.map((v) =>
-            v === "__OTHER__" ? otherText : v,
-          );
+        let val = processed[rhfKey];
+        const otherText = values.dynamicOthers[rhfKey];
+
+        if (val === "__OTHER__") {
+          val = otherText;
+        } else if (Array.isArray(val)) {
+          val = val.map((v) => (v === "__OTHER__" ? otherText : v));
+        }
+
+        // Gắn vào payload theo tên chuẩn
+        if (val !== undefined) {
+          processed[payloadKey] = val;
+        }
+
+        // Xóa đi phần key rác (chỉ dùng nội bộ cho RHF) nếu nó khác với payload key
+        if (rhfKey !== payloadKey && processed[rhfKey] !== undefined) {
+          delete processed[rhfKey];
         }
       });
-      return processed;
+
+      return processed as T;
     };
+    //   Object.keys(values.dynamicOthers).forEach((label) => {
+    //     const otherText = values.dynamicOthers[label];
+    //     const originalVal = processed[label];
+
+    //     if (originalVal === "__OTHER__") {
+    //       (processed as DynamicFields)[label] = otherText;
+    //     } else if (Array.isArray(originalVal)) {
+    //       (processed as DynamicFields)[label] = originalVal.map((v) =>
+    //         v === "__OTHER__" ? otherText : v,
+    //       );
+    //     }
+    //   });
+    //   return processed;
+    // };
 
     const mappedCommitments: Record<string, boolean> = {};
     if (template?.commitmentMessages) {
@@ -221,17 +266,24 @@ export default function ActivityRegistrationForm({
 
     const finalIdentityDetail = processDynamicSection(
       values.identityDetail as DynamicFields,
+      FormSectionEnum.Identity,
     );
     const finalMonasticDetail = processDynamicSection(
       values.monasticDetail as DynamicFields,
+      FormSectionEnum.Monastic,
     );
     const finalRelationDetail = processDynamicSection(
       values.relationDetail as DynamicFields,
+      FormSectionEnum.Relation,
     );
     const finalRoutineDetail = processDynamicSection(
       values.routineDetail as DynamicFields,
+      FormSectionEnum.Routine,
     );
-    const finalOtherDetail = processDynamicSection(values.otherDetail);
+    const finalOtherDetail = processDynamicSection(
+      values.otherDetail as DynamicFields,
+      FormSectionEnum.Others,
+    );
 
     startTransition(async () => {
       try {
@@ -257,8 +309,22 @@ export default function ActivityRegistrationForm({
         const finalPayload = builder.build();
         // console.log("Final Payload to API:", finalPayload);
 
-        await createActivityRegistration(finalPayload);
-        toast.success("Đăng ký thành công!");
+        const response = await createActivityRegistration(finalPayload);
+        const registration = Array.isArray(response.data)
+          ? response.data[0]
+          : response.data;
+        const status = registration?.registrationStatus;
+
+        if (status === "active") {
+          toast.success("Chúc mừng! Bạn đã đăng ký thành công.");
+        } else if (status === "pending") {
+          toast.info(
+            "Đăng ký thành công! Bạn hiện tại đã ở trong danh sách chờ do số lượng đơn đăng ký có giới hạn.",
+          );
+        } else {
+          toast.success("Gửi thông tin đăng ký thành công!");
+        }
+
         reset(); // reset form
 
         onClose?.();
@@ -288,6 +354,14 @@ export default function ActivityRegistrationForm({
     }
   };
 
+  const hasCustomFieldsForSection = (section: FormSectionEnum) => {
+    return template?.customizedComponents?.some(
+      (comp) => comp.section === section,
+    );
+  };
+  const getFieldError = (name: string) => {
+    return name.split(".").reduce((acc: any, part) => acc && acc[part], errors);
+  };
   const renderSectionFields = (sectionName: FormSectionEnum) => {
     const fields =
       template?.customizedComponents.filter((c) => c.section === sectionName) ||
@@ -295,12 +369,14 @@ export default function ActivityRegistrationForm({
     const formKey = getSectionKey(sectionName) || "others";
 
     return fields.map((comp) => {
-      const fieldPath =
-        `${formKey}.${comp.label}` as Path<RegistrationFormValues>;
+      const rhfKey = comp.attributeName || `field_${comp.id}`;
+
+      const fieldPath = `${formKey}.${rhfKey}` as Path<RegistrationFormValues>;
 
       return renderDynamicField(
         comp as CustomizedComponentWithDetails,
         fieldPath,
+        rhfKey,
       );
     });
   };
@@ -308,17 +384,29 @@ export default function ActivityRegistrationForm({
   const renderDynamicField = (
     comp: CustomizedComponentWithDetails,
     name: Path<RegistrationFormValues>,
+    rhfKey: string,
   ) => {
+    const fieldError = getFieldError(name);
     switch (comp.type) {
       case ComponentTypeEnum.Number:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>
+              {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
             <Input
               type="number"
-              {...register(name, {})}
+              {...register(name, {
+                required: comp.isRequired ? "Trường này là bắt buộc" : false,
+              })}
               placeholder={comp.label}
             />
+            {fieldError && (
+              <p className="input-error-message">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
 
@@ -331,6 +419,9 @@ export default function ActivityRegistrationForm({
             <Controller
               control={control}
               name={name}
+              rules={{
+                required: comp.isRequired ? "Vui lòng xác nhận" : false,
+              }}
               render={({ field }) => (
                 <Switch
                   className="shrink-0 hover:cursor-pointer"
@@ -342,14 +433,33 @@ export default function ActivityRegistrationForm({
             />
             <FieldLabel htmlFor={name} className="cursor-pointer">
               {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
             </FieldLabel>
+            {fieldError && (
+              <p className="input-error-message">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
       case ComponentTypeEnum.LongText:
         return (
           <Field key={comp.id} className="col-span-full">
-            <FieldLabel>{comp.label}</FieldLabel>
-            <Textarea {...register(name)} placeholder={comp.label} />
+            <FieldLabel>
+              {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
+            <Textarea
+              {...register(name, {
+                required: comp.isRequired ? "Trường này là bắt buộc" : false,
+              })}
+              placeholder={comp.label}
+            />
+            {fieldError && (
+              <p className="input-error-message">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
 
@@ -360,10 +470,23 @@ export default function ActivityRegistrationForm({
 
         return (
           <Field key={comp.id} className="col-span-full">
-            <FieldLabel>{comp.label}</FieldLabel>
+            <FieldLabel>
+              {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
             <Controller
               control={control}
               name={name}
+              rules={{
+                validate: (value) => {
+                  if (comp.isRequired) {
+                    if (isMulti && (!value || (value as string[]).length === 0))
+                      return "Vui lòng chọn ít nhất một tùy chọn";
+                    if (!isMulti && !value) return "Vui lòng chọn một tùy chọn";
+                  }
+                  return true;
+                },
+              }}
               render={({ field }) => {
                 if (isMulti) {
                   const currentValues = Array.isArray(field.value)
@@ -423,13 +546,23 @@ export default function ActivityRegistrationForm({
                         )}
                       </div>
                       {isOtherChecked && (
-                        <Input
-                          placeholder="Vui lòng nhập nội dung khác..."
-                          {...register(
-                            `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
+                        <div>
+                          <Input
+                            placeholder="Vui lòng nhập nội dung khác..."
+                            {...register(
+                              `dynamicOthers.${rhfKey}` as Path<RegistrationFormValues>,
+                              {
+                                required: "Vui lòng nhập chi tiết",
+                              },
+                            )}
+                            className="mt-2 animate-in fade-in slide-in-from-top-1"
+                          />
+                          {errors.dynamicOthers?.[rhfKey] && (
+                            <p className="input-error-message mt-1">
+                              {errors.dynamicOthers[rhfKey]?.message}
+                            </p>
                           )}
-                          className="mt-2 animate-in fade-in slide-in-from-top-1"
-                        />
+                        </div>
                       )}
                     </div>
                   );
@@ -443,16 +576,16 @@ export default function ActivityRegistrationForm({
                         field.onChange(val);
                         if (val !== "__OTHER__")
                           setValue(
-                            `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
+                            `dynamicOthers.${rhfKey}` as Path<RegistrationFormValues>,
                             "",
                           );
                       }}
                       value={field.value as string}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Chọn một tùy chọn" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent position="popper">
                         {details?.options.map((opt) => (
                           <SelectItem key={opt.id} value={opt.label}>
                             {opt.label}
@@ -469,28 +602,49 @@ export default function ActivityRegistrationForm({
                       </SelectContent>
                     </Select>
                     {isOtherSelected && (
-                      <Input
-                        placeholder="Vui lòng nhập nội dung khác..."
-                        {...register(
-                          `dynamicOthers.${comp.label}` as Path<RegistrationFormValues>,
+                      <div>
+                        <Input
+                          placeholder="Vui lòng nhập nội dung khác..."
+                          {...register(
+                            `dynamicOthers.${rhfKey}` as Path<RegistrationFormValues>,
+                            {
+                              required: "Vui lòng nhập chi tiết",
+                            },
+                          )}
+                          className="animate-in fade-in slide-in-from-top-1"
+                        />
+                        {errors.dynamicOthers?.[rhfKey] && (
+                          <p className="input-error-message mt-1">
+                            {errors.dynamicOthers[rhfKey]?.message}{" "}
+                          </p>
                         )}
-                        className="animate-in fade-in slide-in-from-top-1"
-                      />
+                      </div>
                     )}
                   </div>
                 );
               }}
             />
+            {fieldError && (
+              <p className="input-error-message mt-1">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
       }
       case ComponentTypeEnum.Date:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>
+              {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
             <Controller
               control={control}
               name={name}
+              rules={{
+                required: comp.isRequired ? "Vui lòng chọn ngày" : false,
+              }}
               render={({ field }) => {
                 const dateValue =
                   typeof field.value === "string"
@@ -518,12 +672,15 @@ export default function ActivityRegistrationForm({
                       <Calendar
                         mode="single"
                         selected={dateValue}
+                        locale={locale === "vi" ? vi : enGB}
                         captionLayout="dropdown"
                         startMonth={new Date(1900, 0)}
                         endMonth={new Date(2100, 0)}
-                        onSelect={(date) =>
-                          field.onChange(date ? date.toISOString() : "")
-                        }
+                        onSelect={(date) => {
+                          field.onChange(
+                            date ? format(date, "yyyy-MM-dd") : "",
+                          );
+                        }}
                         // disabled={(date) =>
                         //   date > new Date() || date < new Date("1900-01-01")
                         // }
@@ -533,21 +690,35 @@ export default function ActivityRegistrationForm({
                 );
               }}
             />
+            {fieldError && (
+              <p className="input-error-message mt-1">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
       case ComponentTypeEnum.DateTime:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>
+              {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
             <Controller
               control={control}
               name={name}
+              rules={{
+                required: comp.isRequired ? "Vui lòng chọn ngày và giờ" : false,
+              }}
               render={({ field }) => {
                 const dateValue =
                   typeof field.value === "string"
                     ? parseISO(field.value)
                     : undefined;
-
+                const timeString =
+                  dateValue && isValid(dateValue)
+                    ? format(dateValue, "HH:mm")
+                    : "";
                 return (
                   <div className="flex flex-row gap-2">
                     <Popover>
@@ -571,6 +742,7 @@ export default function ActivityRegistrationForm({
                         <Calendar
                           mode="single"
                           selected={dateValue}
+                          locale={locale === "vi" ? vi : enGB}
                           captionLayout="dropdown"
                           startMonth={new Date(1900, 0)}
                           endMonth={new Date(2100, 0)}
@@ -580,7 +752,9 @@ export default function ActivityRegistrationForm({
                               date.setHours(dateValue.getHours());
                               date.setMinutes(dateValue.getMinutes());
                             }
-                            field.onChange(date.toISOString());
+                            field.onChange(
+                              format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                            );
                           }}
                         />
                       </PopoverContent>
@@ -592,10 +766,31 @@ export default function ActivityRegistrationForm({
                         type="time"
                         step="60"
                         defaultValue="10:30"
+                        value={timeString}
                         className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         onChange={(e) => {
-                          const timeValue = e.target.value;
-                          // console.log("Selected time:", timeValue);
+                          const timeValue = e.target.value; // Kết quả trả về dạng "HH:mm", ví dụ: "14:30"
+                          if (!timeValue) return;
+
+                          // Tách giờ và phút ra từ chuỗi
+                          const [hours, minutes] = timeValue
+                            .split(":")
+                            .map(Number);
+
+                          // Nếu đã chọn ngày thì lấy ngày đó, nếu chưa thì mặc định lấy ngày hôm nay
+                          const newDate =
+                            dateValue && isValid(dateValue)
+                              ? new Date(dateValue)
+                              : new Date();
+
+                          // Cập nhật giờ phút mới
+                          newDate.setHours(hours);
+                          newDate.setMinutes(minutes);
+
+                          // Lưu vào form state
+                          field.onChange(
+                            format(newDate, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+                          );
                         }}
                       />
                       <InputGroupAddon>
@@ -606,13 +801,31 @@ export default function ActivityRegistrationForm({
                 );
               }}
             />
+            {fieldError && (
+              <p className="input-error-message mt-1">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
       default:
         return (
-          <Field key={comp.id} className="">
-            <FieldLabel htmlFor={name}>{comp.label}</FieldLabel>
-            <Input {...register(name)} placeholder={comp.label} />
+          <Field key={comp.id} className="col-span-full">
+            <FieldLabel htmlFor={name}>
+              {comp.label}
+              {comp.isRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
+            <Input
+              {...register(name, {
+                required: comp.isRequired ? "Trường này là bắt buộc" : false,
+              })}
+              placeholder={comp.label}
+            />
+            {fieldError && (
+              <p className="input-error-message">
+                {fieldError.message as string}
+              </p>
+            )}
           </Field>
         );
     }
@@ -674,7 +887,7 @@ export default function ActivityRegistrationForm({
             )}
           </section>
           {/* Section: Thông tin cơ bản */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="input-section">
             <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
               Thông tin cá nhân
             </h3>
@@ -711,10 +924,9 @@ export default function ActivityRegistrationForm({
                     <SelectTrigger>
                       <SelectValue placeholder="Chọn giới tính" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent position="popper">
                       <SelectItem value="Male">Nam</SelectItem>
                       <SelectItem value="Female">Nữ</SelectItem>
-                      {/* <SelectItem value="Other">Khác</SelectItem> */}
                     </SelectContent>
                   </Select>
                 )}
@@ -763,10 +975,13 @@ export default function ActivityRegistrationForm({
                           mode="single"
                           selected={dateValue}
                           captionLayout="dropdown"
+                          locale={locale === "vi" ? vi : enGB}
                           fromYear={1900}
                           toYear={new Date().getFullYear()}
                           onSelect={(date) => {
-                            field.onChange(date ? date.toISOString() : "");
+                            field.onChange(
+                              date ? format(date, "yyyy-MM-dd") : "",
+                            );
                           }}
                           disabled={(date) =>
                             date > new Date() || date < new Date("1900-01-01")
@@ -815,61 +1030,41 @@ export default function ActivityRegistrationForm({
               )}
             </Field>
             <Field className="col-span-full">
-              <FieldLabel>Địa chỉ</FieldLabel>
+              <FieldLabel>
+                Địa chỉ <span className="text-destructive">*</span>
+              </FieldLabel>
               <Textarea
                 placeholder="Nhập địa chỉ"
-                {...register("basic.address")}
+                {...register("basic.address", {
+                  required: "Địa chỉ là thông tin bắt buộc",
+                })}
               />
-            </Field>
-            <div className="col-span-full space-y-4 rounded-xl border border-dashed p-4 bg-muted/30 transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <FieldLabel htmlFor="haveZalo" className="cursor-pointer">
-                    Bạn có sử dụng Zalo
-                  </FieldLabel>
-                  <p className="text-sm text-muted-foreground">
-                    Giúp chúng tôi liên lạc qua Zalo
-                  </p>
-                </div>
-                <Controller
-                  control={control}
-                  name="basic.haveZalo"
-                  render={({ field }) => (
-                    <Switch
-                      id="haveZalo"
-                      checked={!!field.value}
-                      onCheckedChange={(checked) => {
-                        field.onChange(checked);
-                        if (!checked) setValue("basic.zaloName", "");
-                      }}
-                    />
-                  )}
-                />
-              </div>
-
-              {watchHaveZalo && (
-                <div className="grid gap-2 ">
-                  <FieldLabel className="text-sm font-semibold">
-                    Tên hiển thị trên Zalo
-                    <span className="text-destructive">*</span>
-                  </FieldLabel>
-                  <Input
-                    {...register("basic.zaloName", {
-                      required:
-                        "Vui lòng nhập tên Zalo để chúng tôi hỗ trợ tốt nhất",
-                    })}
-                    placeholder="Nhập tên hiển thị của bạn trên Zalo"
-                    className=""
-                  />
-                  {errors.basic?.zaloName && (
-                    <p className="input-error-message">
-                      {errors.basic.zaloName.message}
-                    </p>
-                  )}
-                </div>
+              {errors.basic?.address && (
+                <p className="input-error-message">
+                  {errors.basic.address.message}
+                </p>
               )}
-            </div>{" "}
-            <div className="col-span-full flex items-start space-x-3 p-3 rounded-lg bg-muted/20">
+            </Field>
+
+            <Field className="col-span-full">
+              <FieldLabel className="text-sm font-semibold">
+                Tên hiển thị trên Zalo
+                <span className="text-destructive">*</span>
+              </FieldLabel>
+              <Input
+                {...register("basic.zaloName", {
+                  required: "Tên hiển thị trên Zalo là thông tin bắt buộc",
+                })}
+                placeholder="Nhập tên hiển thị của bạn trên Zalo"
+              />
+              {errors.basic?.zaloName && (
+                <p className="input-error-message">
+                  {errors.basic.zaloName.message}
+                </p>
+              )}
+            </Field>
+
+            <div className="col-span-full flex items-start space-x-2 p-2 pl-0 rounded-lg bg-muted/20">
               <Controller
                 control={control}
                 name="firstTimeRegistered"
@@ -886,7 +1081,7 @@ export default function ActivityRegistrationForm({
               />
               <FieldLabel
                 htmlFor="firstTimeRegistered"
-                className="font-normal leading-relaxed"
+                className="font-normal leading-relaxed cursor-pointer"
               >
                 Đây là lần đầu tiên tôi tham gia sự kiện tại Ni Viện Viên Không.
               </FieldLabel>
@@ -895,367 +1090,463 @@ export default function ActivityRegistrationForm({
           </div>
 
           {/* Section: Identity*/}
-          {template.defaultIdentitySectionIncluded && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+          {(template.defaultIdentitySectionIncluded ||
+            hasCustomFieldsForSection(FormSectionEnum.Identity)) && (
+            <div className="input-section pt-6 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin Căn cước
               </h3>
-              <Field>
-                <FieldLabel>
-                  Số CCCD
-                  <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Input
-                  placeholder="Nhập số CCCD"
-                  {...register("identityDetail.IDNumber", {
-                    required: "Số CCCD là thông tin bắt buộc",
-                  })}
-                />
-                {errors.identityDetail?.IDNumber && (
-                  <p className="input-error-message">
-                    {errors.identityDetail.IDNumber.message}
-                  </p>
-                )}
-              </Field>
 
-              <Field className="">
-                <FieldLabel htmlFor="issueDate">
-                  Ngày cấp
-                  <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Controller
-                  control={control}
-                  name="identityDetail.issueDate"
-                  rules={{ required: "Ngày cấp là thông tin bắt buộc" }}
-                  render={({ field }) => {
-                    const dateValue = field.value
-                      ? parseISO(field.value)
-                      : undefined;
+              {template.defaultIdentitySectionIncluded && (
+                <>
+                  <Field>
+                    <FieldLabel>
+                      Số CCCD
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      placeholder="Nhập số CCCD"
+                      {...register("identityDetail.IDNumber", {
+                        required: "Số CCCD là thông tin bắt buộc",
+                      })}
+                    />
+                    {errors.identityDetail?.IDNumber && (
+                      <p className="input-error-message">
+                        {errors.identityDetail.IDNumber.message}
+                      </p>
+                    )}
+                  </Field>
 
-                    return (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            id="issueDate"
-                            className={cn(
-                              "w-full justify-start hover:cursor-pointer",
-                              !field.value && "text-muted-foreground",
-                            )}
-                          >
-                            <CalendarIcon className="" />
-                            {dateValue && isValid(dateValue) ? (
-                              format(dateValue, "dd/MM/yyyy")
-                            ) : (
-                              <span>Chọn ngày cấp CCCD</span>
-                            )}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={dateValue}
-                            captionLayout="dropdown"
-                            fromYear={1900}
-                            toYear={new Date().getFullYear()}
-                            onSelect={(date) => {
-                              field.onChange(date ? date.toISOString() : "");
-                            }}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    );
-                  }}
-                />
-                {errors.identityDetail?.issueDate && (
-                  <p className="input-error-message">
-                    {errors.identityDetail.issueDate.message}
-                  </p>
-                )}
-              </Field>
+                  <Field className="">
+                    <FieldLabel htmlFor="issueDate">
+                      Ngày cấp
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Controller
+                      control={control}
+                      name="identityDetail.issueDate"
+                      rules={{ required: "Ngày cấp là thông tin bắt buộc" }}
+                      render={({ field }) => {
+                        const dateValue = field.value
+                          ? parseISO(field.value)
+                          : undefined;
 
-              <Field className="col-span-full">
-                <FieldLabel>
-                  Khu vực đăng ký
-                  <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Controller
-                  control={control}
-                  name="identityDetail.issueAt"
-                  rules={{ required: "Khu vực đăng ký là thông tin bắt buộc" }}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      {" "}
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn khu vực đăng ký" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Bộ Công An"
+                        return (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                id="issueDate"
+                                className={cn(
+                                  "w-full justify-start hover:cursor-pointer",
+                                  !field.value && "text-muted-foreground",
+                                )}
+                              >
+                                <CalendarIcon className="" />
+                                {dateValue && isValid(dateValue) ? (
+                                  format(dateValue, "dd/MM/yyyy")
+                                ) : (
+                                  <span>Chọn ngày cấp CCCD</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={dateValue}
+                                captionLayout="dropdown"
+                                locale={locale === "vi" ? vi : enGB}
+                                fromYear={1900}
+                                toYear={new Date().getFullYear()}
+                                onSelect={(date) => {
+                                  field.onChange(
+                                    date ? format(date, "yyyy-MM-dd") : "",
+                                  );
+                                }}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        );
+                      }}
+                    />
+                    {errors.identityDetail?.issueDate && (
+                      <p className="input-error-message">
+                        {errors.identityDetail.issueDate.message}
+                      </p>
+                    )}
+                  </Field>
+
+                  <Field className="col-span-full">
+                    <FieldLabel>
+                      Khu vực đăng ký
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Controller
+                      control={control}
+                      name="identityDetail.issueAt"
+                      rules={{
+                        required: "Khu vực đăng ký là thông tin bắt buộc",
+                      }}
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
                         >
-                          Bộ Công An
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Cục Cảnh sát quản lý hành chính về trật tự xã hội"
-                        >
-                          Cục Cảnh sát quản lý hành chính về trật tự xã hội
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu Quốc gia về dân cư"
-                        >
-                          Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu Quốc
-                          gia về dân cư
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Khác"
-                        >
-                          Khác
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />{" "}
-                {watchIdIssueAt === "Khác" && (
-                  <Input
-                    className="mt-2 animate-in fade-in slide-in-from-top-1"
-                    placeholder="Nhập khu vực của bạn"
-                    {...register("identityDetail.issueAtOther")}
-                  />
-                )}
-                {errors.identityDetail?.issueAt && (
-                  <p className="input-error-message">
-                    {errors.identityDetail.issueAt.message}
-                  </p>
-                )}
-              </Field>
+                          {" "}
+                          <SelectTrigger>
+                            <SelectValue placeholder="Chọn khu vực đăng ký" />
+                          </SelectTrigger>
+                          <SelectContent position="popper">
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Bộ Công An"
+                            >
+                              Bộ Công An
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Cục Cảnh sát quản lý hành chính về trật tự xã hội"
+                            >
+                              Cục Cảnh sát quản lý hành chính về trật tự xã hội
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu Quốc gia về dân cư"
+                            >
+                              Cục Cảnh sát đăng ký quản lý cư trú và dữ liệu
+                              Quốc gia về dân cư
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Khác"
+                            >
+                              Khác
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />{" "}
+                    {watchIdIssueAt === "Khác" && (
+                      <Input
+                        className="mt-2 animate-in fade-in slide-in-from-top-1"
+                        placeholder="Nhập khu vực của bạn"
+                        {...register("identityDetail.issueAtOther")}
+                      />
+                    )}
+                    {errors.identityDetail?.issueAt && (
+                      <p className="input-error-message">
+                        {errors.identityDetail.issueAt.message}
+                      </p>
+                    )}
+                  </Field>
+                </>
+              )}
+
               {renderSectionFields(FormSectionEnum.Identity)}
             </div>
           )}
-
-          {template.defaultMonasticSectionIncluded && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+          {(template.defaultMonasticSectionIncluded ||
+            hasCustomFieldsForSection(FormSectionEnum.Monastic)) && (
+            <div className="input-section pt-6 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin tu sĩ
               </h3>
-              <Field className="col-span-full">
-                <FieldLabel>Pháp danh</FieldLabel>
-                <Input
-                  placeholder="Nhập Pháp danh"
-                  {...register("monasticDetail.dharmaName")}
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Giới phẩm</FieldLabel>
-                <Controller
-                  control={control}
-                  name="monasticDetail.monasticRank"
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn giới phẩm" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Tỳ Kheo Ni"
+              {template.defaultMonasticSectionIncluded && (
+                <>
+                  <Field className="col-span-full">
+                    <FieldLabel>Pháp danh</FieldLabel>
+                    <Input
+                      placeholder="Nhập Pháp danh"
+                      {...register("monasticDetail.dharmaName")}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel>Giới phẩm</FieldLabel>
+                    <Controller
+                      control={control}
+                      name="monasticDetail.monasticRank"
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
                         >
-                          Tỳ Kheo Ni
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Sadini"
+                          <SelectTrigger>
+                            <SelectValue placeholder="Chọn giới phẩm" />
+                          </SelectTrigger>
+                          <SelectContent position="popper">
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Tỳ Kheo Ni"
+                            >
+                              Tỳ Kheo Ni
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Sadini"
+                            >
+                              Sadini
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Tu nữ"
+                            >
+                              Tu nữ
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Cư sĩ nam"
+                            >
+                              Cư sĩ nam
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Cư sĩ nữ"
+                            >
+                              Cư sĩ nữ
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel>Truyền thống</FieldLabel>
+                    <Controller
+                      control={control}
+                      name="monasticDetail.monasticTradition"
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
                         >
-                          Sadini
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Tu nữ"
-                        >
-                          Tu nữ
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Cư sĩ nam"
-                        >
-                          Cư sĩ nam
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Cư sĩ nữ"
-                        >
-                          Cư sĩ nữ
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Truyền thống</FieldLabel>
-                <Controller
-                  control={control}
-                  name="monasticDetail.monasticTradition"
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn truyền thống tu sĩ" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Nam Tông"
-                        >
-                          Nam Tông
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Bắc Tông"
-                        >
-                          Bắc Tông
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Khất Sĩ"
-                        >
-                          Khất Sĩ
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Khác"
-                        >
-                          Khác
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {watchTradition === "Khác" && (
-                  <Input
-                    className="mt-2 animate-in fade-in slide-in-from-top-1"
-                    placeholder="Nhập truyền thống khác của bạn"
-                    {...register("monasticDetail.monasticTraditionOther")}
-                  />
-                )}
-              </Field>
-              <Field className="">
-                <FieldLabel>Tự viện</FieldLabel>
-                <Input
-                  placeholder="Nhập tên tự viện (chùa/ni viện) của bạn"
-                  {...register("monasticDetail.currentMonastery")}
-                />
-              </Field>{" "}
-              <Field className="">
-                <FieldLabel>Số năm tu tập</FieldLabel>
-                <Input
-                  placeholder="Nhập số năm tu tập"
-                  {...register("monasticDetail.yearsOfPractice")}
-                  type="number"
-                />
-              </Field>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Chọn truyền thống tu sĩ" />
+                          </SelectTrigger>
+                          <SelectContent position="popper">
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Nam Tông"
+                            >
+                              Nam Tông
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Bắc Tông"
+                            >
+                              Bắc Tông
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Khất Sĩ"
+                            >
+                              Khất Sĩ
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Khác"
+                            >
+                              Khác
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {watchTradition === "Khác" && (
+                      <Input
+                        className="mt-2 animate-in fade-in slide-in-from-top-1"
+                        placeholder="Nhập truyền thống khác của bạn"
+                        {...register("monasticDetail.monasticTraditionOther")}
+                      />
+                    )}
+                  </Field>
+                  <Field className="">
+                    <FieldLabel>Tự viện</FieldLabel>
+                    <Input
+                      placeholder="Nhập tên tự viện (chùa/ni viện) của bạn"
+                      {...register("monasticDetail.currentMonastery")}
+                    />
+                  </Field>{" "}
+                  <Field className="">
+                    <FieldLabel>Số năm tu tập</FieldLabel>
+                    <Input
+                      placeholder="Nhập số năm tu tập"
+                      {...register("monasticDetail.yearsOfPractice")}
+                      type="number"
+                    />
+                  </Field>
+                </>
+              )}
               {renderSectionFields(FormSectionEnum.Monastic)}
             </div>
           )}
-          {template.defaultRelationSectionIncluded && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+
+          {(template.defaultRelationSectionIncluded ||
+            hasCustomFieldsForSection(FormSectionEnum.Relation)) && (
+            <div className="input-section pt-6 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin liên hệ
               </h3>
-              <Field className="col-span-full">
-                <FieldLabel>Họ tên người thân</FieldLabel>
-                <Input
-                  placeholder="Nhập họ tên người thân"
-                  {...register("relationDetail.fullName")}
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Số điện thoại người thân</FieldLabel>
-                <Input
-                  placeholder="Nhập số điện thoại người thân"
-                  {...register("relationDetail.phoneNumber")}
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Mối quan hệ</FieldLabel>
-                <Input
-                  placeholder="Nhập mối quan hệ"
-                  {...register("relationDetail.relationship")}
-                />
-              </Field>
+
+              {template.defaultRelationSectionIncluded && (
+                <>
+                  <Field className="col-span-full">
+                    <FieldLabel>
+                      Họ tên người thân{" "}
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      placeholder="Nhập họ tên người thân"
+                      {...register("relationDetail.fullName", {
+                        required: "Họ tên người thân là thông tin bắt buộc",
+                      })}
+                    />{" "}
+                    {errors.relationDetail?.fullName && (
+                      <p className="input-error-message">
+                        {errors.relationDetail.fullName.message}
+                      </p>
+                    )}
+                  </Field>
+                  <Field>
+                    <FieldLabel>
+                      Số điện thoại người thân{" "}
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      placeholder="Nhập số điện thoại người thân"
+                      {...register("relationDetail.phoneNumber", {
+                        required:
+                          "Số điện thoại người thân là thông tin bắt buộc",
+                      })}
+                    />{" "}
+                    {errors.relationDetail?.phoneNumber && (
+                      <p className="input-error-message">
+                        {errors.relationDetail.phoneNumber.message}
+                      </p>
+                    )}
+                  </Field>
+                  <Field>
+                    <FieldLabel>
+                      Mối quan hệ <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      placeholder="Nhập mối quan hệ"
+                      {...register("relationDetail.relationship", {
+                        required:
+                          "Mối quan hệ với người thân là thông tin bắt buộc",
+                      })}
+                    />{" "}
+                    {errors.relationDetail?.relationship && (
+                      <p className="input-error-message">
+                        {errors.relationDetail.relationship.message}
+                      </p>
+                    )}
+                  </Field>
+                </>
+              )}
               {renderSectionFields(FormSectionEnum.Relation)}
             </div>
           )}
-          {template.defaultRoutineSectionIncluded && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+          {(template.defaultRoutineSectionIncluded ||
+            hasCustomFieldsForSection(FormSectionEnum.Routine)) && (
+            <div className="input-section pt-6 border-t">
               <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin lịch trình
               </h3>
-              <Field className="col-span-full">
-                <FieldLabel>Yêu cầu về chế độ ăn uống</FieldLabel>
-                <Controller
-                  control={control}
-                  name="monasticDetail.dietaryRequirement"
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={field.onChange}
-                      value={(field.value as string) || ""}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn chế độ ăn uống" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Ăn chay"
-                        >
-                          Ăn chay
-                        </SelectItem>
-                        <SelectItem
-                          className="hover:cursor-pointer"
-                          value="Ăn thường"
-                        >
-                          Ăn thường
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </Field>
-              <Field className="col-span-full">
-                <FieldLabel>Yêu cầu về dị ứng thực phẩm</FieldLabel>
-                <Textarea
-                  placeholder="Nhập yêu cầu về dị ứng thực phẩm"
-                  {...register("routineDetail.foodAllergies")}
-                />
-              </Field>
-              <div className="col-span-full flex items-center space-x-2">
-                <Controller
-                  control={control}
-                  name="routineDetail.medicalConditions"
-                  render={({ field }) => (
-                    <Switch
-                      id="medicalConditions"
-                      className="shrink-0 hover:cursor-pointer"
-                      checked={!!field.value}
-                      onCheckedChange={(checked) => {
-                        field.onChange(checked);
+
+              {template.defaultRoutineSectionIncluded && (
+                <>
+                  <Field className="col-span-full">
+                    <FieldLabel>
+                      Yêu cầu về chế độ ăn uống
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Controller
+                      control={control}
+                      name="routineDetail.dietaryRequirement"
+                      rules={{
+                        required:
+                          "Yêu cầu về chế độ ăn uống là thông tin bắt buộc",
                       }}
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={(field.value as string) || ""}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Chọn chế độ ăn uống" />
+                          </SelectTrigger>
+                          <SelectContent position="popper">
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Ăn chay"
+                            >
+                              Ăn chay
+                            </SelectItem>
+                            <SelectItem
+                              className="hover:cursor-pointer"
+                              value="Ăn thường"
+                            >
+                              Ăn thường
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />{" "}
+                    {errors.routineDetail?.dietaryRequirement && (
+                      <p className="input-error-message">
+                        {errors.routineDetail.dietaryRequirement.message}
+                      </p>
+                    )}
+                  </Field>
+                  <Field className="col-span-full">
+                    <FieldLabel>
+                      Yêu cầu về dị ứng thực phẩm{" "}
+                      <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Textarea
+                      placeholder="Nhập yêu cầu về dị ứng thực phẩm"
+                      {...register("routineDetail.foodAllergies", {
+                        required:
+                          "Yêu cầu về dị ứng thực phẩm là thông tin bắt buộc",
+                      })}
+                    />{" "}
+                    {errors.routineDetail?.foodAllergies && (
+                      <p className="input-error-message">
+                        {errors.routineDetail.foodAllergies.message}
+                      </p>
+                    )}
+                  </Field>
+                  <div className="col-span-full flex items-center space-x-2">
+                    <Controller
+                      control={control}
+                      name="routineDetail.medicalConditions"
+                      render={({ field }) => (
+                        <Switch
+                          id="medicalConditions"
+                          className="shrink-0 hover:cursor-pointer"
+                          checked={!!field.value}
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked);
+                          }}
+                        />
+                      )}
                     />
-                  )}
-                />
-                <FieldLabel
-                  htmlFor="medicalConditions"
-                  className="cursor-pointer select-none"
-                >
-                  Tôi có tình trạng sức khỏe đặc biệt cần lưu ý
-                </FieldLabel>
-              </div>
+                    <FieldLabel
+                      htmlFor="medicalConditions"
+                      className="cursor-pointer select-none"
+                    >
+                      Tôi có tình trạng sức khỏe đặc biệt cần lưu ý
+                    </FieldLabel>
+                  </div>
+                </>
+              )}
               {renderSectionFields(FormSectionEnum.Routine)}
             </div>
           )}
@@ -1263,13 +1554,11 @@ export default function ActivityRegistrationForm({
           {template.customizedComponents?.some(
             (comp) => comp.section === FormSectionEnum.Others,
           ) && (
-            <div className="pt-4 border-t space-y-4">
-              <h3 className="font-bold border-l-4 border-primary pl-2 uppercase">
+            <div className="input-section pt-6 border-t">
+              <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
                 Thông tin bổ sung
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderSectionFields(FormSectionEnum.Others)}
-              </div>
+              <> {renderSectionFields(FormSectionEnum.Others)}</>
             </div>
           )}
 
@@ -1282,14 +1571,16 @@ export default function ActivityRegistrationForm({
                 <div className="space-y-2">
                   {template.commitmentMessages.map((msg) => (
                     <div key={msg.id} className="flex flex-col">
-                      <div className="flex items-start space-x-3 p-3 rounded-lg bg-muted/20">
+                      <div className="flex items-start space-x-2 p-2 pl-0 rounded-lg bg-muted/20">
                         <Controller
                           control={control}
                           name={
                             `commitments.${msg.id}` as unknown as Path<RegistrationFormValues>
                           }
                           rules={{
-                            required: "Bạn phải đồng ý với cam kết này",
+                            validate: (value) =>
+                              value === true ||
+                              "Bạn phải đồng ý với cam kết này",
                           }}
                           render={({ field }) => (
                             <Checkbox
@@ -1308,9 +1599,9 @@ export default function ActivityRegistrationForm({
                         </FieldLabel>
                       </div>
                       {errors.commitments?.[msg.id] && (
-                        <p className="text-xs text-destructive">
+                        <span className="text-xs text-destructive">
                           {errors.commitments[msg.id]?.message}
-                        </p>
+                        </span>
                       )}
                     </div>
                   ))}

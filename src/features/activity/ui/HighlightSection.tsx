@@ -5,6 +5,7 @@ import { LayoutGrid, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { StrapiImageEntity } from "@/types/strapi";
 import { getImageUrl } from "@/shared/lib/api";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
   const [index, setIndex] = useState<number | null>(null);
 
@@ -50,7 +51,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
                 placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                blurDataURL={DEFAULT_BLUR_DATA_URL}
               />
 
               {isLastVisible && (
@@ -74,7 +75,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-100 bg-black/95 flex items-center justify-center p-4 md:p-10"
+            className="fixed inset-0 z-500 bg-black/95 flex items-center justify-center p-4 md:p-10"
             onClick={() => setIndex(null)}
           >
             <button
@@ -113,7 +114,7 @@ const HighlightSection = ({ images = [] }: { images: StrapiImageEntity[] }) => {
                 className="object-contain"
                 priority
                 placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                blurDataURL={DEFAULT_BLUR_DATA_URL}
               />
 
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm font-normal font-mono">

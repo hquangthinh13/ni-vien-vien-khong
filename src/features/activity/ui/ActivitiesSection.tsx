@@ -16,8 +16,13 @@ export default async function ActivitiesSection({
   return (
     <div className="mx-auto mt-4">
       <section className="flex flex-col lg:hidden gap-0">
-        {activities.map((post) => (
-          <MobileActivitiesCard locale={locale} key={post.id} activity={post} />
+        {activities.map((post, index) => (
+          <MobileActivitiesCard
+            locale={locale}
+            key={post.id}
+            activity={post}
+            variant={index === 0 ? "hero" : "compact"}
+          />
         ))}
       </section>
       <section className="hidden lg:flex flex-col">

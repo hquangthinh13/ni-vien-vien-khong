@@ -16,6 +16,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
         alt="Desktop Background"
         fill
         className="object-cover -z-10"
+        quality={75}
         priority
         placeholder="blur"
       />
@@ -25,6 +26,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           alt="Character"
           width={260}
           height={260}
+          quality={75}
           className="drop-shadow-xl object-cover w-70 h-auto"
         />
       </div>
@@ -35,10 +37,11 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
           width={260}
           height={260}
           className="w-70 h-auto drop-shadow-xl scale-x-[-1] -z-30"
+          quality={75}
         />
       </div>
       {/* Content */}
-      <div className="relative flex flex-col gap-4 p-4">
+      <div className="relative flex flex-col gap-2 p-4">
         <div className="flex flex-col gap-4 mt-6 mb-4">
           <div className="flex items-center justify-center">
             <Image

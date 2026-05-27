@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -24,14 +25,14 @@ const ActivityRegistrationContentRenderer = ({
         image: ({ image }) => (
           <figure className="lg:px-48 my-4 space-y-2">
             <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm">
-              <Zoom zoomMargin={80}>
+              <Zoom zoomMargin={0}>
                 <Image
                   src={image.url}
                   alt={image.alternativeText || ""}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                   placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                  blurDataURL={DEFAULT_BLUR_DATA_URL}
                 />
               </Zoom>
             </div>
@@ -47,7 +48,7 @@ const ActivityRegistrationContentRenderer = ({
           </figure>
         ),
         paragraph: ({ children }) => (
-          <p className="not-last:mb-0 text-sm text-foreground/90 text-justify">
+          <p className="not-last:mb-4 text-sm text-foreground/90 text-justify">
             {children}
           </p>
         ),

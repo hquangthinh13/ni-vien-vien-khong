@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Activity } from "../model/activity.types";
@@ -8,14 +8,16 @@ import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/select";
-import ActivityVibrantCard from "./ActivityVibrantCard";
+import UpdatedActivityVibrantCard from "./UpdatedActivityVibrantCard";
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
 
 interface ActivityListProps {
   initialCourses: Activity[];
@@ -43,6 +45,7 @@ export default function CourseList({
 }: ActivityListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const totalPosts = paginationMeta?.total ?? initialCourses.length;
   const reverseMapping: Record<string, string> = {
     "Khóa Tu Mùa Hè": "mua-he",
     "Khóa Tu Xuất Gia Gieo Duyên": "xuat-gia-gieo-duyen",
@@ -76,49 +79,59 @@ export default function CourseList({
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      <div className="flex flex-col w-full justify-center items-center h-auto mb-6 gap-4">
+      <div className="flex-col w-full justify-center items-center h-auto mb-6">
         <Tabs
           value={initialCategory}
           onValueChange={(val) => handleUpdateQuery(val)}
-          className=" flex flex-col h-auto items-center"
+          className="flex flex-col h-auto items-center w-full"
         >
           <TabsList
             variant="line"
             className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
           >
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Tất cả"
             >
               {locale === "vi" ? "Tất cả" : "All"}
+              {initialCategory === "Tất cả" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit "
+              className="cursor-pointer flex-none w-fit "
               value="Khóa Tu Mùa Hè"
             >
               {locale === "vi" ? "Khóa Tu Mùa Hè" : "Summer Retreats"}
+              {initialCategory === "Khóa Tu Mùa Hè" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Khóa Tu Xuất Gia Gieo Duyên"
             >
               {locale === "vi"
                 ? "Khóa Tu Xuất Gia Gieo Duyên"
                 : "Monastic Retreats"}
+              {initialCategory === "Khóa Tu Xuất Gia Gieo Duyên"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Khóa Thiền"
             >
               {locale === "vi" ? "Khóa Thiền" : "Meditation Retreats"}
+              {initialCategory === "Khóa Thiền" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
 
-            <TabsTrigger className="cursor-pointer shrink-0 w-fit" value="Khác">
+            <TabsTrigger
+              className="cursor-pointer flex-none w-fit"
+              value="Khác"
+            >
               {locale === "vi" ? "Khác" : "Others"}
+              {initialCategory === "Khác" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        <div className="flex items-center gap-2">
+        <div className="mt-4 flex justify-center items-center gap-2">
           <span className="text-xs uppercase font-mono tracking-wider font-normal text-muted-foreground whitespace-nowrap">
             {locale === "vi" ? "Năm" : "Year"}
           </span>
@@ -133,40 +146,55 @@ export default function CourseList({
                 placeholder={locale === "vi" ? "Chọn năm" : "Select Year"}
               />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">
-                {locale === "vi" ? "Tất cả" : "All Years"}
-              </SelectItem>
-              {availableYears.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {locale === "vi" ? `Năm ${year}` : `Year ${year}`}
+            <SelectContent position="popper">
+              <SelectGroup>
+                <SelectItem value="all">
+                  {locale === "vi" ? "Tất cả" : "All Years"}
                 </SelectItem>
-              ))}
+                {availableYears.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {locale === "vi" ? `Năm ${year}` : `Year ${year}`}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full"> */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={initialCategory + currentPage}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full col-span-full"
-        >
-          {initialCourses.map((activity: Activity) => (
-            <ActivityVibrantCard
-              key={activity.documentId}
-              activity={activity}
-              locale={locale}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
-      {/* </div> */}
+      {initialCourses.length > 0 ? (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={initialCategory + currentPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full col-span-full"
+          >
+            {initialCourses.map((activity: Activity) => (
+              <SimplifiedActivitiesCard
+                key={activity.documentId}
+                activity={activity}
+                locale={locale}
+                variant="top"
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 text-center text-muted-foreground text-sm"
+          >
+            {locale === "vi" ? "Chưa có dữ liệu." : "No results."}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {paginationMeta && paginationMeta.pageCount > 1 && (
         <div className="flex justify-center gap-4 mt-6">

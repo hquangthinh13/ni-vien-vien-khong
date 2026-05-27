@@ -1,5 +1,3 @@
-import Image from "next/image";
-import lineOrnament from "@/public/ornament-01.svg";
 import React from "react";
 import QuestionCard from "@/features/question/ui/QuestionCard";
 import QuestionForm from "@/features/question/ui/QuestionForm";
@@ -14,9 +12,15 @@ import {
   DialogTrigger,
 } from "@/shared/ui/dialog";
 import { Metadata } from "next";
+import PageShell from "@/shared/layout/PageShell";
+import PageHeader from "@/shared/layout/PageHeader";
+import EmptyState from "@/shared/layout/EmptyState";
+import Pagination from "@/shared/layout/Pagination";
+
 export const metadata: Metadata = {
   title: "Vấn đáp Phật pháp",
 };
+
 export default async function QuestionListPage({
   searchParams,
 }: {
@@ -31,24 +35,19 @@ export default async function QuestionListPage({
     locale,
     pagination: {
       page: currentPage,
-      pageSize: pageSize,
+      pageSize,
     },
     sort: "publishedAt:desc",
     populate: "*",
   });
+
   const questions = Array.isArray(response.data) ? response.data : [];
   const meta = response.meta?.pagination;
 
   return (
-    <div className="page-container">
-      <div className="flex flex-col gap-6 items-center mb-6">
-        <h1 className="page-header">
-          {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
-        </h1>
-        <div className="opacity-80">
-          <Image src={lineOrnament} alt="Ornament" className="w-auto h-6" />
-        </div>
-      </div>
+    <PageShell>
+      <PageHeader title={locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"} />
+
       <Dialog>
         <DialogTrigger asChild>
           <div className="flex w-full justify-center">
@@ -61,48 +60,44 @@ export default async function QuestionListPage({
           aria-describedby="Question form"
           className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
         >
-          {" "}
           <DialogTitle>
             {locale === "vi" ? "Đặt câu hỏi" : "Ask a Question"}
           </DialogTitle>
           <QuestionForm locale={locale} />
         </DialogContent>
       </Dialog>
-      <div className="mt-4 grid grid-cols-1 gap-4">
-        {questions.map((item, index) => (
-          <QuestionCard
-            key={item.id}
-            question={item}
-            className={index !== questions.length - 1 ? "border-b pb-4" : ""}
-            fontSize="md"
-          />
-        ))}
-      </div>
 
-      {meta && meta.pageCount > 1 && (
-        <div className="flex justify-center gap-4 mt-12">
-          {currentPage > 1 && (
-            <a
-              href={`?page=${currentPage - 1}`}
-              className="px-4 py-2 border rounded hover:bg-accent"
-            >
-              Trước
-            </a>
-          )}
-          <span className="flex items-center">
-            {locale === "vi" ? "Trang" : "Page"} {meta.page}{" "}
-            {locale === "vi" ? "trên" : "of"} {meta.pageCount}
-          </span>
-          {currentPage < meta.pageCount && (
-            <a
-              href={`?page=${currentPage + 1}`}
-              className="px-4 py-2 border rounded hover:bg-accent"
-            >
-              Sau
-            </a>
-          )}
+      {questions.length === 0 ? (
+        <EmptyState
+          className="mt-4"
+          message={
+            locale === "vi"
+              ? "Chưa có câu hỏi nào được phản hồi."
+              : "No answered questions yet."
+          }
+        />
+      ) : (
+        <div className="mt-4 grid grid-cols-1 gap-4">
+          {questions.map((item, index) => (
+            <QuestionCard
+              key={item.id}
+              question={item}
+              className={index !== questions.length - 1 ? "border-b pb-4" : ""}
+              fontSize="md"
+              locale={locale}
+            />
+          ))}
         </div>
       )}
-    </div>
+
+      {meta ? (
+        <Pagination
+          currentPage={currentPage}
+          pageCount={meta.pageCount}
+          locale={locale}
+          className="mt-12"
+        />
+      ) : null}
+    </PageShell>
   );
 }

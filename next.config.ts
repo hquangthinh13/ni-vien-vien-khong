@@ -40,6 +40,20 @@ const nextConfig: NextConfig = {
     // unoptimized: process.env.NODE_ENV === "development",
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/wp-sitemap.xml",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/wp-(.*)",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();

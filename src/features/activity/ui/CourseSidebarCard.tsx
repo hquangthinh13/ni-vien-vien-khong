@@ -3,56 +3,67 @@ import Image from "next/image";
 import Link from "next/link";
 import { Activity } from "@/features/activity/model/activity.types";
 import { getImageUrl } from "@/shared/lib/api";
-import { formatFriendlyDate } from "@/shared/lib/utils";
+import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import type { Locale } from "@/types/locale";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
 interface CourseSidebarCardProps {
   course: Activity;
+  locale: Locale;
 }
 
 const CourseSidebarCard = async ({
   course,
   locale,
-}: CourseSidebarCardProps & { locale: Locale }) => {
+}: CourseSidebarCardProps) => {
   const coverImageUrl = course.coverImage
     ? getImageUrl(course.coverImage, "thumbnail")
     : null;
 
   const startDate = course.activityStartDate
-    ? formatFriendlyDate(course.activityStartDate, locale, false)
-    : "Chưa cập nhật";
-
-  const endDate = course.activityEndDate
-    ? formatFriendlyDate(course.activityEndDate, locale, false)
-    : "Chưa cập nhật";
+    ? formatFriendlyDate(course.activityStartDate, locale as string, false)
+    : locale === "vi"
+      ? "Ngày chưa xác định"
+      : "Date not specified";
 
   return (
     <Link
       href={`/activity/${course.slug}-${course.documentId}`}
-      className="group block w-full border-b border-border not-last:pb-2 last:border-0 transition-all"
+      className="group flex flex-col w-full gap-2 border-b border-border not-last:pb-2 last:border-0 transition-all"
     >
-      <div className="flex gap-2">
-        <div className="group relative h-18 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className="line-clamp-2 text-base font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+            {course.activityName || "Untitled Course"}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="max-w-64">
+          {course.activityName || "Untitled Course"}
+        </TooltipContent>
+      </Tooltip>
+
+      <div className="flex items-center gap-2">
+        <div className="group relative h-[63px] w-28 shrink-0 overflow-hidden rounded-md bg-muted sm:h-[81px] sm:w-36">
           {coverImageUrl && (
             <Image
               src={coverImageUrl}
               alt={course.activityName || "Course cover image"}
               fill
-              className="group-hover:scale-105 transition-transform duration-300 object-cover"
+              className="object-cover"
               priority
               placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+              blurDataURL={DEFAULT_BLUR_DATA_URL}
             />
           )}
         </div>
-        <div className="flex flex-col justify-start space-y-1 min-w-0">
-          <div className="flex items-center">
-            <span className="text-xs font-mono text-muted-foreground tracking-tight">
-              {startDate} {endDate ? `- ${endDate}` : ""}
-            </span>
-          </div>
-          <span className="text-sm font-bold text-foreground line-clamp-3 leading-snug group-hover:text-primary transition-colors">
-            {course.activityName || "Untitled Course"}
+
+        <div className="flex min-w-0 flex-1 flex-col justify-start space-y-1">
+          <p className="mb-1 line-clamp-3 font-mono text-xs leading-relaxed text-secondary-foreground">
+            {extractPreviewContent(course.content)}
+          </p>{" "}
+          <span className="text-xs font-mono tracking-tight text-muted-foreground">
+            {startDate}
           </span>
         </div>
       </div>

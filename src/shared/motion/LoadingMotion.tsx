@@ -7,7 +7,7 @@ import logo from "@/public/logo.svg";
 
 export default function LoadingMotion() {
   return (
-    <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background/90 backdrop-blur-md">
+    <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background/70 backdrop-blur-md ">
       <div className="relative flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -42,8 +42,8 @@ export default function LoadingMotion() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-2xl font-semibold tracking-[0.3em] text-foreground font-serif">
-              NI VIỆN VIÊN KHÔNG
+            <h1 className="lg:text-6xl text-2xl md:text-4xl text-foreground font-script">
+              Ni Viện Viên Không
             </h1>
 
             {/* <div className="flex items-center justify-center gap-2 mt-3">
@@ -69,11 +69,9 @@ export default function LoadingMotion() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0, duration: 0.8 }}
-            className="text-sm text-muted-foreground tracking-[0.4em] uppercase font-mono font-semibold"
+            className="text-lg md:text-xl lg:text-2xl text-muted-foreground font-mono"
           >
-            Tâm không làm muôn việc
-            <br />
-            Công đức trả về không{" "}
+            www.vienkhongni.com
           </motion.p>
         </div>
 

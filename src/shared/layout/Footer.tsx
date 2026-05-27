@@ -64,16 +64,12 @@ const Footer = async () => {
               </h1>
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
-            <div className="space-y-2 flex-col flex items-center md:items-start">
+            <div className="text-muted-foreground text-xs md:text-sm space-y-2 flex-col flex items-center md:items-start">
               <HoverCard>
                 <HoverCardTrigger>
-                  <div className="flex flex-col sm:flex-row gap-2 items-center sm:items-start">
-                    <MapPin
-                      size={15}
-                      strokeWidth={1.5}
-                      color="var(--muted-foreground)"
-                    />
-                    <p className="text-muted-foreground text-center md:text-left">
+                  <div className="flex flex-row gap-2 items-center sm:items-start">
+                    <MapPin size={15} strokeWidth={1.5} />
+                    <p className="text-center md:text-left">
                       {response.data?.address}
                     </p>
                   </div>
@@ -84,49 +80,30 @@ const Footer = async () => {
               </HoverCard>
 
               <div className="flex space-x-2 items-center">
-                <Phone
-                  size={15}
-                  strokeWidth={1.5}
-                  color="var(--muted-foreground)"
-                />
-                <p className="text-muted-foreground">
-                  {response.data?.phoneNumber}
-                </p>
+                <Phone size={15} strokeWidth={1.5} />
+                <p className="">{response.data?.phoneNumber}</p>
               </div>
 
               <div className="flex space-x-2 items-center">
-                <Mail
-                  size={15}
-                  strokeWidth={1.5}
-                  color="var(--muted-foreground)"
-                />
-                <p className="text-muted-foreground">
-                  {response.data?.emailPrimary}
-                </p>
+                <Mail size={15} strokeWidth={1.5} />
+                <p className="">{response.data?.emailPrimary}</p>
               </div>
 
               <div className="flex space-x-2 items-center">
-                <Mail
-                  size={15}
-                  strokeWidth={1.5}
-                  color="var(--muted-foreground)"
-                />
-                <p className="text-muted-foreground">
-                  {response.data?.emailSecondary}
-                </p>
+                <Mail size={15} strokeWidth={1.5} />
+                <p className="">{response.data?.emailSecondary}</p>
               </div>
             </div>
           </div>
 
-          {/* Danh muc noi bat */}
-          <div className="space-y-4 md:col-span-3">
+          <div className="space-y-4 md:col-span-3 order-first md:order-0">
             <div className="space-y-2">
               <h1 className="font-bold uppercase justify-center flex md:justify-start">
                 {t("highlight")}
               </h1>
               <Separator className="mx-auto max-w-32 md:max-w-full" />
             </div>
-            <div className="space-y-2 text-muted-foreground flex flex-col items-center md:items-start">
+            <div className="space-y-2 text-xs md:text-sm text-muted-foreground flex flex-col items-center md:items-start">
               <Link
                 href="/course"
                 className="hover:text-primary transition-colors"
@@ -151,11 +128,17 @@ const Footer = async () => {
               >
                 {t("highlight-04")}{" "}
               </Link>
+              <Link
+                href="/library/video"
+                className="hover:text-primary transition-colors"
+              >
+                {t("highlight-05")}{" "}
+              </Link>
             </div>
           </div>
 
           {/* Theo doi ngay */}
-          <div className="space-y-4 md:col-span-3">
+          <div className="space-y-4 md:col-span-3 ">
             <div className="space-y-2">
               <h1 className="font-bold uppercase justify-center flex md:justify-start">
                 {t("follow")}

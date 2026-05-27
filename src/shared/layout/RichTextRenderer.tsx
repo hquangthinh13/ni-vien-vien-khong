@@ -3,6 +3,7 @@
 import React, { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -65,19 +66,19 @@ const RichTextRenderer = ({
 
         image: ({ image }) => (
           <figure
-            className={`${isPoem ? "px-24 lg:px-80" : "px-24 lg:px-48"}  my-8 space-y-3`}
+            className={`${isPoem ? "px-4 lg:px-48" : "px-4 lg:px-48"}  my-8 space-y-3`}
           >
             <div
-              className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-xl shadow-sm`}
+              className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-lg shadow-sm`}
             >
-              <Zoom zoomMargin={80}>
+              <Zoom zoomMargin={0}>
                 <Image
                   src={image.url}
                   alt={image.alternativeText || ""}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                   placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                  blurDataURL={DEFAULT_BLUR_DATA_URL}
                 />
               </Zoom>
             </div>

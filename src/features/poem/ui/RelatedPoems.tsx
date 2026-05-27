@@ -14,9 +14,9 @@ const RelatedPoems = ({ poems, locale }: RelatedPoemsProps) => {
   if (!poems || poems.length === 0) return null;
 
   return (
-    <section className="pt-12">
+    <section className="pt-0">
       <h3 className="flex justify-center items-center gap-2 text-primary font-medium text-sm uppercase tracking-widest mb-6">
-        Đọc thêm
+        {locale === "vi" ? "Đọc thêm" : "More"}
       </h3>
 
       <div className="flex flex-col items-center gap-4">

@@ -11,12 +11,13 @@ import {
 import DynamicActivityRegistrationForm from "./DynamicActivityRegistrationForm";
 import type { Locale } from "@/types/locale";
 import { CirclePlus } from "lucide-react";
-
+import { cn } from "@/shared/lib/utils";
 interface Props {
   documentId: string;
   locale: Locale;
   active: boolean;
   registrationLimit?: number;
+  formOpened?: boolean;
 }
 
 export default function ActivityRegistrationDialog({
@@ -24,13 +25,20 @@ export default function ActivityRegistrationDialog({
   locale,
   active,
   registrationLimit,
+  formOpened,
 }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <div className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md">
+      <DialogTrigger asChild disabled={formOpened === false || !active}>
+        <button
+          className={cn(
+            " text-left w-full group/reg relative cursor-pointer overflow-hidden rounded-lg border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md",
+            (formOpened === false || !active) &&
+              "pointer-events-none opacity-50",
+          )}
+        >
           <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-primary/10 transition-transform duration-500 group-hover/reg:scale-150" />
 
           <div className="relative flex items-center justify-between">
@@ -43,21 +51,30 @@ export default function ActivityRegistrationDialog({
                   ? "Điền thông tin đăng ký ngay"
                   : "Register Now"}
               </span>
-              {registrationLimit && (
-                <p className="text-xs text-muted-foreground italic">
-                  {locale === "vi"
-                    ? "Số lượng đăng ký có hạn: "
-                    : "Limited slots available: "}{" "}
-                  {registrationLimit}
-                </p>
-              )}
+              <p className="text-xs text-muted-foreground italic">
+                {registrationLimit && (
+                  <>
+                    {locale === "vi"
+                      ? "Số lượng đăng ký có hạn: "
+                      : "Limited slots available: "}
+                    {registrationLimit}
+                  </>
+                )}
+                {registrationLimit &&
+                  (formOpened === false || !active) &&
+                  " - "}
+                {(formOpened === false || !active) &&
+                  (locale === "vi"
+                    ? "Form đăng ký đã đóng"
+                    : "Registration form is closed")}
+              </p>
             </div>
 
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
+            <div className="flex aspect-square h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-all duration-300 group-hover/reg:scale-110 group-hover/reg:rotate-12">
               <CirclePlus className="h-6 w-6" />
             </div>
           </div>
-        </div>
+        </button>
       </DialogTrigger>
       <DialogContent
         aria-describedby={documentId}

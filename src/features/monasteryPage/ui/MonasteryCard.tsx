@@ -59,7 +59,7 @@
 //                 className="object-cover hover:scale-105 transition-transform duration-300"
 //                 sizes="(max-width: 768px) 100vw, 50vw"
 //                 placeholder="blur"
-//                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+//                 blurDataURL={DEFAULT_BLUR_DATA_URL}
 //               />
 //             </Zoom>
 //             <div
@@ -178,7 +178,7 @@ const MonasteryCard = ({ item, index, locale }: MonasteryCardProps) => {
             style={{ backgroundColor: accentColor }}
           />
           <div className="relative aspect-4/3 w-full overflow-hidden rounded-sm shadow-2xl">
-            <Zoom zoomMargin={80}>
+            <Zoom zoomMargin={0}>
               <Image
                 src={imageUrl || "/placeholder.png"}
                 alt={item.monasteryName}

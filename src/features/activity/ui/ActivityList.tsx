@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Activity } from "../model/activity.types";
@@ -6,6 +6,8 @@ import type { ActivityCategory as ActivityCategoryType } from "@/types/categorie
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import ActivityCard from "./ActivityCard";
+import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
+
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +34,7 @@ export default function ActivityList({
 }: ActivityListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const totalPosts = paginationMeta?.total ?? initialActivities.length;
   const reverseMapping: Record<string, string> = {
     "Phật Sự Trong Nước": "domestic",
     "Phật Sự Nước Ngoài": "international",
@@ -60,66 +63,95 @@ export default function ActivityList({
         <Tabs
           value={initialCategory}
           onValueChange={(val) => handleUpdateQuery(val)}
-          className=" flex flex-col h-auto items-center"
+          className="flex flex-col h-auto items-center w-full"
         >
           <TabsList
             variant="line"
             className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
           >
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Tất cả"
             >
               {locale === "vi" ? "Tất cả" : "All"}
+              {initialCategory === "Tất cả" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit "
+              className="cursor-pointer flex-none w-fit"
               value="Phật Sự Trong Nước"
             >
               {locale === "vi" ? "Phật Sự Trong Nước" : "Domestic Activities"}
+              {initialCategory === "Phật Sự Trong Nước"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Phật Sự Nước Ngoài"
             >
               {locale === "vi"
                 ? "Phật Sự Nước Ngoài"
                 : "International Activities"}
+              {initialCategory === "Phật Sự Nước Ngoài"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Lớp Học Phật Pháp"
             >
               {locale === "vi" ? "Lớp Học Phật Pháp" : "Dharma Classes"}
+              {initialCategory === "Lớp Học Phật Pháp"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
+
             <TabsTrigger
-              className="cursor-pointer shrink-0 w-fit"
+              className="cursor-pointer flex-none w-fit"
               value="Tin Tức Khác"
             >
               {locale === "vi" ? "Tin Tức Khác" : "Others"}
+              {initialCategory === "Tin Tức Khác" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={initialCategory + currentPage}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
-        >
-          {initialActivities.map((activity: Activity) => (
-            <ActivityCard
-              key={activity.documentId}
-              activity={activity}
-              locale={locale}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      {initialActivities.length > 0 ? (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={initialCategory + currentPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
+          >
+            {initialActivities.map((activity: Activity) => (
+              <SimplifiedActivitiesCard
+                key={activity.documentId}
+                activity={activity}
+                locale={locale}
+                variant="top"
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 w-full text-center text-muted-foreground text-sm"
+          >
+            {locale === "vi" ? "Chưa có hoạt động." : "No results."}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {paginationMeta && paginationMeta.pageCount > 1 && (
         <div className="flex justify-center gap-4 mt-6">

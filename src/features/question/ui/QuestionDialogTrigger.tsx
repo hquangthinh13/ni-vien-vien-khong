@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { MessageCircleQuestionMark } from "lucide-react";
+import { Button } from "@/shared/ui/button";
 import {
   Dialog,
   DialogTitle,
@@ -22,7 +23,7 @@ export default function QuestionDialogTrigger({ locale }: { locale: Locale }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button
+        {/* <button
           type="button"
           className="group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 text-left transition-all duration-300 hover:bg-primary/10 hover:shadow-md"
         >
@@ -44,7 +45,13 @@ export default function QuestionDialogTrigger({ locale }: { locale: Locale }) {
               <MessageCircleQuestionMark className="h-6 w-6" />
             </div>
           </div>
-        </button>
+        </button> */}
+        <span
+          // href="/activity"
+          className="cursor-pointer flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
+        >
+          {locale === "vi" ? "Đặt câu hỏi" : "Send a question"}
+        </span>
       </DialogTrigger>
 
       <DialogContent className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl ">

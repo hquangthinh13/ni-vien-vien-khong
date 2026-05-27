@@ -40,14 +40,28 @@ export async function fetchActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch activities: ${res.status}`);
+    // throw new Error(`Failed to fetch activities: ${res.status}`);
+    console.error(`Strapi Error ${res.status}: ${url}`);
+    return { data: [] };
   }
 
   return (await res.json()) as ActivityResponse;
+}
+
+export async function fetchLatestActivities(
+  locale: string,
+  limit: number = 5,
+): Promise<ActivityResponse> {
+  return fetchActivities({
+    locale,
+    sort: ["publishedAt:desc"],
+    pagination: { limit },
+    populate: ["coverImage", "courseContent"],
+  });
 }
 
 // ============ 2. Fetch Activity by DocumentId ============
@@ -68,7 +82,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -137,7 +151,7 @@ export async function fetchActiveActivities(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) {
@@ -241,9 +255,11 @@ export async function fetchActivitiesByCategory(
   });
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to fetch activities by category: ${res.statusText} (${res.status})`,
-    );
+    // throw new Error(
+    //   `Failed to fetch activities by category: ${res.statusText} (${res.status})`,
+    // );
+    console.error(`Strapi Error ${res.status}: ${url}`);
+    return { data: [] }; //
   }
 
   return (await res.json()) as ActivityResponse;
@@ -292,7 +308,9 @@ export async function fetchCoursesByCategory(
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch courses by category: ${res.status}`);
+    // throw new Error(`Failed to fetch courses by category: ${res.status}`);
+    console.error(`Strapi Error ${res.status}: ${url}`);
+    return { data: [] }; //
   }
   return (await res.json()) as ActivityResponse;
 }
@@ -354,7 +372,7 @@ export async function fetchAllCourseYears(): Promise<number[]> {
   const res = await fetch(url, {
     method: "GET",
     headers: { Authorization: `Bearer ${AUTHORIZED_TOKEN}` },
-    next: { revalidate: 300 },
+    next: { revalidate: 1200 },
   });
 
   if (!res.ok) return [new Date().getFullYear()];

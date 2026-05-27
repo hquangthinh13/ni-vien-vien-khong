@@ -3,10 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
-import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
+import {
+  cn,
+  extractPreviewContent,
+  formatFriendlyDate,
+} from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { Badge } from "@/shared/ui/badge";
-import { getStatusLabel } from "../api/activity.api";
+import { getActivityStatus, getStatusLabel } from "../api/activity.api";
+import { categoryMap } from "@/types/categories";
+import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
+import ActivityVibrantBadge from "./ActivityVibrantBadge";
 interface ActivityCardProps {
   activity: Activity;
   locale: Locale;
@@ -14,18 +22,25 @@ interface ActivityCardProps {
 const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
   const { slug, documentId, activityName, coverImage, content, publishedAt } =
     activity;
-  const displayCategory =
+  const rawCategoryKey =
     activity.activityCategory === "Khóa Tu"
       ? activity.courseContent?.courseCategory || "Khóa Tu"
       : activity.activityCategory;
+
+  const displayCategory = rawCategoryKey
+    ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
+    : "";
   const status = getStatusLabel(activity, locale);
+  const imageUrl = getImageUrl(coverImage, "medium");
+  const statusKey = getActivityStatus(activity);
+
+  const statusConfig = getActivityStatusConfig(statusKey);
 
   return (
     <Link href={`/activity/${slug}-${documentId}`}>
       <div className="group flex flex-col h-full gap-4">
         <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
           {(() => {
-            const imageUrl = getImageUrl(coverImage, "medium");
             return imageUrl ? (
               <Image
                 src={imageUrl}
@@ -33,7 +48,7 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
                 fill
                 className="object-cover scale-[1.01] group-hover:scale-105 transition-transform duration-300 ease-in-out"
                 placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                blurDataURL={DEFAULT_BLUR_DATA_URL}
               />
             ) : null;
           })()}
@@ -46,13 +61,21 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
             {activityName}
           </span>
           <div className="flex gap-2 items-center mb-4">
-            <Badge variant="secondary" className="font-mono">
-              {displayCategory}
-            </Badge>
-
-            <Badge variant="secondary" className="font-mono">
-              {status}
-            </Badge>
+            <ActivityVibrantBadge
+              displayCategory={displayCategory}
+              imageUrl={imageUrl}
+            />
+            {status !== "Đã kết thúc" && status !== "Completed" && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  "font-mono shadow-none text-white",
+                  statusConfig.className,
+                )}
+              >
+                {status}
+              </Badge>
+            )}
           </div>{" "}
           <p
             className={`line-clamp-2 text-sm text-secondary-foreground font-mono`}
