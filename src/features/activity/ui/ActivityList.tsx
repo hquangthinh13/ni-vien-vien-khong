@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Activity } from "../model/activity.types";
@@ -6,6 +6,8 @@ import type { ActivityCategory as ActivityCategoryType } from "@/types/categorie
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import ActivityCard from "./ActivityCard";
+import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
+
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +34,7 @@ export default function ActivityList({
 }: ActivityListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const totalPosts = paginationMeta?.total ?? initialActivities.length;
   const reverseMapping: Record<string, string> = {
     "Phật Sự Trong Nước": "domestic",
     "Phật Sự Nước Ngoài": "international",
@@ -71,6 +74,7 @@ export default function ActivityList({
               value="Tất cả"
             >
               {locale === "vi" ? "Tất cả" : "All"}
+              {initialCategory === "Tất cả" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
 
             <TabsTrigger
@@ -78,6 +82,9 @@ export default function ActivityList({
               value="Phật Sự Trong Nước"
             >
               {locale === "vi" ? "Phật Sự Trong Nước" : "Domestic Activities"}
+              {initialCategory === "Phật Sự Trong Nước"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
 
             <TabsTrigger
@@ -87,6 +94,9 @@ export default function ActivityList({
               {locale === "vi"
                 ? "Phật Sự Nước Ngoài"
                 : "International Activities"}
+              {initialCategory === "Phật Sự Nước Ngoài"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
 
             <TabsTrigger
@@ -94,6 +104,9 @@ export default function ActivityList({
               value="Lớp Học Phật Pháp"
             >
               {locale === "vi" ? "Lớp Học Phật Pháp" : "Dharma Classes"}
+              {initialCategory === "Lớp Học Phật Pháp"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
 
             <TabsTrigger
@@ -101,6 +114,7 @@ export default function ActivityList({
               value="Tin Tức Khác"
             >
               {locale === "vi" ? "Tin Tức Khác" : "Others"}
+              {initialCategory === "Tin Tức Khác" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -116,10 +130,11 @@ export default function ActivityList({
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
           >
             {initialActivities.map((activity: Activity) => (
-              <ActivityCard
+              <SimplifiedActivitiesCard
                 key={activity.documentId}
                 activity={activity}
                 locale={locale}
+                variant="top"
               />
             ))}
           </motion.div>

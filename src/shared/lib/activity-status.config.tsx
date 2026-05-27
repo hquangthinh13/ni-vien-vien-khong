@@ -1,7 +1,7 @@
 const ACTIVITY_STATUS_CONFIG = {
   upcoming: {
     label: { vi: "Sắp diễn ra", en: "Upcoming" },
-    className: "bg-cyan-500",
+    className: "bg-orange-500",
   },
   ongoing: {
     label: { vi: "Đang diễn ra", en: "Ongoing" },

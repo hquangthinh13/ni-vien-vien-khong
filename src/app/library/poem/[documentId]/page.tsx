@@ -67,7 +67,9 @@ export default async function PoemPage({ params }: Props) {
       locale,
     });
     data = (
-      Array.isArray(fullResponse.data) ? fullResponse.data[0] : fullResponse.data
+      Array.isArray(fullResponse.data)
+        ? fullResponse.data[0]
+        : fullResponse.data
     ) as Poem | null;
   } catch (error) {
     console.error("Error fetching poem by documentId:", error);
@@ -77,7 +79,9 @@ export default async function PoemPage({ params }: Props) {
     return (
       <div className="page-container">
         <EmptyState
-          message={locale === "vi" ? "Không tìm thấy bài thơ." : "Poem not found."}
+          message={
+            locale === "vi" ? "Không tìm thấy bài thơ." : "Poem not found."
+          }
         />
       </div>
     );
@@ -103,6 +107,7 @@ export default async function PoemPage({ params }: Props) {
           <DetailHeader
             label={locale === "en" ? "Poem" : "Thơ thiền"}
             title={data.title}
+            centered
           />
 
           <DetailDivider />

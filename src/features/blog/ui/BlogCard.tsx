@@ -5,6 +5,7 @@ import type { Blog } from "../model/blog.types";
 import type { Locale } from "@/types/locale";
 import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 interface BlogCardProps {
   blog: Blog;
   locale: Locale;
@@ -26,7 +27,7 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
                 placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                blurDataURL={DEFAULT_BLUR_DATA_URL}
               />
             ) : null;
           })()}

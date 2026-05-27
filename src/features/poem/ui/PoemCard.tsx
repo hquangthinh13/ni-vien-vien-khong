@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/shared/ui/card";
 import { Poem } from "../model/poem.types";
 import { getImageUrl } from "@/shared/lib/api";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
 interface PoemCardProps {
   poem: Poem;
@@ -35,7 +36,7 @@ const PoemCard = ({ poem }: PoemCardProps) => {
           height={400}
           className="aspect-16/10 w-full object-cover"
           placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+          blurDataURL={DEFAULT_BLUR_DATA_URL}
         />
       </Card>
     </Link>

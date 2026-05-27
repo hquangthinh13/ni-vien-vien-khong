@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
 interface DetailHeaderProps {
   label: string;
@@ -46,7 +47,7 @@ export default function DetailHeader({
               className="object-cover transition-transform duration-300 hover:scale-105"
               priority
               placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+              blurDataURL={DEFAULT_BLUR_DATA_URL}
             />
           </Zoom>
         </div>

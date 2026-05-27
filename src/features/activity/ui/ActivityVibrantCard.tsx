@@ -9,6 +9,7 @@ import type { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import DateCard from "@/shared/layout/DateCard";
 import { categoryMap } from "@/types/categories";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
 interface ActivityVibrantCardProps {
   activity: Activity;
@@ -69,7 +70,7 @@ const ActivityVibrantCard = ({
             className="object-cover transition-transform duration-1000 group-hover:scale-[1.05]"
             priority
             placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+            blurDataURL={DEFAULT_BLUR_DATA_URL}
           />
         )}
 

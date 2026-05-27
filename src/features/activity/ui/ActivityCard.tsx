@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
   cn,
   extractPreviewContent,
@@ -47,7 +48,7 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
                 fill
                 className="object-cover scale-[1.01] group-hover:scale-105 transition-transform duration-300 ease-in-out"
                 placeholder="blur"
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                blurDataURL={DEFAULT_BLUR_DATA_URL}
               />
             ) : null;
           })()}

@@ -9,6 +9,7 @@ import type { Locale } from "@/types/locale";
 import { getImageUrl } from "@/shared/lib/api";
 import DateCard from "@/shared/layout/DateCard";
 import { categoryMap } from "@/types/categories";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
   cn,
   extractPreviewContent,
@@ -101,7 +102,7 @@ const UpdatedActivityVibrantCard = ({
       href={`/activity/${activity.slug}-${activity.documentId}`}
       className="group block"
     >
-      <article className="relative overflow-hidden rounded-none border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+      <article className="relative overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
         <div
           className="absolute left-0 top-0 h-full w-1.5 transition-all duration-300"
           style={{
@@ -118,7 +119,7 @@ const UpdatedActivityVibrantCard = ({
               className="object-cover"
               priority
               placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+              blurDataURL={DEFAULT_BLUR_DATA_URL}
             />
           ) : (
             <div className="absolute inset-0 bg-muted" />
@@ -146,13 +147,13 @@ const UpdatedActivityVibrantCard = ({
             <ActivityVibrantBadge
               displayCategory={displayCategory}
               imageUrl={imageUrl}
-              className="rounded-none px-2 py-1 text-[10px] uppercase tracking-[0.08em]"
+              className="rounded-none px-2 py-1 text-[10px] uppercase"
             />
             {statusKey !== "completed" ? (
               <Badge
                 variant="outline"
                 className={cn(
-                  "rounded-none border-0 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-white shadow-none",
+                  "rounded-none border-0 px-2 py-1 font-mono text-[10px] uppercase text-white shadow-none",
                   statusConfig.className,
                 )}
               >

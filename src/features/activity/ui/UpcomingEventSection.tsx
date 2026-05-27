@@ -2,6 +2,7 @@ import React from "react";
 import type { Locale } from "@/types/locale";
 import { fetchActiveActivities } from "../api/activity.api";
 import UpdatedActivityVibrantCard from "./UpdatedActivityVibrantCard";
+import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
 
 const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
   try {
@@ -9,7 +10,7 @@ const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
       locale,
       populate: "*",
       sort: ["activityStartDate:asc"],
-      pagination: { page: 1, pageSize: 1 },
+      pagination: { page: 1, pageSize: 2 },
     });
     // console.log("Fetched upcoming activities:", response);
     const activities = Array.isArray(response?.data)
@@ -38,12 +39,14 @@ const UpcomingEventSection = async ({ locale }: { locale: Locale }) => {
           {locale === "vi" ? "Sự kiện sắp diễn ra" : "Upcoming Events"}
         </h2>
 
-        <div className="grid grid-cols-1 gap-4 px-4 md:px-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-0">
           {activities.map((item) => (
-            <UpdatedActivityVibrantCard
+            <SimplifiedActivitiesCard
               key={item.documentId}
               activity={item}
               locale={locale}
+              variant="top"
+              background={true}
             />
           ))}
         </div>

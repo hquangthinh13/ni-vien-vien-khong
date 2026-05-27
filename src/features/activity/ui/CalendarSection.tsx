@@ -41,7 +41,7 @@ const CalendarSection = async ({ locale }: { locale: Locale }) => {
         />
       </div>
       {/* Content */}
-      <div className="relative flex flex-col gap-4 p-4">
+      <div className="relative flex flex-col gap-2 p-4">
         <div className="flex flex-col gap-4 mt-6 mb-4">
           <div className="flex items-center justify-center">
             <Image
