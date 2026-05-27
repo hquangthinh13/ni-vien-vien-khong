@@ -59,7 +59,7 @@
 //                 className="object-cover hover:scale-105 transition-transform duration-300"
 //                 sizes="(max-width: 768px) 100vw, 50vw"
 //                 placeholder="blur"
-//                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+//                 blurDataURL={DEFAULT_BLUR_DATA_URL}
 //               />
 //             </Zoom>
 //             <div

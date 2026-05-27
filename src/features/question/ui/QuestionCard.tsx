@@ -46,7 +46,7 @@ const QuestionCard = async ({
         <DialogTrigger asChild>
           <div className="group block cursor-pointer">
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted-foreground font-mono uppercase tracking-wide">
+              <span className="text-xs text-muted-foreground font-mono tracking-wide">
                 {question.createdAt
                   ? formatFriendlyDate(
                       question.createdAt,

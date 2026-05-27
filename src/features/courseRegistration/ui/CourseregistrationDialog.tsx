@@ -34,7 +34,7 @@ export default function ActivityRegistrationDialog({
       <DialogTrigger asChild disabled={formOpened === false || !active}>
         <button
           className={cn(
-            " text-left w-full group/reg relative cursor-pointer overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md",
+            " text-left w-full group/reg relative cursor-pointer overflow-hidden rounded-lg border border-primary/20 bg-primary/5 p-4 transition-all duration-300 hover:bg-primary/10 hover:shadow-md",
             (formOpened === false || !active) &&
               "pointer-events-none opacity-50",
           )}

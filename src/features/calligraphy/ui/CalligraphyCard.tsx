@@ -6,6 +6,7 @@ import { Vibrant } from "node-vibrant/browser";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Calligraphy } from "../model/calligraphy.types";
 import { motion } from "framer-motion";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
 interface CalligraphyCardProps {
   calligraphy: Calligraphy;
@@ -49,7 +50,7 @@ const CalligraphyCard = ({ calligraphy, onClick }: CalligraphyCardProps) => {
           fill
           className="object-contain transition-transform duration-300"
           placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAlCAYAAAAeJYohAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABLSURBVGhD7c+hAcAgEMBAyv7rvqlpPSMcORmX55351kX2GXQN6xrWNaxrWNewrmFdw7qGdQ3rGtY1rGtY17CuYV3DuoZ1DeuuG/4Bi/IELZ15iRoAAAAASUVORK5CYII="
+          blurDataURL={DEFAULT_BLUR_DATA_URL}
         />
       )}
 

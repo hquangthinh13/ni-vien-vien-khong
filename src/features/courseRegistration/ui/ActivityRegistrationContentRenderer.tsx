@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
   BlocksRenderer,
   type BlocksContent,
@@ -31,7 +32,7 @@ const ActivityRegistrationContentRenderer = ({
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                   placeholder="blur"
-                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+Z+hHgAHfwJ364969wAAAABJRU5ErkJggg=="
+                  blurDataURL={DEFAULT_BLUR_DATA_URL}
                 />
               </Zoom>
             </div>

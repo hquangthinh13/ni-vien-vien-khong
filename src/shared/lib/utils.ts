@@ -84,7 +84,7 @@ export const formatShortDate = (
 };
 export const extractPreviewContent = (
   content?: BlocksContent,
-  maxLength: number = 200,
+  maxLength: number = 400,
 ): string => {
   if (!content || content.length === 0) return "";
 

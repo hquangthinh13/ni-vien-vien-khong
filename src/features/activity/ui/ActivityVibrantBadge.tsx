@@ -42,7 +42,7 @@ const ActivityVibrantBadge = ({
     <Badge
       variant="default"
       className={cn("font-mono", className)}
-      style={{ backgroundColor: colors.vibrant }}
+      // style={{ backgroundColor: colors.vibrant }}
     >
       {/* <span className="bg-white w-1.5 aspect-square rounded-full mr-0.5" />{" "} */}
       {displayCategory}

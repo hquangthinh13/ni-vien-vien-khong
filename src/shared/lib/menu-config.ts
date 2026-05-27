@@ -10,12 +10,6 @@ export default function useMenuConfig(): MenuItem[] {
   const t = useTranslations("Navbar");
 
   return [
-    // 1. Trang chủ
-    // {
-    //   title: t("home.trigger"),
-    //   href: "/",
-    // },
-
     // 2. Giới thiệu
     {
       title: t("about.trigger"),

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Activity } from "../model/activity.types";
@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -16,6 +17,7 @@ import UpdatedActivityVibrantCard from "./UpdatedActivityVibrantCard";
 import { Button } from "@/shared/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
 
 interface ActivityListProps {
   initialCourses: Activity[];
@@ -43,6 +45,7 @@ export default function CourseList({
 }: ActivityListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const totalPosts = paginationMeta?.total ?? initialCourses.length;
   const reverseMapping: Record<string, string> = {
     "Khóa Tu Mùa Hè": "mua-he",
     "Khóa Tu Xuất Gia Gieo Duyên": "xuat-gia-gieo-duyen",
@@ -91,12 +94,14 @@ export default function CourseList({
               value="Tất cả"
             >
               {locale === "vi" ? "Tất cả" : "All"}
+              {initialCategory === "Tất cả" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer flex-none w-fit "
               value="Khóa Tu Mùa Hè"
             >
               {locale === "vi" ? "Khóa Tu Mùa Hè" : "Summer Retreats"}
+              {initialCategory === "Khóa Tu Mùa Hè" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer flex-none w-fit"
@@ -105,12 +110,16 @@ export default function CourseList({
               {locale === "vi"
                 ? "Khóa Tu Xuất Gia Gieo Duyên"
                 : "Monastic Retreats"}
+              {initialCategory === "Khóa Tu Xuất Gia Gieo Duyên"
+                ? ` (${totalPosts})`
+                : ""}
             </TabsTrigger>
             <TabsTrigger
               className="cursor-pointer flex-none w-fit"
               value="Khóa Thiền"
             >
               {locale === "vi" ? "Khóa Thiền" : "Meditation Retreats"}
+              {initialCategory === "Khóa Thiền" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
 
             <TabsTrigger
@@ -118,6 +127,7 @@ export default function CourseList({
               value="Khác"
             >
               {locale === "vi" ? "Khác" : "Others"}
+              {initialCategory === "Khác" ? ` (${totalPosts})` : ""}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -136,21 +146,21 @@ export default function CourseList({
                 placeholder={locale === "vi" ? "Chọn năm" : "Select Year"}
               />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">
-                {locale === "vi" ? "Tất cả" : "All Years"}
-              </SelectItem>
-              {availableYears.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {locale === "vi" ? `Năm ${year}` : `Year ${year}`}
+            <SelectContent position="popper">
+              <SelectGroup>
+                <SelectItem value="all">
+                  {locale === "vi" ? "Tất cả" : "All Years"}
                 </SelectItem>
-              ))}
+                {availableYears.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {locale === "vi" ? `Năm ${year}` : `Year ${year}`}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
       </div>
-
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full"> */}
 
       {initialCourses.length > 0 ? (
         <AnimatePresence mode="wait">
@@ -163,10 +173,11 @@ export default function CourseList({
             className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full col-span-full"
           >
             {initialCourses.map((activity: Activity) => (
-              <UpdatedActivityVibrantCard
+              <SimplifiedActivitiesCard
                 key={activity.documentId}
                 activity={activity}
                 locale={locale}
+                variant="top"
               />
             ))}
           </motion.div>
@@ -184,7 +195,6 @@ export default function CourseList({
           </motion.div>
         </AnimatePresence>
       )}
-      {/* </div> */}
 
       {paginationMeta && paginationMeta.pageCount > 1 && (
         <div className="flex justify-center gap-4 mt-6">
