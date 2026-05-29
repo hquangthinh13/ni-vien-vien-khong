@@ -64,7 +64,10 @@ export default function CalligraphyDialog({
             </div>
 
             <div className="flex flex-1 flex-col h-full min-h-0 overflow-hidden bg-white">
-              <div className="flex-1 overflow-y-auto p-6 md:p-8">
+              <div
+                data-lenis-prevent
+                className="flex-1 overflow-y-auto p-6 md:p-8"
+              >
                 <div className="space-y-4">
                   <div>
                     <p className="text-xs font-mono uppercase text-primary font-bold tracking-widest mb-2">

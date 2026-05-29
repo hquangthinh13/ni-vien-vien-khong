@@ -137,7 +137,6 @@ export default async function RootLayout({
       className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-background">
-        <SmoothScrollProvider />
         <Navbar /> <ScrollToTopButton />
         <ScrollProgress className="h-1" />
         <NextIntlClientProvider>
@@ -146,9 +145,9 @@ export default async function RootLayout({
           <Analytics />
         </NextIntlClientProvider>
         <MotionWrapper>
-          {" "}
           <Footer />
         </MotionWrapper>
+        <SmoothScrollProvider />
       </body>
     </html>
   );

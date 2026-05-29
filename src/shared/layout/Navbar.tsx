@@ -61,7 +61,10 @@ export default function Navbar() {
                 <SheetTitle className="">{t("menu")}</SheetTitle>
               </SheetHeader>
 
-              <div className="overflow-y-auto h-full pb-20 pt-0 mt-0">
+              <div
+                data-lenis-prevent
+                className="overflow-y-auto h-full pb-20 pt-0 mt-0"
+              >
                 <MobileNavigationMenu menuData={menuConfig} />
               </div>
             </SheetContent>

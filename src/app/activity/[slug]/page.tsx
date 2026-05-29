@@ -15,7 +15,7 @@ import {
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/types/locale";
 import {
-  fetchActivityByDocumentIdWithRegistrationFormAndCourseContent,
+  fetchActivityByDocumentIdWithCourseContent,
   fetchLatestActivities,
   isActive,
 } from "@/features/activity/api/activity.api";
@@ -46,7 +46,7 @@ export async function generateMetadata(
 
   try {
     const response =
-      await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
+      await fetchActivityByDocumentIdWithCourseContent({
         locale,
         documentId,
         populate: [
@@ -115,7 +115,7 @@ export default async function ActivityPage({ params }: Props) {
   let response;
   try {
     response =
-      await fetchActivityByDocumentIdWithRegistrationFormAndCourseContent({
+      await fetchActivityByDocumentIdWithCourseContent({
         locale,
         documentId,
         populate: [
@@ -286,15 +286,13 @@ export default async function ActivityPage({ params }: Props) {
       }
       sidebar={
         <>
-          {data.registrationForm ? (
-            <ActivityRegistrationDialog
-              documentId={documentId}
-              locale={locale}
-              active={active}
-              registrationLimit={data.registrationLimit}
-              formOpened={data.formOpened}
-            />
-          ) : null}
+          <ActivityRegistrationDialog
+            slug={slug}
+            locale={locale}
+            active={active}
+            registrationLimit={data.registrationLimit}
+            formOpened={data.formOpened}
+          />
 
           {courseContent?.highlightedImages ? (
             <HighlightSection

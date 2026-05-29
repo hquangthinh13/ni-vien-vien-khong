@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { VideoPlaylist } from "../model/video.types";
-import { getYouTubeThumbnail, formatFriendlyDate } from "@/shared/lib/utils";
+import { formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Locale } from "@/types/locale";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
@@ -92,3 +92,4 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
 };
 
 export default VideoCard;
+
