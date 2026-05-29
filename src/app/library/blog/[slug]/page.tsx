@@ -1,5 +1,4 @@
 import React from "react";
-import { CalendarDays } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { formatShortDate } from "@/shared/lib/utils";
 import type { Blog } from "@/features/blog/model/blog.types";
@@ -105,8 +104,7 @@ export default async function ActivityPage({ params }: Props) {
             title={data.title}
             meta={
               data.publishedAt ? (
-                <div className="flex items-center gap-2 text-sm font-mono text-muted-foreground">
-                  {/* <CalendarDays size={18} /> */}
+                <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
                   <span>{formatShortDate(data.publishedAt, locale)}</span>
                 </div>
               ) : null

@@ -46,7 +46,9 @@ export default async function QuestionListPage({
 
   return (
     <PageShell>
-      <PageHeader title={locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"} />
+      <PageHeader
+        title={locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
+      />
 
       <Dialog>
         <DialogTrigger asChild>
@@ -57,6 +59,7 @@ export default async function QuestionListPage({
           </div>
         </DialogTrigger>
         <DialogContent
+          data-lenis-prevent
           aria-describedby="Question form"
           className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
         >

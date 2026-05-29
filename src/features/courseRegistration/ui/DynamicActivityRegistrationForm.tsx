@@ -1,27 +1,27 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-import { useForm, Controller, useWatch, Path } from "react-hook-form";
+import {
+  useForm,
+  Controller,
+  useWatch,
+  Path,
+  type Resolver,
+} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 // API & Types
 import { fetchActivityByDocumentIdWithRegistrationForm } from "@/features/activity/api/activity.api";
-import { createActivityRegistration } from "@/features/courseRegistration/api/activityRegistration.api";
-import { ActivityRegistrationFormDataBuilder } from "@/features/courseRegistration/api/activityRegistration.formData-builder";
 import {
   Activity,
   RegistrationFormTemplate,
-  CustomizedComponent,
-  MultipleChoiceOption,
 } from "@/features/activity/model/activity.types";
-import {
-  BasicInfoComponent,
-  IdentityComponent,
-  MonasticComponent,
-  RelationComponent,
-  RoutineComponent,
-} from "@/types/form-templates";
 import { ComponentTypeEnum, FormSectionEnum } from "@/types/form-components";
+import {
+  IdIssueOrganisationEnum,
+  MonasticTraditionEnum,
+} from "@/types/form-templates";
 
 // UI Components (Shadcn)
 import { Input } from "@/shared/ui/input";
@@ -45,30 +45,24 @@ import type { Locale } from "@/types/locale";
 import { Calendar } from "@/shared/ui/calendar";
 import { Switch } from "@/shared/ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
-import { format, parseISO, isValid, differenceInYears } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 import { Calendar as CalendarIcon, Clock2Icon, Send } from "lucide-react";
-import ActivityRegistrationContentRenderer from "./ActivityRegistrationContentRenderer";
 import { cn, isRichTextEmpty } from "@/shared/lib/utils";
 import { vi, enGB } from "date-fns/locale";
-interface CustomizedComponentWithDetails extends CustomizedComponent {
-  multipleChoiceDetails?: MultipleChoiceOption;
-}
-type DynamicFieldValue = string | number | boolean | string[] | undefined;
-interface DynamicFields {
-  [key: string]: DynamicFieldValue;
-}
-
-interface RegistrationFormValues {
-  firstTimeRegistered: boolean;
-  basic: BasicInfoComponent;
-  identityDetail: Partial<IdentityComponent> & DynamicFields;
-  monasticDetail: Partial<MonasticComponent> & DynamicFields;
-  relationDetail: Partial<RelationComponent> & DynamicFields;
-  routineDetail: Partial<RoutineComponent> & DynamicFields;
-  otherDetail: DynamicFields;
-  commitments: Record<string, boolean>;
-  dynamicOthers: Record<string, string>;
-}
+import RichTextRenderer from "@/shared/layout/RichTextRenderer";
+import type {
+  CustomizedComponentWithDetails,
+  RegistrationFormValues,
+} from "./form/types";
+import { registrationFormSchema } from "./form/schema";
+import {
+  getFieldError,
+  getSectionKey,
+  mapCommitments,
+  processDynamicSection,
+  validateActivityAge,
+} from "./form/utils";
+import { submitActivityRegistration } from "./form/submit";
 
 interface Props {
   documentId: string;
@@ -98,7 +92,9 @@ export default function ActivityRegistrationForm({
     formState: { errors },
   } = useForm<RegistrationFormValues>({
     shouldFocusError: true,
-
+    resolver: zodResolver(
+      registrationFormSchema,
+    ) as Resolver<RegistrationFormValues>,
     defaultValues: {
       firstTimeRegistered: false,
       basic: {
@@ -163,7 +159,7 @@ export default function ActivityRegistrationForm({
         //   data?.registrationForm,
         // );
         // console.log("Loaded activity data:", data);
-      } catch (error) {
+      } catch {
         toast.error("Không thể tải thông tin đăng ký");
       }
     }
@@ -171,149 +167,62 @@ export default function ActivityRegistrationForm({
   }, [documentId]);
 
   const onSubmit = (values: RegistrationFormValues) => {
-    // console.log(values);
-
-    // console.log("values.basic", values.basic);
-
-    // Logic tính tuổi theo năm sinh (năm hiện tại trừ năm sinh)
-    if (activity?.ageRestricted) {
-      const dob = parseISO(values.basic.dob);
-
-      if (!isValid(dob)) {
-        toast.error("Vui lòng chọn ngày sinh hợp lệ");
-        return;
-      }
-
-      // Lấy năm hiện tại và năm sinh để trừ trực tiếp
-      const currentYear = new Date().getFullYear();
-      const birthYear = dob.getFullYear();
-      const age = currentYear - birthYear;
-
-      if (activity.minAge != null && age < activity.minAge) {
-        toast.error(
-          `Rất tiếc, bạn chưa đủ tuổi tham gia (Yêu cầu từ năm sinh ${currentYear - activity.minAge} trở về trước)`,
-        );
-        return;
-      }
-
-      if (activity.maxAge != null && age > activity.maxAge) {
-        toast.error(
-          `Rất tiếc, bạn đã vượt quá độ tuổi quy định (Yêu cầu từ năm sinh ${currentYear - activity.maxAge} trở về sau)`,
-        );
-        return;
-      }
+    const ageError = validateActivityAge(activity, values.basic.dob);
+    if (ageError) {
+      toast.error(ageError);
+      return;
     }
-    const processDynamicSection = <T extends DynamicFields>(
-      sectionData: T,
-      sectionEnum: FormSectionEnum,
-    ): T => {
-      const processed: Record<string, any> = { ...sectionData };
-      const sectionComps =
-        template?.customizedComponents.filter(
-          (c) => c.section === sectionEnum,
-        ) || [];
 
-      sectionComps.forEach((comp) => {
-        // Lấy lại key đã dùng lưu trong Form
-        const rhfKey = comp.attributeName || `field_${comp.id}`;
-        // Key chuẩn gửi lên API (ưu tiên attributeName, nếu null thì dùng label gốc)
-        const payloadKey = comp.attributeName || comp.label;
-
-        let val = processed[rhfKey];
-        const otherText = values.dynamicOthers[rhfKey];
-
-        if (val === "__OTHER__") {
-          val = otherText;
-        } else if (Array.isArray(val)) {
-          val = val.map((v) => (v === "__OTHER__" ? otherText : v));
-        }
-
-        // Gắn vào payload theo tên chuẩn
-        if (val !== undefined) {
-          processed[payloadKey] = val;
-        }
-
-        // Xóa đi phần key rác (chỉ dùng nội bộ cho RHF) nếu nó khác với payload key
-        if (rhfKey !== payloadKey && processed[rhfKey] !== undefined) {
-          delete processed[rhfKey];
-        }
-      });
-
-      return processed as T;
-    };
-    //   Object.keys(values.dynamicOthers).forEach((label) => {
-    //     const otherText = values.dynamicOthers[label];
-    //     const originalVal = processed[label];
-
-    //     if (originalVal === "__OTHER__") {
-    //       (processed as DynamicFields)[label] = otherText;
-    //     } else if (Array.isArray(originalVal)) {
-    //       (processed as DynamicFields)[label] = originalVal.map((v) =>
-    //         v === "__OTHER__" ? otherText : v,
-    //       );
-    //     }
-    //   });
-    //   return processed;
-    // };
-
-    const mappedCommitments: Record<string, boolean> = {};
-    if (template?.commitmentMessages) {
-      template.commitmentMessages.forEach((msg) => {
-        const isChecked = values.commitments[msg.id];
-        mappedCommitments[msg.label] = !!isChecked;
-      });
-    }
+    const mappedCommitments = mapCommitments(
+      template?.commitmentMessages,
+      values.commitments,
+    );
 
     const finalIdentityDetail = processDynamicSection(
-      values.identityDetail as DynamicFields,
+      values.identityDetail,
       FormSectionEnum.Identity,
+      template,
+      values.dynamicOthers,
     );
     const finalMonasticDetail = processDynamicSection(
-      values.monasticDetail as DynamicFields,
+      values.monasticDetail,
       FormSectionEnum.Monastic,
+      template,
+      values.dynamicOthers,
     );
     const finalRelationDetail = processDynamicSection(
-      values.relationDetail as DynamicFields,
+      values.relationDetail,
       FormSectionEnum.Relation,
+      template,
+      values.dynamicOthers,
     );
     const finalRoutineDetail = processDynamicSection(
-      values.routineDetail as DynamicFields,
+      values.routineDetail,
       FormSectionEnum.Routine,
+      template,
+      values.dynamicOthers,
     );
     const finalOtherDetail = processDynamicSection(
-      values.otherDetail as DynamicFields,
+      values.otherDetail,
       FormSectionEnum.Others,
+      template,
+      values.dynamicOthers,
     );
 
     startTransition(async () => {
       try {
-        const builder = new ActivityRegistrationFormDataBuilder();
-
-        builder.withFormData({
-          registreeData: values.basic,
-          firstTimeRegistered: values.firstTimeRegistered,
-          registeredActivity: documentId,
-        });
-
-        builder.withRegistrationPayload({
-          identityDetail: finalIdentityDetail as IdentityComponent,
-          monasticDetail: finalMonasticDetail as MonasticComponent,
-          relationDetail: finalRelationDetail as RelationComponent,
-          routineDetail: finalRoutineDetail as RoutineComponent,
+        const status = await submitActivityRegistration({
+          values,
+          documentId,
+          identityDetail: finalIdentityDetail,
+          monasticDetail: finalMonasticDetail,
+          relationDetail: finalRelationDetail,
+          routineDetail: finalRoutineDetail,
           otherDetail: {
             ...finalOtherDetail,
             ...mappedCommitments,
           },
         });
-
-        const finalPayload = builder.build();
-        // console.log("Final Payload to API:", finalPayload);
-
-        const response = await createActivityRegistration(finalPayload);
-        const registration = Array.isArray(response.data)
-          ? response.data[0]
-          : response.data;
-        const status = registration?.registrationStatus;
 
         if (status === "active") {
           toast.success("Chúc mừng! Bạn đã đăng ký thành công.");
@@ -322,36 +231,17 @@ export default function ActivityRegistrationForm({
             "Đăng ký thành công! Bạn hiện tại đã ở trong danh sách chờ do số lượng đơn đăng ký có giới hạn.",
           );
         } else {
-          toast.success("Gửi thông tin đăng ký thành công!");
+          toast.success("G?i thông tin dang ký thành công!");
         }
 
-        reset(); // reset form
-
+        reset();
         onClose?.();
-      } catch (error) {
-        // console.error(error);
+      } catch {
         toast.error(
-          "Bạn chưa điền đầy đủ thông tin hoặc có lỗi xảy ra. Vui lòng kiểm tra lại.",
+          "B?n chua di?n d?y d? thông tin ho?c có l?i x?y ra. Vui lòng ki?m tra l?i.",
         );
       }
     });
-  };
-
-  const getSectionKey = (section: string): string => {
-    switch (section) {
-      case "Thông tin CCCD (Identity Detail)":
-        return "identityDetail";
-      case "Thông tin tu học (Monatic Detail)":
-        return "monasticDetail";
-      case "Thông tin thân nhân (Relation Detail)":
-        return "relationDetail";
-      case "Thông tin sinh hoạt (Routine Detail)":
-        return "routineDetail";
-      case "Thông tin khác (Others)":
-        return "otherDetail";
-      default:
-        return "otherDetail";
-    }
   };
 
   const hasCustomFieldsForSection = (section: FormSectionEnum) => {
@@ -359,14 +249,12 @@ export default function ActivityRegistrationForm({
       (comp) => comp.section === section,
     );
   };
-  const getFieldError = (name: string) => {
-    return name.split(".").reduce((acc: any, part) => acc && acc[part], errors);
-  };
+
   const renderSectionFields = (sectionName: FormSectionEnum) => {
     const fields =
       template?.customizedComponents.filter((c) => c.section === sectionName) ||
       [];
-    const formKey = getSectionKey(sectionName) || "others";
+    const formKey = getSectionKey(sectionName);
 
     return fields.map((comp) => {
       const rhfKey = comp.attributeName || `field_${comp.id}`;
@@ -380,13 +268,12 @@ export default function ActivityRegistrationForm({
       );
     });
   };
-
   const renderDynamicField = (
     comp: CustomizedComponentWithDetails,
     name: Path<RegistrationFormValues>,
     rhfKey: string,
   ) => {
-    const fieldError = getFieldError(name);
+    const fieldError = getFieldError(errors, name);
     switch (comp.type) {
       case ComponentTypeEnum.Number:
         return (
@@ -834,7 +721,7 @@ export default function ActivityRegistrationForm({
 
   if (!template)
     return (
-      <div className="text-start text-muted-foreground">
+      <div className="text-center text-muted-foreground">
         Đang tải biểu mẫu...
       </div>
     );
@@ -849,21 +736,21 @@ export default function ActivityRegistrationForm({
         className="space-y-8"
       >
         <div className="space-y-8">
-          <section className="flex flex-col gap-4">
-            <h1 className="text-xl font-bold uppercase text-primary mt-4">
+          <section className="flex flex-col">
+            <h1 className="text-2xl font-bold uppercase text-primary pb-2 border-b-2 border-primary/80">
               {activity?.activityName}
-            </h1>{" "}
+            </h1>
             {template.registrationDescription &&
               !isRichTextEmpty(template.registrationDescription) && (
-                <div className="w-full p-4 bg-card rounded-md border">
-                  <ActivityRegistrationContentRenderer
+                <div className="w-full">
+                  <RichTextRenderer
                     content={template.registrationDescription}
                   />
                 </div>
               )}
             {activity?.ageRestricted && (
-              <div className="w-full ">
-                <p className="text-sm text-muted-foreground italic">
+              <div className="w-full mt-6">
+                <p className="text-base text-muted-foreground italic">
                   Hoạt động này giới hạn độ tuổi
                   {activity.minAge != null && (
                     <>
@@ -888,9 +775,7 @@ export default function ActivityRegistrationForm({
           </section>
           {/* Section: Thông tin cơ bản */}
           <div className="input-section">
-            <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
-              Thông tin cá nhân
-            </h3>
+            <h3 className="form-section-title">Thông tin cá nhân</h3>
             <Field className="col-span-full">
               <FieldLabel>
                 Họ và tên <span className="text-destructive">*</span>
@@ -1034,7 +919,7 @@ export default function ActivityRegistrationForm({
                 Địa chỉ <span className="text-destructive">*</span>
               </FieldLabel>
               <Textarea
-                placeholder="Nhập địa chỉ"
+                placeholder="Nhập Địa chỉ"
                 {...register("basic.address", {
                   required: "Địa chỉ là thông tin bắt buộc",
                 })}
@@ -1093,9 +978,7 @@ export default function ActivityRegistrationForm({
           {(template.defaultIdentitySectionIncluded ||
             hasCustomFieldsForSection(FormSectionEnum.Identity)) && (
             <div className="input-section pt-6 border-t">
-              <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
-                Thông tin Căn cước
-              </h3>
+              <h3 className="form-section-title">Thông tin Căn cước</h3>
 
               {template.defaultIdentitySectionIncluded && (
                 <>
@@ -1233,7 +1116,7 @@ export default function ActivityRegistrationForm({
                         </Select>
                       )}
                     />{" "}
-                    {watchIdIssueAt === "Khác" && (
+                    {watchIdIssueAt === IdIssueOrganisationEnum.Other && (
                       <Input
                         className="mt-2 animate-in fade-in slide-in-from-top-1"
                         placeholder="Nhập khu vực của bạn"
@@ -1255,9 +1138,7 @@ export default function ActivityRegistrationForm({
           {(template.defaultMonasticSectionIncluded ||
             hasCustomFieldsForSection(FormSectionEnum.Monastic)) && (
             <div className="input-section pt-6 border-t">
-              <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
-                Thông tin tu sĩ
-              </h3>
+              <h3 className="form-section-title">Thông tin tu sĩ</h3>
               {template.defaultMonasticSectionIncluded && (
                 <>
                   <Field className="col-span-full">
@@ -1358,7 +1239,7 @@ export default function ActivityRegistrationForm({
                         </Select>
                       )}
                     />
-                    {watchTradition === "Khác" && (
+                    {watchTradition === MonasticTraditionEnum.Other && (
                       <Input
                         className="mt-2 animate-in fade-in slide-in-from-top-1"
                         placeholder="Nhập truyền thống khác của bạn"
@@ -1390,9 +1271,7 @@ export default function ActivityRegistrationForm({
           {(template.defaultRelationSectionIncluded ||
             hasCustomFieldsForSection(FormSectionEnum.Relation)) && (
             <div className="input-section pt-6 border-t">
-              <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
-                Thông tin liên hệ
-              </h3>
+              <h3 className="form-section-title">Thông tin liên hệ</h3>
 
               {template.defaultRelationSectionIncluded && (
                 <>
@@ -1456,9 +1335,7 @@ export default function ActivityRegistrationForm({
           {(template.defaultRoutineSectionIncluded ||
             hasCustomFieldsForSection(FormSectionEnum.Routine)) && (
             <div className="input-section pt-6 border-t">
-              <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
-                Thông tin lịch trình
-              </h3>
+              <h3 className="form-section-title">Thông tin lịch trình</h3>
 
               {template.defaultRoutineSectionIncluded && (
                 <>
@@ -1485,9 +1362,9 @@ export default function ActivityRegistrationForm({
                           <SelectContent position="popper">
                             <SelectItem
                               className="hover:cursor-pointer"
-                              value="Ăn chay"
+                              value="Ä‚n chay"
                             >
-                              Ăn chay
+                              Ä‚n chay
                             </SelectItem>
                             <SelectItem
                               className="hover:cursor-pointer"
@@ -1555,9 +1432,7 @@ export default function ActivityRegistrationForm({
             (comp) => comp.section === FormSectionEnum.Others,
           ) && (
             <div className="input-section pt-6 border-t">
-              <h3 className="col-span-full font-bold border-l-4 border-primary pl-2 uppercase">
-                Thông tin bổ sung
-              </h3>
+              <h3 className="form-section-title">Thông tin bổ sung</h3>
               <> {renderSectionFields(FormSectionEnum.Others)}</>
             </div>
           )}
@@ -1565,9 +1440,7 @@ export default function ActivityRegistrationForm({
           {template.commitmentMessages &&
             template.commitmentMessages.length > 0 && (
               <div className="col-span-full pt-6 border-t space-y-4">
-                <h3 className="font-bold border-l-4 border-primary pl-2 uppercase">
-                  Cam kết tham gia
-                </h3>
+                <h3 className="form-section-title">Cam kết tham gia</h3>
                 <div className="space-y-2">
                   {template.commitmentMessages.map((msg) => (
                     <div key={msg.id} className="flex flex-col">
@@ -1613,12 +1486,11 @@ export default function ActivityRegistrationForm({
             <Button
               size="lg"
               type="submit"
-              className="hover:cursor-pointer uppercase tracking-wider"
+              className="hover:cursor-pointer uppercase font-mono"
               disabled={isPending || active === false}
             >
-              {" "}
               <Send />
-              {isPending ? "Đang xử lý..." : "Gửi đăng ký"}
+              {isPending ? "Đang xử lý..." : "Đăng ký tham gia"}
             </Button>
           </div>
         </div>

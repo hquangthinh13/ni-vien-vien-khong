@@ -21,6 +21,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
+import SmoothScrollProvider from "@/shared/motion/SmoothScrollProvider";
 
 const lora = Lora({
   subsets: ["latin", "vietnamese"],
@@ -135,8 +136,7 @@ export default async function RootLayout({
       lang={locale}
       className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-white">
-        {" "}
+      <body className="min-h-screen flex flex-col bg-background">
         <Navbar /> <ScrollToTopButton />
         <ScrollProgress className="h-1" />
         <NextIntlClientProvider>
@@ -145,9 +145,9 @@ export default async function RootLayout({
           <Analytics />
         </NextIntlClientProvider>
         <MotionWrapper>
-          {" "}
           <Footer />
         </MotionWrapper>
+        <SmoothScrollProvider />
       </body>
     </html>
   );

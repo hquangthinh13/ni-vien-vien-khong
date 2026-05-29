@@ -56,7 +56,11 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
     const token = recaptchaRef.current?.getValue();
 
     if (!token) {
-      toast.error("Vui lòng xác nhận bạn không phải là người máy!");
+      const message =
+        locale === "vi"
+          ? "Vui lòng xác nhận bạn không phải là người máy!"
+          : "Please verify that you are not a robot!";
+      toast.error(message);
       return;
     }
 
@@ -71,22 +75,30 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
         };
 
         await createQuestion(payload);
-
-        toast.success("Gửi câu hỏi thành công! Chúng tôi sẽ phản hồi sớm.");
+        const message =
+          locale === "vi"
+            ? "Gửi câu hỏi thành công! Chúng tôi sẽ phản hồi sớm."
+            : "Question sent successfully! We will get back to you soon.";
+        toast.success(message);
         reset();
       } catch (error) {
-        toast.error("Gửi thất bại, vui lòng kiểm tra lại thông tin.");
+        const message =
+          locale === "vi"
+            ? "Gửi thất bại, vui lòng kiểm tra lại thông tin."
+            : "Submission failed, please check your information.";
+        toast.error(message);
         console.error("Submit Error:", error);
       }
     });
   };
 
   return (
-    <form className="" onSubmit={onPreSubmit} noValidate>
+    <form onSubmit={onPreSubmit} noValidate>
       <FieldGroup>
-        <Field>
+        <Field className="mt-4">
           <FieldLabel htmlFor="fullName">
-            Họ và tên <span className="text-destructive">*</span>
+            {locale === "vi" ? "Họ tên" : "Full Name"}{" "}
+            <span className="text-destructive">*</span>
           </FieldLabel>
           <Input
             {...register("fullName")}
@@ -120,7 +132,9 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="phoneNumber">Số điện thoại</FieldLabel>
+            <FieldLabel htmlFor="phoneNumber">
+              {locale === "vi" ? "Số điện thoại" : "Phone Number"}
+            </FieldLabel>
             <Input
               {...register("phoneNumber")}
               id="phoneNumber"
@@ -129,14 +143,22 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
             />
           </Field>
         </div>
+
+        <div className="h-px bg-border/40 my-1" />
+
         <Field>
           <FieldLabel htmlFor="title">
-            Tựa đề <span className="text-destructive">*</span>
+            {locale === "vi" ? "Tựa đề" : "Title"}{" "}
+            <span className="text-destructive">*</span>
           </FieldLabel>
           <Input
             {...register("title")}
             id="title"
-            placeholder="Tiêu đề câu hỏi của bạn"
+            placeholder={
+              locale === "vi"
+                ? "Tóm tắt câu hỏi của bạn..."
+                : "Summarize your question..."
+            }
             disabled={isPending}
           />
           {errors.title && (
@@ -148,13 +170,18 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
 
         <Field>
           <FieldLabel htmlFor="questionContent">
-            Nội dung câu hỏi <span className="text-destructive">*</span>
+            {locale === "vi" ? "Nội dung câu hỏi" : "Question Content"}{" "}
+            <span className="text-destructive">*</span>
           </FieldLabel>
           <Textarea
             {...register("questionContent")}
             id="questionContent"
-            placeholder="Nhập chi tiết câu hỏi..."
-            className="min-h-[80px]"
+            placeholder={
+              locale === "vi"
+                ? "Nhập chi tiết câu hỏi..."
+                : "Enter your question details..."
+            }
+            className="min-h-20"
             disabled={isPending}
           />
 
@@ -166,30 +193,45 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="address">Địa chỉ</FieldLabel>
+          <FieldLabel htmlFor="address">
+            {locale === "vi" ? "Địa chỉ" : "Address"}
+          </FieldLabel>
           <Textarea
             {...register("address")}
             id="address"
-            placeholder="Nhập địa chỉ của bạn"
+            placeholder={
+              locale === "vi" ? "Nhập địa chỉ của bạn" : "Enter your address"
+            }
             disabled={isPending}
           />
         </Field>
-        <div className="flex justify-center py-2 w-full">
+        {/* <div className="flex justify-center py-2 w-full">
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
             onChange={() => {}}
           />
-        </div>
+        </div> */}
         <Field orientation="horizontal" className="pt-4">
-          <div className="flex flex-1 justify-end">
+          <div className="w-full py-5 border-t border-border/40 flex items-center justify-between gap-4">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {locale === "vi"
+                ? "Chúng tôi sẽ phản hồi sớm nhất có thể."
+                : "We will respond as soon as possible."}
+            </p>
             <Button
               type="submit"
               disabled={isPending}
-              className="hover:cursor-pointer uppercase tracking-wider"
+              className="gap-2 uppercase tracking-wider text-xs font-medium cursor-pointer"
             >
-              <Send />
-              {isPending ? "Đang gửi..." : "Gửi câu hỏi"}
+              <Send className="size-3.5" />
+              {isPending
+                ? locale === "vi"
+                  ? "Đang gửi..."
+                  : "Sending..."
+                : locale === "vi"
+                  ? "Gửi câu hỏi"
+                  : "Submit Question"}
             </Button>
           </div>
         </Field>

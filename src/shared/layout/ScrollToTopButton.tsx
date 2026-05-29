@@ -1,9 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import Link from "next/link";
-import { MessageCircleQuestionMark } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { animate } from "framer-motion";
 const ScrollToTopButton = () => {
@@ -45,7 +43,7 @@ const ScrollToTopButton = () => {
           >
             <MessageCircleQuestionMark className="size-4" />
             <span className="text-xs font-mono uppercase tracking-wide">
-              Đặt câu hỏi
+              Äáº·t cÃ¢u há»i
             </span>
           </Link>
         </Button> */}
@@ -64,3 +62,4 @@ const ScrollToTopButton = () => {
 };
 
 export default ScrollToTopButton;
+
