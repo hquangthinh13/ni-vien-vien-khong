@@ -202,12 +202,12 @@ export default function EventCalendar({ locale }: { locale: Locale }) {
                 hasEventOutsideMonth:
                   "[&_button]:border [&_button]:border-2 [&_button]:border-muted-foreground [&_button]:rounded-full [&_button]:opacity-60",
               }}
-            />{" "}
+            />
           </div>
         </PopoverTrigger>
         {selectedDayActivities.length > 0 ? (
           <PopoverContent
-            className="w-80 p-4 rounded-xl max-h-96 overflow-auto"
+            className="w-80 p-4 rounded-lg max-h-96 overflow-auto"
             align="center"
             side={isLargeScreen ? "right" : "bottom"}
           >
@@ -260,7 +260,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
 
   return (
     <Link href={`/activity/${activity.slug}-${activity.documentId}`}>
-      <Card className="flex flex-1 p-0 border-l-4 border-l-primary">
+      <Card className="rounded-md flex flex-1 p-0 border-l-4 border-l-primary">
         <CardContent className="p-3 w-full">
           <p className="font-semibold text-sm text-foreground hover:text-accent-foreground transition-colors duration-200 ease-in-out">
             {activity.activityName}
@@ -268,11 +268,11 @@ function ActivityItem({ activity }: { activity: Activity }) {
 
           <p className="text-xs text-muted-foreground mt-1 font-mono ">
             {start && !Number.isNaN(start.getTime())
-              ? format(start, "dd/MM/yyyy HH:mm")
+              ? format(start, "dd/MM/yyyy")
               : activity.activityStartDate}
 
             {end && start && !Number.isNaN(end.getTime()) && end >= start
-              ? ` - ${format(end, "dd/MM/yyyy HH:mm")}`
+              ? ` - ${format(end, "dd/MM/yyyy")}`
               : ""}
           </p>
         </CardContent>

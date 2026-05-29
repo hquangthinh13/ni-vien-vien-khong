@@ -53,7 +53,7 @@ const NavDropdownItem = ({ menu }: { menu: MenuItem }) => {
           <Button
             variant="ghost"
             size="lg"
-            className="text-sm font-bold cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-none focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none"
+            className="hover:bg-white/0 text-sm font-bold cursor-pointer focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-none focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none"
           >
             {menu.href ? (
               <Link className="" href={menu.href}>
@@ -89,7 +89,7 @@ export default function DesktopNavigationMenu({
               key={idx}
               variant="ghost"
               asChild
-              className="text-sm font-bold"
+              className="text-sm font-bold hover:bg-white/0"
               size="lg"
             >
               <Link href={menu.href || "#"}>{menu.title}</Link>

@@ -25,6 +25,8 @@ const RelatedActivitiesSection = ({
             key={item.documentId}
             course={item}
             locale={locale}
+            hasImage={false}
+            shortenContent={true}
           />
         ))}
       </div>

@@ -7,15 +7,19 @@ import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
 import type { Locale } from "@/types/locale";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
-
+import { cn } from "@/shared/lib/utils";
 interface CourseSidebarCardProps {
   course: Activity;
   locale: Locale;
+  hasImage?: boolean;
+  shortenContent?: boolean;
 }
 
 const CourseSidebarCard = async ({
   course,
   locale,
+  hasImage = true,
+  shortenContent = true,
 }: CourseSidebarCardProps) => {
   const coverImageUrl = course.coverImage
     ? getImageUrl(course.coverImage, "thumbnail")
@@ -34,7 +38,12 @@ const CourseSidebarCard = async ({
     >
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="line-clamp-2 text-base font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
+          <span
+            className={cn(
+              "line-clamp-2 text-sm font-bold leading-snug text-foreground transition-colors group-hover:text-primary",
+              shortenContent && "line-clamp-1",
+            )}
+          >
             {course.activityName || "Untitled Course"}
           </span>
         </TooltipTrigger>
@@ -44,24 +53,32 @@ const CourseSidebarCard = async ({
       </Tooltip>
 
       <div className="flex items-center gap-2">
-        <div className="group relative h-[63px] w-28 shrink-0 overflow-hidden rounded-md bg-muted sm:h-[81px] sm:w-36">
-          {coverImageUrl && (
-            <Image
-              src={coverImageUrl}
-              alt={course.activityName || "Course cover image"}
-              fill
-              className="object-cover"
-              priority
-              placeholder="blur"
-              blurDataURL={DEFAULT_BLUR_DATA_URL}
-            />
-          )}
-        </div>
+        {hasImage && (
+          <div className="group relative h-15.75 w-28 shrink-0 overflow-hidden rounded-md bg-muted sm:h-20.25 sm:w-36">
+            {coverImageUrl && (
+              <Image
+                src={coverImageUrl}
+                alt={course.activityName || "Course cover image"}
+                fill
+                className="object-cover"
+                priority
+                placeholder="blur"
+                blurDataURL={DEFAULT_BLUR_DATA_URL}
+              />
+            )}
+          </div>
+        )}
 
         <div className="flex min-w-0 flex-1 flex-col justify-start space-y-1">
-          <p className="mb-1 line-clamp-3 font-mono text-xs leading-relaxed text-secondary-foreground">
-            {extractPreviewContent(course.content)}
-          </p>{" "}
+          {!shortenContent && (
+            <p
+              className={cn(
+                "mb-1 line-clamp-3 font-mono text-xs leading-relaxed text-secondary-foreground",
+              )}
+            >
+              {extractPreviewContent(course.content)}
+            </p>
+          )}
           <span className="text-xs font-mono tracking-tight text-muted-foreground">
             {startDate}
           </span>

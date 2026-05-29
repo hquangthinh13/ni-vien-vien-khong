@@ -2,6 +2,7 @@
 
 import React, { JSX } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import {
@@ -11,6 +12,8 @@ import {
 import { Link as LinkIcon } from "lucide-react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import MotionWrapper from "@/shared/motion/MotionWrapper";
+import { Button } from "../ui/button";
 interface RichTextRendererProps {
   content: BlocksContent;
   isPoem?: boolean;
@@ -36,69 +39,91 @@ const RichTextRenderer = ({
         heading: ({ children, level }) => {
           const Tag = `h${level}` as keyof JSX.IntrinsicElements;
 
-          return <Tag className={headingStyles[level]}>{children}</Tag>;
+          return (
+            <MotionWrapper>
+              <Tag className={headingStyles[level]}>{children}</Tag>
+            </MotionWrapper>
+          );
         },
         list: ({ children, format }) => {
           if (format === "ordered") {
             return (
-              <ol className="mb-6 ml-6 list-decimal space-y-2 text-foreground/90 marker:font-medium">
-                {children}
-              </ol>
+              <MotionWrapper>
+                <ol className="mb-6 ml-6 list-decimal space-y-2 text-foreground/90 marker:font-medium">
+                  {children}
+                </ol>
+              </MotionWrapper>
             );
           }
 
           return (
-            <ul className="mb-6 ml-6 list-disc space-y-2 text-foreground/90 marker:text-primary">
-              {children}
-            </ul>
+            <MotionWrapper>
+              <ul className="mb-6 ml-6 list-disc space-y-2 text-foreground/90 marker:text-primary">
+                {children}
+              </ul>
+            </MotionWrapper>
           );
         },
 
         "list-item": ({ children }) => (
-          <li className="pl-1 leading-7">{children}</li>
+          <MotionWrapper>
+            <li className="pl-1 leading-7">{children}</li>
+          </MotionWrapper>
         ),
 
         quote: ({ children }) => (
-          <blockquote className="my-6 rounded-r-xl border-l-4 border-primary bg-muted/40 px-5 py-4 italic leading-7 text-foreground/80">
-            {children}
-          </blockquote>
+          <MotionWrapper>
+            <blockquote className="my-6 rounded-r-xl border-l-4 border-primary bg-muted/40 px-5 py-4 italic leading-7 text-foreground/80">
+              {children}
+            </blockquote>
+          </MotionWrapper>
         ),
 
         image: ({ image }) => (
-          <figure
-            className={`${isPoem ? "px-4 lg:px-48" : "px-4 lg:px-48"}  my-8 space-y-3`}
-          >
-            <div
-              className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-lg shadow-sm`}
+          <MotionWrapper>
+            <figure
+              className={`${isPoem ? "px-0 lg:px-48" : "px-0 lg:px-48"}  my-8 space-y-3`}
             >
-              <Zoom zoomMargin={0}>
-                <Image
-                  src={image.url}
-                  alt={image.alternativeText || ""}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-300"
-                  placeholder="blur"
-                  blurDataURL={DEFAULT_BLUR_DATA_URL}
-                />
-              </Zoom>
-            </div>
-            {image.caption && (
-              <figcaption className="text-center">
-                <span className="text-xs md:text-sm text-muted-foreground italic flex items-center justify-center gap-2">
-                  <div className="h-px w-8 bg-border" />
-                  {image.caption}
-                  <div className="h-px w-8 bg-border" />
-                </span>
-              </figcaption>
-            )}
-          </figure>
+              <div
+                className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-lg shadow-sm`}
+              >
+                <Zoom zoomMargin={0}>
+                  <Image
+                    src={image.url}
+                    alt={image.alternativeText || ""}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                    placeholder="blur"
+                    blurDataURL={DEFAULT_BLUR_DATA_URL}
+                  />
+                </Zoom>
+              </div>
+              {image.caption && (
+                <figcaption className="text-center">
+                  <span className="text-xs md:text-sm text-muted-foreground italic flex items-center justify-center gap-2">
+                    <div className="h-px w-8 bg-border" />
+                    {image.caption}
+                    <div className="h-px w-8 bg-border" />
+                  </span>
+                </figcaption>
+              )}
+            </figure>
+          </MotionWrapper>
         ),
         paragraph: ({ children }) => (
-          <p
-            className={`${isPoem ? "italic text-center" : " text-justify"} not-last:mb-2 text-foreground/90 leading-7 `}
+          <motion.p
+            initial={{ opacity: 0, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.2,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            viewport={{ amount: 0.2 }}
+            className={`${isPoem ? "italic text-center" : "text-justify"} not-last:mb-2 text-foreground/90 leading-7`}
           >
             {children}
-          </p>
+          </motion.p>
         ),
 
         link: ({ children, url }) => {
@@ -126,15 +151,24 @@ const RichTextRenderer = ({
           if (!hasTextContent) return null;
 
           return (
-            <Link
-              href={url}
-              target={isExternal ? "_blank" : undefined}
-              rel={isExternal ? "noopener noreferrer" : undefined}
-              className="inline-flex items-center gap-1 text-primary font-normal tracking-wide italic hover:text-primary/80 transition-all hover:underline ease-in-out duration-150"
-            >
-              <LinkIcon className="w-4 h-4 shrink-0" />
-              <span>{children}</span>
-            </Link>
+            <MotionWrapper className="my-2">
+              <Button
+                variant="link"
+                asChild
+                className="px-0! whitespace-normal"
+              >
+                <Link
+                  href={url}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                >
+                  <LinkIcon className="shrink-0" />
+                  <span className="min-w-0 wrap-break-word whitespace-normal">
+                    {children}
+                  </span>
+                </Link>
+              </Button>
+            </MotionWrapper>
           );
         },
       }}

@@ -35,16 +35,17 @@ export default function DetailHeader({
       >
         {title}
       </h1>
+
       {meta}
 
       {imageUrl ? (
-        <div className="relative mt-4 w-full overflow-hidden rounded-md shadow-md aspect-video">
+        <div className="relative mt-4 w-full overflow-hidden rounded-lg shadow-md aspect-video">
           <Zoom zoomMargin={0}>
             <Image
               src={imageUrl}
               alt={imageAlt || title}
               fill
-              className="object-cover transition-transform duration-300 hover:scale-105"
+              className="object-cover"
               priority
               placeholder="blur"
               blurDataURL={DEFAULT_BLUR_DATA_URL}

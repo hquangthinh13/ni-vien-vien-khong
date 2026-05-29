@@ -16,14 +16,14 @@ export default function MotionWrapper({
 }: Props) {
   return (
     <motion.div
-      // initial={{ opacity: 0, y: 5 }}
-      // whileInView={{ opacity: 1, y: 0 }}
-      // transition={{
-      //   duration: 1.3,
-      //   delay,
-      //   ease: [0.22, 1, 0.36, 1],
-      // }}
-      // viewport={{ amount: 0.1 }}
+      initial={{ opacity: 0, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.7,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      viewport={{ amount: 0.1 }}
       className={className}
     >
       {children}

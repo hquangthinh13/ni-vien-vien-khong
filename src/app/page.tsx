@@ -141,18 +141,20 @@ export default async function Home() {
   return (
     <main>
       <MotionWrapper>
-        <Image
-          src={coverImage || "/placeholder.png"}
-          alt="Cover image"
-          width={1600}
-          height={900}
-          className="h-auto w-screen max-w-7xl mx-auto pt-4 px-4 rounded-lg"
-          placeholder="blur"
-          blurDataURL={DEFAULT_BLUR_DATA_URL}
-          sizes="100vw"
-          quality={75}
-          priority
-        />
+        <div className="pt-4 px-4 max-w-7xl mx-auto ">
+          <Image
+            src={coverImage || "/placeholder.png"}
+            alt="Cover image"
+            width={1600}
+            height={900}
+            className="h-auto w-screen rounded-lg"
+            placeholder="blur"
+            blurDataURL={DEFAULT_BLUR_DATA_URL}
+            sizes="100vw"
+            quality={75}
+            priority
+          />
+        </div>
       </MotionWrapper>
       <div className="page-container">
         <div className="flex flex-col lg:flex-row min-h-12 gap-6 mb-6">
