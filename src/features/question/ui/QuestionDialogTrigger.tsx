@@ -54,7 +54,10 @@ export default function QuestionDialogTrigger({ locale }: { locale: Locale }) {
         </span>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl ">
+      <DialogContent
+        data-lenis-prevent
+        className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl "
+      >
         <DialogTitle>Đặt câu hỏi</DialogTitle>
         <DialogDescription>
           {locale === "vi"

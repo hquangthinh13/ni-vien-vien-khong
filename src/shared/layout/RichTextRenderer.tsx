@@ -81,18 +81,16 @@ const RichTextRenderer = ({
 
         image: ({ image }) => (
           <MotionWrapper>
-            <figure
-              className={`${isPoem ? "px-0 lg:px-48" : "px-0 lg:px-48"}  my-8 space-y-3`}
-            >
+            <figure className={`px-0 lg:px-24 my-8 space-y-3`}>
               <div
-                className={`${isPoem ? "" : ""} relative aspect-video w-full overflow-hidden rounded-lg shadow-sm`}
+                className={`relative aspect-video w-full overflow-hidden rounded-lg shadow-sm`}
               >
                 <Zoom zoomMargin={0}>
                   <Image
                     src={image.url}
                     alt={image.alternativeText || ""}
                     fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
+                    className="object-cover"
                     placeholder="blur"
                     blurDataURL={DEFAULT_BLUR_DATA_URL}
                   />

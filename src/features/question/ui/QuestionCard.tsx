@@ -67,7 +67,10 @@ const QuestionCard = async ({
           </div>
         </DialogTrigger>
 
-        <DialogContent className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl">
+        <DialogContent
+          data-lenis-prevent
+          className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
+        >
           <DialogHeader className="space-y-4">
             <DialogTitle>{question.title}</DialogTitle>
             <div className="relative overflow-hidden rounded-xl bg-orange-50/50 p-5 border border-orange-100/50">

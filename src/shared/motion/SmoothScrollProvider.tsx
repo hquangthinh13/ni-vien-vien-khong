@@ -8,14 +8,17 @@ export default function SmoothScrollProvider() {
     const lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,
+      autoRaf: true,
+      allowNestedScroll: true,
+      prevent: (node) => !!node.closest("[data-lenis-prevent]"),
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // function raf(time: number) {
+    //   lenis.raf(time);
+    //   requestAnimationFrame(raf);
+    // }
 
-    requestAnimationFrame(raf);
+    // requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
