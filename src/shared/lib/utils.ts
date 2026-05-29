@@ -61,10 +61,8 @@ export const formatShortDate = (
   const year = date.getFullYear();
 
   if (locale === "vi") {
-    // Định dạng: Ngày 8 tháng 2, 2024
-    return `Ngày ${day} tháng ${month + 1}, ${year}`;
+    return `${day} tháng ${month + 1}, ${year}`;
   } else {
-    // Định dạng tiếng Anh: February 8, 2024
     const monthNames = [
       "January",
       "February",

@@ -135,7 +135,7 @@ export default async function RootLayout({
       lang={locale}
       className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-white">
+      <body className="min-h-screen flex flex-col bg-background">
         {" "}
         <Navbar /> <ScrollToTopButton />
         <ScrollProgress className="h-1" />

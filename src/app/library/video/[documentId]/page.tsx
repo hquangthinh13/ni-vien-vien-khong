@@ -23,7 +23,6 @@ import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
 import DetailPageShell from "@/shared/layout/DetailPageShell";
-import PageHeader from "@/shared/layout/PageHeader";
 import RelatedVideosSection from "@/features/video/ui/RelatedVideosSection";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
 import DetailHeader from "@/shared/layout/DetailHeader";
@@ -129,13 +128,12 @@ export default async function VideoPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="flex w-full flex-col gap-6 items-center">
-          {/* <PageHeader title={data.title} className="mb-2" /> */}
           <DetailHeader
             label={locale === "vi" ? "Pháp thoại" : "Video"}
             title={data.title}
             meta={
               data.publishedAt ? (
-                <div className="flex items-center gap-2 text-sm font-mono text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
                   <span>{formatShortDate(data.publishedAt, locale)}</span>
                 </div>
               ) : null

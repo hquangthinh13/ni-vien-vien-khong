@@ -16,7 +16,7 @@ export default function RelatedVideosSection({
   if (!videos || videos.length === 0) return null;
 
   return (
-    <section className="mt-6 space-y-4">
+    <section className="space-y-4">
       <h3 className="flex items-center gap-2 border-b pb-2 text-lg font-bold uppercase tracking-wider">
         <ScrollText size={20} className="text-primary" />
         {locale === "vi" ? "Pháp thoại liên quan" : "Related Dharma Talks"}

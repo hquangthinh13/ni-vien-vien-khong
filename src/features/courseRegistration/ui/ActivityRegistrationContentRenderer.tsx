@@ -24,13 +24,13 @@ const ActivityRegistrationContentRenderer = ({
       blocks={{
         image: ({ image }) => (
           <figure className="lg:px-48 my-4 space-y-2">
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-sm">
+            <div className="relative aspect-video w-full overflow-hidden rounded-lg shadow-sm">
               <Zoom zoomMargin={0}>
                 <Image
                   src={image.url}
                   alt={image.alternativeText || ""}
                   fill
-                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  className="object-cover "
                   placeholder="blur"
                   blurDataURL={DEFAULT_BLUR_DATA_URL}
                 />

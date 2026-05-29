@@ -25,12 +25,17 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-50 border-b bg-card">
-      <div className="mx-auto max-w-7xl px-4 py-4 grid grid-cols-3 items-center">
+      {/* <div className="py-2 grid grid-cols-1 items-center bg-primary ">
+        <span className="text-center font-script text-2xl tracking-wider text-primary-foreground">
+          Ni Viện Viên Không
+        </span>
+      </div> */}
+      <div className="mx-auto max-w-7xl px-4 py-2 grid grid-cols-3 items-center">
         <Link className="flex mr-auto" href="/">
           <Image
             src={logo}
             alt="Logo"
-            className="max-h-10 h-auto w-auto"
+            className="max-h-12 h-auto w-auto"
             loading="eager"
             priority
           />
@@ -39,7 +44,6 @@ export default function Navbar() {
           <DesktopNavigationMenu menuData={menuConfig} />
         </div>
         <div className="flex items-center gap-2 justify-end">
-          {" "}
           <LanguageSwitcher />
           <Sheet>
             <SheetTrigger asChild>
