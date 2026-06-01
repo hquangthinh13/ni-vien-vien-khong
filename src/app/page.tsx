@@ -18,6 +18,7 @@ import {
 } from "@/features/activity/api/activity.api";
 import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
 import { fetchVideo } from "@/features/video/api/video.api";
+import ActivityCalendarDashboardSection from "@/features/activity/ui/ActivityCalendarDashboardSection";
 
 import { getImageUrl } from "@/shared/lib/api";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
@@ -267,26 +268,13 @@ export default async function Home() {
                 </section>
               </MotionWrapper>
             )}
-            {/* <MotionWrapper>
-              <section className="flex flex-1 flex-col pt-6 pb-0 border-t-0">
-                <div className="flex justify-between items-center">
-                  <Link href="/library/question">
-                    <h2 className="home-page-section-title">
-                      {locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
-                    </h2>
-                  </Link>
-                
-                  <QuestionDialogTrigger locale={locale} />
-                </div>
-                <QuestionSection locale={locale} questions={questions} />
-              </section>
-            </MotionWrapper> */}
           </div>
         </div>{" "}
         <MotionWrapper>
-          <section className="flex flex-col pt-6 border-t-0">
+          <section className="flex flex-col pt-6">
             <Suspense fallback={<div>Đang tải lịch hoạt động...</div>}>
-              <CalendarSection locale={locale} />
+              {/* <CalendarSection locale={locale} /> */}
+              <ActivityCalendarDashboardSection locale={locale} />
             </Suspense>
           </section>
         </MotionWrapper>{" "}
