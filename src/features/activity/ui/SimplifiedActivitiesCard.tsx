@@ -4,11 +4,7 @@ import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
-import {
-  cn,
-  extractPreviewContent,
-  formatFriendlyDate,
-} from "@/shared/lib/utils";
+import { cn, extractPreviewContent } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { getActivityStatus, getStatusLabel } from "../api/activity.api";
 import { Badge } from "@/shared/ui/badge";
@@ -16,6 +12,7 @@ import { categoryMap } from "@/types/categories";
 import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
 import ActivityVibrantBadge from "./ActivityVibrantBadge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 interface NewsCardProps {
   activity: Activity;
   isFirst?: boolean;
@@ -64,7 +61,7 @@ const SimplifiedNewsCard = ({
             {activityName}
           </TooltipContent>
         </Tooltip>
-        <div className="flex gap-2 items-center mb-2">
+        {/* <div className="flex gap-2 items-center mb-2">
           <ActivityVibrantBadge
             displayCategory={displayCategory}
             imageUrl={imageUrl}
@@ -81,58 +78,62 @@ const SimplifiedNewsCard = ({
               {status}
             </Badge>
           )}
-        </div>
+        </div> */}{" "}
+        <DateTimeDisplay dateString={publishedAt} locale={locale} />
         <p
           className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}
         >
           {extractPreviewContent(content)}
         </p>{" "}
-        <span className="text-xs text-muted-foreground font-mono tracking-wide">
-          {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-        </span>
       </Link>
     );
   }
   // TOP ROW:
   return (
-    <Link href={`/activity/${slug}-${documentId}`}>
-      <div className="flex flex-col h-full">
+    <Link
+      href={`/activity/${slug}-${documentId}`}
+      className="flex flex-col h-full"
+    >
+      <div
+        className={cn(
+          "flex flex-col gap-2",
+          background ? "bg-background p-4 rounded-b-lg" : "",
+        )}
+      >
         {coverImage && variant === "top" && (
-          <div className=" relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
+          <div className=" relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg mb-2">
             {(() => {
               return imageUrl ? (
                 <Image
                   src={imageUrl}
                   alt={activityName || "Activity image"}
                   fill
-                  className="object-cover"
+                  className="object-cover bg-red-500"
                   placeholder="blur"
                   blurDataURL={DEFAULT_BLUR_DATA_URL}
                 />
               ) : null;
             })()}
           </div>
-        )}
-
-        <div
-          className={cn(
-            "flex flex-col h-full gap-2",
-            background ? "bg-background p-4 rounded-b-lg" : "pt-4",
-          )}
-        >
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span
-                className={`text-md line-clamp-2 font-bold leading-snug hover:text-primary cursor-pointer`}
-              >
-                {activityName}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="max-w-64">
+        )}{" "}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span
+              className={`text-md line-clamp-2 font-bold leading-snug hover:text-primary cursor-pointer`}
+            >
               {activityName}
-            </TooltipContent>
-          </Tooltip>
-          <div className="flex gap-2 items-center mb-2">
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="max-w-64">
+            {activityName}
+          </TooltipContent>
+        </Tooltip>{" "}
+        <DateTimeDisplay
+          dateString={publishedAt}
+          locale={locale}
+          className=""
+        />
+        {/* <div className="flex gap-2 items-center mb-2">
             <ActivityVibrantBadge
               displayCategory={displayCategory}
               imageUrl={imageUrl}
@@ -149,17 +150,13 @@ const SimplifiedNewsCard = ({
                 {status}
               </Badge>
             )}
-          </div>
-          <p
-            className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}
-          >
-            {extractPreviewContent(content)}
-          </p>{" "}
-          <span className="mt-auto text-xs text-muted-foreground font-mono tracking-wide">
-            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-          </span>
-        </div>
-      </div>
+          </div> */}
+        <p
+          className={`line-clamp-3 text-sm text-secondary-foreground font-mono`}
+        >
+          {extractPreviewContent(content)}
+        </p>{" "}
+      </div>{" "}
     </Link>
   );
 };

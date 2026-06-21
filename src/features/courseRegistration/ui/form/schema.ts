@@ -20,7 +20,7 @@ const basicSchema = z.object({
 
 const dynamicRecordSchema = z.record(
   z.string(),
-  z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]),
+  z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]).optional(),
 );
 
 export const registrationFormSchema = z.object({

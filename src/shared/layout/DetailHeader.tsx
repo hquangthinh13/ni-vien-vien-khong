@@ -25,18 +25,19 @@ export default function DetailHeader({
     <header
       className={`mb-6 flex w-full flex-col space-y-2 ${centered ? "items-center" : "items-start"}`}
     >
-      <div
-        className={`page-label ${centered ? "items-center" : "items-start"}`}
-      >
-        <span>{label}</span>
-      </div>
       <h1
         className={`max-w-4xl text-xl font-bold leading-tight md:text-4xl ${centered ? "text-center" : "text-left"}`}
       >
         {title}
       </h1>
-
-      {meta}
+      <div className="flex items-center justify-between gap-4 w-full">
+        <div
+          className={`page-label ${centered ? "items-center" : "items-start"}`}
+        >
+          <span>{label}</span>
+        </div>
+        {meta}
+      </div>
 
       {imageUrl ? (
         <div className="relative mt-4 w-full overflow-hidden rounded-lg shadow-md aspect-video">

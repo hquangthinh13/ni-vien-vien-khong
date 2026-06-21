@@ -1,11 +1,11 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { VideoPlaylist } from "../model/video.types";
-import { formatFriendlyDate } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Locale } from "@/types/locale";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface VideoProps {
   video: VideoPlaylist;
@@ -15,19 +15,10 @@ interface VideoProps {
 
 const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
   const { title, documentId, description, coverImage, publishedAt } = video;
-
-  // const numberOfVideos = videos?.length ?? 0;
-
-  // let thumbnailUrl: string | undefined;
-  // if (numberOfVideos > 0 && videos[0]?.videoLink) {
-  //   thumbnailUrl = getYouTubeThumbnail(videos[0].videoLink);
-  // }
-
   const imageSrc = getImageUrl(coverImage, "thumbnail") || "/placeholder.png";
 
   return (
     <Link href={`/library/video/${documentId}`} className="group block">
-      {/* Mobile: same interaction pattern as MobileActivitiesCard */}
       <div
         className={`flex min-w-0 flex-col gap-1 pb-3 lg:hidden ${isLastMobile ? "" : "border-b"}`}
       >
@@ -51,16 +42,14 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
             <p className="mb-1 line-clamp-3 font-mono text-xs leading-relaxed text-secondary-foreground">
               {description}
             </p>
-            <span className="font-mono text-[11px] tracking-wide text-muted-foreground">
-              {publishedAt
-                ? formatFriendlyDate(publishedAt, locale as string, true)
-                : ""}
-            </span>
+            <DateTimeDisplay
+              dateString={publishedAt}
+              locale={locale as string}
+            />
           </div>
         </div>
       </div>
 
-      {/* Desktop: keep original vertical card */}
       <div className="hidden h-full flex-col gap-4 lg:flex">
         <div className="relative aspect-video w-full shrink-0 overflow-hidden self-start rounded-lg">
           <Image
@@ -80,11 +69,11 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
           <p className="line-clamp-3 text-sm font-mono text-secondary-foreground/80">
             {description}
           </p>
-          <span className="mt-auto text-xs font-mono uppercase text-muted-foreground">
-            {publishedAt
-              ? formatFriendlyDate(publishedAt, locale as string, true)
-              : ""}
-          </span>
+          <DateTimeDisplay
+            dateString={publishedAt}
+            locale={locale as string}
+            className="mt-auto"
+          />
         </div>
       </div>
     </Link>
@@ -92,4 +81,3 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
 };
 
 export default VideoCard;
-

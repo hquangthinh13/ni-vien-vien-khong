@@ -32,6 +32,8 @@ import DetailDivider from "@/shared/layout/DetailDivider";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import { categoryMap } from "@/types/categories";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -45,16 +47,15 @@ export async function generateMetadata(
   const locale = (await getLocale()) as Locale;
 
   try {
-    const response =
-      await fetchActivityByDocumentIdWithCourseContent({
-        locale,
-        documentId,
-        populate: [
-          "coverImage",
-          "relatedActivities",
-          "relatedActivities.coverImage",
-        ],
-      });
+    const response = await fetchActivityByDocumentIdWithCourseContent({
+      locale,
+      documentId,
+      populate: [
+        "coverImage",
+        "relatedActivities",
+        "relatedActivities.coverImage",
+      ],
+    });
 
     const data = response?.data as Activity;
 
@@ -114,16 +115,15 @@ export default async function ActivityPage({ params }: Props) {
 
   let response;
   try {
-    response =
-      await fetchActivityByDocumentIdWithCourseContent({
-        locale,
-        documentId,
-        populate: [
-          "coverImage",
-          "relatedActivities",
-          "relatedActivities.coverImage",
-        ],
-      });
+    response = await fetchActivityByDocumentIdWithCourseContent({
+      locale,
+      documentId,
+      populate: [
+        "coverImage",
+        "relatedActivities",
+        "relatedActivities.coverImage",
+      ],
+    });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
       notFound();
@@ -174,12 +174,17 @@ export default async function ActivityPage({ params }: Props) {
               title={data.activityName}
               meta={
                 data.activityStartDate && data.activityEndDate ? (
-                  <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
-                    <span>
-                      {formatShortDate(data.activityStartDate, locale)} -{" "}
-                      {formatShortDate(data.activityEndDate, locale)}
-                    </span>
-                  </div>
+                  // <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
+                  //   <span>
+                  //     {formatShortDate(data.activityStartDate, locale)} -{" "}
+                  //     {formatShortDate(data.activityEndDate, locale)}
+
+                  //   </span>
+                  // </div>
+                  <DateTimeDisplay
+                    dateString={data.activityStartDate}
+                    locale={locale}
+                  />
                 ) : null
               }
               imageUrl={
