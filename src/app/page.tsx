@@ -217,7 +217,6 @@ export default async function Home() {
         <MotionWrapper>
           <section className="flex flex-col">
             <Suspense fallback={<div>Đang tải lịch hoạt động...</div>}>
-              {/* <CalendarSection locale={locale} /> */}
               <ActivityCalendarDashboardSection locale={locale} />
             </Suspense>
           </section>

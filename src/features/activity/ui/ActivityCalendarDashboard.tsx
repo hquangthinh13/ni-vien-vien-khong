@@ -1,4 +1,5 @@
 ﻿"use client";
+import ornament from "@/public/ornament-02.svg";
 
 import * as React from "react";
 import {
@@ -31,7 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/ui/dialog";
-
+import Image from "next/image";
 type MonthKey = `${number}-${string}`;
 
 export function toMonthKey(d: Date): MonthKey {
@@ -248,17 +249,14 @@ export default function ActivityCalendarDashboard({
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-0">
       <div className="lg:col-span-12 lg:pr-2">
-        <div className="flex items-center justify-between border-b pb-2 border-primary/10">
+        <div className="flex items-center justify-between pb-2 border-primary/10">
           <div className="flex flex-col">
-            <h2 className="home-page-section-title mb-4">
+            <p className="font-sans font-bold text-sm capitalize text-primary">
+              {monthLabel}
+            </p>
+            <p className="text-xs text-muted-foreground font-mono">
               {locale === "vi"
-                ? "Lịch hoạt động trong " + `${monthLabel}`
-                : "Monthly Activity Calendar - " + `${monthLabel}`}
-            </h2>
-
-            <p className="text-sm text-muted-foreground font-mono">
-              {locale === "vi"
-                ? "Chọn vào ngày có hoạt động để xem lịch chi tiết"
+                ? "Chọn ngày có hoạt động để xem lịch chi tiết"
                 : "Select a date to view details"}
             </p>
           </div>
@@ -271,7 +269,7 @@ export default function ActivityCalendarDashboard({
               onClick={() => goToMonth(subMonths(visibleMonth, 1))}
               aria-label={locale === "vi" ? "Tháng trước" : "Previous month"}
             >
-              <ChevronLeft className="size-4" />
+              <ChevronLeft />
             </Button>
             <Button
               type="button"
@@ -281,7 +279,7 @@ export default function ActivityCalendarDashboard({
               onClick={() => goToMonth(addMonths(visibleMonth, 1))}
               aria-label={locale === "vi" ? "Tháng sau" : "Next month"}
             >
-              <ChevronRight className="size-4" />
+              <ChevronRight />
             </Button>
           </div>
         </div>
@@ -291,7 +289,7 @@ export default function ActivityCalendarDashboard({
             {weekdayLabels.map((weekday) => (
               <p
                 key={weekday}
-                className="text-start text-[11px] font-mono font-semibold uppercase tracking-wide text-foreground md:text-xs"
+                className="text-start text-xs font-sans font-semibold tracking-wide text-foreground"
               >
                 {weekday}
               </p>
@@ -304,7 +302,7 @@ export default function ActivityCalendarDashboard({
               const dayActivities = dayActivityMap.get(dayKey) ?? [];
               const inMonth = isSameMonth(day, visibleMonth);
               const selected = isSameDay(day, selectedDate);
-              const visibleItems = dayActivities.slice(0, 3);
+              const visibleItems = dayActivities.slice(0, 2);
               const remaining = dayActivities.length - visibleItems.length;
 
               const buttonNode = (
@@ -313,7 +311,7 @@ export default function ActivityCalendarDashboard({
                   type="button"
                   onClick={() => handleDaySelect(day, dayActivities)}
                   className={cn(
-                    "group min-h-20 rounded-lg border p-1.5 text-left transition-colors md:min-h-30 md:p-2",
+                    "overflow-hidden relative group min-h-12 rounded-lg border p-1.5 text-left transition-colors md:min-h-12 md:p-2",
                     inMonth
                       ? "border-primary/10 bg-[#fffdf9] hover:border-primary/30"
                       : "border-primary/5 bg-muted/30 text-muted-foreground",
@@ -323,7 +321,7 @@ export default function ActivityCalendarDashboard({
                   <div className="mb-1 flex items-center justify-between">
                     <span
                       className={cn(
-                        "text-[11px] font-mono md:text-xs",
+                        "text-xs font-sans md:text-xs",
                         selected
                           ? "text-primary font-semibold"
                           : "text-muted-foreground",
@@ -341,15 +339,7 @@ export default function ActivityCalendarDashboard({
                     />
                   </div>
 
-                  <div className="lg:hidden">
-                    {dayActivities.length > 0 ? (
-                      <span className="inline-flex rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-mono text-primary">
-                        {dayActivities.length}
-                      </span>
-                    ) : null}
-                  </div>
-
-                  <div className="hidden gap-1 lg:flex lg:flex-col">
+                  <div className="hidden gap-1 lg:flex lg:flex-col z-10">
                     {visibleItems.map((activity) => {
                       const start = activity.activityStartDate
                         ? parseISO(activity.activityStartDate)
@@ -373,7 +363,7 @@ export default function ActivityCalendarDashboard({
                     })}
 
                     {remaining > 0 ? (
-                      <p className="text-[10px] font-mono text-primary">
+                      <p className="text-xs font-sans text-end text-primary">
                         +{remaining}
                       </p>
                     ) : null}
