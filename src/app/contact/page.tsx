@@ -66,7 +66,7 @@ const Contact = async () => {
       <PageHeader title={t("title")} className="mb-8 md:mb-10" />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8 items-start">
-        <div className="lg:col-span-5">
+        {/* <div className="lg:col-span-5">
           <div className="rounded-2xl border border-primary/10 bg-card p-5 md:p-6 shadow-sm">
             <div className="space-y-5">
               {contactDetails.map((item, index) => (
@@ -95,17 +95,17 @@ const Contact = async () => {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="lg:col-span-7">
-          <div className="rounded-2xl border border-primary/10 bg-card p-3 md:p-4 shadow-sm">
+        <div className="lg:col-span-full">
+          <div className="rounded-xl border border-primary/10 bg-card shadow-sm overflow-hidden">
             <EmbeddedMap
               iframeTitle={
                 locale === "vi" ? "Bản đồ đến Ni Viện" : "Map to the Nunnery"
               }
-              className="min-w-0 md:min-w-0 w-full h-[320px] lg:h-[420px] aspect-auto rounded-xl border border-primary/10 shadow-none"
+              className="min-w-0 md:min-w-0 w-full h-80 lg:h-105 aspect-auto"
             />
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            {/* <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground italic">
                 * {t("map-caption")}
               </p>
@@ -119,7 +119,7 @@ const Contact = async () => {
                   {openMapLabel}
                 </Link>
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

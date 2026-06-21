@@ -40,7 +40,7 @@ const ActivityVibrantBadge = ({
 
   return (
     <Badge
-      variant="default"
+      variant="outline"
       className={cn("font-mono", className)}
       // style={{ backgroundColor: colors.vibrant }}
     >

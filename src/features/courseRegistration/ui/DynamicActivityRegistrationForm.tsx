@@ -737,7 +737,7 @@ export default function ActivityRegistrationForm({
       >
         <div className="space-y-8">
           <section className="flex flex-col">
-            <h1 className="text-2xl font-bold uppercase text-primary pb-2 border-b-2 border-primary/80">
+            <h1 className="text-2xl font-bold uppercase text-primary pb-2 border-b-2 mb-4 border-primary/80">
               {activity?.activityName}
             </h1>
             {template.registrationDescription &&
@@ -1486,10 +1486,10 @@ export default function ActivityRegistrationForm({
             <Button
               size="lg"
               type="submit"
-              className="hover:cursor-pointer uppercase font-mono"
+              className="hover:cursor-pointer uppercase font-sans"
               disabled={isPending || active === false}
             >
-              <Send />
+              {/* <Send /> */}
               {isPending ? "Đang xử lý..." : "Đăng ký tham gia"}
             </Button>
           </div>

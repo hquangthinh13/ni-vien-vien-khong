@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Activity } from "@/features/activity/model/activity.types";
 import { getImageUrl } from "@/shared/lib/api";
-import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
+import { extractPreviewContent } from "@/shared/lib/utils";
 import type { Locale } from "@/types/locale";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import { cn } from "@/shared/lib/utils";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 interface CourseSidebarCardProps {
   course: Activity;
   locale: Locale;
@@ -24,12 +25,6 @@ const CourseSidebarCard = async ({
   const coverImageUrl = course.coverImage
     ? getImageUrl(course.coverImage, "thumbnail")
     : null;
-
-  const startDate = course.activityStartDate
-    ? formatFriendlyDate(course.activityStartDate, locale as string, false)
-    : locale === "vi"
-      ? "Ngày chưa xác định"
-      : "Date not specified";
 
   return (
     <Link
@@ -79,9 +74,14 @@ const CourseSidebarCard = async ({
               {extractPreviewContent(course.content)}
             </p>
           )}
-          <span className="text-xs font-mono tracking-tight text-muted-foreground">
-            {startDate}
-          </span>
+          <DateTimeDisplay
+            dateString={course.activityStartDate}
+            locale={locale as string}
+            includeTime={false}
+            emptyFallback={
+              locale === "vi" ? "Ngày chưa xác định" : "Date not specified"
+            }
+          />
         </div>
       </div>
     </Link>

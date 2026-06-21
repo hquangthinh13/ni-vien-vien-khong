@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
+import { extractPreviewContent } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import type { Activity } from "../model/activity.types";
 import { Locale } from "@/types/locale";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface MobileCardProps {
   activity: Activity;
@@ -30,10 +31,6 @@ export default async function MobileActivitiesCard({
   } = activity;
 
   const imageUrl = getImageUrl(coverImage, "medium");
-  const displayDate =
-    publishedAt && !isCourse
-      ? formatFriendlyDate(publishedAt, locale, true)
-      : formatFriendlyDate(activityStartDate, locale, false);
   const cardClassName =
     variant === "hero"
       ? "group block border-b pb-4"
@@ -57,9 +54,13 @@ export default async function MobileActivitiesCard({
               )}
             </div>
             <div className="flex min-w-0 flex-col gap-1">
-              <span className="font-mono text-[11px] tracking-wide text-muted-foreground">
-                {displayDate}
-              </span>
+              <DateTimeDisplay
+                dateString={
+                  publishedAt && !isCourse ? publishedAt : activityStartDate
+                }
+                locale={locale}
+                includeTime={Boolean(publishedAt && !isCourse)}
+              />
               <span className="line-clamp-3 text-lg font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
                 {activityName || "Untitled Activity"}
               </span>
@@ -92,9 +93,13 @@ export default async function MobileActivitiesCard({
                 <p className="mb-1 line-clamp-3 font-mono text-xs leading-relaxed text-secondary-foreground">
                   {extractPreviewContent(content)}
                 </p>{" "}
-                <span className="font-mono text-[11px] tracking-wide text-muted-foreground">
-                  {displayDate}
-                </span>
+                <DateTimeDisplay
+                  dateString={
+                    publishedAt && !isCourse ? publishedAt : activityStartDate
+                  }
+                  locale={locale}
+                  includeTime={Boolean(publishedAt && !isCourse)}
+                />
               </div>
             </div>
           </div>

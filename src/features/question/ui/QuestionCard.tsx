@@ -10,8 +10,8 @@ import { Question } from "@/features/question/model/question.types";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { BlocksContent } from "@strapi/blocks-react-renderer";
 import { Locale } from "next-intl";
-import { formatFriendlyDate } from "@/shared/lib/utils";
 import { cn } from "@/shared/lib/utils";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface QuestionCardProps {
   question: Question;
@@ -46,15 +46,11 @@ const QuestionCard = async ({
         <DialogTrigger asChild>
           <div className="group block cursor-pointer">
             <div className="flex flex-col gap-2">
-              <span className="text-xs text-muted-foreground font-mono tracking-wide">
-                {question.createdAt
-                  ? formatFriendlyDate(
-                      question.createdAt,
-                      locale as string,
-                      false,
-                    )
-                  : ""}
-              </span>
+              <DateTimeDisplay
+                dateString={question.createdAt}
+                locale={locale as string}
+                includeTime={false}
+              />
               <h3
                 className={`text-${fontSize} font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200`}
               >

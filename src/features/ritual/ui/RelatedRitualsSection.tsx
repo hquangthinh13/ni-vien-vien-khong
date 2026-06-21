@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { ScrollText } from "lucide-react";
-import { formatFriendlyDate } from "@/shared/lib/utils";
 import { Ritual } from "../model/ritual.types";
 import { Locale } from "@/types/locale";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface RelatedRitualsProps {
   rituals: Ritual[];
@@ -29,11 +29,10 @@ const RelatedRitualsSection = ({ rituals, locale }: RelatedRitualsProps) => {
           >
             <div className="flex gap-2 ">
               <div className="flex flex-col justify-start flex-1 gap-1">
-                <span className="flex text-[10px] md:text-xs text-muted-foreground items-center">
-                  {item?.publishedAt
-                    ? formatFriendlyDate(item.publishedAt, localeToUse)
-                    : ""}
-                </span>
+                <DateTimeDisplay
+                  dateString={item?.publishedAt}
+                  locale={localeToUse}
+                />
                 <h5 className="flex text-sm md:text-md font-bold group-hover:text-primary transition-colors leading-tight">
                   {item.title}
                 </h5>

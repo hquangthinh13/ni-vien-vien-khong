@@ -42,9 +42,11 @@ export const formatFriendlyDate = (
   }).format(date);
 
   // 4. Kết hợp lại dựa trên ngôn ngữ
-  return locale === "vi"
-    ? `${timePart} ngày ${datePart}`
-    : `${datePart}, ${timePart}`;
+  // return locale === "vi"
+  //   ? `${timePart} ngày ${datePart}`
+  //   : `${datePart}, ${timePart}`;
+
+  return locale === "vi" ? `${datePart}` : `${datePart}, ${timePart}`;
 };
 export const formatShortDate = (
   dateString: string,

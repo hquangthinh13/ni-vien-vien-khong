@@ -12,20 +12,14 @@ export default function ActivityCalendarDashboardSection({
 }: ActivityCalendarDashboardSectionProps) {
   return (
     <section className="w-full">
-      <div className="flex w-full flex-col items-center">
-        <Image
-          src={ornament}
-          alt="Ornament"
-          width={32}
-          height={32}
-          className="h-6 w-auto opacity-75 mb-4"
-        />
+      {/* <div className="flex w-full flex-col items-start">
+        
         <h2 className="home-page-section-title mb-4">
           {locale === "vi"
             ? "Lịch hoạt động trong tháng"
             : "Monthly Activity Calendar"}
         </h2>
-      </div>
+      </div> */}
 
       <ActivityCalendarDashboard locale={locale} />
     </section>

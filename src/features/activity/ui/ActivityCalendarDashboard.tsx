@@ -250,10 +250,13 @@ export default function ActivityCalendarDashboard({
       <div className="lg:col-span-12 lg:pr-2">
         <div className="flex items-center justify-between border-b pb-2 border-primary/10">
           <div className="flex flex-col">
-            <p className="font-sans font-bold text-lg capitalize text-primary">
-              {monthLabel}
-            </p>
-            <p className="text-xs text-muted-foreground font-mono">
+            <h2 className="home-page-section-title mb-4">
+              {locale === "vi"
+                ? "Lịch hoạt động trong " + `${monthLabel}`
+                : "Monthly Activity Calendar - " + `${monthLabel}`}
+            </h2>
+
+            <p className="text-sm text-muted-foreground font-mono">
               {locale === "vi"
                 ? "Chọn vào ngày có hoạt động để xem lịch chi tiết"
                 : "Select a date to view details"}
