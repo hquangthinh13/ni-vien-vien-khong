@@ -231,14 +231,14 @@ export default function ActivityRegistrationForm({
             "Đăng ký thành công! Bạn hiện tại đã ở trong danh sách chờ do số lượng đơn đăng ký có giới hạn.",
           );
         } else {
-          toast.success("G?i thông tin dang ký thành công!");
+          toast.success("Gửi thông tin dang ký thành công!");
         }
 
         reset();
         onClose?.();
       } catch {
         toast.error(
-          "B?n chua di?n d?y d? thông tin ho?c có l?i x?y ra. Vui lòng ki?m tra l?i.",
+          "Bạn chua điền đầy đủ thông tin hoặc có lỗi xảy ra. Vui lòng kiểm tra lại.",
         );
       }
     });
