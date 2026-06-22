@@ -20,7 +20,7 @@ export default function DateTimeDisplay({
     return emptyFallback ? (
       <span
         className={cn(
-          "font-mono text-xs tracking-wide text-muted-foreground",
+          "font-mono text-sm tracking-wide text-muted-foreground",
           className,
         )}
       >
@@ -32,7 +32,7 @@ export default function DateTimeDisplay({
   return (
     <span
       className={cn(
-        "font-mono text-xs tracking-normal text-muted-foreground",
+        "font-mono text-sm tracking-normal text-muted-foreground",
         className,
       )}
     >

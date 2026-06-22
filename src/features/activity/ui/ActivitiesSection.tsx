@@ -13,9 +13,11 @@ export default async function ActivitiesSection({
 }) {
   const rowOne = activities.slice(0, 2);
   const rowTwo = activities.slice(2, 5);
+  const rowThree = activities.slice(5, 8);
+
   return (
     <div className="mx-auto mt-4">
-      <section className="flex flex-col lg:hidden gap-0">
+      <section className="grid grid-cols-1 gap-6 lg:hidden">
         {activities.map((post, index) => (
           <MobileActivitiesCard
             locale={locale}
@@ -50,6 +52,23 @@ export default async function ActivitiesSection({
         {/* Row 2: 3-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 ">
           {rowTwo.map(
+            (post) =>
+              post && (
+                <div key={post.id} className="">
+                  <SimplifiedNewsCard
+                    key={post.id}
+                    activity={post}
+                    variant="top"
+                    locale={locale}
+                  />
+                </div>
+              ),
+          )}
+        </div>
+
+        {/* Row 2: 3-Column Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 ">
+          {rowThree.map(
             (post) =>
               post && (
                 <div key={post.id} className="">

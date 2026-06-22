@@ -9,7 +9,7 @@ import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface VideoProps {
   video: VideoPlaylist;
-  locale?: Locale;
+  locale: Locale;
   isLastMobile?: boolean;
 }
 
@@ -20,14 +20,14 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
   return (
     <Link href={`/library/video/${documentId}`} className="group block">
       <div
-        className={`flex min-w-0 flex-col gap-1 pb-3 lg:hidden ${isLastMobile ? "" : "border-b"}`}
+        className={`flex min-w-0 flex-col gap-2 lg:hidden ${isLastMobile ? "" : ""}`}
       >
         <span className="line-clamp-2 text-base font-bold leading-snug text-foreground transition-colors group-hover:text-primary">
           {title}
         </span>
 
         <div className="flex items-center gap-2">
-          <div className="relative h-[63px] w-28 shrink-0 overflow-hidden rounded-md bg-muted sm:h-[81px] sm:w-36">
+          <div className="relative h-20 w-auto aspect-video shrink-0 overflow-hidden rounded-md bg-muted sm:h-24">
             <Image
               src={imageSrc}
               alt={title || "Video cover image"}
@@ -39,13 +39,22 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col gap-1">
-            <p className="mb-1 line-clamp-3 font-mono text-xs leading-relaxed text-secondary-foreground">
+            <p className="line-clamp-2 text-sm text-secondary-foreground/60 font-sans leading-loose mb-1">
               {description}
             </p>
-            <DateTimeDisplay
-              dateString={publishedAt}
-              locale={locale as string}
-            />
+            <div className="flex gap-2 items-center">
+              <DateTimeDisplay
+                dateString={locale === "vi" ? "Pháp thoại" : "Dharma Talks"}
+                locale={locale}
+                className="text-primary font-semibold"
+              />
+              <DateTimeDisplay dateString="|" locale={locale} />
+              <DateTimeDisplay
+                dateString={publishedAt}
+                locale={locale}
+                className=""
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -63,17 +72,26 @@ const VideoCard = ({ video, locale, isLastMobile = false }: VideoProps) => {
         </div>
 
         <div className="flex h-full flex-col gap-2">
-          <span className="mb-2 line-clamp-2 text-md font-bold leading-snug transition-colors group-hover:text-primary">
+          <span className="mb-2 line-clamp-2 text-lg font-bold leading-snug transition-colors group-hover:text-primary">
             {title}
           </span>
-          <p className="line-clamp-3 text-sm font-mono text-secondary-foreground/80">
+          <p className="line-clamp-2 text-sm text-secondary-foreground/60 font-sans leading-loose my-2">
             {description}
           </p>
-          <DateTimeDisplay
-            dateString={publishedAt}
-            locale={locale as string}
-            className="mt-auto"
-          />
+
+          <div className="flex gap-2 items-center">
+            <DateTimeDisplay
+              dateString={locale === "vi" ? "Pháp thoại" : "Dharma Talks"}
+              locale={locale}
+              className="text-primary font-semibold"
+            />
+            <DateTimeDisplay dateString="|" locale={locale} />
+            <DateTimeDisplay
+              dateString={publishedAt}
+              locale={locale}
+              className=""
+            />
+          </div>
         </div>
       </div>
     </Link>

@@ -9,7 +9,7 @@ import type { Locale } from "@/types/locale";
 import { getLocale } from "next-intl/server";
 import CourseSection from "@/features/activity/ui/CourseSection";
 import VideoCard from "@/features/video/ui/VideoCard";
-
+import Navbar from "@/shared/layout/Navbar";
 import { fetchHomePage } from "@/features/homePage/api/homePage.api";
 import {
   fetchActivities,
@@ -26,6 +26,7 @@ import { ActivityResponse } from "@/features/activity/model/activity.types";
 import { VideoPlaylistResponse } from "@/features/video/model/video.types";
 
 import ornament from "@/public/ornament-01.svg";
+import decoration from "@/public/ornament-00.svg";
 
 async function safeFetch<T>(promise: Promise<T>, fallback: T): Promise<T> {
   try {
@@ -39,34 +40,33 @@ async function safeFetch<T>(promise: Promise<T>, fallback: T): Promise<T> {
 
 export default async function Home() {
   const locale = (await getLocale()) as Locale;
-  const category = "Khóa Tu";
+  // const category = "Khóa Tu";
 
   // const homePage = homePageResponse?.data || null;
-  const [homePageResponse, activityResponse, courseResponse, videoResponse] =
-    await Promise.all([
+  const [homePageResponse, activityResponse, videoResponse] = await Promise.all(
+    [
       safeFetch(fetchHomePage({ populate: "*", locale }), {
         data: null,
       } as HomePageResponse),
       safeFetch(
         fetchActivities({
           sort: ["publishedAt:desc"],
-          pagination: { limit: 5 },
+          pagination: { limit: 8 },
           populate: "*",
           locale,
         }),
         { data: [] } as ActivityResponse,
       ),
-      safeFetch(
-        fetchActivitiesByCategory({
-          locale,
-          category: category,
-          sort: ["activityStartDate:desc"],
-          pagination: { limit: 5 },
-          populate: "coverImage",
-        }),
-        { data: [] } as ActivityResponse,
-      ),
-
+      // safeFetch(
+      //   fetchActivitiesByCategory({
+      //     locale,
+      //     category: "Khóa Tu",
+      //     sort: ["activityStartDate:desc"],
+      //     pagination: { limit: 5 },
+      //     populate: "coverImage",
+      //   }),
+      //   { data: [] } as ActivityResponse,
+      // ),
       safeFetch(
         fetchVideo({
           locale,
@@ -78,8 +78,10 @@ export default async function Home() {
           data: [],
         } as VideoPlaylistResponse,
       ),
-    ]);
-
+    ],
+  );
+  // console.log("activityResponse", activityResponse);
+  // console.log(courseResponse);
   const homePage =
     homePageResponse?.data && !Array.isArray(homePageResponse.data)
       ? homePageResponse.data
@@ -91,11 +93,11 @@ export default async function Home() {
     : activityResponse?.data
       ? [activityResponse.data]
       : [];
-  const courses = Array.isArray(courseResponse?.data)
-    ? courseResponse.data
-    : courseResponse?.data
-      ? [courseResponse.data]
-      : [];
+  // const courses = Array.isArray(courseResponse?.data)
+  //   ? courseResponse.data
+  //   : courseResponse?.data
+  //     ? [courseResponse.data]
+  //     : [];
   const videos = Array.isArray(videoResponse?.data)
     ? videoResponse.data
     : videoResponse?.data
@@ -104,24 +106,27 @@ export default async function Home() {
   return (
     <main>
       <MotionWrapper>
-        <div className="py-4 px-4 max-w-7xl mx-auto ">
+        <div className="relative w-screen aspect-video lg:h-screen lg:w-full lg:aspect-auto">
           <Image
             src={coverImage || "/placeholder.png"}
             alt="Cover image"
-            width={1600}
-            height={900}
-            className="h-auto w-screen rounded-lg"
+            fill
+            className="
+            object-contain
+            lg:object-cover
+            lg:object-[10%_center]"
             placeholder="blur"
             blurDataURL={DEFAULT_BLUR_DATA_URL}
-            sizes="100vw"
-            quality={75}
             priority
-          />
+            quality={75}
+          />{" "}
+          <Navbar />
         </div>
       </MotionWrapper>
+
       <div className="page-container gap-12">
-        <MotionWrapper className="flex mb-6 max-w-2xl mx-auto">
-          <section className="flex flex-col">
+        <MotionWrapper className="flex my-6">
+          <section className="flex flex-col justify-center items-center mx-auto max-w-2xl">
             <div className="flex w-fit mx-auto">
               <h1 className="home-page-section-title">
                 {locale === "vi" ? "Lời ngỏ" : "Foreword"}
@@ -131,11 +136,11 @@ export default async function Home() {
               {homePage?.openingMessage}
             </p>{" "}
             <Image
-              src={ornament}
+              src={decoration}
               alt="Ornament"
               width={32}
               height={32}
-              className="h-6 w-auto opacity-75 mt-4"
+              className="h-4 w-auto opacity-75 mt-12"
             />
           </section>{" "}
         </MotionWrapper>
@@ -192,7 +197,7 @@ export default async function Home() {
             </section>
           </MotionWrapper>
         )}
-        {courses.length > 0 && (
+        {/* {courses.length > 0 && (
           <MotionWrapper>
             <section className="flex flex-col">
               <div className="flex justify-between items-center">
@@ -213,7 +218,7 @@ export default async function Home() {
               <ActivitiesSection locale={locale} activities={courses} />
             </section>{" "}
           </MotionWrapper>
-        )}
+        )} */}
         <MotionWrapper>
           <section className="flex flex-col">
             <Suspense fallback={<div>Đang tải lịch hoạt động...</div>}>
