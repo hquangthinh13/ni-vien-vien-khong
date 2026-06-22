@@ -106,21 +106,35 @@ export default async function Home() {
   return (
     <main>
       <MotionWrapper>
-        <div className="relative w-screen aspect-video lg:h-screen lg:w-full lg:aspect-auto">
-          <Image
-            src={coverImage || "/placeholder.png"}
-            alt="Cover image"
-            fill
-            className="
-            object-contain
-            lg:object-cover
-            lg:object-[10%_center]"
-            placeholder="blur"
-            blurDataURL={DEFAULT_BLUR_DATA_URL}
-            priority
-            quality={75}
-          />{" "}
+        <div className="flex flex-col lg:h-screen">
           <Navbar />
+
+          {/* Mobile */}
+          <div className="lg:hidden">
+            <Image
+              src={coverImage || "/placeholder.png"}
+              alt="Cover image"
+              width={1920}
+              height={1080}
+              className="w-full h-auto"
+              placeholder="blur"
+              blurDataURL={DEFAULT_BLUR_DATA_URL}
+              priority
+            />
+          </div>
+
+          {/* Desktop */}
+          <div className="hidden lg:block relative flex-1">
+            <Image
+              src={coverImage || "/placeholder.png"}
+              alt="Cover image"
+              fill
+              className="object-cover object-[10%_center]"
+              placeholder="blur"
+              blurDataURL={DEFAULT_BLUR_DATA_URL}
+              priority
+            />
+          </div>
         </div>
       </MotionWrapper>
 
