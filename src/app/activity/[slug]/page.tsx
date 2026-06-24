@@ -196,97 +196,93 @@ export default async function ActivityPage({ params }: Props) {
             <DetailDivider />
           </MotionWrapper>
 
-          <MotionWrapper>
-            <div className="w-full">
-              {data.content ? (
-                <RichTextRenderer content={data.content || []} />
-              ) : null}
-            </div>
-          </MotionWrapper>
-
-          <MotionWrapper>
-            {courseContent?.videoSection &&
-            courseContent.videoSection.length > 0 ? (
-              <section className="mt-6 w-full space-y-4">
-                <div className="flex items-center justify-between border-b pb-2">
-                  <span className="flex items-center gap-2 text-lg font-bold uppercase tracking-wider">
-                    <PlayCircle size={20} className="text-primary" />
-                    Video
-                  </span>
-                  <span className="text-xs font-medium font-mono uppercase tracking-widest text-muted-foreground">
-                    {courseContent.videoSection.length} video
-                  </span>
-                </div>
-
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {sortedVideos.map((video, index) => {
-                    const videoId = getVideoId(video.videoLink);
-                    const displayDay = video.haveOrdinalDate
-                      ? (video.day ?? index + 1)
-                      : index + 1;
-                    const formattedDay =
-                      displayDay < 10 ? `0${displayDay}` : displayDay;
-
-                    return (
-                      <AccordionItem
-                        key={video.id}
-                        value={video.title || `video-${video.id}`}
-                        className="overflow-hidden rounded-xl border bg-card px-4 shadow-sm transition-all duration-300"
-                      >
-                        <AccordionTrigger className="group items-center border-none py-4 hover:no-underline">
-                          <div className="flex w-full items-center gap-4">
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
-                              {formattedDay}
-                            </div>
-
-                            <div className="flex flex-col items-start gap-0.5">
-                              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground transition-colors group-hover:text-primary">
-                                {locale === "vi"
-                                  ? "Video Khóa Tu"
-                                  : "Video of the Course"}
-                              </span>
-                              <span className="line-clamp-1 text-left text-sm font-bold">
-                                {video.title}
-                              </span>
-                            </div>
-                          </div>
-                        </AccordionTrigger>
-
-                        <AccordionContent className="px-2 pt-0 pb-4">
-                          {videoId ? (
-                            <div className="group/video relative aspect-video w-full overflow-hidden rounded-lg bg-black shadow-2xl">
-                              <iframe
-                                src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
-                                className="absolute inset-0 h-full w-full border-0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                              />
-                            </div>
-                          ) : (
-                            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/20 py-10">
-                              <PlayCircle
-                                className="mb-2 text-muted-foreground"
-                                size={32}
-                              />
-                              <p className="text-sm italic text-muted-foreground">
-                                {locale === "vi"
-                                  ? "Vui lòng quay lại sau"
-                                  : "Please check back later"}
-                              </p>
-                            </div>
-                          )}
-                        </AccordionContent>
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
-              </section>
+          {/* <MotionWrapper> */}
+          <div className="w-full">
+            {data.content ? (
+              <RichTextRenderer content={data.content || []} />
             ) : null}
-          </MotionWrapper>
+          </div>
+          {/* </MotionWrapper> */}
+
+          {/* <MotionWrapper> */}
+          {courseContent?.videoSection &&
+          courseContent.videoSection.length > 0 ? (
+            <section className="mt-6 w-full space-y-4">
+              <div className="flex items-center justify-between border-b pb-2">
+                <span className="flex items-center gap-2 text-lg font-bold uppercase tracking-wider">
+                  <PlayCircle size={20} className="text-primary" />
+                  Video
+                </span>
+                <span className="text-xs font-medium font-mono uppercase tracking-widest text-muted-foreground">
+                  {courseContent.videoSection.length} video
+                </span>
+              </div>
+
+              <Accordion type="single" collapsible className="w-full space-y-3">
+                {sortedVideos.map((video, index) => {
+                  const videoId = getVideoId(video.videoLink);
+                  const displayDay = video.haveOrdinalDate
+                    ? (video.day ?? index + 1)
+                    : index + 1;
+                  const formattedDay =
+                    displayDay < 10 ? `0${displayDay}` : displayDay;
+
+                  return (
+                    <AccordionItem
+                      key={video.id}
+                      value={video.title || `video-${video.id}`}
+                      className="overflow-hidden rounded-xl border bg-card px-4 shadow-sm transition-all duration-300"
+                    >
+                      <AccordionTrigger className="group items-center border-none py-4 hover:no-underline">
+                        <div className="flex w-full items-center gap-4">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+                            {formattedDay}
+                          </div>
+
+                          <div className="flex flex-col items-start gap-0.5">
+                            <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground transition-colors group-hover:text-primary">
+                              {locale === "vi"
+                                ? "Video Khóa Tu"
+                                : "Video of the Course"}
+                            </span>
+                            <span className="line-clamp-1 text-left text-sm font-bold">
+                              {video.title}
+                            </span>
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+
+                      <AccordionContent className="px-2 pt-0 pb-4">
+                        {videoId ? (
+                          <div className="group/video relative aspect-video w-full overflow-hidden rounded-lg bg-black shadow-2xl">
+                            <iframe
+                              src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                              className="absolute inset-0 h-full w-full border-0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/20 py-10">
+                            <PlayCircle
+                              className="mb-2 text-muted-foreground"
+                              size={32}
+                            />
+                            <p className="text-sm italic text-muted-foreground">
+                              {locale === "vi"
+                                ? "Vui lòng quay lại sau"
+                                : "Please check back later"}
+                            </p>
+                          </div>
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
+            </section>
+          ) : null}
+          {/* </MotionWrapper> */}
         </div>
       }
       sidebar={

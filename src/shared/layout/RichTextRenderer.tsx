@@ -82,15 +82,14 @@ const RichTextRenderer = ({
         image: ({ image }) => (
           <MotionWrapper>
             <figure className={`px-0 lg:px-24 my-8 space-y-3`}>
-              <div
-                className={`relative aspect-video w-full overflow-hidden rounded-lg shadow-sm`}
-              >
+              <div className="relative w-full overflow-hidden rounded-lg shadow-sm">
                 <Zoom zoomMargin={0}>
                   <Image
                     src={image.url}
                     alt={image.alternativeText || ""}
-                    fill
-                    className="object-cover"
+                    width={image.width}
+                    height={image.height}
+                    className="h-auto w-full"
                     placeholder="blur"
                     blurDataURL={DEFAULT_BLUR_DATA_URL}
                   />
@@ -110,10 +109,10 @@ const RichTextRenderer = ({
         ),
         paragraph: ({ children }) => (
           <motion.p
-            initial={{ opacity: 0, y: 0 }}
+            initial={{ opacity: 0.5, y: 0 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{
-              duration: 0.7,
+              duration: 0.3,
               delay: 0.2,
               ease: [0.22, 1, 0.36, 1],
             }}
