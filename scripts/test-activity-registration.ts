@@ -27,6 +27,8 @@ async function testCreateActivityRegistration() {
       phoneNumber: "0917671949",
       email: "abc@gmail.com",
       address: "123 Main St",
+      ward: "Phường Bến Nghé",
+      province: "Thành phố Hồ Chí Minh",
       haveZalo: true,
       zaloName: "nguyenvana",
     }; // Basic info component data always required and cannot be extended, if you want to add more fields, you can add them in the form payload as otherDetail.

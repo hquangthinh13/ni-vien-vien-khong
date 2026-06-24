@@ -104,6 +104,8 @@ export default function ActivityRegistrationForm({
         phoneNumber: "",
         email: "",
         address: "",
+        ward: "",
+        province: "",
         haveZalo: false,
         zaloName: "",
       },
@@ -932,6 +934,40 @@ export default function ActivityRegistrationForm({
               {errors.basic?.address && (
                 <p className="input-error-message">
                   {errors.basic.address.message}
+                </p>
+              )}
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                Phường/Xã <span className="text-destructive">*</span>
+              </FieldLabel>
+              <Input
+                placeholder="Nhập Phường/Xã"
+                {...register("basic.ward", {
+                  required: "Phường/Xã là thông tin bắt buộc",
+                })}
+              />
+              {errors.basic?.ward && (
+                <p className="input-error-message">
+                  {errors.basic.ward.message}
+                </p>
+              )}
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                Tỉnh/Thành phố <span className="text-destructive">*</span>
+              </FieldLabel>
+              <Input
+                placeholder="Nhập Tỉnh/Thành phố"
+                {...register("basic.province", {
+                  required: "Tỉnh/Thành phố là thông tin bắt buộc",
+                })}
+              />
+              {errors.basic?.province && (
+                <p className="input-error-message">
+                  {errors.basic.province.message}
                 </p>
               )}
             </Field>

@@ -7,6 +7,8 @@ export interface BasicInfoComponent {
   email: string;
   phoneNumber: string;
   address: string;
+  ward: string;
+  province: string;
   haveZalo: boolean;
   zaloName: string;
 }

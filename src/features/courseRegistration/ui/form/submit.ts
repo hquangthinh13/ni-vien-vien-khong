@@ -37,6 +37,8 @@ export async function submitActivityRegistration({
     gender: values.basic.gender,
     email: values.basic.email ?? "",
     address: values.basic.address ?? "",
+    ward: values.basic.ward ?? "",
+    province: values.basic.province ?? "",
     zaloName: values.basic.zaloName ?? "",
   };
 
