@@ -56,6 +56,7 @@ export interface Activity extends StrapiEntity {
   updatedAt?: string;
   locale?: Locale;
   formOpened?: boolean;
+  pendingListIncluded?: boolean;
 }
 
 export type CustomizedComponent = {

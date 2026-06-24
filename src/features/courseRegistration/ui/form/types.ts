@@ -24,10 +24,15 @@ export interface DynamicFields {
 
 export interface RegistrationFormValues {
   firstTimeRegistered: boolean;
-  basic: Omit<BasicInfoComponent, "gender" | "email" | "address" | "zaloName"> & {
+  basic: Omit<
+    BasicInfoComponent,
+    "gender" | "email" | "address" | "ward" | "province" | "zaloName"
+  > & {
     gender?: BasicInfoComponent["gender"];
     email?: string;
     address?: string;
+    ward?: string;
+    province?: string;
     zaloName?: string;
   };
   identityDetail: Partial<IdentityComponent> & DynamicFields;

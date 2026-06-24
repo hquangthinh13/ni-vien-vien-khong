@@ -14,6 +14,8 @@ const basicSchema = z.object({
       "Email không hợp lệ",
     ),
   address: z.string().optional(),
+  ward: z.string().optional(),
+  province: z.string().optional(),
   haveZalo: z.boolean(),
   zaloName: z.string().optional(),
 });

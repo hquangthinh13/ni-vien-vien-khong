@@ -104,6 +104,8 @@ export default function ActivityRegistrationForm({
         phoneNumber: "",
         email: "",
         address: "",
+        ward: "",
+        province: "",
         haveZalo: false,
         zaloName: "",
       },
@@ -153,6 +155,11 @@ export default function ActivityRegistrationForm({
         if (data && data.registrationForm) {
           setTemplate(data.registrationForm);
           setActivity(data);
+          // When the activity is not included in the pending list, the
+          // "first time registered" question is hidden and we submit it as true.
+          if (data.pendingListIncluded === false) {
+            setValue("firstTimeRegistered", true);
+          }
         }
         // console.log(
         //   "Loaded registration form template:",
@@ -164,7 +171,7 @@ export default function ActivityRegistrationForm({
       }
     }
     loadTemplate();
-  }, [documentId]);
+  }, [documentId, setValue]);
 
   const onSubmit = (values: RegistrationFormValues) => {
     const ageError = validateActivityAge(activity, values.basic.dob);
@@ -931,6 +938,40 @@ export default function ActivityRegistrationForm({
               )}
             </Field>
 
+            <Field>
+              <FieldLabel>
+                Phường/Xã <span className="text-destructive">*</span>
+              </FieldLabel>
+              <Input
+                placeholder="Nhập Phường/Xã"
+                {...register("basic.ward", {
+                  required: "Phường/Xã là thông tin bắt buộc",
+                })}
+              />
+              {errors.basic?.ward && (
+                <p className="input-error-message">
+                  {errors.basic.ward.message}
+                </p>
+              )}
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                Tỉnh/Thành phố <span className="text-destructive">*</span>
+              </FieldLabel>
+              <Input
+                placeholder="Nhập Tỉnh/Thành phố"
+                {...register("basic.province", {
+                  required: "Tỉnh/Thành phố là thông tin bắt buộc",
+                })}
+              />
+              {errors.basic?.province && (
+                <p className="input-error-message">
+                  {errors.basic.province.message}
+                </p>
+              )}
+            </Field>
+
             <Field className="col-span-full">
               <FieldLabel className="text-sm font-semibold">
                 Tên hiển thị trên Zalo
@@ -949,29 +990,31 @@ export default function ActivityRegistrationForm({
               )}
             </Field>
 
-            <div className="col-span-full flex items-start space-x-2 p-2 pl-0 rounded-lg bg-muted/20">
-              <Controller
-                control={control}
-                name="firstTimeRegistered"
-                render={({ field }) => (
-                  <Checkbox
-                    id="firstTimeRegistered"
-                    className="mt-1"
-                    checked={!!field.value}
-                    onCheckedChange={(checked) => {
-                      field.onChange(checked);
-                    }}
-                  />
-                )}
-              />
-              <FieldLabel
-                htmlFor="firstTimeRegistered"
-                className="font-normal leading-relaxed cursor-pointer"
-              >
-                Đây là lần đầu tiên tôi tham gia sự kiện tại Ni Viện Viên Không.
-              </FieldLabel>
-            </div>
-            {/* )} */}
+            {activity?.pendingListIncluded && (
+              <div className="col-span-full flex items-start space-x-2 p-2 pl-0 rounded-lg bg-muted/20">
+                <Controller
+                  control={control}
+                  name="firstTimeRegistered"
+                  render={({ field }) => (
+                    <Checkbox
+                      id="firstTimeRegistered"
+                      className="mt-1"
+                      checked={!!field.value}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked);
+                      }}
+                    />
+                  )}
+                />
+                <FieldLabel
+                  htmlFor="firstTimeRegistered"
+                  className="font-normal leading-relaxed cursor-pointer"
+                >
+                  Đây là lần đầu tiên tôi tham gia sự kiện tại Ni Viện Viên
+                  Không.
+                </FieldLabel>
+              </div>
+            )}
           </div>
 
           {/* Section: Identity*/}
