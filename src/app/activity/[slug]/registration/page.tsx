@@ -25,6 +25,9 @@ export default async function ActivityRegistrationPage({ params }: Props) {
       locale,
       documentId,
       populate: ["registrationForm"],
+      // Form open/close state is time-sensitive — always fetch fresh so a
+      // server-side change to `formOpened` is reflected immediately.
+      revalidate: 0,
     });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {

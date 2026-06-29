@@ -3,6 +3,11 @@ export type SimpleFetchOptions = {
   populate?: Array<string> | string;
   signal?: AbortSignal;
   filters?: Record<string, unknown>;
+  /**
+   * Next.js fetch revalidation window in seconds. Pass 0 to opt out of caching
+   * and always fetch fresh data (e.g. for time-sensitive form open/close state).
+   */
+  revalidate?: number | false;
 };
 
 export type BaseFetchOptionsWithFields<T> = SimpleFetchOptions & {
