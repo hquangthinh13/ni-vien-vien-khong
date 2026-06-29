@@ -4,17 +4,14 @@ import Link from "next/link";
 import type { Activity } from "../model/activity.types";
 import type { Locale } from "@/types/locale";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
-import {
-  cn,
-  extractPreviewContent,
-  formatFriendlyDate,
-} from "@/shared/lib/utils";
+import { cn, extractPreviewContent } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { Badge } from "@/shared/ui/badge";
 import { getActivityStatus, getStatusLabel } from "../api/activity.api";
 import { categoryMap } from "@/types/categories";
 import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
 import ActivityVibrantBadge from "./ActivityVibrantBadge";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 interface ActivityCardProps {
   activity: Activity;
   locale: Locale;
@@ -82,9 +79,11 @@ const ActivityCard = ({ activity, locale }: ActivityCardProps) => {
           >
             {extractPreviewContent(content)}
           </p>{" "}
-          <span className="mt-auto text-xs text-muted-foreground font-mono uppercase">
-            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-          </span>
+          <DateTimeDisplay
+            dateString={publishedAt}
+            locale={locale}
+            className="mt-auto"
+          />
         </div>
       </div>
     </Link>

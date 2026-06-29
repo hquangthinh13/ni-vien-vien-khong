@@ -43,19 +43,20 @@ export default function ActivityRegistrationDialog({
           <span className="font-serif text-lg font-black uppercase tracking-normal text-foreground">
             {locale === "vi" ? "Điền thông tin đăng ký ngay" : "Register Now"}
           </span>
-          <p className="text-xs text-muted-foreground italic">
+          <p className="text-xs text-muted-foreground font-mono">
             {registrationLimit && (
               <>
                 {locale === "vi"
-                  ? "Số lượng đăng ký có hạn: "
+                  ? "Số lượng đăng ký: "
                   : "Limited slots available: "}
-                {registrationLimit}
+                <strong>{registrationLimit}</strong>
               </>
             )}
-            {registrationLimit && isDisabled && " - "}
+          </p>
+          <p className="text-xs text-muted-foreground font-mono mt-2">
             {isDisabled &&
               (locale === "vi"
-                ? "Form đăng ký đã đóng"
+                ? "Form đăng ký đã đóng hoặc chưa được mở"
                 : "Registration form is closed")}
           </p>
         </div>

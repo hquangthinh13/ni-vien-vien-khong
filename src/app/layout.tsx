@@ -7,13 +7,13 @@ import {
   Merriweather,
   Merriweather_Sans,
   Style_Script,
+  IBM_Plex_Sans,
 } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import Footer from "@/shared/layout/Footer";
 import { ScrollProgress } from "@/shared/ui/scroll-progress";
 
-import Navbar from "@/shared/layout/Navbar";
 import ScrollToTopButton from "@/shared/layout/ScrollToTopButton";
 import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
@@ -22,16 +22,11 @@ import { Analytics } from "@vercel/analytics/next";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/types/locale";
 import SmoothScrollProvider from "@/shared/motion/SmoothScrollProvider";
+import NavbarLayout from "@/shared/layout/NavbarLayout";
 
-const lora = Lora({
-  subsets: ["latin", "vietnamese"],
-  variable: "--font-lora",
-  display: "swap",
-});
-const ebGaramond = EB_Garamond({
-  subsets: ["latin", "vietnamese"],
-  variable: "--font-eb-garamond",
-  display: "swap",
+const fontMono = IBM_Plex_Sans({
+  subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 const montserrat = Montserrat({
@@ -134,20 +129,20 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${ebGaramond.variable} ${lora.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
+      className={`${fontMono.variable} ${oswald.variable} ${montserrat.variable} ${merriweather.variable} ${merriweatherSans.variable} ${styleScript.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-background">
-        <Navbar /> <ScrollToTopButton />
-        <ScrollProgress className="h-1" />
         <NextIntlClientProvider>
+          <NavbarLayout /> <ScrollToTopButton />
+          <ScrollProgress className="h-1" />
           <main className="flex-1">{children}</main>{" "}
           <Toaster position="top-right" richColors /> <SpeedInsights />{" "}
           <Analytics />
+          <MotionWrapper>
+            <Footer />
+          </MotionWrapper>
+          <SmoothScrollProvider />{" "}
         </NextIntlClientProvider>
-        <MotionWrapper>
-          <Footer />
-        </MotionWrapper>
-        <SmoothScrollProvider />
       </body>
     </html>
   );

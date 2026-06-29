@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import logo from "@/public/logo_slogan.svg";
 import Image from "next/image";
-
+import { cn } from "../lib/utils";
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { Menu } from "lucide-react";
@@ -18,24 +18,19 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import MobileNavigationMenu from "./MobileNavigationMenu";
 import DesktopNavigationMenu from "./DesktopNavigationMenu";
 import useMenuConfig from "@/shared/lib/menu-config";
-export default function Navbar() {
+export default function Navbar({ className }: { className?: string }) {
   const t = useTranslations("Navbar");
 
   const menuConfig = useMenuConfig();
 
   return (
-    <div className="sticky top-0 z-50 border-b bg-card">
-      {/* <div className="py-2 grid grid-cols-1 items-center bg-primary ">
-        <span className="text-center font-script text-2xl tracking-wider text-primary-foreground">
-          Ni Viện Viên Không
-        </span>
-      </div> */}
+    <div className={cn("sticky top-0 z-50 border-b bg-card", className)}>
       <div className="mx-auto max-w-7xl px-4 py-2 grid grid-cols-3 items-center">
         <Link className="flex mr-auto" href="/">
           <Image
             src={logo}
             alt="Logo"
-            className="max-h-12 h-auto w-auto"
+            className="max-h-10 h-auto w-auto"
             loading="eager"
             priority
           />

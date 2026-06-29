@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Blog } from "../model/blog.types";
 import type { Locale } from "@/types/locale";
-import { extractPreviewContent, formatFriendlyDate } from "@/shared/lib/utils";
+import { extractPreviewContent } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 interface BlogCardProps {
   blog: Blog;
   locale: Locale;
@@ -44,9 +45,11 @@ const BlogCard = ({ blog, locale }: BlogCardProps) => {
           >
             {extractPreviewContent(blogContent)}
           </p>{" "}
-          <span className="mt-auto text-xs text-muted-foreground font-mono uppercase">
-            {publishedAt ? formatFriendlyDate(publishedAt, locale, true) : ""}
-          </span>
+          <DateTimeDisplay
+            dateString={publishedAt}
+            locale={locale}
+            className="mt-auto"
+          />
         </div>
       </div>
     </Link>

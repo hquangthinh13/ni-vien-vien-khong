@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ScrollText } from "lucide-react";
 import type { Blog } from "@/features/blog/model/blog.types";
 import type { Locale } from "@/types/locale";
-import { formatFriendlyDate } from "@/shared/lib/utils";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface RelatedBlogsSectionProps {
   blogs: Blog[];
@@ -30,11 +30,10 @@ export default function RelatedBlogsSection({
           >
             <div className="flex gap-2">
               <div className="flex flex-1 flex-col gap-1">
-                <span className="flex items-center text-[10px] text-muted-foreground md:text-xs">
-                  {item?.publishedAt
-                    ? formatFriendlyDate(item.publishedAt, locale)
-                    : ""}
-                </span>
+                <DateTimeDisplay
+                  dateString={item?.publishedAt}
+                  locale={locale}
+                />
                 <h5 className="flex text-sm font-bold leading-tight transition-colors group-hover:text-primary md:text-md">
                   {item.title}
                 </h5>

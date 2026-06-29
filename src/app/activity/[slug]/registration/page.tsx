@@ -47,19 +47,12 @@ export default async function ActivityRegistrationPage({ params }: Props) {
     <main className="page-container">
       <div className="mx-auto w-full max-w-4xl space-y-6">
         <div className="flex items-center gap-4">
-          <Button
-            size="icon"
-            asChild
-            variant="outline"
-            className="cursor-pointer"
-          >
-            <Link href={backHref} className="">
-              <ArrowLeft className="size-4" />
+          <Button asChild variant="link" className="cursor-pointer px-0">
+            <Link href={backHref} className="px-0">
+              <ArrowLeft />
+              {locale === "vi" ? "Quay lại" : "Back"}
             </Link>
           </Button>{" "}
-          <h1 className="text-xl font-bold font-serif text-foreground">
-            {locale === "vi" ? "Đăng ký tham gia" : "Activity Registration"}
-          </h1>
         </div>
 
         {formIsClosed ? (
