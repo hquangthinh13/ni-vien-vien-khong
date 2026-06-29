@@ -115,15 +115,18 @@ export default async function ActivityPage({ params }: Props) {
 
   let response;
   try {
-    response = await fetchActivityByDocumentIdWithCourseContent({
-      locale,
-      documentId,
-      populate: [
-        "coverImage",
-        "relatedActivities",
-        "relatedActivities.coverImage",
-      ],
-    });
+    response =
+      await fetchActivityByDocumentIdWithCourseContent({
+        locale,
+        documentId,
+        populate: [
+          "coverImage",
+          "relatedActivities",
+          "relatedActivities.coverImage",
+        ],
+        // Keep the registration button's open/close state near-real-time.
+        revalidate: 60,
+      });
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
       notFound();

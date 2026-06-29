@@ -82,7 +82,7 @@ export async function fetchActivityByDocumentId(
       Authorization: `Bearer ${AUTHORIZED_TOKEN}`,
     },
     signal: options.signal,
-    next: { revalidate: 1200 },
+    next: { revalidate: options.revalidate ?? 1200 },
   });
 
   if (!res.ok) {
