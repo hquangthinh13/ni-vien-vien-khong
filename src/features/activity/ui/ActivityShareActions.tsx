@@ -65,7 +65,7 @@ export default function ActivityShareActions({
     );
 
     if (!popup) {
-      toast.error(labels.openError);
+      // toast.error(labels.openError);
     }
   };
 
