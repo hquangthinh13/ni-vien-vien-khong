@@ -8,6 +8,14 @@ import { getDocumentIdFromSlug } from "@/shared/lib/utils";
 import { fetchActivityByDocumentIdWithRegistrationForm } from "@/features/activity/api/activity.api";
 import type { Activity } from "@/features/activity/model/activity.types";
 import ActivityRegistrationPageForm from "@/features/courseRegistration/ui/ActivityRegistrationPageForm";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/shared/ui/breadcrumb";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -45,14 +53,46 @@ export default async function ActivityRegistrationPage({ params }: Props) {
   return (
     <main className="page-container">
       <div className="mx-auto w-full max-w-4xl space-y-6">
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <Button asChild variant="link" className="cursor-pointer px-0">
             <Link href={backHref} className="px-0">
               <ArrowLeft />
               {locale === "vi" ? "Quay lại" : "Back"}
             </Link>
           </Button>{" "}
-        </div>
+        </div> */}
+
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">{locale === "vi" ? "Trang chủ" : "Home"}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/activity">
+                  {locale === "vi" ? "Khóa tu" : "Courses"}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem className="min-w-0">
+              <BreadcrumbLink asChild>
+                <Link href={backHref} className="max-w-[18rem] truncate">
+                  {data.activityName}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                {locale === "vi" ? "Đăng ký" : "Registration"}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
         {formIsClosed ? (
           <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">

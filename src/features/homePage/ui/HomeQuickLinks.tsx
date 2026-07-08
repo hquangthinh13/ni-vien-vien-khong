@@ -21,7 +21,7 @@ const HomeQuickLinks = ({ locale }: HomeQuickLinksProps) => {
       Icon: BookOpen,
     },
     {
-      title: locale === "vi" ? "Khóa tu" : "Retreats",
+      title: locale === "vi" ? "Khóa tu" : "Courses",
       description:
         locale === "vi" ? "Lịch tu và đăng ký" : "Schedule & registration",
       href: "/course",

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { PlayCircle } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
@@ -177,13 +177,6 @@ export default async function ActivityPage({ params }: Props) {
               title={data.activityName}
               meta={
                 data.activityStartDate && data.activityEndDate ? (
-                  // <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
-                  //   <span>
-                  //     {formatShortDate(data.activityStartDate, locale)} -{" "}
-                  //     {formatShortDate(data.activityEndDate, locale)}
-
-                  //   </span>
-                  // </div>
                   <DateTimeDisplay
                     dateString={data.activityStartDate}
                     locale={locale}
@@ -200,16 +193,17 @@ export default async function ActivityPage({ params }: Props) {
           </MotionWrapper>
 
           {/* <MotionWrapper> */}
-          <div className="w-full">
+          <div className="w-full space-y-6">
             {data.content ? (
               <RichTextRenderer content={data.content || []} />
             ) : null}
-          </div>
-          <ActivityShareActions
+              <ActivityShareActions
             title={data.activityName}
             url={activityUrl}
             locale={locale}
           />
+          </div>
+         
           {/* </MotionWrapper> */}
 
           {/* <MotionWrapper> */}
@@ -295,6 +289,7 @@ export default async function ActivityPage({ params }: Props) {
       }
       sidebar={
         <>
+        
           <ActivityRegistrationDialog
             slug={slug}
             locale={locale}

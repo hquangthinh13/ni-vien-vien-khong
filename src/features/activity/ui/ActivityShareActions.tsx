@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Share2 } from "lucide-react";
+import { Copy } from "lucide-react";
 import { SiFacebook, SiZalo } from "@icons-pack/react-simple-icons";
 import { toast } from "sonner";
 import { Button } from "@/shared/ui/button";
@@ -25,7 +25,6 @@ export default function ActivityShareActions({
   title,
   url,
   locale,
-  description,
   className,
 }: ActivityShareActionsProps) {
   const [currentUrl, setCurrentUrl] = React.useState(url);
@@ -40,8 +39,7 @@ export default function ActivityShareActions({
   const labels =
     locale === "vi"
       ? {
-          title: "Chia sẻ bài viết",
-          description: "Gửi bài viết này đến bạn bè qua mạng xã hội.",
+          title: "Chia sẻ",
           facebook: "Facebook",
           zalo: "Zalo",
           copy: "Sao chép liên kết",
@@ -50,8 +48,7 @@ export default function ActivityShareActions({
           openError: "Không thể mở cửa sổ chia sẻ. Vui lòng thử lại.",
         }
       : {
-          title: "Share this post",
-          description: "Send this article to friends through social networks.",
+          title: "Share",
           facebook: "Facebook",
           zalo: "Zalo",
           copy: "Copy link",
@@ -91,60 +88,46 @@ export default function ActivityShareActions({
 
   return (
     <section
-      aria-labelledby="activity-share-title"
-      className={cn(
-        "mt-10 border-t border-primary/10 pt-5 text-left",
-        className,
-      )}
+      aria-label={labels.title}
+      className={cn("border-t border-primary/10 pt-3 text-left", className)}
     >
-      <div className="mb-4 flex items-start gap-3">
-        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-primary/15 bg-primary/5 text-primary">
-          <Share2 className="h-4 w-4" aria-hidden="true" />
-        </span>
-        <div className="space-y-1">
-          <h2
-            id="activity-share-title"
-            className="font-serif text-lg font-bold text-foreground"
-          >
-            {labels.title}
-          </h2>
-          <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-            {description || labels.description}
-          </p>
-        </div>
-      </div>
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs font-mono uppercase tracking-wide text-primary">
+          {labels.title}
+        </p>
 
-      <div className="flex flex-wrap gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleShareFacebook}
-          className="rounded-lg border-primary/15 bg-card/70 text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
-        >
-          <SiFacebook className="h-4 w-4" aria-hidden="true" />
-          {labels.facebook}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleShareZalo}
-          className="rounded-lg border-primary/15 bg-card/70 text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
-        >
-          <SiZalo className="h-4 w-4" aria-hidden="true" />
-          {labels.zalo}
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={handleCopyLink}
-          className="rounded-lg text-muted-foreground hover:bg-primary/5 hover:text-primary"
-        >
-          <Copy className="h-4 w-4" aria-hidden="true" />
-          {labels.copy}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleShareFacebook}
+            aria-label={labels.facebook}
+            title={labels.facebook}
+          >
+            <SiFacebook aria-hidden="true" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleShareZalo}
+            aria-label={labels.zalo}
+            title={labels.zalo}
+          >
+            <SiZalo aria-hidden="true" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleCopyLink}
+            aria-label={labels.copy}
+            title={labels.copy}
+          >
+            <Copy aria-hidden="true" />
+          </Button>
+        </div>
       </div>
     </section>
   );

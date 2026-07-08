@@ -5,7 +5,6 @@ import type { Activity } from "../model/activity.types";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import ActivityCard from "./ActivityCard";
 import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
 
 import { Button } from "@/shared/ui/button";
@@ -127,7 +126,7 @@ export default function ActivityList({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full col-span-full"
           >
             {initialActivities.map((activity: Activity) => (
               <SimplifiedActivitiesCard
