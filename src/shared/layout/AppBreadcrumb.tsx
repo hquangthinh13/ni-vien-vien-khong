@@ -27,9 +27,13 @@ export default function AppBreadcrumb({
   className,
 }: AppBreadcrumbProps) {
   const homeLabel = locale === "vi" ? "Trang chủ" : "Home";
+  const visibleItems = items.filter((item, index) => {
+    const isLast = index === items.length - 1;
+    return isLast || Boolean(item.href);
+  });
   const allItems: AppBreadcrumbItem[] = [
     { label: homeLabel, href: "/" },
-    ...items,
+    ...visibleItems,
   ];
 
   return (
