@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import BlogList from "@/features/blog/ui/BlogList";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Chia sẻ",
@@ -30,6 +31,7 @@ export default async function BlogPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Chia sẻ" : "Blog" }]} />
       <PageHeader title={locale === "vi" ? "Chia sẻ" : "Blog"} />
       <BlogList
         key={currentPage}

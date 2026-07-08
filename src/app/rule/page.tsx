@@ -8,6 +8,7 @@ import { fetchRulePage } from "@/features/rulePage/api/rulePage.api";
 import { getAppLocale } from "@/shared/lib/i18n";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 export const metadata: Metadata = {
   title: "Nội quy lưu trú",
 };
@@ -24,6 +25,11 @@ export default async function RulePage() {
   }
   return (
     <div className="page-container">
+      <AppBreadcrumb
+        locale={locale}
+        items={[{ label: data.title }]}
+        className="mb-6"
+      />
       <div className="flex flex-col gap-6 items-center mb-6">
         <h1 className="page-header">{data.title}</h1>{" "}
         <div className="opacity-80">

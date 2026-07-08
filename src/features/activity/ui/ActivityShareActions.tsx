@@ -89,7 +89,7 @@ export default function ActivityShareActions({
   return (
     <section
       aria-label={labels.title}
-      className={cn("border-t border-primary/10 pt-3 text-left", className)}
+      className={cn("mt-6 border-t border-primary/10 pt-3 text-left", className)}
     >
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs font-mono uppercase tracking-wide text-primary">

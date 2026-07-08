@@ -8,6 +8,7 @@ import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
 import { Metadata } from "next";
 import { MonasteryPageResponse } from "@/features/monasteryPage/model/monasteryPage.types";
 import MonasteryList from "@/features/monasteryPage/ui/MonasteryList";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 export const metadata: Metadata = {
   title: "Các tu viện khác",
 };
@@ -24,6 +25,14 @@ export default async function MonasteryPage() {
 
   return (
     <div className="page-container">
+      <AppBreadcrumb
+        locale={locale}
+        items={[
+          { label: locale === "vi" ? "Giới thiệu" : "Introduction" },
+          { label: locale === "vi" ? "Các tu viện khác" : "Other Monasteries" },
+        ]}
+        className="mb-6"
+      />
       <div className="flex flex-col gap-6 items-center mb-6">
         <TextMotionWrapper delay={0.2} className="text-center">
           <h1 className="page-header">

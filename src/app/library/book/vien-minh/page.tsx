@@ -4,6 +4,7 @@ import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/li
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 import ContentGrid from "@/shared/layout/ContentGrid";
 import EmptyState from "@/shared/layout/EmptyState";
 import Pagination from "@/shared/layout/Pagination";
@@ -38,6 +39,7 @@ export default async function VienMinhListPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Sách Sư Ông Viên Minh" : "Master Vien Minh Books" }]} />
       <PageHeader
         title={
           locale === "vi" ? "Sách Sư Ông Viên Minh" : "Master Vien Minh's Books"

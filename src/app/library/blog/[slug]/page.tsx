@@ -16,6 +16,7 @@ import DetailHeader from "@/shared/layout/DetailHeader";
 import DetailDivider from "@/shared/layout/DetailDivider";
 import RelatedBlogsSection from "@/features/blog/ui/RelatedBlogsSection";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 type Props = {
   params: { slug: string };
@@ -98,6 +99,18 @@ export default async function ActivityPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={[
+              { label: locale === "vi" ? "Thư viện" : "Library" },
+              {
+                label: locale === "vi" ? "Chia sẻ" : "Blog",
+                href: "/library/blog",
+              },
+              { label: data.title },
+            ]}
+            className="mb-6"
+          />
           <DetailHeader
             label={locale === "vi" ? "Chia sẻ" : "Blog"}
             title={data.title}

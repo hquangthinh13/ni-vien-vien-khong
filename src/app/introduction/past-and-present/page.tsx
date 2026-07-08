@@ -6,6 +6,7 @@ import { fetchHistoryPage } from "@/features/historyPage/api/historyPage.api";
 import type { HistoryPageAttributes } from "@/features/historyPage/model/historyPage.types";
 import { getAppLocale } from "@/shared/lib/i18n";
 import { Metadata } from "next";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 export const metadata: Metadata = {
   title: "Ni Viện Viên Không Xưa và Nay",
 };
@@ -25,6 +26,20 @@ export default async function PastAndPresentPage() {
 
   return (
     <div className="page-container">
+      <AppBreadcrumb
+        locale={locale}
+        items={[
+          { label: locale === "vi" ? "Giới thiệu" : "Introduction" },
+          {
+            label:
+              data?.title ||
+              (locale === "vi"
+                ? "Viên Không Xưa và Nay"
+                : "Vien Khong Past and Present"),
+          },
+        ]}
+        className="mb-6"
+      />
       <div className="flex flex-col lg:flex-row gap-12">
         <article className="w-full">
           <header className="flex flex-col w-full items-center mb-6 space-y-2">

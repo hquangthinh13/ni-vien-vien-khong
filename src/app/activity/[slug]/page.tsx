@@ -32,6 +32,8 @@ import MotionWrapper from "@/shared/motion/MotionWrapper";
 import { categoryMap } from "@/types/categories";
 import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 import ActivityShareActions from "@/features/activity/ui/ActivityShareActions";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import { getActivityBreadcrumbItems } from "@/features/activity/lib/activity-breadcrumb";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -171,6 +173,14 @@ export default async function ActivityPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={getActivityBreadcrumbItems({
+              activity: data,
+              locale,
+            })}
+            className="mb-6"
+          />
           <MotionWrapper>
             <DetailHeader
               label={displayCategory}
@@ -289,7 +299,6 @@ export default async function ActivityPage({ params }: Props) {
       }
       sidebar={
         <>
-        
           <ActivityRegistrationDialog
             slug={slug}
             locale={locale}

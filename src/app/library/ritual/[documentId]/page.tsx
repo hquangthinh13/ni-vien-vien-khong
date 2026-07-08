@@ -14,6 +14,7 @@ import DetailPageShell from "@/shared/layout/DetailPageShell";
 import DetailHeader from "@/shared/layout/DetailHeader";
 import DetailDivider from "@/shared/layout/DetailDivider";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 type Props = {
   params: { documentId: string };
@@ -95,6 +96,18 @@ export default async function RitualPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={[
+              { label: locale === "vi" ? "Thư viện" : "Library" },
+              {
+                label: locale === "vi" ? "Nghi thức nghi lễ" : "Rituals",
+                href: "/library/ritual",
+              },
+              { label: data.title },
+            ]}
+            className="mb-6"
+          />
           <DetailHeader
             label="Nghi thức nghi lễ"
             title={data.title}

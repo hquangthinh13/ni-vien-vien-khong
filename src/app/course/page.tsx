@@ -9,6 +9,7 @@ import CourseList from "@/features/activity/ui/CourseList";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Khóa tu",
@@ -53,6 +54,7 @@ export default async function CoursePage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Khóa tu" : "Courses" }]} />
       <PageHeader title={locale === "vi" ? "Khóa tu" : "Courses"} />
       <div className="flex w-full flex-1 flex-col items-stretch">
         <CourseList

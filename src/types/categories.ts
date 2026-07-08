@@ -1,4 +1,4 @@
-import { Locale } from "./locale";
+import type { Locale } from "@/types/locale";
 
 export type ActivityCategory =
   | "Phật Sự Trong Nước"
@@ -79,6 +79,7 @@ export const COURSE_CATEGORIES: CourseCategory[] = [
   "Khóa Tu Mùa Hè",
   "Khóa Tu Xuất Gia Gieo Duyên",
   "Khóa Thiền",
+  "Khác",
   "Tất cả",
 ];
 

@@ -5,6 +5,7 @@ import ActivityList from "@/features/activity/ui/ActivityList";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Tin tức",
@@ -41,6 +42,7 @@ export default async function ActivityPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Tin tức" : "Activities" }]} />
       <PageHeader title={locale === "vi" ? "Tin tức" : "Activities"} />
       <ActivityList
         key={`${initialCategory}-${currentPage}`}

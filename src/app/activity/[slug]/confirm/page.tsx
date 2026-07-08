@@ -8,6 +8,8 @@ import {
   SingleActivityResponse,
 } from "@/features/activity/model/activity.types";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import { getActivityBreadcrumbItems } from "@/features/activity/lib/activity-breadcrumb";
 type Props = {
   params: { slug: string };
 };
@@ -29,7 +31,10 @@ export async function generateMetadata(
         "activityName",
         "activityStartDate",
         "activityEndDate",
+        "activityCategory",
+        "slug",
       ],
+      populate: ["courseContent"],
     });
 
     const data = response?.data as Activity;
@@ -61,7 +66,10 @@ export default async function Page({ params }: Props) {
         "activityName",
         "activityStartDate",
         "activityEndDate",
+        "activityCategory",
+        "slug",
       ],
+      populate: ["courseContent"],
     })) as SingleActivityResponse;
   } catch (error) {
     if (error instanceof Error && error.message.includes("404")) {
@@ -74,7 +82,19 @@ export default async function Page({ params }: Props) {
   }
 
   return (
-    <main>
+    <main className="page-container">
+      <AppBreadcrumb
+        locale={locale}
+        items={getActivityBreadcrumbItems({
+          activity: response.data,
+          locale,
+          detailHref: `/activity/${slug}`,
+          append: [
+            { label: locale === "vi" ? "Xác nhận" : "Confirmation" },
+          ],
+        })}
+        className="mb-6"
+      />
       <ConfirmSection
         zaloGroup={response.data?.zaloGroup}
         activityName={response.data?.activityName}

@@ -8,6 +8,7 @@ import { getAppLocale } from "@/shared/lib/i18n";
 import { Metadata } from "next";
 import PageHeader from "@/shared/layout/PageHeader";
 import { Button } from "@/shared/ui/button";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Đường đến Ni Viện",
@@ -62,6 +63,11 @@ const Contact = async () => {
 
   return (
     <div className="page-container pb-16 md:pb-20">
+      <AppBreadcrumb
+        locale={locale}
+        items={[{ label: t("title") }]}
+        className="mb-6"
+      />
       <PageHeader title={t("title")} className="mb-8 md:mb-10" />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8 items-start">

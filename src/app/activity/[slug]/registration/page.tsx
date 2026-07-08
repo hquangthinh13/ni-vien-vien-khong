@@ -1,21 +1,12 @@
-﻿import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { getAppLocale } from "@/shared/lib/i18n";
-import { Button } from "@/shared/ui/button";
 import { isActive } from "@/features/activity/api/activity.api";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
 import { fetchActivityByDocumentIdWithRegistrationForm } from "@/features/activity/api/activity.api";
 import type { Activity } from "@/features/activity/model/activity.types";
 import ActivityRegistrationPageForm from "@/features/courseRegistration/ui/ActivityRegistrationPageForm";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/shared/ui/breadcrumb";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import { getActivityBreadcrumbItems } from "@/features/activity/lib/activity-breadcrumb";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -31,7 +22,7 @@ export default async function ActivityRegistrationPage({ params }: Props) {
     response = await fetchActivityByDocumentIdWithRegistrationForm({
       locale,
       documentId,
-      populate: ["registrationForm"],
+      populate: ["registrationForm", "courseContent"],
       // Form open/close state is time-sensitive - always fetch fresh so a
       // server-side change to `formOpened` is reflected immediately.
       revalidate: 0,
@@ -62,37 +53,15 @@ export default async function ActivityRegistrationPage({ params }: Props) {
           </Button>{" "}
         </div> */}
 
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/">{locale === "vi" ? "Trang chủ" : "Home"}</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/activity">
-                  {locale === "vi" ? "Khóa tu" : "Courses"}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem className="min-w-0">
-              <BreadcrumbLink asChild>
-                <Link href={backHref} className="max-w-[18rem] truncate">
-                  {data.activityName}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {locale === "vi" ? "Đăng ký" : "Registration"}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <AppBreadcrumb
+          locale={locale}
+          items={getActivityBreadcrumbItems({
+            activity: data,
+            locale,
+            detailHref: backHref,
+            append: [{ label: locale === "vi" ? "Đăng ký" : "Registration" }],
+          })}
+        />
 
         {formIsClosed ? (
           <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">
@@ -112,3 +81,4 @@ export default async function ActivityRegistrationPage({ params }: Props) {
     </main>
   );
 }
+

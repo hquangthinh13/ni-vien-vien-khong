@@ -6,6 +6,7 @@ import type { CalligraphyCategory } from "@/types/categories";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Thư pháp thư họa",
@@ -40,6 +41,7 @@ export default async function CaligraphyPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Thư pháp thư họa" : "Calligraphy" }]} />
       <PageHeader title={locale === "vi" ? "Thư pháp thư họa" : "Calligraphy"} />
       <CalligraphyList
         key={`${initialCategory}-${currentPage}`}
