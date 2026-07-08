@@ -4,6 +4,7 @@ import type {
   FetchPoemsOptions,
   FetchPoemByDocumentIdOptions,
 } from "../model/poem.types";
+import type { Locale } from "@/types/locale";
 
 const POEMS_ENDPOINT = "/api/poems";
 const AUTHORIZED_TOKEN =
@@ -38,7 +39,7 @@ export async function fetchPoems(
 }
 
 export async function fetchLatestPoems(
-  locale: string,
+  locale: Locale,
   limit: number = 5,
 ): Promise<PoemResponse> {
   return fetchPoems({

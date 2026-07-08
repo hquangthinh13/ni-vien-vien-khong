@@ -1,9 +1,8 @@
-import React from "react";
+﻿import React from "react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { formatShortDate } from "@/shared/lib/utils";
 import type { Blog } from "@/features/blog/model/blog.types";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import {
   fetchBlogByDocumentId,
   fetchLatestBlogs,
@@ -28,7 +27,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchBlogByDocumentId({
@@ -59,7 +58,7 @@ export async function generateMetadata(
 }
 
 export default async function ActivityPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
 

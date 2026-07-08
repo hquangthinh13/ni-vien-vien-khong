@@ -1,35 +1,38 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@iconify/react";
 import dynamic from "next/dynamic";
+import { normalizeLocale, SUPPORTED_LOCALES, type Locale } from "@/types/locale";
 
-function getLocaleFromCookie() {
-  if (typeof document === "undefined") return "vi";
+function getLocaleFromCookie(): Locale {
+  if (typeof document === "undefined") return normalizeLocale(undefined);
   const locale = document.cookie
     .split("; ")
     .find((row) => row.startsWith("locale="))
     ?.split("=")[1];
 
-  return locale === "en" ? "en" : "vi";
+  return normalizeLocale(locale);
 }
 
 const LanguageSwitcher = () => {
   const router = useRouter();
-  const [currentLocale, setCurrentLocale] = React.useState<"vi" | "en">(() =>
+  const pathname = usePathname();
+  const [currentLocale, setCurrentLocale] = React.useState<Locale>(() =>
     getLocaleFromCookie(),
   );
 
   const toggleLanguage = () => {
-    const newLocale = currentLocale === "vi" ? "en" : "vi";
+    const currentIndex = SUPPORTED_LOCALES.indexOf(currentLocale);
+    const newLocale =
+      SUPPORTED_LOCALES[(currentIndex + 1) % SUPPORTED_LOCALES.length];
 
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000; samesite=lax`;
 
     setCurrentLocale(newLocale);
-    router.push("/");
-
+    router.replace(pathname);
     router.refresh();
   };
 

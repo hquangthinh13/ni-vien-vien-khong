@@ -1,10 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import { fetchMonasteryPage } from "@/features/monasteryPage/api/monasteryPage.api";
 
-import { getLocale } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-01.svg";
-import type { Locale } from "@/types/locale";
 import TextMotionWrapper from "@/shared/motion/TextMotionWrapper";
 import { Metadata } from "next";
 import { MonasteryPageResponse } from "@/features/monasteryPage/model/monasteryPage.types";
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MonasteryPage() {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   const response = (await fetchMonasteryPage({
     locale,

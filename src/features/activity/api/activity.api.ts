@@ -17,6 +17,7 @@ import {
   ACTIVITY_POPULATE_REGISTRATION_FORM_AND_COURSE_CONTENT,
   mergePopulateOptions,
 } from "@/features/activity/api/activity.populate";
+import type { Locale } from "@/types/locale";
 
 const ACTIVITIES_ENDPOINT = "/api/activities";
 const AUTHORIZED_TOKEN =
@@ -53,7 +54,7 @@ export async function fetchActivities(
 }
 
 export async function fetchLatestActivities(
-  locale: string,
+  locale: Locale,
   limit: number = 5,
 ): Promise<ActivityResponse> {
   return fetchActivities({
@@ -342,7 +343,7 @@ export function getActivityStatus(
 
 export function getStatusLabel(
   activity: Activity,
-  locale: string = "en",
+  locale: Locale = "en",
   referenceDate?: string,
 ): string {
   const status = getActivityStatus(activity, referenceDate);

@@ -1,19 +1,18 @@
-import React from "react";
+﻿import React from "react";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-00.svg";
 import ornament from "@/public/ornament-01.svg";
 
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { fetchRulePage } from "@/features/rulePage/api/rulePage.api";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Nội quy lưu trú",
 };
 export default async function RulePage() {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   const fullResponse = await fetchRulePage({
     locale,

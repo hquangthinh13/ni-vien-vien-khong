@@ -1,11 +1,10 @@
-import React from "react";
+﻿import React from "react";
 import {
   fetchLatestPoems,
   fetchPoemByDocumentId,
 } from "@/features/poem/api/poem.api";
 import type { Poem } from "@/features/poem/model/poem.types";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
 import { Metadata, ResolvingMetadata } from "next";
@@ -25,7 +24,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchPoemByDocumentId({
@@ -56,7 +55,7 @@ export async function generateMetadata(
 }
 
 export default async function PoemPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { documentId } = await params;
 
   let data: Poem | null = null;

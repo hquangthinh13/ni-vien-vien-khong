@@ -1,8 +1,7 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
 import { isActive } from "@/features/activity/api/activity.api";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export default async function ActivityRegistrationPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
 
@@ -25,7 +24,7 @@ export default async function ActivityRegistrationPage({ params }: Props) {
       locale,
       documentId,
       populate: ["registrationForm"],
-      // Form open/close state is time-sensitive — always fetch fresh so a
+      // Form open/close state is time-sensitive - always fetch fresh so a
       // server-side change to `formOpened` is reflected immediately.
       revalidate: 0,
     });

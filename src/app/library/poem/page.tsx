@@ -1,6 +1,5 @@
-import { fetchPoems } from "@/features/poem/api/poem.api";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+﻿import { fetchPoems } from "@/features/poem/api/poem.api";
+import { getAppLocale } from "@/shared/lib/i18n";
 import PoemCard from "@/features/poem/ui/PoemCard";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
@@ -18,7 +17,7 @@ export default async function PoemListPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
   const pageSize = 9;

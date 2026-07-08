@@ -1,5 +1,4 @@
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+﻿import { getAppLocale } from "@/shared/lib/i18n";
 import LinkedDocumentCard from "@/features/linkedDocument/ui/LinkedDocumentCard";
 import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/linkedDocument.api";
 import { Metadata } from "next";
@@ -18,7 +17,7 @@ export default async function AbhidhammaListPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
   const pageSize = 12;

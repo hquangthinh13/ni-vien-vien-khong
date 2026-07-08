@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import {
   EB_Garamond,
   Oswald,
@@ -19,8 +19,7 @@ import { Toaster } from "sonner";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import SmoothScrollProvider from "@/shared/motion/SmoothScrollProvider";
 import NavbarLayout from "@/shared/layout/NavbarLayout";
 
@@ -124,7 +123,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   return (
     <html

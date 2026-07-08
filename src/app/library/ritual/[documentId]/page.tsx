@@ -1,12 +1,11 @@
-import React from "react";
+﻿import React from "react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { Ritual } from "@/features/ritual/model/ritual.types";
 import {
   fetchLatestRituals,
   fetchRitualByDocumentId,
 } from "@/features/ritual/api/ritual.api";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import RelatedRitualsSection from "@/features/ritual/ui/RelatedRitualsSection";
@@ -25,7 +24,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchRitualByDocumentId({
@@ -57,7 +56,7 @@ export async function generateMetadata(
 }
 
 export default async function RitualPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { documentId } = await params;
 
   let response;

@@ -1,17 +1,16 @@
-import React from "react";
+﻿import React from "react";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-00.svg";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import type { SceneryPageAttributes } from "@/features/sceneryPage/model/sceneryPage.types";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { fetchSceneryPage } from "@/features/sceneryPage/api/sceneryPage.api";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Tịnh Cảnh Viên Không",
 };
 export default async function PastAndPresentPage() {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   let data: SceneryPageAttributes | null = null;
 

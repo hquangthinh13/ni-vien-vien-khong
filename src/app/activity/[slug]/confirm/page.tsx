@@ -1,9 +1,8 @@
-import { Metadata, ResolvingMetadata } from "next";
+﻿import { Metadata, ResolvingMetadata } from "next";
 import ConfirmSection from "@/features/activity/ui/ConfirmSection";
 import { fetchActivityByDocumentId } from "@/features/activity/api/activity.api";
 import { notFound } from "next/navigation";
-import { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 import {
   Activity,
   SingleActivityResponse,
@@ -19,7 +18,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
 
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchActivityByDocumentId({
@@ -48,7 +47,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
 

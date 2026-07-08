@@ -1,10 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import {
   fetchCoursesByCategory,
   fetchAllCourseYears,
 } from "@/features/activity/api/activity.api";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import type { CourseCategory } from "@/types/categories";
 import CourseList from "@/features/activity/ui/CourseList";
 import { Metadata } from "next";
@@ -20,7 +19,7 @@ export default async function CoursePage({
 }: {
   searchParams: Promise<{ category?: string; page?: string; year?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const {
     category: categorySlug,
     page: pageSlug,

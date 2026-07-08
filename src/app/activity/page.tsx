@@ -1,6 +1,5 @@
-import { fetchActivitiesByCategory } from "@/features/activity/api/activity.api";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+﻿import { fetchActivitiesByCategory } from "@/features/activity/api/activity.api";
+import { getAppLocale } from "@/shared/lib/i18n";
 import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
 import ActivityList from "@/features/activity/ui/ActivityList";
 import { Metadata } from "next";
@@ -16,7 +15,7 @@ export default async function ActivityPage({
 }: {
   searchParams: Promise<{ category?: string; page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { category: categorySlug, page: pageSlug } = await searchParams;
 
   const currentPage = Number(pageSlug) || 1;

@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { BlocksContent } from "@strapi/blocks-react-renderer";
+import type { Locale } from "@/types/locale";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -15,7 +16,7 @@ export const getVideoId = (url: string | null | undefined): string | null => {
 
 export const formatFriendlyDate = (
   dateString: string,
-  locale: string,
+  locale: Locale,
   includeTime: boolean = true, // Mặc định là true
 ) => {
   if (!dateString) return "";
@@ -50,7 +51,7 @@ export const formatFriendlyDate = (
 };
 export const formatShortDate = (
   dateString: string,
-  locale: string = "vi",
+  locale: Locale = "vi",
 ): string => {
   if (!dateString) return "";
   const date = new Date(dateString);

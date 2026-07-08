@@ -5,6 +5,7 @@ import type {
   FetchVideoPlaylistOptions,
   FetchVideoPlaylistByDocumentIdOptions,
 } from "@/features/video/model/video.types";
+import type { Locale } from "@/types/locale";
 
 const VIDEO_ENDPOINT = "/api/videos";
 const AUTHORIZED_TOKEN =
@@ -39,7 +40,7 @@ export async function fetchVideo(
 }
 
 export async function fetchLatestVideoPlaylists(
-  locale: string,
+  locale: Locale,
   limit: number = 5,
 ): Promise<VideoPlaylistResponse> {
   return fetchVideo({

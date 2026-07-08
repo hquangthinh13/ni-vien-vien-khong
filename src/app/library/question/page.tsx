@@ -1,10 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import QuestionCard from "@/features/question/ui/QuestionCard";
 import QuestionForm from "@/features/question/ui/QuestionForm";
 import { Button } from "@/shared/ui/button";
 import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
-import type { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 import {
   Dialog,
   DialogTitle,
@@ -26,7 +25,7 @@ export default async function QuestionListPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
   const pageSize = 9;

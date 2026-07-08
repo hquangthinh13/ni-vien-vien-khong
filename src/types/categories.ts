@@ -42,6 +42,14 @@ export const categoryMap: Record<Locale, Record<string, string>> = {
   },
 };
 
+export const getCategoryLabel = (
+  category: string | null | undefined,
+  locale: Locale,
+) => {
+  if (!category) return "";
+  return categoryMap[locale][category] || category;
+};
+
 export type LinkedDocumentCategory =
   | "Tạng Kinh"
   | "Tạng Luật"
@@ -51,6 +59,7 @@ export type LinkedDocumentCategory =
   | "Sách Sư Ông Viên Minh"
   | "Tài Liệu Học Pali"
   | "Danh Mục Sách Khác";
+
 export type CalligraphyCategory =
   | "Kinh Pháp Cú"
   | "Kinh Tụng"

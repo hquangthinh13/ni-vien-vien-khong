@@ -4,6 +4,7 @@ import type {
   FetchRitualsOptions,
   FetchRitualByDocumentIdOptions,
 } from "../model/ritual.types";
+import type { Locale } from "@/types/locale";
 
 const RITUALS_ENDPOINT = "/api/rituals";
 const AUTHORIZED_TOKEN =
@@ -38,7 +39,7 @@ export async function fetchRituals(
 }
 
 export async function fetchLatestRituals(
-  locale: string,
+  locale: Locale,
   limit: number = 5,
 ): Promise<RitualResponse> {
   return fetchRituals({

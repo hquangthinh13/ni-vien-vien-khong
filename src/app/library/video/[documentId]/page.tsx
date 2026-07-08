@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { PlayCircle } from "lucide-react";
 
 import {
@@ -9,8 +9,7 @@ import {
 } from "@/shared/ui/accordion";
 
 import { getVideoId } from "@/shared/lib/utils";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 
 import type { VideoPlaylist } from "@/features/video/model/video.types";
 import {
@@ -36,7 +35,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchVideoByDocumentId({
@@ -90,7 +89,7 @@ export async function generateMetadata(
 }
 
 export default async function VideoPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { documentId } = await params;
 
   let response;

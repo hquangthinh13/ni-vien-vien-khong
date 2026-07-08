@@ -1,5 +1,7 @@
+import type { Locale } from "@/types/locale";
+
 export type SimpleFetchOptions = {
-  locale?: string;
+  locale?: Locale;
   populate?: Array<string> | string;
   signal?: AbortSignal;
   filters?: Record<string, unknown>;
