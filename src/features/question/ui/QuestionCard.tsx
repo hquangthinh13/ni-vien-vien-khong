@@ -9,7 +9,7 @@ import {
 import { Question } from "@/features/question/model/question.types";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { BlocksContent } from "@strapi/blocks-react-renderer";
-import { Locale } from "next-intl";
+import { DEFAULT_LOCALE, type Locale } from "@/types/locale";
 import { cn } from "@/shared/lib/utils";
 import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
@@ -39,6 +39,7 @@ const QuestionCard = async ({
   };
 
   const embedUrl = getEmbedUrl(question.videoResponseContent?.videoLink);
+  const localeToUse = locale ?? DEFAULT_LOCALE;
 
   return (
     <div className={cn("w-full", className)}>
@@ -48,7 +49,7 @@ const QuestionCard = async ({
             <div className="flex flex-col gap-2">
               <DateTimeDisplay
                 dateString={question.createdAt}
-                locale={locale as string}
+                locale={localeToUse}
                 includeTime={false}
               />
               <h3

@@ -3,9 +3,11 @@ import IntroTimelineView from "@/features/introductionPage/ui/IntroTimelineView"
 import lineOrnament from "@/public/ornament-01.svg";
 import Image from "next/image";
 import { Metadata } from "next";
+
 export const metadata: Metadata = {
   title: "Thời Khóa Tu Tập",
 };
+
 export default async function IntroductionPage() {
   const response = await fetchIntroductionPage({
     populate: "*",

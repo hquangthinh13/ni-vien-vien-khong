@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { PlayCircle } from "lucide-react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import {
@@ -7,13 +7,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shared/ui/accordion";
-import { getVideoId, formatShortDate } from "@/shared/lib/utils";
+import { getDocumentIdFromSlug, getVideoId } from "@/shared/lib/utils";
 import {
   Activity,
   CourseContent,
 } from "@/features/activity/model/activity.types";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import {
   fetchActivityByDocumentIdWithCourseContent,
   fetchLatestActivities,
@@ -23,7 +22,6 @@ import { getImageUrl } from "@/shared/lib/api";
 import RelatedActivitiesSection from "@/features/activity/ui/RelatedActivitiesSection";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
-import { getDocumentIdFromSlug } from "@/shared/lib/utils";
 import ActivityRegistrationDialog from "@/features/courseRegistration/ui/CourseregistrationDialog";
 import HighlightSection from "@/features/activity/ui/HighlightSection";
 import DetailPageShell from "@/shared/layout/DetailPageShell";
@@ -33,6 +31,9 @@ import { mergeRelatedItems } from "@/shared/lib/related-content";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
 import { categoryMap } from "@/types/categories";
 import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
+import ActivityShareActions from "@/features/activity/ui/ActivityShareActions";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import { getActivityBreadcrumbItems } from "@/features/activity/lib/activity-breadcrumb";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -44,7 +45,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchActivityByDocumentIdWithCourseContent({
@@ -109,7 +110,7 @@ export async function generateMetadata(
 }
 
 export default async function ActivityPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
 
@@ -166,24 +167,26 @@ export default async function ActivityPage({ params }: Props) {
   const displayCategory = rawCategoryKey
     ? categoryMap[locale][rawCategoryKey as string] || rawCategoryKey
     : "";
+  const activityUrl = `/activity/${data.slug}-${data.documentId}`;
 
   return (
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={getActivityBreadcrumbItems({
+              activity: data,
+              locale,
+            })}
+            className="mb-6"
+          />
           <MotionWrapper>
             <DetailHeader
               label={displayCategory}
               title={data.activityName}
               meta={
                 data.activityStartDate && data.activityEndDate ? (
-                  // <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
-                  //   <span>
-                  //     {formatShortDate(data.activityStartDate, locale)} -{" "}
-                  //     {formatShortDate(data.activityEndDate, locale)}
-
-                  //   </span>
-                  // </div>
                   <DateTimeDisplay
                     dateString={data.activityStartDate}
                     locale={locale}
@@ -200,11 +203,17 @@ export default async function ActivityPage({ params }: Props) {
           </MotionWrapper>
 
           {/* <MotionWrapper> */}
-          <div className="w-full">
+          <div className="w-full space-y-6">
             {data.content ? (
               <RichTextRenderer content={data.content || []} />
             ) : null}
+              <ActivityShareActions
+            title={data.activityName}
+            url={activityUrl}
+            locale={locale}
+          />
           </div>
+         
           {/* </MotionWrapper> */}
 
           {/* <MotionWrapper> */}

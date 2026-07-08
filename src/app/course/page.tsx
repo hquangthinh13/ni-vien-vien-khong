@@ -1,15 +1,15 @@
-import React from "react";
+﻿import React from "react";
 import {
   fetchCoursesByCategory,
   fetchAllCourseYears,
 } from "@/features/activity/api/activity.api";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import type { CourseCategory } from "@/types/categories";
 import CourseList from "@/features/activity/ui/CourseList";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Khóa tu",
@@ -20,7 +20,7 @@ export default async function CoursePage({
 }: {
   searchParams: Promise<{ category?: string; page?: string; year?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const {
     category: categorySlug,
     page: pageSlug,
@@ -54,6 +54,7 @@ export default async function CoursePage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Khóa tu" : "Courses" }]} />
       <PageHeader title={locale === "vi" ? "Khóa tu" : "Courses"} />
       <div className="flex w-full flex-1 flex-col items-stretch">
         <CourseList

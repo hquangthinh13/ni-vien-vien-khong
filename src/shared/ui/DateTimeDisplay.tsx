@@ -1,9 +1,10 @@
 import React from "react";
 import { cn, formatFriendlyDate } from "@/shared/lib/utils";
+import type { Locale } from "@/types/locale";
 
 interface DateTimeDisplayProps {
   dateString?: string | null;
-  locale: string;
+  locale: Locale;
   includeTime?: boolean;
   className?: string;
   emptyFallback?: string;

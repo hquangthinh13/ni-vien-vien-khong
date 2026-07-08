@@ -1,9 +1,8 @@
-import React from "react";
+﻿import React from "react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { formatShortDate } from "@/shared/lib/utils";
 import type { Blog } from "@/features/blog/model/blog.types";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import {
   fetchBlogByDocumentId,
   fetchLatestBlogs,
@@ -17,6 +16,7 @@ import DetailHeader from "@/shared/layout/DetailHeader";
 import DetailDivider from "@/shared/layout/DetailDivider";
 import RelatedBlogsSection from "@/features/blog/ui/RelatedBlogsSection";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 type Props = {
   params: { slug: string };
@@ -28,7 +28,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchBlogByDocumentId({
@@ -59,7 +59,7 @@ export async function generateMetadata(
 }
 
 export default async function ActivityPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
 
@@ -99,6 +99,18 @@ export default async function ActivityPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={[
+              { label: locale === "vi" ? "Thư viện" : "Library" },
+              {
+                label: locale === "vi" ? "Chia sẻ" : "Blog",
+                href: "/library/blog",
+              },
+              { label: data.title },
+            ]}
+            className="mb-6"
+          />
           <DetailHeader
             label={locale === "vi" ? "Chia sẻ" : "Blog"}
             title={data.title}

@@ -170,7 +170,7 @@ export default function CourseList({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full col-span-full"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full col-span-full"
           >
             {initialCourses.map((activity: Activity) => (
               <SimplifiedActivitiesCard

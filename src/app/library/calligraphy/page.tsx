@@ -1,12 +1,12 @@
-import React from "react";
-import { getLocale } from "next-intl/server";
+﻿import React from "react";
+import { getAppLocale } from "@/shared/lib/i18n";
 import CalligraphyList from "@/features/calligraphy/ui/CalligraphyList";
 import { fetchCalligraphiesByCategory } from "@/features/calligraphy/api/calligraphy.api";
 import type { CalligraphyCategory } from "@/types/categories";
-import type { Locale } from "@/types/locale";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 export const metadata: Metadata = {
   title: "Thư pháp thư họa",
@@ -17,7 +17,7 @@ export default async function CaligraphyPage({
 }: {
   searchParams: Promise<{ category?: string; page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { category: categorySlug, page: pageSlug } = await searchParams;
   const currentPage = Number(pageSlug) || 1;
 
@@ -41,6 +41,7 @@ export default async function CaligraphyPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Thư pháp thư họa" : "Calligraphy" }]} />
       <PageHeader title={locale === "vi" ? "Thư pháp thư họa" : "Calligraphy"} />
       <CalligraphyList
         key={`${initialCategory}-${currentPage}`}

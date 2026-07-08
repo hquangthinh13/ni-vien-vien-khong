@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { PlayCircle } from "lucide-react";
 
 import {
@@ -9,8 +9,7 @@ import {
 } from "@/shared/ui/accordion";
 
 import { getVideoId } from "@/shared/lib/utils";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 
 import type { VideoPlaylist } from "@/features/video/model/video.types";
 import {
@@ -26,6 +25,7 @@ import DetailPageShell from "@/shared/layout/DetailPageShell";
 import RelatedVideosSection from "@/features/video/ui/RelatedVideosSection";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
 import DetailHeader from "@/shared/layout/DetailHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 type Props = {
   params: Promise<{ documentId: string }>;
@@ -36,7 +36,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchVideoByDocumentId({
@@ -90,7 +90,7 @@ export async function generateMetadata(
 }
 
 export default async function VideoPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { documentId } = await params;
 
   let response;
@@ -128,6 +128,18 @@ export default async function VideoPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="flex w-full flex-col gap-6 items-center">
+          <AppBreadcrumb
+            locale={locale}
+            items={[
+              { label: locale === "vi" ? "Thư viện" : "Library" },
+              {
+                label: locale === "vi" ? "Pháp thoại" : "Dharma Talks",
+                href: "/library/video",
+              },
+              { label: data.title },
+            ]}
+            className="w-full"
+          />
           <DetailHeader
             label={locale === "vi" ? "Pháp thoại" : "Video"}
             title={data.title}

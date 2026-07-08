@@ -1,12 +1,11 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
 import ActivitiesSection from "@/features/activity/ui/ActivitiesSection";
 
-import type { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 import CourseSection from "@/features/activity/ui/CourseSection";
 import VideoCard from "@/features/video/ui/VideoCard";
 import Navbar from "@/shared/layout/Navbar";
@@ -39,7 +38,7 @@ async function safeFetch<T>(promise: Promise<T>, fallback: T): Promise<T> {
 }
 
 export default async function Home() {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   // const category = "Khóa Tu";
 
   // const homePage = homePageResponse?.data || null;

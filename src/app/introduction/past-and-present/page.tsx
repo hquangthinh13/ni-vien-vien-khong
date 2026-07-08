@@ -1,17 +1,16 @@
-import React from "react";
+﻿import React from "react";
 import Image from "next/image";
 import lineOrnament from "@/public/ornament-00.svg";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { fetchHistoryPage } from "@/features/historyPage/api/historyPage.api";
 import type { HistoryPageAttributes } from "@/features/historyPage/model/historyPage.types";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Ni Viện Viên Không Xưa và Nay",
 };
 export default async function PastAndPresentPage() {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   let data: HistoryPageAttributes | null = null;
 
   try {

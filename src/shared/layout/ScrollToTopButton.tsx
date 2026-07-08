@@ -43,7 +43,7 @@ const ScrollToTopButton = () => {
           >
             <MessageCircleQuestionMark className="size-4" />
             <span className="text-xs font-mono uppercase tracking-wide">
-              Äáº·t cÃ¢u há»i
+              Đặt câu hỏi
             </span>
           </Link>
         </Button> */}
@@ -62,4 +62,3 @@ const ScrollToTopButton = () => {
 };
 
 export default ScrollToTopButton;
-

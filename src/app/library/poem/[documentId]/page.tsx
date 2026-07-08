@@ -1,11 +1,10 @@
-import React from "react";
+﻿import React from "react";
 import {
   fetchLatestPoems,
   fetchPoemByDocumentId,
 } from "@/features/poem/api/poem.api";
 import type { Poem } from "@/features/poem/model/poem.types";
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
 import { Metadata, ResolvingMetadata } from "next";
@@ -15,6 +14,7 @@ import DetailHeader from "@/shared/layout/DetailHeader";
 import DetailDivider from "@/shared/layout/DetailDivider";
 import EmptyState from "@/shared/layout/EmptyState";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 type Props = {
   params: { documentId: string };
@@ -25,7 +25,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchPoemByDocumentId({
@@ -56,7 +56,7 @@ export async function generateMetadata(
 }
 
 export default async function PoemPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { documentId } = await params;
 
   let data: Poem | null = null;
@@ -104,6 +104,18 @@ export default async function PoemPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={[
+              { label: locale === "vi" ? "Thư viện" : "Library" },
+              {
+                label: locale === "vi" ? "Thơ thiền" : "Poems",
+                href: "/library/poem",
+              },
+              { label: data.title },
+            ]}
+            className="mb-6"
+          />
           <DetailHeader
             label={locale === "en" ? "Poem" : "Thơ thiền"}
             title={data.title}

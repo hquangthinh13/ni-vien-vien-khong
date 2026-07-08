@@ -1,9 +1,10 @@
 import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
+import { normalizeLocale } from "@/types/locale";
 
 export default getRequestConfig(async () => {
   const store = await cookies();
-  const locale = store.get("locale")?.value || "vi";
+  const locale = normalizeLocale(store.get("locale")?.value);
 
   return {
     locale,

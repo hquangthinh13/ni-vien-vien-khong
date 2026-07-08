@@ -1,12 +1,11 @@
-import React from "react";
+﻿import React from "react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
 import { Ritual } from "@/features/ritual/model/ritual.types";
 import {
   fetchLatestRituals,
   fetchRitualByDocumentId,
 } from "@/features/ritual/api/ritual.api";
-import { getLocale } from "next-intl/server";
-import { Locale } from "@/types/locale";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import RelatedRitualsSection from "@/features/ritual/ui/RelatedRitualsSection";
@@ -15,6 +14,7 @@ import DetailPageShell from "@/shared/layout/DetailPageShell";
 import DetailHeader from "@/shared/layout/DetailHeader";
 import DetailDivider from "@/shared/layout/DetailDivider";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 
 type Props = {
   params: { documentId: string };
@@ -25,7 +25,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   try {
     const response = await fetchRitualByDocumentId({
@@ -57,7 +57,7 @@ export async function generateMetadata(
 }
 
 export default async function RitualPage({ params }: Props) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { documentId } = await params;
 
   let response;
@@ -96,6 +96,18 @@ export default async function RitualPage({ params }: Props) {
     <DetailPageShell
       main={
         <div className="w-full max-w-none text-justify leading-relaxed">
+          <AppBreadcrumb
+            locale={locale}
+            items={[
+              { label: locale === "vi" ? "Thư viện" : "Library" },
+              {
+                label: locale === "vi" ? "Nghi thức nghi lễ" : "Rituals",
+                href: "/library/ritual",
+              },
+              { label: data.title },
+            ]}
+            className="mb-6"
+          />
           <DetailHeader
             label="Nghi thức nghi lễ"
             title={data.title}

@@ -1,10 +1,10 @@
-import { getLocale } from "next-intl/server";
-import type { Locale } from "@/types/locale";
+﻿import { getAppLocale } from "@/shared/lib/i18n";
 import VideoCard from "@/features/video/ui/VideoCard";
 import { fetchVideo } from "@/features/video/api/video.api";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 import ContentGrid from "@/shared/layout/ContentGrid";
 import EmptyState from "@/shared/layout/EmptyState";
 import Pagination from "@/shared/layout/Pagination";
@@ -18,7 +18,7 @@ export default async function VideoListPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
   const pageSize = 9;
@@ -38,6 +38,7 @@ export default async function VideoListPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Pháp thoại" : "Dharma Talks" }]} />
       <PageHeader title={locale === "vi" ? "Pháp thoại" : "Dharma Talks"} />
 
       {docs.length === 0 ? (

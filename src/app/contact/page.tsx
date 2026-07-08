@@ -4,8 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { MapPin, Phone, Mail } from "lucide-react";
 import EmbeddedMap from "@/features/contact/ui/EmbeddedMap";
 import { fetchContactPageFields } from "@/features/contact/api/contactPage.api";
-import { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 import { Metadata } from "next";
 import PageHeader from "@/shared/layout/PageHeader";
 import { Button } from "@/shared/ui/button";
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const Contact = async () => {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
 
   const fieldsResponse = await fetchContactPageFields({
     locale,

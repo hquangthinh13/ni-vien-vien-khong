@@ -1,10 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import QuestionCard from "@/features/question/ui/QuestionCard";
 import QuestionForm from "@/features/question/ui/QuestionForm";
 import { Button } from "@/shared/ui/button";
 import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
-import type { Locale } from "@/types/locale";
-import { getLocale } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 import {
   Dialog,
   DialogTitle,
@@ -14,6 +13,7 @@ import {
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
+import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 import EmptyState from "@/shared/layout/EmptyState";
 import Pagination from "@/shared/layout/Pagination";
 
@@ -26,7 +26,7 @@ export default async function QuestionListPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const { page } = await searchParams;
   const currentPage = Number(page) || 1;
   const pageSize = 9;
@@ -46,6 +46,7 @@ export default async function QuestionListPage({
 
   return (
     <PageShell>
+      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A" }]} />
       <PageHeader
         title={locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
       />

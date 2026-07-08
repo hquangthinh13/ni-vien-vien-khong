@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Separator } from "@/shared/ui/separator";
 import {
@@ -15,11 +15,11 @@ import {
 } from "@icons-pack/react-simple-icons";
 import EmbeddedMap from "@/features/contact/ui/EmbeddedMap";
 import { fetchContactPage } from "@/features/contact/api/contactPage.api";
-import { Locale } from "@/types/locale";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { getAppLocale } from "@/shared/lib/i18n";
 
 const Footer = async () => {
-  const locale = (await getLocale()) as Locale;
+  const locale = await getAppLocale();
   const response = await fetchContactPage({
     locale,
   });

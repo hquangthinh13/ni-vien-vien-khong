@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ScrollText } from "lucide-react";
 import { Ritual } from "../model/ritual.types";
-import { Locale } from "@/types/locale";
+import { DEFAULT_LOCALE, type Locale } from "@/types/locale";
 import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 interface RelatedRitualsProps {
@@ -12,7 +12,7 @@ interface RelatedRitualsProps {
 
 const RelatedRitualsSection = ({ rituals, locale }: RelatedRitualsProps) => {
   // console.log("RelatedRituals - activities prop:", activities);
-  const localeToUse = locale as Locale;
+  const localeToUse = locale ?? DEFAULT_LOCALE;
   if (!rituals || rituals.length === 0) return null;
   return (
     <section className="space-y-4 mt-6">

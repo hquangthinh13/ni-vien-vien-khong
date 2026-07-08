@@ -76,7 +76,7 @@ const CourseSidebarCard = async ({
           )}
           <DateTimeDisplay
             dateString={course.activityStartDate}
-            locale={locale as string}
+            locale={locale}
             includeTime={false}
             emptyFallback={
               locale === "vi" ? "Ngày chưa xác định" : "Date not specified"

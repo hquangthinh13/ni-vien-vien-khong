@@ -74,9 +74,7 @@ export default function ActivityCalendarDetailPanel({
       <CardHeader className="border-b border-primary/10 px-4 pt-4 pb-0! md:px-5">
         <CardTitle className="text-sm text-primary">
           {title}{" "}
-          {/* <p className="font-normal ml-auto flex text-sm uppercase tracking-wide text-primary">
-          {formatDateLabel(selectedDate, locale)}
-          </p> */}
+        
         </CardTitle>
       </CardHeader>
       <CardContent className="px-4 py-4 md:px-5">
@@ -116,7 +114,7 @@ export default function ActivityCalendarDetailPanel({
                     </p>
                   ) : null}
 
-                  <div className="mt-3">
+                  {/* <div className="mt-3">
                     <Button
                       asChild
                       variant="outline"
@@ -129,7 +127,7 @@ export default function ActivityCalendarDetailPanel({
                         {locale === "vi" ? "Xem chi tiết" : "View detail"}
                       </Link>
                     </Button>
-                  </div>
+                  </div> */}
                 </article>
               );
             })}

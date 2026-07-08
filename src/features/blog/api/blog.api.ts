@@ -5,6 +5,7 @@ import type {
   FetchBlogsOptions,
   FetchBlogByDocumentIdOptions,
 } from "@/features/blog/model/blog.types";
+import type { Locale } from "@/types/locale";
 
 const BLOGS_ENDPOINT = "/api/blogs";
 const AUTHORIZED_TOKEN =
@@ -37,7 +38,7 @@ export async function fetchBlogs(
 }
 
 export async function fetchLatestBlogs(
-  locale: string,
+  locale: Locale,
   limit: number = 5,
 ): Promise<BlogResponse> {
   return fetchBlogs({

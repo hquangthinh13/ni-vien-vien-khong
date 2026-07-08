@@ -1405,9 +1405,9 @@ export default function ActivityRegistrationForm({
                           <SelectContent position="popper">
                             <SelectItem
                               className="hover:cursor-pointer"
-                              value="Ä‚n chay"
+                              value="Ăn chay"
                             >
-                              Ä‚n chay
+                              Ăn chay
                             </SelectItem>
                             <SelectItem
                               className="hover:cursor-pointer"

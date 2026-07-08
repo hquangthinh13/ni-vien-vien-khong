@@ -64,7 +64,7 @@
       ]
     },
     "course": {
-      "trigger": "Retreats",
+      "trigger": "Courses",
       "href": "/course"
     },
     "home": {
@@ -76,7 +76,7 @@
   "Footer": {
     "contact": "Contact Us",
     "highlight": "Featured Categories",
-    "highlight-01": "Retreats",
+    "highlight-01": "Courses",
     "highlight-02": "Insights",
     "highlight-03": "Calligraphy & Art",
     "highlight-04": "News",
