@@ -42,7 +42,10 @@ export default async function CaligraphyPage({
   return (
     <PageShell>
       <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Thư pháp thư họa" : "Calligraphy" }]} />
-      <PageHeader title={locale === "vi" ? "Thư pháp thư họa" : "Calligraphy"} />
+      <PageHeader
+        title={locale === "vi" ? "Thư pháp thư họa" : "Calligraphy"}
+        className="mb-10"
+      />
       <CalligraphyList
         key={`${initialCategory}-${currentPage}`}
         initialCategory={initialCategory}

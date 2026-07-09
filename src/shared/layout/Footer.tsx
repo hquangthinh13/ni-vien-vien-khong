@@ -172,7 +172,7 @@ const Footer = async () => {
           {/*  */}
         </div>
 
-        <div className="mx-4 mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-4 text-center text-xs text-muted-foreground md:flex-row md:text-left">
+        <div className="mx-4 mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-border pt-4 text-center text-xs text-muted-foreground md:flex-row md:text-left">
           <p>
             © {new Date().getFullYear()} Ni Viện Viên Không. All rights
             reserved.

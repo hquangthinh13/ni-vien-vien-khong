@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import type { Locale } from "@/types/locale";
+import { cn } from "@/shared/lib/utils";
 
 interface PaginationProps {
   currentPage: number;
@@ -19,7 +20,10 @@ export default function Pagination({
   if (pageCount <= 1) return null;
 
   return (
-    <div className={["mt-6 flex justify-center gap-4", className].join(" ")}>
+    <nav
+      aria-label={locale === "vi" ? "Phân trang" : "Pagination"}
+      className={cn("mt-6 flex items-center justify-center gap-4", className)}
+    >
       {currentPage > 1 ? (
         <Link href={`?page=${currentPage - 1}`}>
           <Button size="icon" variant="outline" className="cursor-pointer">
@@ -32,7 +36,7 @@ export default function Pagination({
         </Button>
       )}
 
-      <span className="flex items-center text-sm text-muted-foreground">
+      <span className="font-mono text-xs text-muted-foreground">
         {locale === "vi"
           ? `Trang ${currentPage} trên ${pageCount}`
           : `Page ${currentPage} of ${pageCount}`}
@@ -49,6 +53,6 @@ export default function Pagination({
           <ChevronRight />
         </Button>
       )}
-    </div>
+    </nav>
   );
 }

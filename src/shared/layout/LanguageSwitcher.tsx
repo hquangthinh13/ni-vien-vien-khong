@@ -59,7 +59,7 @@ function LanguageSwitcherComponent({ className }: LanguageSwitcherProps) {
       onClick={toggleLanguage}
       aria-label={`${t("language")}: ${languageLabel}`}
       className={cn(
-        "h-8 border border-border/80 bg-background/50 px-3 text-xs font-normal text-foreground hover:border-primary/30 hover:bg-primary/5 hover:text-primary",
+        "hover:bg-accent/0 px-0 text-xs",
         className,
       )}
     >

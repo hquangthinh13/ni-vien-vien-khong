@@ -8,6 +8,7 @@ import PageHeader from "@/shared/layout/PageHeader";
 import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 import EmptyState from "@/shared/layout/EmptyState";
 import Pagination from "@/shared/layout/Pagination";
+import ArchiveResultsHeader from "@/shared/layout/archive/ArchiveResultsHeader";
 
 export const metadata: Metadata = {
   title: "Vấn đáp Phật pháp",
@@ -76,17 +77,20 @@ export default async function QuestionListPage({
         </aside>
 
         <section className="order-2 min-w-0 lg:order-1 lg:col-span-7">
-          <div className="mb-5 border-b border-border/80 pb-4">
-            <h2 className="text-xl font-bold uppercase tracking-wide text-foreground">
-              {locale === "vi"
-                ? "Câu hỏi đã giải đáp"
-                : "Answered Questions"}
-            </h2>
-            <p className="mt-2 font-mono text-xs text-muted-foreground">
-              {locale === "vi"
-                ? `${totalQuestions} câu hỏi đã được giải đáp`
-                : `${totalQuestions} answered questions`}
-            </p>
+          <div className="mb-5">
+            <ArchiveResultsHeader
+              title={
+                locale === "vi" ? "Câu hỏi đã giải đáp" : "Answered Questions"
+              }
+              total={totalQuestions}
+              countLabel={
+                locale === "vi"
+                  ? "câu hỏi"
+                  : totalQuestions === 1
+                    ? "question"
+                    : "questions"
+              }
+            />
           </div>
 
           {questions.length === 0 ? (
@@ -125,7 +129,7 @@ export default async function QuestionListPage({
               currentPage={currentPage}
               pageCount={meta.pageCount}
               locale={locale}
-              className="mt-10"
+              className="mt-10 border-t border-border/80 pt-6"
             />
           ) : null}
         </section>

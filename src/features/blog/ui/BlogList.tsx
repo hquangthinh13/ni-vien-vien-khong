@@ -1,12 +1,17 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Blog } from "../model/blog.types";
 import type { Locale } from "@/types/locale";
-import BlogCard from "./BlogCard";
-import { Button } from "@/shared/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { getImageUrl } from "@/shared/lib/api";
+import { extractPreviewContent } from "@/shared/lib/utils";
+import ArchiveIntroRail from "@/shared/layout/archive/ArchiveIntroRail";
+import ArchivePageLayout from "@/shared/layout/archive/ArchivePageLayout";
+import ArchiveResultsHeader from "@/shared/layout/archive/ArchiveResultsHeader";
+import EditorialMediaCard from "@/shared/layout/archive/EditorialMediaCard";
+import EmptyState from "@/shared/layout/EmptyState";
+import PaginationControls from "@/shared/layout/PaginationControls";
 
 interface BlogListProps {
   initialBlogs: Blog[];
@@ -28,20 +33,55 @@ export default function BlogList({
 }: BlogListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const total = paginationMeta?.total ?? initialBlogs.length;
+  const [featuredBlog, ...remainingBlogs] = initialBlogs;
 
-  const handleUpdateQuery = (newCategory?: string, newPage?: number) => {
+  const updatePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
-
-    if (newPage) {
-      params.set("page", newPage.toString());
-    }
-
+    params.set("page", page.toString());
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
+  const renderBlog = (blog: Blog, variant: "featured" | "standard") => (
+    <EditorialMediaCard
+      key={blog.documentId}
+      locale={locale}
+      variant={variant}
+      item={{
+        key: blog.documentId,
+        href: `/library/blog/${blog.slug}-${blog.documentId}`,
+        title: blog.title,
+        imageUrl: getImageUrl(blog.coverImage, "medium"),
+        imageAlt: blog.coverImage?.alternativeText || blog.title,
+        excerpt: extractPreviewContent(blog.blogContent),
+        category: locale === "vi" ? "Chia sẻ" : "Blog",
+        date: blog.publishedAt,
+      }}
+    />
+  );
+
   return (
-    <div className="w-full flex flex-col items-center gap-4">
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-0  w-full"> */}
+    <ArchivePageLayout
+      rail={
+        <ArchiveIntroRail
+          eyebrow={locale === "vi" ? "Chuyên mục" : "Journal"}
+          title={locale === "vi" ? "Chia sẻ" : "Reflections"}
+          description={
+            locale === "vi"
+              ? "Những bài viết về đời sống tu học, chánh niệm và sự thực hành trong mỗi ngày."
+              : "Reflections on monastic life, mindfulness, and everyday practice."
+          }
+          total={total}
+          totalLabel={locale === "vi" ? "Tất cả bài viết" : "All posts"}
+        />
+      }
+    >
+      <ArchiveResultsHeader
+        title={locale === "vi" ? "Các bài chia sẻ" : "Latest reflections"}
+        total={total}
+        countLabel={locale === "vi" ? "bài viết" : total === 1 ? "post" : "posts"}
+      />
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentPage}
@@ -49,42 +89,40 @@ export default function BlogList({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full col-span-full"
+          className="mt-6"
         >
-          {initialBlogs.map((blog: Blog) => (
-            <BlogCard key={blog.documentId} blog={blog} locale={locale} />
-          ))}
+          {featuredBlog ? (
+            <div className="flex flex-col gap-6">
+              {renderBlog(featuredBlog, "featured")}
+              {remainingBlogs.length > 0 ? (
+                <div className="grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
+                  {remainingBlogs.map((blog) =>
+                    renderBlog(blog, "standard"),
+                  )}
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <EmptyState
+              message={
+                locale === "vi"
+                  ? "Hiện chưa có bài chia sẻ nào."
+                  : "No reflections available yet."
+              }
+            />
+          )}
         </motion.div>
       </AnimatePresence>
-      {/* </div> */}
 
-      {paginationMeta && paginationMeta.pageCount > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
-          <Button
-            disabled={currentPage <= 1}
-            onClick={() => handleUpdateQuery(undefined, currentPage - 1)}
-            size="icon-lg"
-            variant="outline"
-            className="cursor-pointer"
-          >
-            <ChevronLeft />
-          </Button>
-          <span className="flex items-center text-muted-foreground text-sm">
-            {locale === "vi" ? "Trang" : "Page"} {currentPage}{" "}
-            {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
-          </span>
-
-          <Button
-            disabled={currentPage >= paginationMeta.pageCount}
-            onClick={() => handleUpdateQuery(undefined, currentPage + 1)}
-            className="cursor-pointer"
-            size="icon-lg"
-            variant="outline"
-          >
-            <ChevronRight />
-          </Button>
-        </div>
-      )}
-    </div>
+      {paginationMeta ? (
+        <PaginationControls
+          currentPage={currentPage}
+          pageCount={paginationMeta.pageCount}
+          locale={locale}
+          onPageChange={updatePage}
+          className="mt-10 border-t border-border/80 pt-6"
+        />
+      ) : null}
+    </ArchivePageLayout>
   );
 }

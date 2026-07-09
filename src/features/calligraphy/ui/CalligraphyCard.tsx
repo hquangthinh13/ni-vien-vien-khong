@@ -41,7 +41,7 @@ const CalligraphyCard = ({ calligraphy, onClick }: CalligraphyCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="cursor-pointer relative aspect-3/4 w-full overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-lg transition-all duration-300 text-center"
+      className="relative aspect-3/4 w-full cursor-pointer overflow-hidden rounded-lg border border-border/70 bg-muted text-center shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md"
     >
       {imageUrl && (
         <Image

@@ -1,13 +1,10 @@
 ﻿import { getAppLocale } from "@/shared/lib/i18n";
-import RitualCard from "@/features/ritual/ui/RitualCard";
+import RitualArchiveList from "@/features/ritual/ui/RitualArchiveList";
 import { fetchRituals } from "@/features/ritual/api/ritual.api";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
 import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
-import ContentGrid from "@/shared/layout/ContentGrid";
-import EmptyState from "@/shared/layout/EmptyState";
-import Pagination from "@/shared/layout/Pagination";
 
 export const metadata: Metadata = {
   title: "Nghi thức nghi lễ",
@@ -41,31 +38,15 @@ export default async function RitualListPage({
       <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Nghi thức nghi lễ" : "Rituals and Ceremonies" }]} />
       <PageHeader
         title={locale === "vi" ? "Nghi thức nghi lễ" : "Rituals and Ceremonies"}
+        className="mb-10"
       />
 
-      {docs.length === 0 ? (
-        <EmptyState
-          message={
-            locale === "vi"
-              ? "Hiện chưa có nghi thức nào."
-              : "No ritual documents available yet."
-          }
-        />
-      ) : (
-        <ContentGrid className="grid-cols-1 sm:grid-cols-2">
-          {docs.map((doc) => (
-            <RitualCard key={doc.documentId} doc={doc} />
-          ))}
-        </ContentGrid>
-      )}
-
-      {meta ? (
-        <Pagination
-          currentPage={currentPage}
-          pageCount={meta.pageCount}
-          locale={locale}
-        />
-      ) : null}
+      <RitualArchiveList
+        rituals={docs}
+        locale={locale}
+        currentPage={currentPage}
+        paginationMeta={meta}
+      />
     </PageShell>
   );
 }

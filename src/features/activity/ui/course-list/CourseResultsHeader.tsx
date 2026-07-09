@@ -1,6 +1,6 @@
 import type { CourseCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
-import { Button } from "@/shared/ui/button";
+import ArchiveResultsHeader from "@/shared/layout/archive/ArchiveResultsHeader";
 import { getCourseCategoryLabel } from "./CourseCategoryRail";
 
 interface CourseResultsHeaderProps {
@@ -21,28 +21,27 @@ export default function CourseResultsHeader({
   const hasFilters = activeCategory !== "Tất cả" || Boolean(currentYear);
 
   return (
-    <div className="flex flex-row justify-between items-center gap-3 border-b border-border/80 pb-4">
-      <span className=" text-xs text-muted-foreground flex gap-2">
-        <p className="text-primary">
-          {getCourseCategoryLabel(activeCategory, locale)}{" "}
-        </p>
-        ·
-        {currentYear ? (
-          <p>
-            {locale === "vi" ? "Năm" : "Year"} {currentYear}{" "}
+    <ArchiveResultsHeader
+      title={getCourseCategoryLabel(activeCategory, locale)}
+      total={total}
+      countLabel={
+        locale === "vi" ? "khóa tu" : total === 1 ? "retreat" : "retreats"
+      }
+      meta={
+        currentYear ? (
+          <p className="font-mono text-xs text-muted-foreground">
+            {locale === "vi" ? "Năm" : "Year"} {currentYear}
           </p>
-        ) : null}
-        ·
-        <p>
-          {total} {locale === "vi" ? "khóa tu" : "retreats"}
-        </p>
-      </span>
-
-      {hasFilters ? (
-        <Button type="button" variant="ghost" size="xs" onClick={onClear}>
-          {locale === "vi" ? "Xóa bộ lọc" : "Clear filters"}
-        </Button>
-      ) : null}
-    </div>
+        ) : undefined
+      }
+      clearLabel={
+        hasFilters
+          ? locale === "vi"
+            ? "Xóa bộ lọc"
+            : "Clear filters"
+          : undefined
+      }
+      onClear={hasFilters ? onClear : undefined}
+    />
   );
 }

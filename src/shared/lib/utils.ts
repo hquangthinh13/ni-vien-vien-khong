@@ -83,6 +83,7 @@ export const formatShortDate = (
     return `${monthNames[month]} ${day}, ${year}`;
   }
 };
+
 export const extractPreviewContent = (
   content?: BlocksContent,
   maxLength: number = 400,
@@ -112,6 +113,39 @@ export const extractPreviewContent = (
 
   return trimmedText;
 };
+
+export const extractPoemPreviewContent = (
+  content?: BlocksContent,
+  maxLength: number = 400,
+): string => {
+  if (!content || content.length === 0) return "";
+
+  const lines: string[] = [];
+
+  for (const block of content) {
+    if (block.type === "paragraph" || block.type.startsWith("heading")) {
+      const blockText = block.children
+        .map((child) => ("text" in child ? child.text : ""))
+        .join("")
+        .trim();
+
+      if (blockText) {
+        lines.push(blockText);
+      }
+    }
+
+    if (lines.join("\n").length >= maxLength) break;
+  }
+
+  const fullText = lines.join("\n").trim();
+
+  if (fullText.length > maxLength) {
+    return fullText.substring(0, maxLength).replace(/\s+\S*$/, "") + "...";
+  }
+
+  return fullText;
+};
+
 export const formatTimeShort = (timeStr: string) => {
   if (!timeStr) return "";
   const parts = timeStr.split(":");
