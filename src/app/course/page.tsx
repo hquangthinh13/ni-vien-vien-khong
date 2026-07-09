@@ -55,7 +55,10 @@ export default async function CoursePage({
   return (
     <PageShell>
       <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Khóa tu" : "Courses" }]} />
-      <PageHeader title={locale === "vi" ? "Khóa tu" : "Courses"} />
+      <PageHeader
+        title={locale === "vi" ? "Khóa tu" : "Courses"}
+        className="mb-10"
+      />
       <div className="flex w-full flex-1 flex-col items-stretch">
         <CourseList
           key={`${initialCategory}-${currentPage}`}

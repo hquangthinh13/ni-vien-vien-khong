@@ -71,20 +71,24 @@
       "trigger": "Home",
       "href": "/"
     },
-    "menu": "Menu"
+    "menu": "Menu",
+    "questionCta": "Ask a Question"
   },
   "Footer": {
     "contact": "Contact Us",
     "highlight": "Featured Categories",
     "highlight-01": "Courses",
-    "highlight-02": "Insights",
+    "highlight-02": "Blog",
     "highlight-03": "Calligraphy & Art",
     "highlight-04": "News",
     "highlight-05": "Dharma Talks",
+    "highlight-06": "Buddhist Q&A",
+
     "follow": "Follow Us",
     "address": "Address",
     "phone": "Phone",
-    "email": "Email"
+    "email": "Email",
+    "language": "Language"
   },
   "HomePage": {
     "foreword": "Foreword"

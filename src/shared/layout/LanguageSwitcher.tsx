@@ -1,14 +1,21 @@
 "use client";
 
-import * as React from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { Button } from "@/shared/ui/button";
-import { Icon } from "@iconify/react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Icon } from "@iconify/react";
+import { Button } from "@/shared/ui/button";
+import { cn } from "@/shared/lib/utils";
 import { normalizeLocale, SUPPORTED_LOCALES, type Locale } from "@/types/locale";
+
+interface LanguageSwitcherProps {
+  className?: string;
+}
 
 function getLocaleFromCookie(): Locale {
   if (typeof document === "undefined") return normalizeLocale(undefined);
+
   const locale = document.cookie
     .split("; ")
     .find((row) => row.startsWith("locale="))
@@ -17,10 +24,12 @@ function getLocaleFromCookie(): Locale {
   return normalizeLocale(locale);
 }
 
-const LanguageSwitcher = () => {
+function LanguageSwitcherComponent({ className }: LanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [currentLocale, setCurrentLocale] = React.useState<Locale>(() =>
+  const searchParams = useSearchParams();
+  const t = useTranslations("Footer");
+  const [currentLocale, setCurrentLocale] = useState<Locale>(() =>
     getLocaleFromCookie(),
   );
 
@@ -28,44 +37,57 @@ const LanguageSwitcher = () => {
     const currentIndex = SUPPORTED_LOCALES.indexOf(currentLocale);
     const newLocale =
       SUPPORTED_LOCALES[(currentIndex + 1) % SUPPORTED_LOCALES.length];
+    const query = searchParams.toString();
+    const hash = window.location.hash;
+    const destination = `${pathname}${query ? `?${query}` : ""}${hash}`;
 
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000; samesite=lax`;
 
     setCurrentLocale(newLocale);
-    router.replace(pathname);
+    router.replace(destination, { scroll: false });
     router.refresh();
   };
 
+  const languageLabel =
+    currentLocale === "vi" ? "Tiếng Việt" : "English";
+
   return (
     <Button
+      type="button"
       variant="ghost"
-      size="lg"
+      size="sm"
       onClick={toggleLanguage}
-      className="hover:bg-white/0 flex items-center gap-2 hover:cursor-pointer transition-all"
-    >
-      {currentLocale === "vi" ? (
-        <>
-          <Icon icon="circle-flags:vn" />
-          <span>VI</span>
-        </>
-      ) : (
-        <>
-          <Icon icon="circle-flags:us" />
-          <span>EN</span>
-        </>
+      aria-label={`${t("language")}: ${languageLabel}`}
+      className={cn(
+        "hover:bg-accent/0 px-0 text-xs",
+        className,
       )}
+    >
+      <Icon
+        icon={currentLocale === "vi" ? "circle-flags:vn" : "circle-flags:us"}
+      />
+      <span>{languageLabel}</span>
     </Button>
   );
-};
+}
 
-const LanguageSwitcherWrapper = dynamic(() => import("./LanguageSwitcher"), {
-  ssr: false,
-  loading: () => (
-    <Button variant="ghost" size="lg">
-      ...
-    </Button>
-  ),
-});
+const LanguageSwitcher = dynamic<LanguageSwitcherProps>(
+  () => Promise.resolve(LanguageSwitcherComponent),
+  {
+    ssr: false,
+    loading: () => (
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        disabled
+        className="h-8 min-w-24 border border-border/80 bg-background/50"
+      >
+        ...
+      </Button>
+    ),
+  },
+);
 
-export { LanguageSwitcherWrapper as LanguageSwitcher };
-export default LanguageSwitcher;
+export { LanguageSwitcher };
+export default LanguageSwitcherComponent;

@@ -8,6 +8,7 @@ import PageHeader from "@/shared/layout/PageHeader";
 import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
 import EmptyState from "@/shared/layout/EmptyState";
 import Pagination from "@/shared/layout/Pagination";
+import ArchiveResultsHeader from "@/shared/layout/archive/ArchiveResultsHeader";
 
 export const metadata: Metadata = {
   title: "Vấn đáp Phật pháp",
@@ -58,7 +59,10 @@ export default async function QuestionListPage({
       />
 
       <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
-        <aside className="order-1 rounded-lg border border-[#dfcdb6] bg-[#f8f2e8] p-5 md:p-7 lg:order-2 lg:col-span-5">
+        <aside
+          id="question-form"
+          className="order-1 scroll-mt-24 rounded-lg border border-[#dfcdb6] bg-[#f8f2e8] p-5 md:p-7 lg:order-2 lg:col-span-5"
+        >
           <div className="mb-6 border-l-4 border-primary pl-4">
             <h2 className="text-xl font-bold uppercase tracking-wide text-foreground">
               {locale === "vi" ? "Đặt câu hỏi" : "Ask a Question"}
@@ -73,17 +77,20 @@ export default async function QuestionListPage({
         </aside>
 
         <section className="order-2 min-w-0 lg:order-1 lg:col-span-7">
-          <div className="mb-5 border-b border-border/80 pb-4">
-            <h2 className="text-xl font-bold uppercase tracking-wide text-foreground">
-              {locale === "vi"
-                ? "Câu hỏi đã giải đáp"
-                : "Answered Questions"}
-            </h2>
-            <p className="mt-2 font-mono text-xs text-muted-foreground">
-              {locale === "vi"
-                ? `${totalQuestions} câu hỏi đã được giải đáp`
-                : `${totalQuestions} answered questions`}
-            </p>
+          <div className="mb-5">
+            <ArchiveResultsHeader
+              title={
+                locale === "vi" ? "Câu hỏi đã giải đáp" : "Answered Questions"
+              }
+              total={totalQuestions}
+              countLabel={
+                locale === "vi"
+                  ? "câu hỏi"
+                  : totalQuestions === 1
+                    ? "question"
+                    : "questions"
+              }
+            />
           </div>
 
           {questions.length === 0 ? (
@@ -122,7 +129,7 @@ export default async function QuestionListPage({
               currentPage={currentPage}
               pageCount={meta.pageCount}
               locale={locale}
-              className="mt-10"
+              className="mt-10 border-t border-border/80 pt-6"
             />
           ) : null}
         </section>

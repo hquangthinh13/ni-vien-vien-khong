@@ -1,19 +1,28 @@
-﻿"use client";
+"use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Activity } from "../model/activity.types";
-import type { ActivityCategory as ActivityCategoryType } from "@/types/categories";
+import type { ActivityCategory } from "@/types/categories";
+import { getCategoryLabel } from "@/types/categories";
 import type { Locale } from "@/types/locale";
-import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import SimplifiedActivitiesCard from "@/features/activity/ui/SimplifiedActivitiesCard";
-
-import { Button } from "@/shared/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { getImageUrl } from "@/shared/lib/api";
+import { extractPreviewContent } from "@/shared/lib/utils";
+import { getStatusLabel } from "../api/activity.api";
+import ArchiveCategoryRail, {
+  type ArchiveCategoryItem,
+} from "@/shared/layout/archive/ArchiveCategoryRail";
+import ArchiveFilterSheet from "@/shared/layout/archive/ArchiveFilterSheet";
+import ArchivePageLayout from "@/shared/layout/archive/ArchivePageLayout";
+import ArchiveResultsHeader from "@/shared/layout/archive/ArchiveResultsHeader";
+import EditorialMediaCard from "@/shared/layout/archive/EditorialMediaCard";
+import EmptyState from "@/shared/layout/EmptyState";
+import PaginationControls from "@/shared/layout/PaginationControls";
+import CourseEditorialGrid from "./course-list/CourseEditorialGrid";
 
 interface ActivityListProps {
   initialActivities: Activity[];
-  initialCategory: ActivityCategoryType | "all";
+  initialCategory: ActivityCategory;
   locale: Locale;
   paginationMeta?: {
     page: number;
@@ -24,6 +33,23 @@ interface ActivityListProps {
   currentPage: number;
 }
 
+const CATEGORIES: ActivityCategory[] = [
+  "Tất cả",
+  "Phật Sự Trong Nước",
+  "Phật Sự Nước Ngoài",
+  "Lớp Học Phật Pháp",
+  "Tin Tức Khác",
+];
+
+const CATEGORY_SLUGS: Record<ActivityCategory, string> = {
+  "Tất cả": "all",
+  "Phật Sự Trong Nước": "domestic",
+  "Phật Sự Nước Ngoài": "international",
+  "Lớp Học Phật Pháp": "dharma-class",
+  "Tin Tức Khác": "others",
+  "Khóa Tu": "all",
+};
+
 export default function ActivityList({
   initialActivities,
   initialCategory,
@@ -33,152 +59,140 @@ export default function ActivityList({
 }: ActivityListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const totalPosts = paginationMeta?.total ?? initialActivities.length;
-  const reverseMapping: Record<string, string> = {
-    "Phật Sự Trong Nước": "domestic",
-    "Phật Sự Nước Ngoài": "international",
-    "Lớp Học Phật Pháp": "dharma-class",
-    "Tin Tức Khác": "others",
-    "Tất cả": "all",
-  };
+  const total = paginationMeta?.total ?? initialActivities.length;
+  const categoryItems: ArchiveCategoryItem<ActivityCategory>[] = CATEGORIES.map(
+    (category) => ({
+      value: category,
+      label: getCategoryLabel(category, locale),
+    }),
+  );
 
-  const handleUpdateQuery = (newCategory?: string, newPage?: number) => {
+  const updateQuery = (category?: ActivityCategory, page?: number) => {
     const params = new URLSearchParams(searchParams.toString());
-
-    if (newCategory) {
-      params.set("category", reverseMapping[newCategory] || "all");
+    if (category) {
+      params.set("category", CATEGORY_SLUGS[category]);
       params.set("page", "1");
     }
-    if (newPage) {
-      params.set("page", newPage.toString());
-    }
-
+    if (page) params.set("page", page.toString());
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
+  // const [featuredActivity, ...remainingActivities] = initialActivities;
+
+  const renderCard = (activity: Activity, variant: "featured" | "standard") => {
+    const status = getStatusLabel(activity, locale);
+    return (
+      <EditorialMediaCard
+        key={activity.documentId}
+        locale={locale}
+        variant={variant}
+        item={{
+          key: activity.documentId,
+          href: `/activity/${activity.slug}-${activity.documentId}`,
+          title: activity.activityName,
+          imageUrl: getImageUrl(activity.coverImage, "medium"),
+          imageAlt:
+            activity.coverImage?.alternativeText || activity.activityName,
+          excerpt: extractPreviewContent(activity.content),
+          category: getCategoryLabel(activity.activityCategory, locale),
+          date: activity.publishedAt,
+          secondaryMeta: status ? (
+            <span className="text-xs font-medium text-secondary-foreground/70">
+              {status}
+            </span>
+          ) : undefined,
+        }}
+      />
+    );
+  };
+
   return (
-    <div className="w-full flex flex-col items-center gap-4">
-      <div className="flex w-full justify-center items-center h-auto mb-6">
-        <Tabs
-          value={initialCategory}
-          onValueChange={(val) => handleUpdateQuery(val)}
-          className="flex flex-col h-auto items-center w-full"
-        >
-          <TabsList
-            variant="line"
-            className="flex flex-wrap h-auto! justify-center gap-y-3 gap-x-2 p-1"
-          >
-            <TabsTrigger
-              className="cursor-pointer flex-none w-fit"
-              value="Tất cả"
-            >
-              {locale === "vi" ? "Tất cả" : "All"}
-              {initialCategory === "Tất cả" ? ` (${totalPosts})` : ""}
-            </TabsTrigger>
+    <div className="w-full">
+      <ArchiveFilterSheet
+        triggerLabel={locale === "vi" ? "Bộ lọc" : "Filters"}
+        title={locale === "vi" ? "Danh mục tin tức" : "Activity categories"}
+        description={
+          locale === "vi"
+            ? "Chọn danh mục bài viết muốn xem."
+            : "Choose the activity category to view."
+        }
+        summary={
+          <p className="text-sm font-semibold text-primary">
+            {getCategoryLabel(initialCategory, locale)}{" "}
+            <span className="font-mono text-xs font-normal text-muted-foreground">
+              ({total})
+            </span>
+          </p>
+        }
+      >
+        <ArchiveCategoryRail
+          label={locale === "vi" ? "Danh mục" : "Categories"}
+          items={categoryItems}
+          activeValue={initialCategory}
+          activeTotal={total}
+          onSelect={(category) => updateQuery(category)}
+          compact
+        />
+      </ArchiveFilterSheet>
 
-            <TabsTrigger
-              className="cursor-pointer flex-none w-fit"
-              value="Phật Sự Trong Nước"
-            >
-              {locale === "vi" ? "Phật Sự Trong Nước" : "Domestic Activities"}
-              {initialCategory === "Phật Sự Trong Nước"
-                ? ` (${totalPosts})`
-                : ""}
-            </TabsTrigger>
-
-            <TabsTrigger
-              className="cursor-pointer flex-none w-fit"
-              value="Phật Sự Nước Ngoài"
-            >
-              {locale === "vi"
-                ? "Phật Sự Nước Ngoài"
-                : "International Activities"}
-              {initialCategory === "Phật Sự Nước Ngoài"
-                ? ` (${totalPosts})`
-                : ""}
-            </TabsTrigger>
-
-            <TabsTrigger
-              className="cursor-pointer flex-none w-fit"
-              value="Lớp Học Phật Pháp"
-            >
-              {locale === "vi" ? "Lớp Học Phật Pháp" : "Dharma Classes"}
-              {initialCategory === "Lớp Học Phật Pháp"
-                ? ` (${totalPosts})`
-                : ""}
-            </TabsTrigger>
-
-            <TabsTrigger
-              className="cursor-pointer flex-none w-fit"
-              value="Tin Tức Khác"
-            >
-              {locale === "vi" ? "Tin Tức Khác" : "Others"}
-              {initialCategory === "Tin Tức Khác" ? ` (${totalPosts})` : ""}
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-      {initialActivities.length > 0 ? (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={initialCategory + currentPage}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full col-span-full"
-          >
-            {initialActivities.map((activity: Activity) => (
-              <SimplifiedActivitiesCard
-                key={activity.documentId}
-                activity={activity}
-                locale={locale}
-                variant="top"
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      ) : (
-        <AnimatePresence mode="wait">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 w-full text-center text-muted-foreground text-sm"
-          >
-            {locale === "vi" ? "Chưa có hoạt động." : "No results."}
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {paginationMeta && paginationMeta.pageCount > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
-          <Button
-            disabled={currentPage <= 1}
-            onClick={() => handleUpdateQuery(undefined, currentPage - 1)}
-            size="icon-lg"
-            variant="outline"
-            className="cursor-pointer"
-          >
-            <ChevronLeft />
-          </Button>
-          <span className="flex items-center text-muted-foreground text-sm">
-            {locale === "vi" ? "Trang" : "Page"} {currentPage}{" "}
-            {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
-          </span>
-
-          <Button
-            disabled={currentPage >= paginationMeta.pageCount}
-            onClick={() => handleUpdateQuery(undefined, currentPage + 1)}
-            className="cursor-pointer"
-            size="icon-lg"
-            variant="outline"
-          >
-            <ChevronRight />
-          </Button>
+      <ArchivePageLayout
+        railClassName="hidden lg:block"
+        rail={
+          <ArchiveCategoryRail
+            label={locale === "vi" ? "Danh mục" : "Categories"}
+            items={categoryItems}
+            activeValue={initialCategory}
+            activeTotal={total}
+            onSelect={(category) => updateQuery(category)}
+          />
+        }
+      >
+        <div className="hidden lg:block">
+          <ArchiveResultsHeader
+            title={getCategoryLabel(initialCategory, locale)}
+            total={total}
+            countLabel={
+              locale === "vi" ? "bài viết" : total === 1 ? "post" : "posts"
+            }
+          />
         </div>
-      )}
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${initialCategory}-${currentPage}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mt-6"
+          >
+            {initialActivities.length > 0 ? (
+              <CourseEditorialGrid
+                courses={initialActivities}
+                locale={locale}
+              />
+            ) : (
+              <EmptyState
+                message={
+                  locale === "vi"
+                    ? "Chưa có hoạt động trong danh mục này."
+                    : "No activities are available in this category."
+                }
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        {paginationMeta ? (
+          <PaginationControls
+            currentPage={currentPage}
+            pageCount={paginationMeta.pageCount}
+            locale={locale}
+            onPageChange={(page) => updateQuery(undefined, page)}
+            className="mt-10 border-t border-border/80 pt-6"
+          />
+        ) : null}
+      </ArchivePageLayout>
     </div>
   );
 }

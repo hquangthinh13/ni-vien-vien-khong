@@ -20,7 +20,7 @@ export default function CourseEditorialGrid({
       <CourseArchiveCard
         activity={featuredCourse}
         locale={locale}
-        variant="featured"
+        variant="featured" 
       />
 
       {remainingCourses.length > 0 ? (

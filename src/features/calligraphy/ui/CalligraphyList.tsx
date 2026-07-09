@@ -2,15 +2,18 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import type { Calligraphy } from "../model/calligraphy.types";
 import type { CalligraphyCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
-import { Button } from "@/shared/ui/button";
 import CalligraphyCard from "./CalligraphyCard";
 import CalligraphyDialog from "./CalligraphyDialog";
 import { fetchCalligraphyByDocumentId } from "../api/calligraphy.api";
+import ArchiveCategoryRail from "@/shared/layout/archive/ArchiveCategoryRail";
+import ArchiveFilterSheet from "@/shared/layout/archive/ArchiveFilterSheet";
+import ArchivePageLayout from "@/shared/layout/archive/ArchivePageLayout";
+import ArchiveResultsHeader from "@/shared/layout/archive/ArchiveResultsHeader";
+import EmptyState from "@/shared/layout/EmptyState";
+import PaginationControls from "@/shared/layout/PaginationControls";
 
 interface CalligraphyListProps {
   initialCalligraphies: Calligraphy[];
@@ -25,6 +28,31 @@ interface CalligraphyListProps {
   currentPage: number;
 }
 
+const CATEGORIES: CalligraphyCategory[] = [
+  "Tất cả",
+  "Kinh Pháp Cú",
+  "Kinh Tụng",
+  "Chủ Đề Khác",
+];
+
+const CATEGORY_SLUGS: Record<CalligraphyCategory, string> = {
+  "Tất cả": "all",
+  "Kinh Pháp Cú": "kinh-phap-cu",
+  "Kinh Tụng": "kinh-tung",
+  "Chủ Đề Khác": "chu-de-khac",
+};
+
+function getCategoryLabel(category: CalligraphyCategory, locale: Locale) {
+  if (locale === "vi") return category;
+  const labels: Record<CalligraphyCategory, string> = {
+    "Tất cả": "All works",
+    "Kinh Pháp Cú": "Dhammapada",
+    "Kinh Tụng": "Chanting",
+    "Chủ Đề Khác": "Other themes",
+  };
+  return labels[category];
+}
+
 export default function CalligraphyList({
   initialCalligraphies,
   initialCategory,
@@ -34,90 +62,61 @@ export default function CalligraphyList({
 }: CalligraphyListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedCalligraphy, setSelectedCalligraphy] =
     useState<Calligraphy | null>(null);
   const [detailCache, setDetailCache] = useState<Record<string, Calligraphy>>(
     {},
   );
+  const total = paginationMeta?.total ?? initialCalligraphies.length;
+  const categoryItems = CATEGORIES.map((category) => ({
+    value: category,
+    label: getCategoryLabel(category, locale),
+  }));
 
-  const reverseMapping: Record<string, string> = {
-    "Kinh Pháp Cú": "kinh-phap-cu",
-    "Kinh Tụng": "kinh-tung",
-    "Chủ Đề Khác": "chu-de-khac",
-    "Tất cả": "all",
-  };
-
-  const handleUpdateQuery = (
-    newCategory?: string,
-    newPage?: number,
-    newYear?: string,
-  ) => {
+  const updateQuery = (category?: CalligraphyCategory, page?: number) => {
     const params = new URLSearchParams(searchParams.toString());
-
-    if (newCategory) {
-      params.set("category", reverseMapping[newCategory] || "all");
+    if (category) {
+      params.set("category", CATEGORY_SLUGS[category]);
       params.set("page", "1");
     }
-    if (newYear) {
-      if (newYear === "all") params.delete("year");
-      else params.set("year", newYear);
-      params.set("page", "1");
-    }
-    if (newPage) {
-      params.set("page", newPage.toString());
-    }
-
+    if (page) params.set("page", page.toString());
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const initialMap = useMemo(() => {
-    return initialCalligraphies.reduce<Record<string, Calligraphy>>(
-      (acc, item) => {
-        acc[item.documentId] = item;
-        return acc;
-      },
-      {},
-    );
-  }, [initialCalligraphies]);
+  const initialMap = useMemo(
+    () =>
+      initialCalligraphies.reduce<Record<string, Calligraphy>>((map, item) => {
+        map[item.documentId] = item;
+        return map;
+      }, {}),
+    [initialCalligraphies],
+  );
 
   const handleOpenCalligraphy = useCallback(
     async (documentId: string) => {
-      setOpen(true);
-
+      setDialogOpen(true);
       const cached =
         detailCache[documentId] ||
         initialMap[documentId] ||
         selectedCalligraphy;
-
-      if (cached) {
-        setSelectedCalligraphy(cached);
-      }
-
-      if (detailCache[documentId]?.relatedCalligraphies?.length) {
-        return;
-      }
+      if (cached) setSelectedCalligraphy(cached);
+      if (detailCache[documentId]?.relatedCalligraphies?.length) return;
 
       try {
         setLoading(true);
-
         const response = await fetchCalligraphyByDocumentId({
           locale,
           documentId,
           fields: ["title", "description", "category", "documentId"],
           populate: ["coverImage", "relatedCalligraphies"],
         });
-
         const data = response?.data;
-
         if (data && !Array.isArray(data)) {
           setSelectedCalligraphy(data);
-          setDetailCache((prev) => ({
-            ...prev,
-            [documentId]: data,
-          }));
+          setDetailCache((previous) => ({ ...previous, [documentId]: data }));
         }
       } catch (error) {
         console.error("Failed to fetch calligraphy detail:", error);
@@ -128,87 +127,102 @@ export default function CalligraphyList({
     [detailCache, initialMap, locale, selectedCalligraphy],
   );
 
+  const selectCategory = (category: CalligraphyCategory) => {
+    updateQuery(category);
+    setFilterOpen(false);
+  };
+
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex w-full justify-center mb-10">
-        <Tabs
-          value={initialCategory}
-          onValueChange={(val) => handleUpdateQuery(val)}
-          className="w-full flex flex-col items-center"
-        >
-          <TabsList variant="line" className="flex-wrap justify-center h-auto">
-            <TabsTrigger value="Tất cả">
-              {locale === "vi" ? "Tất cả" : "All"}
-            </TabsTrigger>
-            <TabsTrigger value="Kinh Pháp Cú">
-              {" "}
-              {locale === "vi" ? "Kinh Pháp Cú" : "Dhammapada"}
-            </TabsTrigger>
-            <TabsTrigger value="Kinh Tụng">
-              {" "}
-              {locale === "vi" ? "Kinh Tụng" : "Chanting"}
-            </TabsTrigger>
-            <TabsTrigger value="Chủ Đề Khác">
-              {" "}
-              {locale === "vi" ? "Chủ Đề Khác" : "Others"}
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
+    <div className="w-full">
+      <ArchiveFilterSheet
+        open={filterOpen}
+        onOpenChange={setFilterOpen}
+        side="right"
+        triggerLabel={locale === "vi" ? "Bộ lọc" : "Filters"}
+        title={locale === "vi" ? "Lọc tác phẩm" : "Filter works"}
+        description={
+          locale === "vi"
+            ? "Chọn chủ đề thư pháp muốn xem."
+            : "Choose a calligraphy theme."
+        }
+        summary={
+          <p className="text-sm font-semibold text-primary">
+            {getCategoryLabel(initialCategory, locale)}{" "}
+            <span className="font-mono text-xs font-normal text-muted-foreground">
+              ({total})
+            </span>
+          </p>
+        }
+      >
+        <ArchiveCategoryRail
+          label={locale === "vi" ? "Chủ đề" : "Themes"}
+          items={categoryItems}
+          activeValue={initialCategory}
+          activeTotal={total}
+          onSelect={selectCategory}
+          compact
+        />
+      </ArchiveFilterSheet>
 
-      <div className="w-full max-w-7xl">
-        {initialCalligraphies && initialCalligraphies.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {initialCalligraphies.map((item) => (
-              <div key={item.documentId} className="group">
-                <CalligraphyCard
-                  calligraphy={item}
-                  onClick={() => handleOpenCalligraphy(item.documentId)}
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="w-full py-20 text-center text-muted-foreground">
-            {locale === "vi"
-              ? "Không tìm thấy tác phẩm nào."
-              : "No calligraphy found."}
-          </div>
-        )}
-      </div>
-
-      {paginationMeta && paginationMeta.pageCount > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
-          <Button
-            disabled={currentPage <= 1}
-            onClick={() => handleUpdateQuery(undefined, currentPage - 1)}
-            size="icon-lg"
-            variant="outline"
-            className="cursor-pointer"
-          >
-            <ChevronLeft />
-          </Button>
-
-          <span className="flex items-center text-muted-foreground text-sm">
-            {locale === "vi" ? "Trang" : "Page"} {currentPage}{" "}
-            {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
-          </span>
-
-          <Button
-            disabled={currentPage >= paginationMeta.pageCount}
-            onClick={() => handleUpdateQuery(undefined, currentPage + 1)}
-            className="cursor-pointer"
-            size="icon-lg"
-            variant="outline"
-          >
-            <ChevronRight />
-          </Button>
+      <ArchivePageLayout
+        railClassName="hidden lg:block"
+        rail={
+          <ArchiveCategoryRail
+            label={locale === "vi" ? "Chủ đề" : "Themes"}
+            items={categoryItems}
+            activeValue={initialCategory}
+            activeTotal={total}
+            onSelect={updateQuery}
+          />
+        }
+      >
+        <div className="hidden lg:block">
+          <ArchiveResultsHeader
+            title={getCategoryLabel(initialCategory, locale)}
+            total={total}
+            countLabel={
+              locale === "vi" ? "tác phẩm" : total === 1 ? "work" : "works"
+            }
+          />
         </div>
-      )}
+
+        <div className="mt-6">
+          {initialCalligraphies.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+              {initialCalligraphies.map((item) => (
+                <div key={item.documentId} className="group">
+                  <CalligraphyCard
+                    calligraphy={item}
+                    onClick={() => handleOpenCalligraphy(item.documentId)}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              message={
+                locale === "vi"
+                  ? "Không tìm thấy tác phẩm nào."
+                  : "No calligraphy found."
+              }
+            />
+          )}
+        </div>
+
+        {paginationMeta ? (
+          <PaginationControls
+            currentPage={currentPage}
+            pageCount={paginationMeta.pageCount}
+            locale={locale}
+            onPageChange={(page) => updateQuery(undefined, page)}
+            className="mt-10 border-t border-border/80 pt-6"
+          />
+        ) : null}
+      </ArchivePageLayout>
 
       <CalligraphyDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
         calligraphy={selectedCalligraphy}
         loading={loading}
         onSelectRelated={handleOpenCalligraphy}

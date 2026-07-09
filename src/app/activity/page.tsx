@@ -43,7 +43,10 @@ export default async function ActivityPage({
   return (
     <PageShell>
       <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Tin tức" : "Activities" }]} />
-      <PageHeader title={locale === "vi" ? "Tin tức" : "Activities"} />
+      <PageHeader
+        title={locale === "vi" ? "Tin tức" : "Activities"}
+        className="mb-10"
+      />
       <ActivityList
         key={`${initialCategory}-${currentPage}`}
         initialActivities={initialActivities}

@@ -80,31 +80,37 @@ export default function CourseArchiveCard({
             variant === "featured" ? "p-5 md:p-7" : "pt-4",
           )}
         >
-         
-
- <div className="flex gap-2 items-center mb-2">
-          <DateTimeDisplay
-            dateString={categoryLabel}
-            locale={locale}
-            className="text-primary font-semibold md:text-xs"
-          />
+          <div className="flex gap-2 items-center mb-2">
+            <DateTimeDisplay
+              dateString={categoryLabel}
+              locale={locale}
+              className="text-primary font-semibold md:text-xs"
+            />
             {status !== "completed" && (
-            <>
-              <DateTimeDisplay dateString="|" locale={locale} className="md:text-xs" />
-              <DateTimeDisplay
-                dateString={statusLabel}
-                locale={locale}
-                className="text-secondary-foreground font-semibold md:text-xs"
-              />
-            </>
-          )}
-          <DateTimeDisplay dateString="|" locale={locale} className="md:text-xs" />
-          <DateTimeDisplay
-                dateString={activity.activityStartDate}
-            locale={locale}
-            className="md:text-xs"
-          />
-        </div>
+              <>
+                <DateTimeDisplay
+                  dateString="|"
+                  locale={locale}
+                  className="md:text-xs"
+                />
+                <DateTimeDisplay
+                  dateString={statusLabel}
+                  locale={locale}
+                  className="text-secondary-foreground font-semibold md:text-xs"
+                />
+              </>
+            )}
+            <DateTimeDisplay
+              dateString="|"
+              locale={locale}
+              className="md:text-xs"
+            />
+            <DateTimeDisplay
+              dateString={activity.activityStartDate}
+              locale={locale}
+              className="md:text-xs"
+            />
+          </div>
           <h3
             className={cn(
               "line-clamp-2 font-bold leading-snug text-foreground transition-colors group-hover:text-primary",
@@ -124,7 +130,6 @@ export default function CourseArchiveCard({
               {excerpt}
             </p>
           ) : null}
-
         </div>
       </article>
     </Link>

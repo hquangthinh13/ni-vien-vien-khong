@@ -7,14 +7,11 @@ import type { Poem } from "@/features/poem/model/poem.types";
 import { getAppLocale } from "@/shared/lib/i18n";
 import { getImageUrl } from "@/shared/lib/api";
 import RelatedPoems from "@/features/poem/ui/RelatedPoems";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
-import DetailPageShell from "@/shared/layout/DetailPageShell";
-import DetailHeader from "@/shared/layout/DetailHeader";
-import DetailDivider from "@/shared/layout/DetailDivider";
-import EmptyState from "@/shared/layout/EmptyState";
+import DetailArticleLayout from "@/shared/layout/DetailArticleLayout";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
-import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { documentId: string };
@@ -22,7 +19,6 @@ type Props = {
 
 export async function generateMetadata(
   { params }: { params: { documentId: string } },
-  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
   const locale = await getAppLocale();
@@ -50,7 +46,7 @@ export async function generateMetadata(
         images: ogImage ? [ogImage] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return { title: "Ni Viện Viên Không" };
   }
 }
@@ -76,15 +72,7 @@ export default async function PoemPage({ params }: Props) {
   }
 
   if (!data) {
-    return (
-      <div className="page-container">
-        <EmptyState
-          message={
-            locale === "vi" ? "Không tìm thấy bài thơ." : "Poem not found."
-          }
-        />
-      </div>
-    );
+    notFound();
   }
 
   const latestResponse = await fetchLatestPoems(locale, 5);
@@ -101,36 +89,33 @@ export default async function PoemPage({ params }: Props) {
   });
 
   return (
-    <DetailPageShell
-      main={
-        <div className="w-full max-w-none text-justify leading-relaxed">
-          <AppBreadcrumb
-            locale={locale}
-            items={[
-              { label: locale === "vi" ? "Thư viện" : "Library" },
-              {
-                label: locale === "vi" ? "Thơ thiền" : "Poems",
-                href: "/library/poem",
-              },
-              { label: data.title },
-            ]}
-            className="mb-6"
-          />
-          <DetailHeader
-            label={locale === "en" ? "Poem" : "Thơ thiền"}
-            title={data.title}
-            centered
-          />
-
-          <DetailDivider />
-
-          <div className="w-full">
-            {data.content ? (
-              <RichTextRenderer isPoem={true} content={data.content || []} />
-            ) : null}
-          </div>
-        </div>
+    <DetailArticleLayout
+      locale={locale}
+      breadcrumbItems={[
+        { label: locale === "vi" ? "Thư viện" : "Library", href: "/library" },
+        {
+          label: locale === "vi" ? "Thơ thiền" : "Poems",
+          href: "/library/poem",
+        },
+        { label: data.title },
+      ]}
+      header={{
+        label: locale === "vi" ? "Thơ thiền" : "Poem",
+        title: data.title,
+        meta: data.author ? (
+          <span className="text-sm text-muted-foreground">{data.author}</span>
+        ) : null,
+        centered: true,
+      }}
+      content={
+        data.content ? (
+          <RichTextRenderer isPoem content={data.content} />
+        ) : null
       }
+      share={{
+        title: data.title,
+        url: `/library/poem/${data.documentId}`,
+      }}
       sidebar={<RelatedPoems locale={locale} poems={mergedRelatedPoems} />}
     />
   );

@@ -5,13 +5,15 @@ import type { Activity } from "../model/activity.types";
 import type { CourseCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
 import { Button } from "@/shared/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CourseCategoryRail from "./course-list/CourseCategoryRail";
 import CourseYearTimeline from "./course-list/CourseYearTimeline";
 import CourseFilterSheet from "./course-list/CourseFilterSheet";
 import CourseResultsHeader from "./course-list/CourseResultsHeader";
 import CourseEditorialGrid from "./course-list/CourseEditorialGrid";
+import ArchivePageLayout from "@/shared/layout/archive/ArchivePageLayout";
+import PaginationControls from "@/shared/layout/PaginationControls";
+import EmptyState from "@/shared/layout/EmptyState";
 
 interface ActivityListProps {
   initialCourses: Activity[];
@@ -95,109 +97,71 @@ export default function CourseList({
         }
       />
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
-        <aside className="hidden border-r border-border/80 pr-6 lg:col-span-3 lg:block">
+      <ArchivePageLayout
+        railClassName="hidden lg:block"
+        rail={
           <CourseCategoryRail
             activeCategory={initialCategory}
             locale={locale}
             total={totalPosts}
             onSelect={(category) => handleUpdateQuery(category)}
           />
-        </aside>
+        }
+      >
+        <div className="hidden lg:block">
+          <CourseYearTimeline
+            years={availableYears}
+            currentYear={currentYear}
+            locale={locale}
+            onSelect={(year) =>
+              handleUpdateQuery(undefined, undefined, year ?? "all")
+            }
+          />
+        </div>
 
-        <section className="min-w-0 lg:col-span-9">
-          <div className="hidden lg:block">
-            <CourseYearTimeline
-              years={availableYears}
-              currentYear={currentYear}
-              locale={locale}
-              onSelect={(year) =>
-                handleUpdateQuery(undefined, undefined, year ?? "all")
-              }
-            />
-          </div>
+        <div className="mt-6 hidden lg:block">
+          <CourseResultsHeader
+            activeCategory={initialCategory}
+            currentYear={currentYear}
+            locale={locale}
+            total={totalPosts}
+            onClear={handleClearFilters}
+          />
+        </div>
 
-          <div className="mt-6">
-            <CourseResultsHeader
-              activeCategory={initialCategory}
-              currentYear={currentYear}
-              locale={locale}
-              total={totalPosts}
-              onClear={handleClearFilters}
-            />
-          </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${initialCategory}-${currentYear ?? "all"}-${currentPage}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mt-6"
+          >
+            {initialCourses.length > 0 ? (
+              <CourseEditorialGrid courses={initialCourses} locale={locale} />
+            ) : (
+              <EmptyState
+                message={
+                  locale === "vi"
+                    ? "Chưa có khóa trong danh mục này."
+                    : "No courses are available in this category."
+                }
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${initialCategory}-${currentYear ?? "all"}-${currentPage}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="mt-6"
-            >
-              {initialCourses.length > 0 ? (
-                <CourseEditorialGrid
-                  courses={initialCourses}
-                  locale={locale}
-                />
-              ) : (
-                <div className="border-b border-border/80 py-16 text-center">
-                  <p className="text-base text-foreground">
-                    {locale === "vi"
-                      ? "Chưa tìm thấy khóa tu phù hợp."
-                      : "No matching results."}
-                  </p>
-                  <Button
-                    type="button"
-                    variant="link"
-                    size="xs"
-                    onClick={handleClearFilters}
-                    className="mt-2"
-                  >
-                    {locale === "vi"
-                      ? "Xem tất cả khóa tu"
-                      : "View all courses"}
-                  </Button>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-
-          {paginationMeta && paginationMeta.pageCount > 1 ? (
-            <nav
-              aria-label={locale === "vi" ? "Phân trang" : "Pagination"}
-              className="mt-10 flex items-center justify-center gap-4 border-t border-border/80 pt-6"
-            >
-              <Button
-                disabled={currentPage <= 1}
-                onClick={() => handleUpdateQuery(undefined, currentPage - 1)}
-                size="icon"
-                variant="outline"
-                aria-label={locale === "vi" ? "Trang trước" : "Previous page"}
-              >
-                <ChevronLeft />
-              </Button>
-              <span className="font-mono text-xs text-muted-foreground">
-                {locale === "vi" ? "Trang" : "Page"}{" "}
-                <strong className="font-semibold text-foreground">
-                  {currentPage}
-                </strong>{" "}
-                {locale === "vi" ? "trên" : "of"} {paginationMeta.pageCount}
-              </span>
-              <Button
-                disabled={currentPage >= paginationMeta.pageCount}
-                onClick={() => handleUpdateQuery(undefined, currentPage + 1)}
-                size="icon"
-                variant="outline"
-                aria-label={locale === "vi" ? "Trang sau" : "Next page"}
-              >
-                <ChevronRight />
-              </Button>
-            </nav>
-          ) : null}
-        </section>
-      </div>
+        {paginationMeta ? (
+          <PaginationControls
+            currentPage={currentPage}
+            pageCount={paginationMeta.pageCount}
+            locale={locale}
+            onPageChange={(page) => handleUpdateQuery(undefined, page)}
+            className="mt-10 border-t border-border/80 pt-6"
+          />
+        ) : null}
+      </ArchivePageLayout>
     </div>
   );
 }

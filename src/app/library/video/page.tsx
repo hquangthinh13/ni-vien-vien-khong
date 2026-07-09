@@ -1,13 +1,10 @@
 ﻿import { getAppLocale } from "@/shared/lib/i18n";
-import VideoCard from "@/features/video/ui/VideoCard";
+import VideoArchiveList from "@/features/video/ui/VideoArchiveList";
 import { fetchVideo } from "@/features/video/api/video.api";
 import { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
 import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
-import ContentGrid from "@/shared/layout/ContentGrid";
-import EmptyState from "@/shared/layout/EmptyState";
-import Pagination from "@/shared/layout/Pagination";
 
 export const metadata: Metadata = {
   title: "Pháp thoại",
@@ -39,31 +36,17 @@ export default async function VideoListPage({
   return (
     <PageShell>
       <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Pháp thoại" : "Dharma Talks" }]} />
-      <PageHeader title={locale === "vi" ? "Pháp thoại" : "Dharma Talks"} />
+      <PageHeader
+        title={locale === "vi" ? "Pháp thoại" : "Dharma Talks"}
+        className="mb-10"
+      />
 
-      {docs.length === 0 ? (
-        <EmptyState
-          message={
-            locale === "vi"
-              ? "Hiện chưa có pháp thoại nào."
-              : "No dharma talks available yet."
-          }
-        />
-      ) : (
-        <ContentGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {docs.map((doc) => (
-            <VideoCard key={doc.documentId} video={doc} locale={locale} />
-          ))}
-        </ContentGrid>
-      )}
-
-      {meta ? (
-        <Pagination
-          currentPage={currentPage}
-          pageCount={meta.pageCount}
-          locale={locale}
-        />
-      ) : null}
+      <VideoArchiveList
+        videos={docs}
+        locale={locale}
+        currentPage={currentPage}
+        paginationMeta={meta}
+      />
     </PageShell>
   );
 }

@@ -32,7 +32,10 @@ export default async function BlogPage({
   return (
     <PageShell>
       <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Chia sẻ" : "Blog" }]} />
-      <PageHeader title={locale === "vi" ? "Chia sẻ" : "Blog"} />
+      <PageHeader
+        title={locale === "vi" ? "Chia sẻ" : "Blog"}
+        className="mb-10"
+      />
       <BlogList
         key={currentPage}
         initialBlogs={initialBlogs}

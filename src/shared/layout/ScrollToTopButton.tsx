@@ -30,24 +30,8 @@ const ScrollToTopButton = () => {
   if (!visible) return null;
 
   return (
-    <div className=" fixed bottom-6 left-1/2 -translate-x-1/2 z-100 w-full max-w-7xl pointer-events-none">
-      <div className="mx-auto px-4 flex items-center justify-end">
-        {/* <Button
-          asChild
-          className="h-12 px-4 rounded-full shadow-md cursor-pointer pointer-events-auto opacity-85 hover:opacity-100"
-          variant="outline"
-        >
-          <Link
-            href="/library/question"
-            className="inline-flex items-center gap-2"
-          >
-            <MessageCircleQuestionMark className="size-4" />
-            <span className="text-xs font-mono uppercase tracking-wide">
-              Đặt câu hỏi
-            </span>
-          </Link>
-        </Button> */}
-
+    <div className=" fixed bottom-0 left-1/2 -translate-x-1/2 z-100 w-full pointer-events-none">
+      <div className="mx-auto pb-4 px-4 flex items-center justify-end">
         <Button
           size="icon-lg"
           className="rounded-full h-16 w-16 shadow-md cursor-pointer pointer-events-auto opacity-70 hover:opacity-100"

@@ -14,24 +14,26 @@ import {
   DialogHeader,
 } from "@/shared/ui/dialog";
 import { Button } from "@/shared/ui/button"; // Giả sử bạn có component Button
+import type { Locale } from "@/types/locale";
 
 interface LinkedDocumentProps {
   doc: LinkedDocument;
+  locale?: Locale;
 }
 
-const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
+const LinkedDocumentCard = ({ doc, locale = "vi" }: LinkedDocumentProps) => {
   const { title, link, mindMap } = doc;
 
   const CardContent = (
-    <div className="flex items-center gap-3 p-3 bg-white border border-border rounded-lg hover:border-primary/50 hover:bg-orange-50/30 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
-      <div className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-        <ScrollText size={16} />
+    <div className="grid min-h-20 cursor-pointer grid-cols-[2.5rem_minmax(0,1fr)_1rem] items-center gap-4 py-4">
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/8 text-primary transition-colors group-hover:bg-primary/12">
+        <ScrollText className="size-4" />
       </div>
 
       <div className="flex-1 min-w-0 text-left">
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="text-sm font-medium text-foreground leading-snug truncate group-hover:text-primary transition-colors block">
+            <span className="line-clamp-2 block text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
               {title}
             </span>
           </TooltipTrigger>
@@ -41,10 +43,7 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
         </Tooltip>
       </div>
 
-      <ChevronRight
-        size={14}
-        className="text-muted-foreground group-hover:translate-x-1 transition-transform"
-      />
+        <ChevronRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
     </div>
   );
 
@@ -79,7 +78,8 @@ const LinkedDocumentCard = ({ doc }: LinkedDocumentProps) => {
           <div className="mt-4 flex justify-end">
             <Link href={link} passHref>
               <Button className="hover:cursor-pointer" variant="outline">
-                Xem chi tiết tài liệu <ExternalLink size={16} />
+                {locale === "vi" ? "Xem chi tiết tài liệu" : "Open document"}{" "}
+                <ExternalLink size={16} />
               </Button>
             </Link>
           </div>

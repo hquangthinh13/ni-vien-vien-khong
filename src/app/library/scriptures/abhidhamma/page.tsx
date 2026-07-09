@@ -1,17 +1,8 @@
-﻿import { getAppLocale } from "@/shared/lib/i18n";
-import LinkedDocumentCard from "@/features/linkedDocument/ui/LinkedDocumentCard";
-import { fetchLinkedDocumentsByCategory } from "@/features/linkedDocument/api/linkedDocument.api";
-import { Metadata } from "next";
-import PageShell from "@/shared/layout/PageShell";
-import PageHeader from "@/shared/layout/PageHeader";
-import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
-import ContentGrid from "@/shared/layout/ContentGrid";
-import EmptyState from "@/shared/layout/EmptyState";
-import Pagination from "@/shared/layout/Pagination";
+import type { Metadata } from "next";
+import LinkedDocumentArchivePage from "@/features/linkedDocument/ui/LinkedDocumentArchivePage";
+import { getAppLocale } from "@/shared/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Tạng Vi Diệu Pháp",
-};
+export const metadata: Metadata = { title: "Tạng Vi Diệu Pháp" };
 
 export default async function AbhidhammaListPage({
   searchParams,
@@ -20,51 +11,20 @@ export default async function AbhidhammaListPage({
 }) {
   const locale = await getAppLocale();
   const { page } = await searchParams;
-  const currentPage = Number(page) || 1;
-  const pageSize = 12;
-
-  const response = await fetchLinkedDocumentsByCategory({
-    category: "Tạng Vi Diệu Pháp",
-    locale,
-    pagination: {
-      page: currentPage,
-      pageSize,
-    },
-    sort: ["title:asc"],
-    populate: "*",
-  });
-
-  const docs = Array.isArray(response.data) ? response.data : [];
-  const meta = response.meta?.pagination;
 
   return (
-    <PageShell>
-      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Tạng Vi Diệu Pháp" : "Abhidhamma Texts" }]} />
-      <PageHeader
-        title={locale === "vi" ? "Tạng Vi Diệu Pháp" : "Abhidhamma Texts"}
-      />
-
-      {docs.length === 0 ? (
-        <EmptyState
-          message={
-            locale === "vi" ? "Hiện chưa có tài liệu." : "No documents available yet."
-          }
-        />
-      ) : (
-        <ContentGrid className="grid-cols-1 sm:grid-cols-2">
-          {docs.map((doc) => (
-            <LinkedDocumentCard key={doc.documentId} doc={doc} />
-          ))}
-        </ContentGrid>
-      )}
-
-      {meta ? (
-        <Pagination
-          currentPage={currentPage}
-          pageCount={meta.pageCount}
-          locale={locale}
-        />
-      ) : null}
-    </PageShell>
+    <LinkedDocumentArchivePage
+      locale={locale}
+      currentPage={Number(page) || 1}
+      config={{
+        category: "Tạng Vi Diệu Pháp",
+        title: { vi: "Tạng Vi Diệu Pháp", en: "Abhidhamma Texts" },
+        eyebrow: { vi: "Tam Tạng kinh điển", en: "Pali Canon" },
+        description: {
+          vi: "Tư liệu nghiên cứu Vi Diệu Pháp trong truyền thống Theravāda.",
+          en: "Abhidhamma study materials from the Theravāda tradition.",
+        },
+      }}
+    />
   );
 }

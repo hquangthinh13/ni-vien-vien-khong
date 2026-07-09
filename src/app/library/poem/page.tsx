@@ -1,13 +1,10 @@
-﻿import { fetchPoems } from "@/features/poem/api/poem.api";
-import { getAppLocale } from "@/shared/lib/i18n";
-import PoemCard from "@/features/poem/ui/PoemCard";
-import { Metadata } from "next";
-import PageShell from "@/shared/layout/PageShell";
-import PageHeader from "@/shared/layout/PageHeader";
+import type { Metadata } from "next";
+import { fetchPoems } from "@/features/poem/api/poem.api";
+import PoemList from "@/features/poem/ui/PoemList";
 import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
-import ContentGrid from "@/shared/layout/ContentGrid";
-import EmptyState from "@/shared/layout/EmptyState";
-import Pagination from "@/shared/layout/Pagination";
+import PageHeader from "@/shared/layout/PageHeader";
+import PageShell from "@/shared/layout/PageShell";
+import { getAppLocale } from "@/shared/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Thơ thiền",
@@ -38,32 +35,27 @@ export default async function PoemListPage({
 
   return (
     <PageShell>
-      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Thơ thiền" : "Poems" }]} />
-      <PageHeader title={locale === "vi" ? "Thơ thiền" : "Poems"} />
+      <AppBreadcrumb
+        locale={locale}
+        items={[
+          {
+            label: locale === "vi" ? "Thư viện" : "Library",
+            href: "/library",
+          },
+          { label: locale === "vi" ? "Thơ thiền" : "Poems" },
+        ]}
+      />
+      <PageHeader
+        title={locale === "vi" ? "Thơ thiền" : "Poems"}
+        className="mb-10"
+      />
 
-      {poems.length === 0 ? (
-        <EmptyState
-          message={
-            locale === "vi"
-              ? "Hiện chưa có bài thơ nào."
-              : "No poems available yet."
-          }
-        />
-      ) : (
-        <ContentGrid className="grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {poems.map((poem) => (
-            <PoemCard key={poem.documentId} poem={poem} />
-          ))}
-        </ContentGrid>
-      )}
-
-      {meta ? (
-        <Pagination
-          currentPage={currentPage}
-          pageCount={meta.pageCount}
-          locale={locale}
-        />
-      ) : null}
+      <PoemList
+        poems={poems}
+        locale={locale}
+        currentPage={currentPage}
+        paginationMeta={meta}
+      />
     </PageShell>
   );
 }

@@ -1,6 +1,6 @@
 import type { CourseCategory } from "@/types/categories";
 import type { Locale } from "@/types/locale";
-import { cn } from "@/shared/lib/utils";
+import ArchiveCategoryRail from "@/shared/layout/archive/ArchiveCategoryRail";
 
 const COURSE_CATEGORIES: CourseCategory[] = [
   "Tất cả",
@@ -50,44 +50,16 @@ export default function CourseCategoryRail({
   compact = false,
 }: CourseCategoryRailProps) {
   return (
-    <nav
-      aria-label={locale === "vi" ? "Danh mục khóa tu" : "Retreat categories"}
-      className={cn(
-        "flex flex-col",
-        compact ? "gap-1" : "sticky top-24 gap-2",
-      )}
-    >
-      {!compact ? (
-              <p className="mb-3 font-mono text-xs font uppercase tracking-widest text-muted-foreground">
-          {locale === "vi" ? "Danh mục" : "Categories"}
-        </p>
-      ) : null}
-
-      {COURSE_CATEGORIES.map((category) => {
-        const active = category === activeCategory;
-
-        return (
-          <button
-            key={category}
-            type="button"
-            aria-current={active ? "page" : undefined}
-            onClick={() => onSelect(category)}
-            className={cn(
-              "group relative flex min-h-11 w-full cursor-pointer items-center font-semibold justify-between gap-3 border-l-2 px-4 py-2.5 text-left text-sm transition-colors",
-              active
-                ? "border-primary bg-primary/5 font-semibold text-primary"
-                : "border-transparent text-foreground/75 hover:border-primary/40 hover:bg-primary/3 hover:text-foreground",
-            )}
-          >
-            <span>{getCourseCategoryLabel(category, locale)}</span>
-            {active ? (
-              <span className="font-mono text-xs font-normal text-muted-foreground">
-                {total}
-              </span>
-            ) : null}
-          </button>
-        );
-      })}
-    </nav>
+    <ArchiveCategoryRail
+      label={locale === "vi" ? "Danh mục" : "Categories"}
+      items={COURSE_CATEGORIES.map((category) => ({
+        value: category,
+        label: getCourseCategoryLabel(category, locale),
+      }))}
+      activeValue={activeCategory}
+      activeTotal={total}
+      onSelect={onSelect}
+      compact={compact}
+    />
   );
 }
