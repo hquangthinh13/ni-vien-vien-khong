@@ -134,6 +134,12 @@ const Footer = async () => {
               >
                 {t("highlight-05")}{" "}
               </Link>
+              <Link
+                href="/library/question"
+                className="hover:text-primary transition-colors"
+              >
+                {t("highlight-06")}{" "}
+              </Link>
             </div>
           </div>
 

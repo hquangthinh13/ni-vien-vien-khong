@@ -46,25 +46,25 @@ export default function HomeCompactActivityCard({
 
       <div className="min-w-0 self-center">
         <div className="mb-1 flex min-w-0 items-center gap-2">
+          {category ? (
+            <>
+              <span className="truncate font-mono text-[11px] font-semibold text-primary">
+                {category}
+              </span>{" "}
+              <span className="font-mono text-[11px] text-muted-foreground">
+                |
+              </span>
+            </>
+          ) : null}{" "}
           <DateTimeDisplay
             dateString={activity.publishedAt}
             locale={locale}
             includeTime={false}
             className="truncate md:text-[11px]"
           />
-          {category ? (
-            <>
-              <span className="font-mono text-[11px] text-muted-foreground">
-                |
-              </span>
-              <span className="truncate font-mono text-[11px] font-semibold text-primary">
-                {category}
-              </span>
-            </>
-          ) : null}
         </div>
 
-        <h3 className="line-clamp-3 break-words text-base font-bold leading-snug text-foreground transition-colors group-hover:text-primary md:line-clamp-2 md:text-lg">
+        <h3 className="line-clamp-3 wrap-break-word text-sm font-bold leading-snug text-foreground transition-colors group-hover:text-primary md:line-clamp-2 md:text-base">
           {activity.activityName}
         </h3>
       </div>
