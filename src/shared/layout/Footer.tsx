@@ -17,6 +17,7 @@ import EmbeddedMap from "@/features/contact/ui/EmbeddedMap";
 import { fetchContactPage } from "@/features/contact/api/contactPage.api";
 import { getTranslations } from "next-intl/server";
 import { getAppLocale } from "@/shared/lib/i18n";
+import { LanguageSwitcher } from "@/shared/layout/LanguageSwitcher";
 
 const Footer = async () => {
   const locale = await getAppLocale();
@@ -171,8 +172,12 @@ const Footer = async () => {
           {/*  */}
         </div>
 
-        <div className="mt-8 pt-4 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Ni Viện Viên Không. All rights reserved.
+        <div className="mx-4 mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-4 text-center text-xs text-muted-foreground md:flex-row md:text-left">
+          <p>
+            © {new Date().getFullYear()} Ni Viện Viên Không. All rights
+            reserved.
+          </p>
+          <LanguageSwitcher />
         </div>
       </div>
     </footer>

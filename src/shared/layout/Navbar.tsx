@@ -5,7 +5,7 @@ import Image from "next/image";
 import { cn } from "../lib/utils";
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, MessageCircleQuestion } from "lucide-react";
 
 import {
   Sheet,
@@ -14,7 +14,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/shared/ui/sheet";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import MobileNavigationMenu from "./MobileNavigationMenu";
 import DesktopNavigationMenu from "./DesktopNavigationMenu";
 import useMenuConfig from "@/shared/lib/menu-config";
@@ -39,7 +38,19 @@ export default function Navbar({ className }: { className?: string }) {
           <DesktopNavigationMenu menuData={menuConfig} />
         </div>
         <div className="flex items-center gap-2 justify-end">
-          <LanguageSwitcher />
+          <Button
+            asChild
+            variant="ghost"
+            className="hover:bg-accent/0"
+          >
+            <Link
+              href="/library/question#question-form"
+              aria-label={t("questionCta")}
+            >
+              <MessageCircleQuestion data-icon="inline-start" />
+              <span className="hidden sm:inline">{t("questionCta")}</span>
+            </Link>
+          </Button>
           <Sheet>
             <SheetTrigger asChild>
               <Button

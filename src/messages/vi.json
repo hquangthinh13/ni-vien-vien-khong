@@ -74,7 +74,8 @@
       "trigger": "Trang chủ",
       "href": "/"
     },
-    "menu": "Mục lục"
+    "menu": "Mục lục",
+    "questionCta": "Gửi câu hỏi"
   },
   "Footer": {
     "contact": "Liên hệ",
@@ -89,7 +90,8 @@
     "follow": "Theo dõi ngay",
     "address": "Địa chỉ",
     "phone": "Điện thoại",
-    "email": "Email"
+    "email": "Email",
+    "language": "Ngôn ngữ"
   },
   "HomePage": {
     "foreword": "Lời ngỏ"

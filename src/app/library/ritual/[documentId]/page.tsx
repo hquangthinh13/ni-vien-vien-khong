@@ -9,12 +9,10 @@ import { getAppLocale } from "@/shared/lib/i18n";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
 import RelatedRitualsSection from "@/features/ritual/ui/RelatedRitualsSection";
-import { Metadata, ResolvingMetadata } from "next";
-import DetailPageShell from "@/shared/layout/DetailPageShell";
-import DetailHeader from "@/shared/layout/DetailHeader";
-import DetailDivider from "@/shared/layout/DetailDivider";
+import { Metadata } from "next";
+import DetailArticleLayout from "@/shared/layout/DetailArticleLayout";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
-import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 type Props = {
   params: { documentId: string };
@@ -22,7 +20,6 @@ type Props = {
 
 export async function generateMetadata(
   { params }: { params: { documentId: string } },
-  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { documentId } = await params;
   const locale = await getAppLocale();
@@ -51,7 +48,7 @@ export async function generateMetadata(
         images: ogImage ? [ogImage] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return { title: "Ni Viện Viên Không" };
   }
 }
@@ -93,39 +90,38 @@ export default async function RitualPage({ params }: Props) {
   });
 
   return (
-    <DetailPageShell
-      main={
-        <div className="w-full max-w-none text-justify leading-relaxed">
-          <AppBreadcrumb
+    <DetailArticleLayout
+      locale={locale}
+      breadcrumbItems={[
+        { label: locale === "vi" ? "Thư viện" : "Library", href: "/library" },
+        {
+          label: locale === "vi" ? "Nghi thức nghi lễ" : "Rituals",
+          href: "/library/ritual",
+        },
+        { label: data.title },
+      ]}
+      header={{
+        label: locale === "vi" ? "Nghi thức nghi lễ" : "Ritual",
+        title: data.title,
+        meta: data.publishedAt ? (
+          <DateTimeDisplay
+            dateString={data.publishedAt}
             locale={locale}
-            items={[
-              { label: locale === "vi" ? "Thư viện" : "Library" },
-              {
-                label: locale === "vi" ? "Nghi thức nghi lễ" : "Rituals",
-                href: "/library/ritual",
-              },
-              { label: data.title },
-            ]}
-            className="mb-6"
+            includeTime={false}
           />
-          <DetailHeader
-            label="Nghi thức nghi lễ"
-            title={data.title}
-            imageUrl={
-              data.coverImage
-                ? getImageUrl(data.coverImage, "medium") || "/placeholder.png"
-                : null
-            }
-            imageAlt={data.title || "Ritual cover image"}
-          />
-
-          <DetailDivider />
-
-          <div className="w-full">
-            {data.content ? <RichTextRenderer content={data.content || []} /> : null}
-          </div>
-        </div>
+        ) : null,
+        imageUrl: data.coverImage
+          ? getImageUrl(data.coverImage, "medium") || "/placeholder.png"
+          : null,
+        imageAlt: data.title || "Ritual cover image",
+      }}
+      content={
+        data.content ? <RichTextRenderer content={data.content} /> : null
       }
+      share={{
+        title: data.title,
+        url: `/library/ritual/${data.documentId}`,
+      }}
       sidebar={
         <RelatedRitualsSection locale={locale} rituals={mergedRelatedRituals} />
       }

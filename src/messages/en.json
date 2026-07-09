@@ -71,7 +71,8 @@
       "trigger": "Home",
       "href": "/"
     },
-    "menu": "Menu"
+    "menu": "Menu",
+    "questionCta": "Ask a Question"
   },
   "Footer": {
     "contact": "Contact Us",
@@ -86,7 +87,8 @@
     "follow": "Follow Us",
     "address": "Address",
     "phone": "Phone",
-    "email": "Email"
+    "email": "Email",
+    "language": "Language"
   },
   "HomePage": {
     "foreword": "Foreword"

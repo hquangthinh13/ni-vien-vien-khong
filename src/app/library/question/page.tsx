@@ -58,7 +58,10 @@ export default async function QuestionListPage({
       />
 
       <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
-        <aside className="order-1 rounded-lg border border-[#dfcdb6] bg-[#f8f2e8] p-5 md:p-7 lg:order-2 lg:col-span-5">
+        <aside
+          id="question-form"
+          className="order-1 scroll-mt-24 rounded-lg border border-[#dfcdb6] bg-[#f8f2e8] p-5 md:p-7 lg:order-2 lg:col-span-5"
+        >
           <div className="mb-6 border-l-4 border-primary pl-4">
             <h2 className="text-xl font-bold uppercase tracking-wide text-foreground">
               {locale === "vi" ? "Đặt câu hỏi" : "Ask a Question"}

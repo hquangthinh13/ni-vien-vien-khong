@@ -1,6 +1,5 @@
 ﻿import React from "react";
 import RichTextRenderer from "@/shared/layout/RichTextRenderer";
-import { formatShortDate } from "@/shared/lib/utils";
 import type { Blog } from "@/features/blog/model/blog.types";
 import { getAppLocale } from "@/shared/lib/i18n";
 import {
@@ -9,14 +8,12 @@ import {
 } from "@/features/blog/api/blog.api";
 import { getImageUrl } from "@/shared/lib/api";
 import { notFound } from "next/navigation";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { getDocumentIdFromSlug } from "@/shared/lib/utils";
-import DetailPageShell from "@/shared/layout/DetailPageShell";
-import DetailHeader from "@/shared/layout/DetailHeader";
-import DetailDivider from "@/shared/layout/DetailDivider";
+import DetailArticleLayout from "@/shared/layout/DetailArticleLayout";
 import RelatedBlogsSection from "@/features/blog/ui/RelatedBlogsSection";
 import { mergeRelatedItems } from "@/shared/lib/related-content";
-import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
+import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 
 type Props = {
   params: { slug: string };
@@ -24,7 +21,6 @@ type Props = {
 
 export async function generateMetadata(
   { params }: { params: { slug: string } },
-  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
   const documentId = getDocumentIdFromSlug(slug);
@@ -53,7 +49,7 @@ export async function generateMetadata(
         images: ogImage ? [ogImage] : [],
       },
     };
-  } catch (error) {
+  } catch {
     return { title: "Ni Viện Viên Không" };
   }
 }
@@ -96,44 +92,38 @@ export default async function ActivityPage({ params }: Props) {
   });
 
   return (
-    <DetailPageShell
-      main={
-        <div className="w-full max-w-none text-justify leading-relaxed">
-          <AppBreadcrumb
+    <DetailArticleLayout
+      locale={locale}
+      breadcrumbItems={[
+        { label: locale === "vi" ? "Thư viện" : "Library", href: "/library" },
+        {
+          label: locale === "vi" ? "Chia sẻ" : "Blog",
+          href: "/library/blog",
+        },
+        { label: data.title },
+      ]}
+      header={{
+        label: locale === "vi" ? "Chia sẻ" : "Blog",
+        title: data.title,
+        meta: data.publishedAt ? (
+          <DateTimeDisplay
+            dateString={data.publishedAt}
             locale={locale}
-            items={[
-              { label: locale === "vi" ? "Thư viện" : "Library" },
-              {
-                label: locale === "vi" ? "Chia sẻ" : "Blog",
-                href: "/library/blog",
-              },
-              { label: data.title },
-            ]}
-            className="mb-6"
+            includeTime={false}
           />
-          <DetailHeader
-            label={locale === "vi" ? "Chia sẻ" : "Blog"}
-            title={data.title}
-            meta={
-              data.publishedAt ? (
-                <div className="flex items-center gap-2 text-xs lg:text-sm font-sans text-muted-foreground">
-                  <span>{formatShortDate(data.publishedAt, locale)}</span>
-                </div>
-              ) : null
-            }
-            imageUrl={getImageUrl(data.coverImage) || "/placeholder.png"}
-            imageAlt={data.title || "Blog cover image"}
-          />
-
-          <DetailDivider />
-
-          <div className="w-full">
-            {data.blogContent ? (
-              <RichTextRenderer content={data.blogContent || []} />
-            ) : null}
-          </div>
-        </div>
+        ) : null,
+        imageUrl: getImageUrl(data.coverImage) || "/placeholder.png",
+        imageAlt: data.title || "Blog cover image",
+      }}
+      content={
+        data.blogContent ? (
+          <RichTextRenderer content={data.blogContent} />
+        ) : null
       }
+      share={{
+        title: data.title,
+        url: `/library/blog/${data.slug}-${data.documentId}`,
+      }}
       sidebar={<RelatedBlogsSection blogs={relatedBlogs} locale={locale} />}
     />
   );
