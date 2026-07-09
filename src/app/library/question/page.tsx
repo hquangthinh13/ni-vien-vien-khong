@@ -1,16 +1,8 @@
-﻿import React from "react";
 import QuestionCard from "@/features/question/ui/QuestionCard";
 import QuestionForm from "@/features/question/ui/QuestionForm";
-import { Button } from "@/shared/ui/button";
 import { fetchAnsweredQuestions } from "@/features/question/api/question.api";
 import { getAppLocale } from "@/shared/lib/i18n";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogTrigger,
-} from "@/shared/ui/dialog";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import PageShell from "@/shared/layout/PageShell";
 import PageHeader from "@/shared/layout/PageHeader";
 import AppBreadcrumb from "@/shared/layout/AppBreadcrumb";
@@ -43,65 +35,98 @@ export default async function QuestionListPage({
 
   const questions = Array.isArray(response.data) ? response.data : [];
   const meta = response.meta?.pagination;
+  const totalQuestions = meta?.total ?? questions.length;
 
   return (
-    <PageShell>
-      <AppBreadcrumb locale={locale} items={[{ label: locale === "vi" ? "Thư viện" : "Library" }, { label: locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A" }]} />
+    <PageShell className="pb-16 md:pb-20">
+      <AppBreadcrumb
+        locale={locale}
+        items={[
+          {
+            label: locale === "vi" ? "Thư viện" : "Library",
+            href: "/library",
+          },
+          {
+            label:
+              locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A",
+          },
+        ]}
+      />
       <PageHeader
         title={locale === "vi" ? "Vấn đáp Phật pháp" : "Buddhist Q&A"}
+        className="mb-10"
       />
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <div className="flex w-full justify-center">
-            <Button variant="outline" className="cursor-pointer">
-              {locale === "vi" ? "Gửi câu hỏi" : "Submit Question"}
-            </Button>
+      <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
+        <aside className="order-1 rounded-lg border border-[#dfcdb6] bg-[#f8f2e8] p-5 md:p-7 lg:order-2 lg:col-span-5">
+          <div className="mb-6 border-l-4 border-primary pl-4">
+            <h2 className="text-xl font-bold uppercase tracking-wide text-foreground">
+              {locale === "vi" ? "Đặt câu hỏi" : "Ask a Question"}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {locale === "vi"
+                ? "Vui lòng trình bày câu hỏi rõ ràng. Chúng tôi sẽ phản hồi trong thời gian sớm nhất."
+                : "Please describe your question clearly. We will respond as soon as possible."}
+            </p>
           </div>
-        </DialogTrigger>
-        <DialogContent
-          data-lenis-prevent
-          aria-describedby="Question form"
-          className="max-h-[90vh] overflow-y-auto md:min-w-2xl lg:min-w-3xl"
-        >
-          <DialogTitle>
-            {locale === "vi" ? "Đặt câu hỏi" : "Ask a Question"}
-          </DialogTitle>
           <QuestionForm locale={locale} />
-        </DialogContent>
-      </Dialog>
+        </aside>
 
-      {questions.length === 0 ? (
-        <EmptyState
-          className="mt-4"
-          message={
-            locale === "vi"
-              ? "Chưa có câu hỏi nào được phản hồi."
-              : "No answered questions yet."
-          }
-        />
-      ) : (
-        <div className="mt-4 grid grid-cols-1 gap-4">
-          {questions.map((item, index) => (
-            <QuestionCard
-              key={item.id}
-              question={item}
-              className={index !== questions.length - 1 ? "border-b pb-4" : ""}
-              fontSize="md"
-              locale={locale}
+        <section className="order-2 min-w-0 lg:order-1 lg:col-span-7">
+          <div className="mb-5 border-b border-border/80 pb-4">
+            <h2 className="text-xl font-bold uppercase tracking-wide text-foreground">
+              {locale === "vi"
+                ? "Câu hỏi đã giải đáp"
+                : "Answered Questions"}
+            </h2>
+            <p className="mt-2 font-mono text-xs text-muted-foreground">
+              {locale === "vi"
+                ? `${totalQuestions} câu hỏi đã được giải đáp`
+                : `${totalQuestions} answered questions`}
+            </p>
+          </div>
+
+          {questions.length === 0 ? (
+            <EmptyState
+              message={
+                locale === "vi"
+                  ? "Chưa có câu hỏi nào được phản hồi."
+                  : "No answered questions yet."
+              }
             />
-          ))}
-        </div>
-      )}
+          ) : (
+            <>
+              <div className="hidden grid-cols-[6.5rem_minmax(0,1fr)_7.5rem_7rem_1.25rem] gap-3 border-b border-border/80 pb-3 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground md:grid">
+                <span>{locale === "vi" ? "Ngày" : "Date"}</span>
+                <span>{locale === "vi" ? "Câu hỏi" : "Question"}</span>
+                <span>{locale === "vi" ? "Người hỏi" : "Asked by"}</span>
+                <span>{locale === "vi" ? "Giải đáp" : "Answer"}</span>
+                <span />
+              </div>
 
-      {meta ? (
-        <Pagination
-          currentPage={currentPage}
-          pageCount={meta.pageCount}
-          locale={locale}
-          className="mt-12"
-        />
-      ) : null}
+              <div>
+                {questions.map((item) => (
+                  <QuestionCard
+                    key={item.id}
+                    question={item}
+                    locale={locale}
+                    variant="archive"
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          {meta ? (
+            <Pagination
+              currentPage={currentPage}
+              pageCount={meta.pageCount}
+              locale={locale}
+              className="mt-10"
+            />
+          ) : null}
+        </section>
+      </div>
     </PageShell>
   );
 }

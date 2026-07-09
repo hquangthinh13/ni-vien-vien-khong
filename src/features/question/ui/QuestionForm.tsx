@@ -1,31 +1,58 @@
 "use client";
 
-import React, { useTransition, useRef } from "react";
+import { useMemo, useState, useTransition } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { Send } from "lucide-react";
 import { Field, FieldGroup, FieldLabel } from "@/shared/ui/field";
 import { Button } from "@/shared/ui/button";
 import { Textarea } from "@/shared/ui/textarea";
 import { Input } from "@/shared/ui/input";
-
 import type { Locale } from "@/types/locale";
 import { createQuestion } from "../api/question.api";
-import { QuestionFormData } from "../model/question.types";
-import { Send } from "lucide-react";
+import type { QuestionFormData } from "../model/question.types";
 
-const formSchema = z.object({
-  fullName: z.string().min(2, "Vui lòng nhập họ tên đầy đủ"),
-  email: z.string().email("Địa chỉ email không hợp lệ"),
-  title: z.string().min(5, "Tiêu đề cần ít nhất 5 ký tự"),
-  questionContent: z.string().min(10, "Nội dung câu hỏi quá ngắn"),
-  phoneNumber: z.string().optional().or(z.literal("")),
-  address: z.string().optional().or(z.literal("")),
-});
+const buildFormSchema = (locale: Locale) =>
+  z.object({
+    fullName: z
+      .string()
+      .min(
+        2,
+        locale === "vi"
+          ? "Vui lòng nhập họ tên đầy đủ"
+          : "Please enter your full name",
+      ),
+    email: z
+      .string()
+      .email(
+        locale === "vi"
+          ? "Địa chỉ email không hợp lệ"
+          : "Invalid email address",
+      ),
+    title: z
+      .string()
+      .min(
+        5,
+        locale === "vi"
+          ? "Tiêu đề cần ít nhất 5 ký tự"
+          : "The title must contain at least 5 characters",
+      ),
+    questionContent: z
+      .string()
+      .min(
+        10,
+        locale === "vi"
+          ? "Nội dung câu hỏi quá ngắn"
+          : "The question is too short",
+      ),
+    phoneNumber: z.string().optional().or(z.literal("")),
+    address: z.string().optional().or(z.literal("")),
+  });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<ReturnType<typeof buildFormSchema>>;
 
 interface QuestionFormProps {
   locale: Locale;
@@ -33,14 +60,18 @@ interface QuestionFormProps {
 
 export default function QuestionForm({ locale }: QuestionFormProps) {
   const [isPending, startTransition] = useTransition();
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
+  const schema = useMemo(() => buildFormSchema(locale), [locale]);
+  const captchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       fullName: "",
       email: "",
@@ -50,23 +81,17 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
       address: "",
     },
   });
-  const onPreSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
 
-    const token = recaptchaRef.current?.getValue();
-
-    if (!token) {
-      const message =
+  const onSubmit = (values: FormValues) => {
+    if (!captchaToken) {
+      toast.error(
         locale === "vi"
           ? "Vui lòng xác nhận bạn không phải là người máy!"
-          : "Please verify that you are not a robot!";
-      toast.error(message);
+          : "Please verify that you are not a robot!",
+      );
       return;
     }
 
-    handleSubmit(onSubmit)(e);
-  };
-  const onSubmit = (values: FormValues) => {
     startTransition(async () => {
       try {
         const payload: QuestionFormData = {
@@ -75,27 +100,29 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
         };
 
         await createQuestion(payload);
-        const message =
+        toast.success(
           locale === "vi"
             ? "Gửi câu hỏi thành công! Chúng tôi sẽ phản hồi sớm."
-            : "Question sent successfully! We will get back to you soon.";
-        toast.success(message);
+            : "Question sent successfully! We will get back to you soon.",
+        );
         reset();
+        setCaptchaToken(null);
+        setCaptchaKey((currentKey) => currentKey + 1);
       } catch (error) {
-        const message =
+        toast.error(
           locale === "vi"
             ? "Gửi thất bại, vui lòng kiểm tra lại thông tin."
-            : "Submission failed, please check your information.";
-        toast.error(message);
+            : "Submission failed, please check your information.",
+        );
         console.error("Submit Error:", error);
       }
     });
   };
 
   return (
-    <form onSubmit={onPreSubmit} noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <FieldGroup>
-        <Field className="mt-4">
+        <Field>
           <FieldLabel htmlFor="fullName">
             {locale === "vi" ? "Họ tên" : "Full Name"}{" "}
             <span className="text-destructive">*</span>
@@ -103,16 +130,16 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
           <Input
             {...register("fullName")}
             id="fullName"
-            placeholder="Nguyễn Văn A"
+            placeholder={locale === "vi" ? "Nguyễn Văn A" : "Full name"}
             disabled={isPending}
+            aria-invalid={Boolean(errors.fullName)}
           />
-          {errors.fullName && (
-            <p className="text-xs text-destructive mt-1">
-              {errors.fullName.message}
-            </p>
-          )}
+          {errors.fullName ? (
+            <p className="input-error-message">{errors.fullName.message}</p>
+          ) : null}
         </Field>
-        <div className="flex justify-between gap-4">
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field>
             <FieldLabel htmlFor="email">
               Email <span className="text-destructive">*</span>
@@ -123,12 +150,11 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
               type="email"
               placeholder="example@gmail.com"
               disabled={isPending}
+              aria-invalid={Boolean(errors.email)}
             />
-            {errors.email && (
-              <p className="text-xs text-destructive mt-1">
-                {errors.email.message}
-              </p>
-            )}
+            {errors.email ? (
+              <p className="input-error-message">{errors.email.message}</p>
+            ) : null}
           </Field>
 
           <Field>
@@ -138,13 +164,13 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
             <Input
               {...register("phoneNumber")}
               id="phoneNumber"
-              placeholder="0123456789..."
+              placeholder="0123456789"
               disabled={isPending}
             />
           </Field>
         </div>
 
-        <div className="h-px bg-border/40 my-1" />
+        <div className="my-1 h-px bg-border/60" />
 
         <Field>
           <FieldLabel htmlFor="title">
@@ -160,12 +186,11 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
                 : "Summarize your question..."
             }
             disabled={isPending}
+            aria-invalid={Boolean(errors.title)}
           />
-          {errors.title && (
-            <p className="text-xs text-destructive mt-1">
-              {errors.title.message}
-            </p>
-          )}
+          {errors.title ? (
+            <p className="input-error-message">{errors.title.message}</p>
+          ) : null}
         </Field>
 
         <Field>
@@ -181,15 +206,15 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
                 ? "Nhập chi tiết câu hỏi..."
                 : "Enter your question details..."
             }
-            className="min-h-20"
+            className="min-h-28"
             disabled={isPending}
+            aria-invalid={Boolean(errors.questionContent)}
           />
-
-          {errors.questionContent && (
-            <p className="text-xs text-destructive mt-1">
+          {errors.questionContent ? (
+            <p className="input-error-message">
               {errors.questionContent.message}
             </p>
-          )}
+          ) : null}
         </Field>
 
         <Field>
@@ -200,31 +225,45 @@ export default function QuestionForm({ locale }: QuestionFormProps) {
             {...register("address")}
             id="address"
             placeholder={
-              locale === "vi" ? "Nhập địa chỉ của bạn" : "Enter your address"
+              locale === "vi"
+                ? "Nhập địa chỉ của bạn"
+                : "Enter your address"
             }
+            className="min-h-20"
             disabled={isPending}
           />
         </Field>
-        {/* <div className="flex justify-center py-2 w-full">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-            onChange={() => {}}
-          />
-        </div> */}
-        <Field orientation="horizontal" className="pt-4">
-          <div className="w-full py-5 border-t border-border/40 flex items-center justify-between gap-4">
-            <p className="text-xs text-muted-foreground leading-relaxed">
+
+        <div className="flex w-full justify-center overflow-hidden py-1">
+          {captchaSiteKey ? (
+            <ReCAPTCHA
+              key={captchaKey}
+              sitekey={captchaSiteKey}
+              onChange={setCaptchaToken}
+              onExpired={() => setCaptchaToken(null)}
+            />
+          ) : (
+            <p className="text-center text-xs text-destructive">
               {locale === "vi"
-                ? "Chúng tôi sẽ phản hồi sớm nhất có thể."
-                : "We will respond as soon as possible."}
+                ? "Chưa cấu hình reCAPTCHA cho biểu mẫu."
+                : "reCAPTCHA is not configured for this form."}
+            </p>
+          )}
+        </div>
+
+        <Field orientation="horizontal" className="pt-2">
+          <div className="flex w-full flex-col gap-4 border-t border-border/60 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              {locale === "vi"
+                ? "Thông tin của bạn được bảo mật. Chúng tôi sẽ phản hồi sớm nhất có thể."
+                : "Your information is kept private. We will respond as soon as possible."}
             </p>
             <Button
               type="submit"
-              disabled={isPending}
-              className="gap-2 uppercase tracking-wider text-xs font-medium cursor-pointer"
+              disabled={isPending || !captchaSiteKey}
+              className="self-start text-xs font-medium uppercase tracking-wider sm:self-auto"
             >
-              <Send className="size-3.5" />
+              <Send data-icon="inline-start" />
               {isPending
                 ? locale === "vi"
                   ? "Đang gửi..."

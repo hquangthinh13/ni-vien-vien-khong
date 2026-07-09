@@ -6,9 +6,8 @@ import type { Locale } from "@/types/locale";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 import { cn, extractPreviewContent } from "@/shared/lib/utils";
 import { getImageUrl } from "@/shared/lib/api";
-import { getActivityStatus, getStatusLabel } from "../api/activity.api";
+import { getStatusLabel } from "../api/activity.api";
 import { categoryMap } from "@/types/categories";
-import { getActivityStatusConfig } from "@/shared/lib/activity-status.config";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import DateTimeDisplay from "@/shared/ui/DateTimeDisplay";
 interface NewsCardProps {
