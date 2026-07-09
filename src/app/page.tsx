@@ -1,21 +1,16 @@
 ﻿import Image from "next/image";
-import Link from "next/link";
 import { Suspense } from "react";
 import { DEFAULT_BLUR_DATA_URL } from "@/shared/constants/image-placeholders";
 
-import ActivitiesSection from "@/features/activity/ui/ActivitiesSection";
-
 import { getAppLocale } from "@/shared/lib/i18n";
-import CourseSection from "@/features/activity/ui/CourseSection";
-import VideoCard from "@/features/video/ui/VideoCard";
 import Navbar from "@/shared/layout/Navbar";
 import { fetchHomePage } from "@/features/homePage/api/homePage.api";
-import {
-  fetchActivities,
-  fetchActivitiesByCategory,
-} from "@/features/activity/api/activity.api";
+import { fetchActivities } from "@/features/activity/api/activity.api";
 import { fetchVideo } from "@/features/video/api/video.api";
 import ActivityCalendarDashboardSection from "@/features/activity/ui/ActivityCalendarDashboardSection";
+import HomeEditorialLayout from "@/features/homePage/ui/HomeEditorialLayout";
+import HomeEditorialNews from "@/features/homePage/ui/HomeEditorialNews";
+import HomeVideoEditorialSection from "@/features/homePage/ui/HomeVideoEditorialSection";
 
 import { getImageUrl } from "@/shared/lib/api";
 import MotionWrapper from "@/shared/motion/MotionWrapper";
@@ -24,7 +19,6 @@ import { HomePageResponse } from "@/features/homePage/model/homePage.types";
 import { ActivityResponse } from "@/features/activity/model/activity.types";
 import { VideoPlaylistResponse } from "@/features/video/model/video.types";
 
-import ornament from "@/public/ornament-01.svg";
 import decoration from "@/public/ornament-00.svg";
 
 async function safeFetch<T>(promise: Promise<T>, fallback: T): Promise<T> {
@@ -70,7 +64,7 @@ export default async function Home() {
         fetchVideo({
           locale,
           sort: ["publishedAt:desc"],
-          pagination: { limit: 3 },
+          pagination: { limit: 4 },
           populate: "*",
         }),
         {
@@ -137,109 +131,55 @@ export default async function Home() {
         </div>
       </MotionWrapper>
 
-      <div className="page-container gap-12">
-        <MotionWrapper className="flex my-6">
-          <section className="flex flex-col justify-center items-center mx-auto max-w-2xl">
-            <div className="flex w-fit mx-auto">
+      <HomeEditorialLayout>
+        <MotionWrapper>
+          <section className="mx-auto flex max-w-3xl flex-col items-center justify-center py-2 text-center md:py-4">
+            <div className="mx-auto flex w-fit">
               <h1 className="home-page-section-title">
                 {locale === "vi" ? "Lời ngỏ" : "Foreword"}
               </h1>
             </div>
-            <p className="flex mt-4 leading-loose text-center text-muted-foreground">
+            <p className="mt-6 text-sm leading-8 text-muted-foreground md:text-base md:leading-9">
               {homePage?.openingMessage}
-            </p>{" "}
+            </p>
             <Image
               src={decoration}
               alt="Ornament"
               width={32}
               height={32}
-              className="h-4 w-auto opacity-75 mt-12"
+              className="mt-10 h-4 w-auto opacity-70"
             />
-          </section>{" "}
+          </section>
         </MotionWrapper>
-        {activities.length > 0 && (
+
+        {activities.length > 0 ? (
           <MotionWrapper>
-            <section className="flex flex-col">
-              <div className="flex justify-between items-center">
-                <Link href="/activity">
-                  <h2 className="home-page-section-title">
-                    {locale === "vi" ? "Tin tức mới nhất" : "Latest Activities"}
-                  </h2>
-                </Link>
-                <div className="flex gap-2">
-                  <Link
-                    href="/activity"
-                    className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
-                  >
-                    {locale === "vi" ? "Xem thêm" : "View more"}
-                  </Link>
-                </div>
-              </div>
-              <ActivitiesSection locale={locale} activities={activities} />
-            </section>{" "}
+            <HomeEditorialNews locale={locale} activities={activities} />
           </MotionWrapper>
-        )}
-        {videos.length > 0 && (
+        ) : null}
+
+        {videos.length > 0 ? (
           <MotionWrapper>
-            <section className="flex flex-col">
-              <div className="flex justify-between items-center">
-                <Link href="/library/video">
-                  <h2 className="home-page-section-title">
-                    {locale === "vi" ? "Pháp thoại" : "Dharma Talks"}
-                  </h2>
-                </Link>
-                <div className="flex gap-2">
-                  <Link
-                    href="/library/video"
-                    className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
-                  >
-                    {locale === "vi" ? "Xem thêm" : "View more"}
-                  </Link>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-                {videos.map((video, index) => (
-                  <VideoCard
-                    key={video.documentId}
-                    video={video}
-                    locale={locale}
-                    isLastMobile={index === videos.length - 1}
-                  />
-                ))}
-              </div>
-            </section>
+            <HomeVideoEditorialSection locale={locale} videos={videos} />
           </MotionWrapper>
-        )}
-        {/* {courses.length > 0 && (
-          <MotionWrapper>
-            <section className="flex flex-col">
-              <div className="flex justify-between items-center">
-                <Link href="/activity">
-                  <h2 className="home-page-section-title">
-                    {locale === "vi" ? "Khóa tu gần đây" : "Recent Courses"}
-                  </h2>
-                </Link>
-                <div className="flex gap-2">
-                  <Link
-                    href="/course"
-                    className="flex w-fit text-sm font-semibold ease-in-out duration-150 transition-all hover:underline text-primary italic"
-                  >
-                    {locale === "vi" ? "Xem thêm" : "View more"}
-                  </Link>
-                </div>
-              </div>
-              <ActivitiesSection locale={locale} activities={courses} />
-            </section>{" "}
-          </MotionWrapper>
-        )} */}
+        ) : null}
+
         <MotionWrapper>
-          <section className="flex flex-col">
-            <Suspense fallback={<div>Đang tải lịch hoạt động...</div>}>
+          <section>
+            <Suspense
+              fallback={
+                <div className="py-16 text-center font-mono text-sm text-muted-foreground">
+                  {locale === "vi"
+                    ? "Đang tải lịch hoạt động..."
+                    : "Loading activity calendar..."}
+                </div>
+              }
+            >
               <ActivityCalendarDashboardSection locale={locale} />
             </Suspense>
           </section>
-        </MotionWrapper>{" "}
-      </div>
+        </MotionWrapper>
+      </HomeEditorialLayout>
     </main>
   );
 }
